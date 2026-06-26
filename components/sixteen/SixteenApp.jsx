@@ -16,14 +16,16 @@ import TutorChat from './screens/TutorChat';
 import Settings from './screens/Settings';
 import TutorPanel from './panels/TutorPanel';
 import SessionStats from './panels/SessionStats';
+import { useProfile } from './session/ProfileContext';
 
 // App — top-level Sixteen UI kit shell. Sidebar + screen router + tutor pane.
 
 function App() {
   const NS = SixteenNS;
   const { AppShell, Titlebar, Sidebar, IconButton, Avatar } = NS;
+  const { profile, displayName, email } = useProfile();
 
-  const [view, setView] = React.useState('onboarding');
+  const [view, setView] = React.useState(profile ? 'dashboard' : 'onboarding');
   const [viewProps, setViewProps] = React.useState({});
   const [dark, setDark] = React.useState(false);
   const [tutorOn, setTutorOn] = React.useState(false);
@@ -95,10 +97,10 @@ function App() {
         </div>
       </>}
       footer={<button onClick={() => go('settings')} style={{display:'flex', gap:8, alignItems:'center', width:'100%', padding:'6px 8px', borderRadius:'var(--radius-md)', background:'transparent', border:0, cursor:'pointer', textAlign:'left'}}>
-        <Avatar name="Maya Patel" size="sm" />
+        <Avatar name={displayName} size="sm" />
         <div style={{display:'flex', flexDirection:'column', flex:1, minWidth:0}}>
-          <span style={{font:'var(--role-label)', color:'var(--text-primary)'}}>Maya Patel</span>
-          <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', overflow:'hidden', textOverflow:'ellipsis'}}>maya@example.com</span>
+          <span style={{font:'var(--role-label)', color:'var(--text-primary)'}}>{displayName}</span>
+          <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', overflow:'hidden', textOverflow:'ellipsis'}}>{email}</span>
         </div>
         <Icon name="settings-2" style={{width:14, height:14, color:'var(--text-tertiary)'}}/>
       </button>}
@@ -172,7 +174,7 @@ function App() {
 }
 
 function titleFor(view, isTutor) {
-  if (isTutor) return 'Proctorly — Tutoring Maya Patel';
+  if (isTutor) return 'Proctorly — Tutor view';
   return ({
     'onboarding': 'Proctorly',
     'dashboard': 'Proctorly',
