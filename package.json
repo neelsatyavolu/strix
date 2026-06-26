@@ -16,6 +16,7 @@
   "build": {
     "appId": "com.strixprep.app",
     "productName": "Strix",
+    "afterPack": "scripts/after-pack.cjs",
     "files": [
       "package.json",
       "electron/**/*",
