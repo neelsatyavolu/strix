@@ -9,16 +9,33 @@
     "start": "next start",
     "lint": "eslint",
     "electron": "electron .",
+    "build:icon": "node scripts/build-icon.mjs && iconutil -c icns build/icon.iconset -o build/icon.icns",
     "app": "concurrently -k -n next,electron \"next dev\" \"wait-on tcp:3000 && electron .\"",
     "dist": "NEXT_PUBLIC_SITE_URL=https://proctorly-rho.vercel.app next build && node scripts/prepare-standalone.mjs && electron-builder --mac"
   },
   "build": {
     "appId": "com.proctorly.app",
     "productName": "Proctorly",
-    "files": ["package.json", "electron/**/*", "!node_modules/**"],
-    "extraResources": [{ "from": ".next/standalone", "to": "server" }],
-    "mac": { "target": "dmg", "category": "public.app-category.education", "identity": null },
-    "directories": { "output": "dist-app" }
+    "files": [
+      "package.json",
+      "electron/**/*",
+      "!node_modules/**"
+    ],
+    "extraResources": [
+      {
+        "from": ".next/standalone",
+        "to": "server"
+      }
+    ],
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.education",
+      "icon": "build/icon.icns",
+      "identity": null
+    },
+    "directories": {
+      "output": "dist-app"
+    }
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
@@ -40,6 +57,7 @@
     "electron-builder": "^26.15.3",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "sharp": "^0.35.2",
     "typescript": "^5",
     "wait-on": "^9.0.10"
   }

@@ -49,3 +49,5 @@ next-env.d.ts
 
 # electron-builder output
 /dist-app
+build/icon.iconset/
+build/icon-1024.png
