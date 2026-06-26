@@ -195,6 +195,7 @@ function SoftwareUpdate({ Card, Button, Badge }) {
 
   const line = {
     checking: 'Checking for updates…',
+    available: `Version ${version || ''} found — downloading…`,
     downloading: `Downloading update… ${progress}%`,
     downloaded: `Update ${version || ''} is ready — restart to install.`,
     'up-to-date': "You're on the latest version.",
@@ -204,6 +205,8 @@ function SoftwareUpdate({ Card, Button, Badge }) {
   let action;
   if (canInstall) {
     action = <Button variant="primary" size="sm" onClick={install}>Restart to install</Button>;
+  } else if (status === 'downloading' || status === 'available') {
+    action = <Button variant="secondary" size="sm" disabled>{status === 'downloading' ? `Downloading ${progress}%` : 'Downloading…'}</Button>;
   } else if (status === 'error' && version) {
     action = <Button variant="primary" size="sm" onClick={openDownload}>Download</Button>;
   } else {
