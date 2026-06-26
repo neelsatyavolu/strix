@@ -1,15 +1,12 @@
 const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("node:path");
 const fs = require("node:fs");
-const { spawn } = require("node:child_process");
 const http = require("node:http");
 const { registerAiIpc } = require("./ai.cjs");
 const { registerUpdates } = require("./updates.cjs");
 
-// Dev: load the running `next dev` server. Packaged: spawn the bundled Next
-// standalone server (with Electron's node) and load it locally.
-const DEV_URL = process.env.STRIX_URL || "http://localhost:3000";
-const PROD_PORT = 41637;
+// The window loads the deployed site directly. Dev: the local `next dev` server;
+// packaged: production on Vercel. STRIX_URL overrides either (e.g. a preview URL).
 const OAUTH_PORT = 41639; // loopback for Google OAuth (Google blocks embedded webviews)
 
 // Open Google's consent page in the system browser and resolve with the
@@ -31,36 +28,8 @@ function googleLoopback(authUrl) {
 }
 
 let win;
-let serverProc;
-let appUrl = DEV_URL;
-
-function startBundledServer() {
-  const serverDir = path.join(process.resourcesPath, "server");
-  const serverJs = path.join(serverDir, "server.js");
-  const env = {
-    ...process.env,
-    ELECTRON_RUN_AS_NODE: "1",
-    NODE_ENV: "production",
-    PORT: String(PROD_PORT),
-    HOSTNAME: "127.0.0.1",
-  };
-  try {
-    Object.assign(env, JSON.parse(fs.readFileSync(path.join(serverDir, "runtime-env.json"), "utf8")));
-  } catch { /* runtime env optional */ }
-  serverProc = spawn(process.execPath, [serverJs], { cwd: serverDir, env, stdio: "ignore" });
-  appUrl = `http://127.0.0.1:${PROD_PORT}`;
-}
-
-async function waitForServer(url, tries = 80) {
-  for (let i = 0; i < tries; i++) {
-    try {
-      const r = await fetch(url, { method: "HEAD" });
-      if (r.status < 500) return true;
-    } catch { /* not up yet */ }
-    await new Promise((res) => setTimeout(res, 250));
-  }
-  return false;
-}
+const appUrl =
+  process.env.STRIX_URL || (app.isPackaged ? "https://strixprep.com" : "http://localhost:3000");
 
 function createWindow() {
   win = new BrowserWindow({
@@ -93,16 +62,12 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(async () => {
+app.whenReady().then(() => {
   registerAiIpc(ipcMain, shell);
   ipcMain.handle("auth:google", (_e, authUrl) => googleLoopback(authUrl));
   // Auto-update: checks the generic feed (app-update.yml -> strixprep.com/downloads)
   // and streams lifecycle events to the renderer. No-op in dev (not packaged).
   registerUpdates({ ipcMain, shell, getWindow: () => win });
-  if (app.isPackaged) {
-    startBundledServer();
-    await waitForServer(appUrl + "/");
-  }
   createWindow();
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -112,4 +77,3 @@ app.whenReady().then(async () => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
-app.on("quit", () => { if (serverProc) serverProc.kill(); });

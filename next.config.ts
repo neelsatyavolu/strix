@@ -15,17 +15,9 @@ async function redirects() {
   ];
 }
 
-// The Electron desktop build needs a self-contained `standalone` server plus
-// explicit roots (a stray ~/pnpm-lock.yaml otherwise confuses workspace-root
-// inference). But those same options misplace the build output on Vercel and
-// 404 every route — so on Vercel (VERCEL=1) use a pristine default config.
-const nextConfig: NextConfig = process.env.VERCEL
-  ? { redirects }
-  : {
-      output: "standalone",
-      turbopack: { root: process.cwd() },
-      outputFileTracingRoot: process.cwd(),
-      redirects,
-    };
+// The desktop app loads the deployed site over HTTPS rather than bundling a
+// server, so there's no standalone build to special-case — same config here
+// and on Vercel.
+const nextConfig: NextConfig = { redirects };
 
 export default nextConfig;

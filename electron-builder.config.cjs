@@ -70,13 +70,12 @@ if (sign && TEAM_ID && KEY_ID && privateKey && ISSUER) {
 module.exports = {
   appId: "com.strixprep.app",
   productName: "Strix",
-  afterPack: "scripts/after-pack.cjs",
   files: [
     "package.json",
     "electron/**/*",
-    // The Next app deps run from the bundled standalone server (Resources/server),
-    // not the asar — keep them out so only the Electron main deps (electron-updater
-    // + closure, resolved by electron-builder's pnpm support) ship in the app.
+    // The window loads the deployed site over HTTPS — the Next app and its deps
+    // are not bundled. Keep them out of the asar so only the Electron main deps
+    // (electron-updater + closure) ship in the app.
     "!node_modules/next/**",
     "!node_modules/react/**",
     "!node_modules/react-dom/**",
@@ -86,7 +85,6 @@ module.exports = {
     "!node_modules/lucide-react/**",
     "!node_modules/zod/**",
   ],
-  extraResources: [{ from: ".next/standalone", to: "server" }],
   directories: { output: "dist-app" },
   // Auto-update feed. Defaults to the pretty domain (which redirects to the Blob
   // store); set DOWNLOADS_URL to the store's .../downloads/ base to fetch direct.
