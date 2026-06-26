@@ -1,9 +1,11 @@
-
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Proctorly">
-  <rect x="2" y="2" width="60" height="60" rx="15" fill="#FFFFFF"></rect>
-  <g fill="#0A1330">
-    <path d="M 16 12&#xA;             L 36 12&#xA;             A 14 14 0 0 1 36 40&#xA;             L 26 40&#xA;             L 26 54&#xA;             L 16 54&#xA;             Z"></path>
-  </g>
-  <circle cx="32" cy="26" r="5" fill="#FFFFFF"></circle>
-  <circle cx="46" cy="46" r="3.5" fill="#2E5BFF"></circle>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Strix Prep">
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#fff"></rect>
+  <path d="M18 18 L23 12 L26 20 Z" fill="#1638B8"></path>
+  <path d="M46 18 L41 12 L38 20 Z" fill="#1638B8"></path>
+  <circle cx="24" cy="30" r="10.5" fill="#1638B8"></circle>
+  <circle cx="40" cy="30" r="10.5" fill="#1638B8"></circle>
+  <circle cx="25" cy="31" r="4.6" fill="#fff"></circle>
+  <circle cx="39" cy="31" r="4.6" fill="#fff"></circle>
+  <path d="M32 34 L29 40 L35 40 Z" fill="#FFB020"></path>
+  <path d="M24 44 Q32 52 40 44" fill="none" stroke="#1638B8" stroke-width="3" stroke-linecap="round"></path>
 </svg>
