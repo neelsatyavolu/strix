@@ -2,7 +2,7 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
-import { aiStatus, aiConnect, aiDisconnect, isDesktop } from '@/lib/ai/bridge';
+import { aiStatus, aiConnect, aiSubmitCode, aiCancelConnect, aiDisconnect, isDesktop } from '@/lib/ai/bridge';
 import { useUpdates } from '@/lib/updates/useUpdates';
 
 // Settings — appearance, account, practice defaults.
@@ -22,21 +22,59 @@ function Settings({ go, dark, setDark }) {
   const [connected, setConnected] = React.useState({ codex: false, grok: false });
   const [busy, setBusy] = React.useState(null);   // 'chatgpt' | 'grok' | null
   const [aiError, setAiError] = React.useState({});  // { [kind]: message }
+  const [pasteOpen, setPasteOpen] = React.useState({});  // { [kind]: bool } — show code field
+  const [pasteVal, setPasteVal] = React.useState({});    // { [kind]: string }
   const refreshAi = React.useCallback(() => aiStatus().then(setConnected).catch(() => {}), []);
   React.useEffect(() => { refreshAi(); }, [refreshAi]);
 
-  const connectAi = async (kind) => {
+  const bridgeKey = (kind) => (kind === 'chatgpt' ? 'codex' : 'grok');
+
+  // Open the provider's sign-in in the browser. The loopback may finish it
+  // automatically, or the user can paste the code their browser shows.
+  const connectAi = (kind) => {
+    setBusy(kind);
+    setAiError((e) => ({ ...e, [kind]: null }));
+    setPasteVal((s) => ({ ...s, [kind]: '' }));
+    setPasteOpen((s) => ({ ...s, [kind]: true }));
+    aiConnect(kind)
+      .then(async (res) => {
+        if (res && res.ok === false) {
+          const s = await aiStatus();
+          // Only surface real failures — not a cancel we triggered via paste.
+          if (!s[bridgeKey(kind)] && res.error && res.error !== 'Connection was cancelled.') {
+            setAiError((e) => ({ ...e, [kind]: res.error }));
+          }
+        }
+        await refreshAi();
+      })
+      .catch((err) => setAiError((e) => ({ ...e, [kind]: err?.message || 'Could not connect.' })))
+      .finally(() => {
+        setBusy(null);
+        setPasteOpen((s) => ({ ...s, [kind]: false }));
+      });
+  };
+
+  const submitCode = async (kind) => {
+    const code = (pasteVal[kind] || '').trim();
+    if (!code) return;
     setBusy(kind);
     setAiError((e) => ({ ...e, [kind]: null }));
     try {
-      const res = await aiConnect(kind);
-      if (res && res.ok === false) throw new Error(res.error || 'Connection was cancelled.');
+      const res = await aiSubmitCode(kind, code);
+      if (res && res.ok === false) throw new Error(res.error || 'That code did not work.');
       await refreshAi();
+      setPasteOpen((s) => ({ ...s, [kind]: false }));
+      // aiConnect's promise resolves via cancel(); its finally clears busy.
     } catch (err) {
-      setAiError((e) => ({ ...e, [kind]: err?.message || 'Could not connect.' }));
-    } finally {
+      setAiError((e) => ({ ...e, [kind]: err?.message || 'That code did not work.' }));
       setBusy(null);
     }
+  };
+
+  const cancelConnect = (kind) => {
+    setPasteOpen((s) => ({ ...s, [kind]: false }));
+    setBusy(null);
+    aiCancelConnect(kind).catch(() => {});
   };
 
   const disconnectAi = async (kind) => {
@@ -131,6 +169,17 @@ function Settings({ go, dark, setDark }) {
           Button={Button}
           style={{paddingBottom: 14, borderBottom: '1px solid var(--border-1)'}}
         />
+        {pasteOpen.chatgpt && (
+          <CodeEntry
+            value={pasteVal.chatgpt || ''}
+            busy={busy === 'chatgpt'}
+            onChange={(v) => setPasteVal((s) => ({ ...s, chatgpt: v }))}
+            onSubmit={() => submitCode('chatgpt')}
+            onCancel={() => cancelConnect('chatgpt')}
+            Input={Input}
+            Button={Button}
+          />
+        )}
         <ProviderRow
           kind="grok"
           name="Grok"
@@ -144,6 +193,17 @@ function Settings({ go, dark, setDark }) {
           Button={Button}
           style={{paddingTop: 14}}
         />
+        {pasteOpen.grok && (
+          <CodeEntry
+            value={pasteVal.grok || ''}
+            busy={busy === 'grok'}
+            onChange={(v) => setPasteVal((s) => ({ ...s, grok: v }))}
+            onSubmit={() => submitCode('grok')}
+            onCancel={() => cancelConnect('grok')}
+            Input={Input}
+            Button={Button}
+          />
+        )}
       </Card>
 
       <SectionHead label="Tutor mode" />
@@ -266,6 +326,27 @@ function ProviderRow({ kind, name, desktop, connected, busy, error, onConnect, o
           <Button variant="primary" size="sm" loading={busy} disabled={busy} onClick={onConnect}>Connect</Button>
         )
       )}
+    </div>
+  );
+}
+
+function CodeEntry({ value, busy, onChange, onSubmit, onCancel, Input, Button }) {
+  return (
+    <div style={{display:'flex', flexDirection:'column', gap: 8, padding: '12px 0 4px'}}>
+      <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
+        Finish in your browser. If it shows an authorization code, paste it here.
+      </span>
+      <div style={{display:'flex', alignItems:'center', gap: 8}}>
+        <Input
+          value={value}
+          onChange={(e) => onChange(e?.target ? e.target.value : e)}
+          placeholder="Paste authorization code"
+          onKeyDown={(e) => { if (e.key === 'Enter') onSubmit(); }}
+          style={{flex: 1}}
+        />
+        <Button variant="primary" size="sm" loading={busy} disabled={busy || !String(value || '').trim()} onClick={onSubmit}>Submit</Button>
+        <Button variant="ghost" size="sm" disabled={busy} onClick={onCancel}>Cancel</Button>
+      </div>
     </div>
   );
 }

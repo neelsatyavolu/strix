@@ -8,6 +8,8 @@ contextBridge.exposeInMainWorld("strix", {
   ai: {
     status: () => ipcRenderer.invoke("ai:status"),
     connect: (provider) => ipcRenderer.invoke("ai:connect", provider),
+    submitCode: (provider, code) => ipcRenderer.invoke("ai:submitCode", { provider, code }),
+    cancelConnect: (provider) => ipcRenderer.invoke("ai:cancelConnect", provider),
     disconnect: (provider) => ipcRenderer.invoke("ai:disconnect", provider),
     ask: (req) => ipcRenderer.invoke("ai:ask", req),
   },

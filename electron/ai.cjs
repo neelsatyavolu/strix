@@ -32,6 +32,11 @@ const USER_AGENT = "Strix/1.0";
 const AI_PROVIDER_TIMEOUT_MS = 90000;
 const TOKEN_TIMEOUT_MS = 20000;
 
+// In-flight OAuth attempts, keyed by provider. Holds the PKCE verifier so a
+// manually pasted authorization code can be exchanged, plus a `cancel` that
+// gracefully resolves the loopback wait once the flow completes another way.
+const pendingOAuth = new Map(); // provider -> { verifier, state, cancel }
+
 function assertProvider(provider) {
   if (!KEY_PROVIDERS.has(provider)) throw new Error("Unsupported AI provider");
 }
@@ -200,7 +205,7 @@ async function refreshGrokTokens(refreshToken) {
 }
 
 // --- Loopback callback server + full OAuth flow ---
-function waitForOAuthCallback(redirectUri, expectedState) {
+function waitForOAuthCallback(redirectUri, expectedState, registerCancel) {
   return new Promise((resolve, reject) => {
     const redirect = new URL(redirectUri);
     let settled = false;
@@ -212,6 +217,9 @@ function waitForOAuthCallback(redirectUri, expectedState) {
       if (error) reject(error);
       else resolve(code);
     };
+    // Let the manual-paste path stop waiting and free the port once the code
+    // has been collected another way. Resolving with no code is the signal.
+    if (typeof registerCancel === "function") registerCancel(() => finish(null, null));
     const server = http.createServer((req, res) => {
       const url = new URL(req.url || "/", redirect.origin);
       if (url.pathname !== redirect.pathname) { res.writeHead(404); res.end("Not found"); return; }
@@ -238,7 +246,18 @@ function waitForOAuthCallback(redirectUri, expectedState) {
   });
 }
 
+// Exchange an authorization code for tokens and persist the session.
+async function exchangeAndStore(provider, code, verifier) {
+  const tokens = provider === "codex"
+    ? await exchangeCodexCode(code, verifier)
+    : await exchangeGrokCode(code, verifier);
+  return writeSession(provider, tokens);
+}
+
 // Run the loopback OAuth flow for a provider, then store the resulting tokens.
+// The browser may either redirect back to the loopback (handled here) or — as
+// x.ai's Grok flow does — display a code for the user to paste, which arrives
+// via completeAiOAuthWithCode and cancels this wait.
 async function startAiOAuth(provider, shell) {
   assertProvider(provider);
   const pkce = generatePkce();
@@ -246,13 +265,69 @@ async function startAiOAuth(provider, shell) {
   const authorizeUrl = provider === "codex"
     ? buildCodexAuthorizeUrl(pkce.challenge, pkce.state)
     : buildGrokAuthorizeUrl(pkce.challenge, pkce.state);
-  const codePromise = waitForOAuthCallback(redirectUri, pkce.state);
+  const pending = { verifier: pkce.verifier, state: pkce.state, cancel: null };
+  pendingOAuth.set(provider, pending);
+  const codePromise = waitForOAuthCallback(redirectUri, pkce.state, (cancel) => { pending.cancel = cancel; });
   await shell.openExternal(authorizeUrl);
   const code = await codePromise;
-  const tokens = provider === "codex"
-    ? await exchangeCodexCode(code, pkce.verifier)
-    : await exchangeGrokCode(code, pkce.verifier);
-  return writeSession(provider, tokens);
+  if (!code) {
+    // The wait was cancelled. If a pasted code already completed the flow, the
+    // session exists; otherwise the user cancelled or it timed out.
+    if (pendingOAuth.get(provider) === pending) pendingOAuth.delete(provider);
+    const existing = await readSession(provider);
+    if (existing) return existing;
+    throw new Error("Connection was cancelled.");
+  }
+  pendingOAuth.delete(provider);
+  return exchangeAndStore(provider, code, pkce.verifier);
+}
+
+// Pull the authorization code out of whatever the user pasted: a bare code, or
+// the full redirect URL x.ai shows. Validates state when a URL carries it.
+function extractAuthCode(value, expectedState) {
+  const raw = String(value || "").trim();
+  if (!raw) throw new Error("Paste the authorization code from your browser.");
+  if (/^https?:\/\//i.test(raw) || /[?&]code=/.test(raw)) {
+    try {
+      const url = new URL(raw.includes("://") ? raw : `http://x/?${raw.replace(/^[?]/, "")}`);
+      const code = url.searchParams.get("code");
+      const state = url.searchParams.get("state");
+      if (code) {
+        if (state && expectedState && state !== expectedState) {
+          throw new Error("That code is from a different sign-in. Connect again, then paste the new code.");
+        }
+        return code;
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("different sign-in")) throw error;
+      // Not a parseable URL — fall through and treat it as a bare code.
+    }
+  }
+  return raw;
+}
+
+// Complete a connection with a code the user copied from the browser.
+async function completeAiOAuthWithCode(provider, pastedValue) {
+  assertProvider(provider);
+  const pending = pendingOAuth.get(provider);
+  if (!pending) {
+    const existing = await readSession(provider);
+    if (existing) return existing; // loopback already finished it
+    throw new Error("Start the connection again, then paste the code.");
+  }
+  const code = extractAuthCode(pastedValue, pending.state);
+  const stored = await exchangeAndStore(provider, code, pending.verifier);
+  pendingOAuth.delete(provider);
+  if (pending.cancel) pending.cancel(); // release the still-waiting loopback
+  return stored;
+}
+
+// Abandon an in-flight connection (user dismissed the paste field).
+function cancelAiOAuth(provider) {
+  const pending = pendingOAuth.get(String(provider || "").toLowerCase());
+  if (!pending) return;
+  pendingOAuth.delete(String(provider || "").toLowerCase());
+  if (pending.cancel) pending.cancel();
 }
 
 // Return a valid (refreshed-if-needed) session, or null.
@@ -382,6 +457,22 @@ function registerAiIpc(ipcMain, shell) {
     } catch (error) {
       return { ok: false, error: error?.message || String(error) };
     }
+  });
+
+  // Finish a connection with a code the user copied from the browser.
+  ipcMain.handle("ai:submitCode", async (_event, payload = {}) => {
+    try {
+      await completeAiOAuthWithCode(String(payload?.provider || "").toLowerCase(), payload?.code);
+      return { ok: true };
+    } catch (error) {
+      return { ok: false, error: error?.message || String(error) };
+    }
+  });
+
+  // Abandon an in-flight connection attempt.
+  ipcMain.handle("ai:cancelConnect", async (_event, provider) => {
+    cancelAiOAuth(provider);
+    return { ok: true };
   });
 
   // Remove the stored token for a provider.

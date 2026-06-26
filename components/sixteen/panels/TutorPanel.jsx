@@ -3,7 +3,7 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
-import { aiAsk, aiConnect, aiStatus, isDesktop, TUTOR_SYSTEM, questionContext } from '@/lib/ai/bridge';
+import { aiAsk, aiConnect, aiSubmitCode, aiCancelConnect, aiStatus, isDesktop, TUTOR_SYSTEM, questionContext } from '@/lib/ai/bridge';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { openTutorChannel, loadMessages, saveMessage } from '@/lib/tutor/realtime';
 
@@ -39,6 +39,12 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   const [connected, setConnected] = React.useState({ codex: false, grok: false });
   const [thinking, setThinking] = React.useState(false);
 
+  // AI connection flow (browser sign-in + optional code paste, like Settings).
+  const [aiConnecting, setAiConnecting] = React.useState(false);
+  const [pasteOpen, setPasteOpen] = React.useState(false);
+  const [pasteVal, setPasteVal] = React.useState('');
+  const [connectError, setConnectError] = React.useState('');
+
   const [humanMessages, setHumanMessages] = React.useState([]);
   const [aiMessages, setAiMessages] = React.useState([
     { id: 'a1', side: 'theirs', text: "Hi, I'm your AI tutor. Stuck on something? Tell me what you're thinking and I'll help you reason through it.", time: 'now' },
@@ -58,6 +64,8 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   };
   React.useEffect(() => { setAiModel(MODELS[aiProvider][0].value); /* eslint-disable-next-line */ }, [aiProvider]);
   React.useEffect(() => { if (mode === 'ai') aiStatus().then(setConnected); }, [mode, aiProvider]);
+  // Reset any in-flight connect UI when the target provider or mode changes.
+  React.useEffect(() => { setPasteOpen(false); setAiConnecting(false); setConnectError(''); }, [aiProvider, mode]);
   React.useEffect(() => {
     if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
   }, [messages, mode, thinking]);
@@ -103,13 +111,48 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   const aiName = `AI · ${MODELS[aiProvider].find((m) => m.value === aiModel)?.label || providerLabel}`;
 
   const refreshStatus = async () => setConnected(await aiStatus());
-  const onConnect = async () => {
+
+  // Open the provider's sign-in. The loopback may finish it automatically, or
+  // the user pastes the code their browser shows (x.ai's Grok flow does this).
+  const onConnect = () => {
+    setAiConnecting(true);
+    setConnectError('');
+    setPasteVal('');
+    setPasteOpen(true);
+    aiConnect(aiProvider)
+      .then(async (res) => {
+        if (res && res.ok === false) {
+          const s = await aiStatus();
+          if (!s[providerKey] && res.error && res.error !== 'Connection was cancelled.') {
+            setConnectError(res.error);
+          }
+        }
+        await refreshStatus();
+      })
+      .catch((e) => setConnectError(e?.message || 'Connection failed.'))
+      .finally(() => { setAiConnecting(false); setPasteOpen(false); });
+  };
+
+  const onSubmitCode = async () => {
+    const code = pasteVal.trim();
+    if (!code) return;
+    setAiConnecting(true);
+    setConnectError('');
     try {
-      await aiConnect(aiProvider);
+      const res = await aiSubmitCode(aiProvider, code);
+      if (res && res.ok === false) throw new Error(res.error || 'That code did not work.');
       await refreshStatus();
+      setPasteOpen(false);
     } catch (e) {
-      setMessages((prev) => [...prev, { id: Date.now(), side: 'theirs', text: e.message || 'Connection failed.', time: 'now' }]);
+      setConnectError(e?.message || 'That code did not work.');
+      setAiConnecting(false);
     }
+  };
+
+  const onCancelConnect = () => {
+    setPasteOpen(false);
+    setAiConnecting(false);
+    aiCancelConnect(aiProvider).catch(() => {});
   };
 
   const send = async (text) => {
@@ -238,26 +281,53 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
           placeholder={isTutor ? `Message ${displayName.split(' ')[0]}` : (mode === 'human' ? `Message ${tutorName.split(' ')[0]}` : `Ask ${providerLabel}`)}
         />
       ) : (
-        <AiConnect desktop={desktop} providerLabel={providerLabel} onConnect={onConnect} />
+        <AiConnect
+          desktop={desktop}
+          providerLabel={providerLabel}
+          onConnect={onConnect}
+          busy={aiConnecting}
+          pasteOpen={pasteOpen}
+          pasteVal={pasteVal}
+          onPasteChange={setPasteVal}
+          onSubmitCode={onSubmitCode}
+          onCancelConnect={onCancelConnect}
+          error={connectError}
+        />
       )}
     </div>
   );
 }
 
-function AiConnect({ desktop, providerLabel, onConnect }) {
-  const { Button } = SixteenNS;
+function AiConnect({ desktop, providerLabel, onConnect, busy, pasteOpen, pasteVal, onPasteChange, onSubmitCode, onCancelConnect, error }) {
+  const { Button, Input } = SixteenNS;
   return (
     <div style={{ padding: 14, borderTop: '1px solid var(--border-1)', background: 'var(--surface-sidebar)', display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <span style={{ font: 'var(--role-caption)', color: 'var(--text-secondary)', lineHeight: 1.45 }}>
-        {desktop
-          ? `Connect your own ${providerLabel} account to tutor with it. Strix uses your subscription — nothing extra to pay.`
-          : 'The AI tutor runs in the Strix desktop app.'}
+      <span style={{ font: 'var(--role-caption)', color: error ? 'var(--error)' : 'var(--text-secondary)', lineHeight: 1.45 }}>
+        {!desktop
+          ? 'The AI tutor runs in the Strix desktop app.'
+          : error
+            ? error
+            : pasteOpen
+              ? `Finish signing in to ${providerLabel} in your browser. If it shows an authorization code, paste it here.`
+              : `Connect your own ${providerLabel} account to tutor with it. Strix uses your subscription — nothing extra to pay.`}
       </span>
-      {desktop && (
-        <Button variant="primary" fullWidth onClick={onConnect}>
+      {desktop && (pasteOpen ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Input
+            value={pasteVal}
+            onChange={(e) => onPasteChange(e?.target ? e.target.value : e)}
+            placeholder="Paste authorization code"
+            onKeyDown={(e) => { if (e.key === 'Enter') onSubmitCode(); }}
+            style={{ flex: 1 }}
+          />
+          <Button variant="primary" size="sm" loading={busy} disabled={busy || !String(pasteVal || '').trim()} onClick={onSubmitCode}>Submit</Button>
+          <Button variant="ghost" size="sm" disabled={busy} onClick={onCancelConnect}>Cancel</Button>
+        </div>
+      ) : (
+        <Button variant="primary" fullWidth loading={busy} disabled={busy} onClick={onConnect}>
           Connect {providerLabel}
         </Button>
-      )}
+      ))}
     </div>
   );
 }
