@@ -1,9 +1,15 @@
 'use client';
 import React from 'react';
+import { isDesktop } from '@/lib/ai/bridge';
 
 /**
  * Titlebar — macOS-style title bar with traffic lights, center title, optional
  * trailing actions. 38px tall with vibrancy-y backdrop.
+ *
+ * In the desktop app the real macOS traffic lights are drawn by the OS
+ * (titleBarStyle: hiddenInset), so we suppress the faux CSS dots there to avoid
+ * a doubled set — reserving the same width keeps the native lights clear and the
+ * centered title in place.
  */
 export function Titlebar({
   title = '',
@@ -27,11 +33,17 @@ export function Titlebar({
       userSelect: 'none',
       ...styleProp,
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <Dot color={trafficLightsActive ? '#FF5F57' : '#C2C2C2'} />
-        <Dot color={trafficLightsActive ? '#FEBC2E' : '#C2C2C2'} />
-        <Dot color={trafficLightsActive ? '#28C840' : '#C2C2C2'} />
-      </div>
+      {isDesktop() ? (
+        // Native OS traffic lights occupy this space — reserve their width (3
+        // dots × 12px + 2 gaps × 8px) so the centered title stays aligned.
+        <div aria-hidden style={{ width: 52 }} />
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Dot color={trafficLightsActive ? '#FF5F57' : '#C2C2C2'} />
+          <Dot color={trafficLightsActive ? '#FEBC2E' : '#C2C2C2'} />
+          <Dot color={trafficLightsActive ? '#28C840' : '#C2C2C2'} />
+        </div>
+      )}
       <div style={{
         textAlign: 'center',
         font: 'var(--role-label)',

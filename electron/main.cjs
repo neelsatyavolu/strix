@@ -2,12 +2,32 @@ const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("node:path");
 const fs = require("node:fs");
 const { spawn } = require("node:child_process");
+const http = require("node:http");
 const { registerAiIpc } = require("./ai.cjs");
 
 // Dev: load the running `next dev` server. Packaged: spawn the bundled Next
 // standalone server (with Electron's node) and load it locally.
 const DEV_URL = process.env.PROCTORLY_URL || "http://localhost:3000";
 const PROD_PORT = 41637;
+const OAUTH_PORT = 41639; // loopback for Google OAuth (Google blocks embedded webviews)
+
+// Open Google's consent page in the system browser and resolve with the
+// loopback redirect URL (which carries the auth code).
+function googleLoopback(authUrl) {
+  return new Promise((resolve, reject) => {
+    const server = http.createServer((req, res) => {
+      if (!req.url || !req.url.startsWith("/auth/callback")) { res.writeHead(404); res.end(); return; }
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end("<!doctype html><meta charset=utf-8><body style=\"font-family:-apple-system;display:grid;place-items:center;height:90vh;color:#1d1d1f\"><div style=\"text-align:center\"><h2>Signed in to Proctorly</h2><p>You can close this tab and return to the app.</p></div>");
+      const full = `http://127.0.0.1:${OAUTH_PORT}${req.url}`;
+      try { server.close(); } catch { /* */ }
+      resolve(full);
+    });
+    server.on("error", reject);
+    server.listen(OAUTH_PORT, "127.0.0.1", () => shell.openExternal(authUrl));
+    setTimeout(() => { try { server.close(); } catch { /* */ } reject(new Error("Google sign-in timed out.")); }, 180000);
+  });
+}
 
 let win;
 let serverProc;
@@ -73,6 +93,7 @@ function createWindow() {
 
 app.whenReady().then(async () => {
   registerAiIpc(ipcMain, shell);
+  ipcMain.handle("auth:google", (_e, authUrl) => googleLoopback(authUrl));
   if (app.isPackaged) {
     startBundledServer();
     await waitForServer(appUrl + "/");

@@ -4,6 +4,10 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { signUp, signIn } from '@/lib/auth/actions';
+import { createClient } from '@/lib/supabase/client';
+
+// Loopback port the desktop app listens on to catch the Google OAuth redirect.
+const DESKTOP_OAUTH_PORT = 41639;
 
 // Onboarding — first-run create-account flow (real Supabase auth via the Vercel
 // server actions). welcome → account → goal → ready, plus a sign-in path.
@@ -56,7 +60,32 @@ function Onboarding({ go }) {
     go('dashboard');
   };
 
-  const ssoNotice = () => setError('Apple / Google sign-in is coming soon — use email for now.');
+  const handleGoogle = async () => {
+    setError('');
+    const supabase = createClient();
+    const desktop = typeof window !== 'undefined' && !!window.proctorly?.isDesktop;
+    const redirectTo = desktop
+      ? `http://127.0.0.1:${DESKTOP_OAUTH_PORT}/auth/callback`
+      : `${window.location.origin}/auth/callback`;
+    try {
+      const { data, error: oErr } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo, skipBrowserRedirect: desktop },
+      });
+      if (oErr) throw oErr;
+      if (!desktop) return; // the browser is now redirecting to Google
+      // Desktop: open Google in the system browser; the loopback returns the code.
+      const cbUrl = await window.proctorly.auth.google(data.url);
+      const code = new URL(cbUrl).searchParams.get('code');
+      if (!code) throw new Error('Google sign-in was cancelled.');
+      const { error: exErr } = await supabase.auth.exchangeCodeForSession(code);
+      if (exErr) throw exErr;
+      await refresh();
+      go('dashboard');
+    } catch (e) {
+      setError(e?.message || 'Google sign-in failed.');
+    }
+  };
 
   return (
     <div style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--canvas)', overflow: 'auto', padding: 24 }}>
@@ -78,6 +107,12 @@ function Onboarding({ go }) {
             <div>
               <h1 style={{ margin: '0 0 6px', font: 'var(--role-title-md)' }}>Welcome back</h1>
               <p style={{ margin: 0, font: 'var(--role-body)', color: 'var(--text-secondary)' }}>Sign in to your Proctorly account.</p>
+            </div>
+            <button style={ssoBtn()} onClick={handleGoogle}><GoogleGlyph /> Continue with Google</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{ flex: 1, height: 1, background: 'var(--border-1)' }} />
+              <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>or</span>
+              <div style={{ flex: 1, height: 1, background: 'var(--border-1)' }} />
             </div>
             <Field label="Email"><Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" /></Field>
             <Field label="Password"><Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Your password" /></Field>
@@ -106,10 +141,7 @@ function Onboarding({ go }) {
               <h1 style={{ margin: '0 0 6px', font: 'var(--role-title-md)' }}>Create your account</h1>
               <p style={{ margin: 0, font: 'var(--role-body)', color: 'var(--text-secondary)' }}>Takes about a minute.</p>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <button style={ssoBtn()} onClick={ssoNotice}><AppleGlyph /> Continue with Apple</button>
-              <button style={ssoBtn()} onClick={ssoNotice}><GoogleGlyph /> Continue with Google</button>
-            </div>
+            <button style={ssoBtn()} onClick={handleGoogle}><GoogleGlyph /> Continue with Google</button>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ flex: 1, height: 1, background: 'var(--border-1)' }} />
               <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>or</span>
@@ -186,9 +218,6 @@ function Field({ label, children }) {
 
 function ssoBtn() {
   return { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, padding: '10px 14px', width: '100%', background: 'var(--paper)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-md)', font: 'var(--role-body)', fontWeight: 590, color: 'var(--text-primary)', cursor: 'pointer' };
-}
-function AppleGlyph() {
-  return <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10.9 8.5c0-1.6 1.3-2.4 1.4-2.4-.8-1.1-2-1.3-2.4-1.3-1-.1-2 .6-2.5.6s-1.3-.6-2.2-.6c-1.1 0-2.2.7-2.7 1.7-1.2 2-.3 5 .8 6.6.6.8 1.2 1.7 2.1 1.7.8 0 1.2-.5 2.2-.5s1.3.5 2.2.5 1.5-.8 2-1.6c.7-.9.9-1.8.9-1.9 0 0-1.8-.7-1.8-2.8zM9.3 3.7c.4-.5.7-1.2.6-2-.6 0-1.4.4-1.8.9-.4.4-.8 1.2-.7 1.9.7.1 1.4-.3 1.9-.8z" /></svg>;
 }
 function GoogleGlyph() {
   return <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.2-.2-1.8H9v3.4h4.8a4.1 4.1 0 0 1-1.8 2.7v2.2h2.9c1.7-1.6 2.7-3.9 2.7-6.5z" /><path fill="#34A853" d="M9 18c2.4 0 4.5-.8 6-2.2l-2.9-2.2c-.8.5-1.8.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8H.9v2.3A9 9 0 0 0 9 18z" /><path fill="#FBBC05" d="M3.9 10.7a5.4 5.4 0 0 1 0-3.4V5H.9a9 9 0 0 0 0 8l3-2.3z" /><path fill="#EA4335" d="M9 3.6c1.3 0 2.5.5 3.4 1.3l2.6-2.6A9 9 0 0 0 .9 5l3 2.3C4.6 5.2 6.6 3.6 9 3.6z" /></svg>;

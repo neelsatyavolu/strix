@@ -11,4 +11,8 @@ contextBridge.exposeInMainWorld("proctorly", {
     disconnect: (provider) => ipcRenderer.invoke("ai:disconnect", provider),
     ask: (req) => ipcRenderer.invoke("ai:ask", req),
   },
+  auth: {
+    // Opens Google in the system browser, resolves with the loopback redirect URL.
+    google: (authUrl) => ipcRenderer.invoke("auth:google", authUrl),
+  },
 });
