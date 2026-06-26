@@ -12,7 +12,7 @@ import { openTutorChannel, loadMessages, saveMessage } from '@/lib/tutor/realtim
 // subscription (Electron bridge). The AI toggle only appears in drills.
 
 function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
-  const { MessageBubble, ChatComposer, IconButton, SegmentedControl, TutorPresence, Avatar } = SixteenNS;
+  const { MessageBubble, ThinkingBubble, ChatComposer, IconButton, SegmentedControl, TutorPresence, Avatar } = SixteenNS;
   const isTutor = role === 'tutor';
   const aiAllowed = allowAI && !isTutor;
   const session = usePracticeSession();
@@ -201,6 +201,8 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{
+        position: 'relative',
+        zIndex: 'var(--z-titlebar)',
         padding: '10px 14px 0',
         background: 'var(--surface-titlebar)',
         backdropFilter: 'blur(20px) saturate(180%)',
@@ -270,7 +272,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
 
       <div ref={streamRef} style={{ flex: 1, overflow: 'auto', padding: 14, display: 'flex', flexDirection: 'column', gap: 8, background: 'var(--paper)' }}>
         {messages.map((m) => { const fm = flip(m); return <MessageBubble key={m.id} side={fm.side} text={fm.text} time={fm.time} />; })}
-        {thinking && <MessageBubble side="theirs" text="…" time="now" />}
+        {thinking && <ThinkingBubble />}
       </div>
 
       {showComposer ? (
