@@ -1,0 +1,13 @@
+/* Sixteen — Z-index layers */
+:root {
+  --z-base:        0;     /* @kind other */
+  --z-raised:      10;    /* @kind other */
+  --z-sticky:      100;   /* @kind other */
+  --z-titlebar:    200;   /* @kind other */
+  --z-sidebar:     300;   /* @kind other */
+  --z-overlay:     900;   /* @kind other */
+  --z-modal:       1000;  /* @kind other */
+  --z-popover:     1100;  /* @kind other */
+  --z-toast:       1200;  /* @kind other */
+  --z-tooltip:     1300;  /* @kind other */
+}

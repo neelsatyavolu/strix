@@ -1,0 +1,74 @@
+/* ─────────────────────────────────────────────────────────────
+ * Sixteen — Typography
+ * SF Pro is shipped with macOS — we use the system stack so it
+ * resolves natively. Charter is fetched as a passage face for
+ * Reading & Writing question screens (book-like).
+ * ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Font families ───────────────────────────────────────── */
+  --font-sans:
+    -apple-system, "SF Pro Text", "SF Pro Display", BlinkMacSystemFont,
+    "Helvetica Neue", "Helvetica", "Arial", system-ui, sans-serif;
+
+  --font-display:
+    -apple-system, "SF Pro Display", BlinkMacSystemFont,
+    "Helvetica Neue", system-ui, sans-serif;
+
+  --font-mono:
+    "SF Mono", ui-monospace, "Menlo", "Monaco", "Cascadia Mono",
+    "Roboto Mono", monospace;
+
+  /* Reading-passage face: book-y serif. Charter ships with macOS;
+     fall back to other native serifs and finally Georgia. */
+  --font-passage:
+    "Charter", "Iowan Old Style", "Source Serif Pro", "Iowan",
+    "Palatino", "Georgia", "Times New Roman", serif;
+
+  /* ── Type scale (tight, Mac-native, no oversized hero text) ── */
+  --text-2xs:   10px;
+  --text-xs:    11px;
+  --text-sm:    12px;
+  --text-base:  13px;     /* default body in app chrome */
+  --text-md:    14px;
+  --text-lg:    15px;     /* default reading body */
+  --text-xl:    17px;
+  --text-2xl:   20px;
+  --text-3xl:   24px;
+  --text-4xl:   30px;
+  --text-5xl:   38px;
+  --text-6xl:   48px;     /* score numerals */
+  --text-7xl:   64px;
+
+  /* ── Weights ─────────────────────────────────────────────── */
+  --weight-regular:   400;
+  --weight-medium:    500;
+  --weight-semibold:  590;   /* SF semibold */
+  --weight-bold:      700;
+  --weight-heavy:     800;
+
+  /* ── Line heights ────────────────────────────────────────── */
+  --leading-tight:   1.15;
+  --leading-snug:    1.30;
+  --leading-normal:  1.45;
+  --leading-relaxed: 1.60;   /* passages */
+  --leading-loose:   1.75;
+
+  /* ── Letter spacing ──────────────────────────────────────── */
+  --tracking-tight:   -0.022em;  /* large display */
+  --tracking-normal:   0em;
+  --tracking-wide:     0.02em;
+  --tracking-caps:     0.06em;   /* UPPERCASE eyebrows */
+
+  /* ── Semantic roles ──────────────────────────────────────── */
+  --role-title-xl:   var(--weight-bold)     var(--text-4xl)/var(--leading-tight)  var(--font-display);
+  --role-title-lg:   var(--weight-semibold) var(--text-3xl)/var(--leading-snug)   var(--font-display);
+  --role-title-md:   var(--weight-semibold) var(--text-2xl)/var(--leading-snug)   var(--font-display);
+  --role-title-sm:   var(--weight-semibold) var(--text-xl)/var(--leading-snug)    var(--font-sans);
+  --role-body:       var(--weight-regular)  var(--text-base)/var(--leading-normal) var(--font-sans);
+  --role-body-lg:    var(--weight-regular)  var(--text-md)/var(--leading-normal)  var(--font-sans);
+  --role-label:      var(--weight-medium)   var(--text-sm)/var(--leading-snug)    var(--font-sans);
+  --role-caption:    var(--weight-regular)  var(--text-xs)/var(--leading-snug)    var(--font-sans);
+  --role-eyebrow:    var(--weight-semibold) var(--text-2xs)/var(--leading-snug)   var(--font-sans);
+  --role-numeric:    var(--weight-semibold) var(--text-base)/var(--leading-snug)  var(--font-mono);
+}

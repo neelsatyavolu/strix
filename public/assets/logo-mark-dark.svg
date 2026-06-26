@@ -1,0 +1,9 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Proctorly">
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#FFFFFF"></rect>
+  <g fill="#0A1330">
+    <path d="M 16 12&#xA;             L 36 12&#xA;             A 14 14 0 0 1 36 40&#xA;             L 26 40&#xA;             L 26 54&#xA;             L 16 54&#xA;             Z"></path>
+  </g>
+  <circle cx="32" cy="26" r="5" fill="#FFFFFF"></circle>
+  <circle cx="46" cy="46" r="3.5" fill="#2E5BFF"></circle>
+</svg>

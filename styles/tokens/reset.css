@@ -1,0 +1,41 @@
+/* Sixteen — Minimal reset. Loaded last via styles.css. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font: var(--role-body);
+  color: var(--text-primary);
+  background: var(--surface-app);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "ss02", "cv11";
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a { color: var(--text-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::selection {
+  background: var(--brand-blue-soft);
+  color: var(--brand-ink);
+}
+
+[data-theme="dark"] ::selection,
+.dark ::selection {
+  background: rgba(77, 120, 255, 0.40);
+  color: #FFFFFF;
+}

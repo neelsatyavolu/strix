@@ -1,0 +1,13 @@
+/* Sixteen Design System — global entry point
+ * Consumers link this single file. Only @imports live here.
+ */
+
+@import "./tokens/colors.css";
+@import "./tokens/fonts.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
+@import "./tokens/radius.css";
+@import "./tokens/shadows.css";
+@import "./tokens/motion.css";
+@import "./tokens/layers.css";
+@import "./tokens/reset.css";

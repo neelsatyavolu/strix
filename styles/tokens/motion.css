@@ -1,0 +1,29 @@
+/* Sixteen — Motion. Short, Apple-y. No bounces. */
+
+:root {
+  --ease-out:      cubic-bezier(0.22, 1, 0.36, 1);   /* @kind other */
+  --ease-in:       cubic-bezier(0.55, 0, 0.84, 0);   /* @kind other */
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);   /* @kind other */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);     /* @kind other */
+
+  --dur-instant: 80ms;     /* @kind other */
+  --dur-fast:    140ms;    /* @kind other */
+  --dur-base:    220ms;    /* @kind other */
+  --dur-slow:    360ms;    /* @kind other */
+  --dur-slower:  520ms;    /* @kind other */
+
+  /* Common compound transitions */
+  --xn-color: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);  /* @kind other */
+  --xn-press: transform var(--dur-fast) var(--ease-out);  /* @kind other */
+  --xn-elev:  box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);  /* @kind other */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 0ms;  /* @kind other */
+    --dur-fast:    0ms;  /* @kind other */
+    --dur-base:    0ms;  /* @kind other */
+    --dur-slow:    0ms;  /* @kind other */
+    --dur-slower:  0ms;  /* @kind other */
+  }
+}

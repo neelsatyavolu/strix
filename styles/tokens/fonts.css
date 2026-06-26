@@ -1,0 +1,40 @@
+/* Sixteen — Font declarations.
+ *
+ * SF Pro, SF Mono, Charter, and Cascadia Mono all ship with macOS (or
+ * Windows in the case of Cascadia). We declare @font-face rules with
+ * `src: local(…)` only — no remote fetch — so the compiler can verify
+ * each family is intentionally provided by the OS. On systems without
+ * the local font, the fallback stack in tokens/typography.css renders.
+ */
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: local("SF Pro Text"), local("SFProText-Regular"), local("-apple-system");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: local("SF Pro Display"), local("SFProDisplay-Regular"), local("-apple-system");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cascadia Mono";
+  src: local("Cascadia Mono"), local("CascadiaMono-Regular"), local("SF Mono"), local("Menlo");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Charter";
+  src: local("Charter"), local("Charter-Roman"), local("Iowan Old Style"), local("Source Serif Pro");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}

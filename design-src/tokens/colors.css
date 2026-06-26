@@ -1,0 +1,154 @@
+/* ─────────────────────────────────────────────────────────────
+ * Sixteen — Color tokens
+ * Apple-y, Mac-native palette. Light is the default; dark mode
+ * applies when [data-theme="dark"] is set on <html> or <body>
+ * (or via the .dark class for prefers-color-scheme overrides).
+ * ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Brand ──────────────────────────────────────────────── */
+  --brand-blue: #2E5BFF;          /* "Sixteen blue" — primary action */
+  --brand-blue-hover: #1E45D6;
+  --brand-blue-press: #1638B8;
+  --brand-blue-soft: #EAF0FF;     /* tint backgrounds, focus rings */
+  --brand-ink: #0A1330;           /* deep brand navy, for wordmark */
+
+  /* ── Test-screen palette (Bluebook-faithful, original hues) ── */
+  --test-header: #1B2A4B;         /* deep navy bar across the test */
+  --test-header-fg: #FFFFFF;
+  --test-canvas: #FFFFFF;         /* paper */
+  --test-divider: #C8C8CC;        /* vertical split between passage/Q */
+  --test-rule: #E5E5E7;
+  --test-passage-bg: #FFFFFF;
+  --test-highlight: #FFEB80;      /* highlighter ink */
+  --test-highlight-soft: #FFF6C2;
+  --test-strikethrough: #1D1D1F;  /* eliminator strike */
+  --test-flag: #D8721A;           /* mark-for-review orange */
+  --test-flag-soft: #FCEFD9;
+  --test-selected: #1B2A4B;       /* selected option ring/fill */
+  --test-selected-fill: #EEF1F8;
+  --test-button: #2563EB;         /* footer Next button blue */
+  --test-button-hover: #1D4FD0;
+
+  /* ── Neutrals (Apple-style warm gray scale) ─────────────── */
+  --paper: #FFFFFF;               /* primary surface */
+  --canvas: #F5F5F7;              /* app background */
+  --sidebar: #F0EFF1;             /* vibrancy-y sidebar */
+  --raised: #FFFFFF;              /* cards above canvas */
+  --sunken: #ECECEE;              /* sunken wells (search, inputs) */
+  --overlay: rgba(20, 20, 23, 0.32);
+
+  --ink-1: #1D1D1F;               /* primary text */
+  --ink-2: #424245;               /* body */
+  --ink-3: #6E6E73;               /* secondary / labels */
+  --ink-4: #8E8E93;               /* tertiary / placeholders */
+  --ink-5: #C7C7CC;               /* disabled, dividers-on-ink */
+
+  --border-1: #E5E5E7;            /* hairline */
+  --border-2: #D2D2D7;            /* card edge */
+  --border-3: #C7C7CC;            /* input edge */
+  --border-strong: #8E8E93;
+
+  /* ── Semantic ───────────────────────────────────────────── */
+  --success: #1FA56A;
+  --success-soft: #E3F6EC;
+  --warning: #D8721A;
+  --warning-soft: #FCEFD9;
+  --error: #D92D20;
+  --error-soft: #FBE7E5;
+  --info: #2E5BFF;
+  --info-soft: #EAF0FF;
+
+  /* ── Question correctness (used on stats & review) ──────── */
+  --correct: #1FA56A;
+  --correct-soft: #E3F6EC;
+  --incorrect: #D92D20;
+  --incorrect-soft: #FBE7E5;
+  --unanswered: #8E8E93;
+
+  /* ── Domain colors (Reading & Math, used in stats) ──────── */
+  --rw-color: #6B47C7;            /* Reading & Writing — violet */
+  --rw-soft: #EFEAFC;
+  --math-color: #0E8A6F;          /* Math — green */
+  --math-soft: #DFF3ED;
+
+  /* ── Tutor / chat ───────────────────────────────────────── */
+  --bubble-mine: #2E5BFF;
+  --bubble-mine-fg: #FFFFFF;
+  --bubble-theirs: #ECECEE;
+  --bubble-theirs-fg: #1D1D1F;
+
+  /* ── Focus ──────────────────────────────────────────────── */
+  --focus-ring: rgba(46, 91, 255, 0.40);
+  --focus-ring-strong: rgba(46, 91, 255, 0.70);
+
+  /* ── Semantic surface aliases (use these in components) ── */
+  --surface-app: var(--canvas);
+  --surface-card: var(--paper);
+  --surface-sunken: var(--sunken);
+  --surface-sidebar: var(--sidebar);
+  --surface-titlebar: rgba(245, 245, 247, 0.85);
+
+  --text-primary: var(--ink-1);
+  --text-body: var(--ink-2);
+  --text-secondary: var(--ink-3);
+  --text-tertiary: var(--ink-4);
+  --text-disabled: var(--ink-5);
+  --text-on-brand: #FFFFFF;
+  --text-link: var(--brand-blue);
+
+  --border-hairline: var(--border-1);
+  --border-card: var(--border-2);
+  --border-input: var(--border-3);
+}
+
+/* ─── Dark mode ──────────────────────────────────────────── */
+[data-theme="dark"],
+.dark {
+  --paper: #1C1C1E;
+  --canvas: #000000;
+  --sidebar: #1C1C1E;
+  --raised: #2C2C2E;
+  --sunken: #2C2C2E;
+  --overlay: rgba(0, 0, 0, 0.55);
+
+  --ink-1: #F5F5F7;
+  --ink-2: #E5E5EA;
+  --ink-3: #AEAEB2;
+  --ink-4: #8E8E93;
+  --ink-5: #48484A;
+
+  --border-1: #2C2C2E;
+  --border-2: #38383A;
+  --border-3: #48484A;
+  --border-strong: #636366;
+
+  --brand-blue: #4D78FF;
+  --brand-blue-hover: #6A8DFF;
+  --brand-blue-press: #3A65EE;
+  --brand-blue-soft: rgba(77, 120, 255, 0.16);
+
+  /* Test screens stay light — the actual SAT runs light by spec.
+     We keep them legible by anchoring to the same canvas. */
+  --test-canvas: #FFFFFF;
+  --test-passage-bg: #FFFFFF;
+  --test-strikethrough: #1D1D1F;
+  --test-selected: #1B2A4B;
+  --test-selected-fill: #EEF1F8;
+  --test-rule: #E5E5E7;
+  --test-divider: #C8C8CC;
+
+  --success-soft: rgba(31, 165, 106, 0.20);
+  --warning-soft: rgba(216, 114, 26, 0.22);
+  --error-soft: rgba(217, 45, 32, 0.22);
+  --info-soft: rgba(77, 120, 255, 0.22);
+  --correct-soft: rgba(31, 165, 106, 0.20);
+  --incorrect-soft: rgba(217, 45, 32, 0.22);
+  --rw-soft: rgba(140, 110, 230, 0.20);
+  --math-soft: rgba(14, 138, 111, 0.22);
+
+  --bubble-theirs: #2C2C2E;
+  --bubble-theirs-fg: #F5F5F7;
+
+  --surface-titlebar: rgba(28, 28, 30, 0.78);
+}

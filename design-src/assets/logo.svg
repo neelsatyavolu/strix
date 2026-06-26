@@ -1,0 +1,20 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 64" role="img" aria-label="Proctorly">
+  <defs>
+    <linearGradient id="markGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2E5BFF"></stop>
+      <stop offset="1" stop-color="#1638B8"></stop>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(2, 6)">
+    <rect x="0" y="0" width="52" height="52" rx="13" fill="url(#markGrad)"></rect>
+    <path d="M 13 10&#xA;             L 30 10&#xA;             A 12 12 0 0 1 30 34&#xA;             L 22 34&#xA;             L 22 45&#xA;             L 13 45&#xA;             Z" fill="#FFFFFF"></path>
+    <circle cx="26.5" cy="22" r="4.2" fill="url(#markGrad)"></circle>
+    <circle cx="39" cy="39" r="3" fill="#FFFFFF" opacity="0.95"></circle>
+  </g>
+
+  <text x="68" y="42" font-family="-apple-system, &#39;SF Pro Display&#39;, system-ui, sans-serif" font-weight="700" font-size="28" fill="#0A1330" letter-spacing="-0.8">proctorly</text>
+
+  <circle cx="246" cy="46" r="3" fill="#2E5BFF"></circle>
+</svg>
