@@ -1,0 +1,9 @@
+# Desktop shell + vendored design reference + local artifacts — not part of the
+# Vercel (Next.js) build. Anchored to repo root so they don't match lib/supabase, etc.
+/electron
+/design-src
+/docs
+/supabase
+/.playwright-mcp
+*.png
+/SETUP.md
