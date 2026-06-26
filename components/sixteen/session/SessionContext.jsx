@@ -41,6 +41,68 @@ async function fetchQuestions({ section, category, difficulty, limit }) {
   return json.data.questions;
 }
 
+function buildReview(questions, responses) {
+  const review = questions.map((q) => {
+    const r = responses[q.id];
+    return { question: q, response: r || null, isCorrect: isResponseCorrect(q, r) };
+  });
+  const correct = review.filter((x) => x.isCorrect).length;
+  const total = questions.length;
+  const byDomainMap = new Map();
+  for (const x of review) {
+    const e = byDomainMap.get(x.question.domain) || { domain: x.question.domain, label: x.question.domainLabel, correct: 0, total: 0 };
+    e.total += 1;
+    if (x.isCorrect) e.correct += 1;
+    byDomainMap.set(x.question.domain, e);
+  }
+  return { correct, total, accuracy: total ? Math.round((correct / total) * 100) : 0, byDomain: [...byDomainMap.values()], review };
+}
+
+// Persist a finalized session to the Vercel server (non-blocking).
+async function persistSession(state) {
+  try {
+    const all = state.modules.flatMap((m) => m.questions.map((q) => ({ q, moduleKey: m.key })));
+    if (!all.length) return;
+    const base = buildReview(all.map((x) => x.q), state.responses);
+    const scaled = state.mode && state.mode !== 'drill'
+      ? scaledSectionScore(base.correct, base.total, state.m2Variant === 'easy')
+      : null;
+    const questions = all.map(({ q, moduleKey }, i) => {
+      const r = state.responses[q.id];
+      return {
+        external_id: q.id,
+        section: q.section,
+        domain: q.domain,
+        skill: q.skill,
+        difficulty: q.difficulty,
+        ordinal: i,
+        module: moduleKey,
+        snapshot: q,
+        value: r?.value ?? null,
+        is_correct: isResponseCorrect(q, r),
+        time_ms: null,
+        flagged: !!r?.flagged,
+      };
+    });
+    await fetch('/api/sessions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mode: state.mode,
+        section: state.section,
+        config: state.config || {},
+        score_correct: base.correct,
+        score_total: base.total,
+        accuracy: base.accuracy,
+        scaled_score: scaled,
+        questions,
+      }),
+    });
+  } catch {
+    /* persistence is best-effort; never blocks the result UI */
+  }
+}
+
 const EMPTY = {
   status: 'idle', // idle | loading | active | submitted | error
   phase: 'drill', // drill | m1 | review | m2 | done
@@ -122,7 +184,9 @@ export function PracticeSessionProvider({ children }) {
     }), []);
   const prev = React.useCallback(() => setState((s) => ({ ...s, index: Math.max(0, s.index - 1) })), []);
 
-  const submit = React.useCallback(() => setState((s) => ({ ...s, status: 'submitted', phase: 'done' })), []);
+  const submit = React.useCallback(() => {
+    setState((s) => ({ ...s, status: 'submitted', phase: 'done' }));
+  }, []);
   const reset = React.useCallback(() => { m2PromiseRef.current = null; setState(EMPTY); }, []);
 
   // End the active module. For mock-full M1, route and load Module 2 then go to
@@ -130,6 +194,7 @@ export function PracticeSessionProvider({ children }) {
   const finishModule = React.useCallback((go) => {
     const s = stateRef.current;
     if (s.mode !== 'mock-full' || s.phase !== 'm1') {
+      persistSession(s);
       setState((prev) => ({ ...prev, status: 'submitted', phase: 'done' }));
       go('score-report');
       return;
@@ -176,22 +241,7 @@ export function PracticeSessionProvider({ children }) {
   const current = questions[state.index] || null;
   const answeredCount = questions.filter((q) => state.responses[q.id]?.value).length;
 
-  const buildResult = (qs) => {
-    const review = qs.map((q) => {
-      const r = state.responses[q.id];
-      return { question: q, response: r || null, isCorrect: isResponseCorrect(q, r) };
-    });
-    const correct = review.filter((x) => x.isCorrect).length;
-    const total = qs.length;
-    const byDomainMap = new Map();
-    for (const x of review) {
-      const e = byDomainMap.get(x.question.domain) || { domain: x.question.domain, label: x.question.domainLabel, correct: 0, total: 0 };
-      e.total += 1;
-      if (x.isCorrect) e.correct += 1;
-      byDomainMap.set(x.question.domain, e);
-    }
-    return { correct, total, accuracy: total ? Math.round((correct / total) * 100) : 0, byDomain: [...byDomainMap.values()], review };
-  };
+  const buildResult = (qs) => buildReview(qs, state.responses);
 
   const moduleResult = React.useCallback((i) => {
     const m = state.modules[i];
