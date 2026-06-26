@@ -15,4 +15,17 @@ contextBridge.exposeInMainWorld("strix", {
     // Opens Google in the system browser, resolves with the loopback redirect URL.
     google: (authUrl) => ipcRenderer.invoke("auth:google", authUrl),
   },
+  // Auto-update bridge (electron-updater in the main process).
+  updates: {
+    state: () => ipcRenderer.invoke("updates:state"),
+    check: () => ipcRenderer.invoke("updates:check"),
+    install: () => ipcRenderer.invoke("updates:install"),
+    openDownload: () => ipcRenderer.invoke("updates:openDownload"),
+    // Subscribe to update lifecycle events; returns an unsubscribe fn.
+    subscribe: (cb) => {
+      const handler = (_e, payload) => cb(payload);
+      ipcRenderer.on("updates:event", handler);
+      return () => ipcRenderer.removeListener("updates:event", handler);
+    },
+  },
 });

@@ -5,6 +5,11 @@ import dynamic from "next/dynamic";
 import { PracticeSessionProvider } from "@/components/sixteen/session/SessionContext";
 import { ProfileProvider, useProfile } from "@/components/sixteen/session/ProfileContext";
 
+// Desktop auto-update toast — inert in a plain browser.
+const UpdatePopup = dynamic(() => import("@/components/sixteen/updates/UpdatePopup"), {
+  ssr: false,
+});
+
 // The Sixteen app is a stateful client SPA. Render it client-only — there's no
 // SSR benefit and it sidesteps window/document access during server render.
 const SixteenApp = dynamic(() => import("@/components/sixteen/SixteenApp"), {
@@ -35,6 +40,7 @@ export default function AppMount() {
     <ProfileProvider>
       <PracticeSessionProvider>
         <Gate />
+        <UpdatePopup />
       </PracticeSessionProvider>
     </ProfileProvider>
   );

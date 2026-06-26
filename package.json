@@ -1,6 +1,6 @@
 {
   "name": "strix",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "main": "electron/main.cjs",
   "scripts": {
@@ -11,36 +11,12 @@
     "electron": "electron .",
     "build:icon": "node scripts/build-icon.mjs && iconutil -c icns build/icon.iconset -o build/icon.icns",
     "app": "concurrently -k -n next,electron \"next dev\" \"wait-on tcp:3000 && electron .\"",
-    "dist": "pnpm build:icon && NEXT_PUBLIC_SITE_URL=https://strixprep.com next build && node scripts/prepare-standalone.mjs && electron-builder --mac"
-  },
-  "build": {
-    "appId": "com.strixprep.app",
-    "productName": "Strix",
-    "afterPack": "scripts/after-pack.cjs",
-    "files": [
-      "package.json",
-      "electron/**/*",
-      "!node_modules/**"
-    ],
-    "extraResources": [
-      {
-        "from": ".next/standalone",
-        "to": "server"
-      }
-    ],
-    "mac": {
-      "target": "dmg",
-      "category": "public.app-category.education",
-      "icon": "build/icon.icns",
-      "identity": null
-    },
-    "directories": {
-      "output": "dist-app"
-    }
+    "dist": "pnpm build:icon && NEXT_PUBLIC_SITE_URL=https://strixprep.com NEXT_PUBLIC_DOWNLOAD_URL=https://strixprep.com/downloads/Strix-Prep.dmg next build && node scripts/prepare-standalone.mjs && electron-builder --mac --config electron-builder.config.cjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",
+    "electron-updater": "^6.8.9",
     "katex": "^0.17.0",
     "lucide-react": "^1.21.0",
     "next": "16.2.9",

@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const { spawn } = require("node:child_process");
 const http = require("node:http");
 const { registerAiIpc } = require("./ai.cjs");
+const { registerUpdates } = require("./updates.cjs");
 
 // Dev: load the running `next dev` server. Packaged: spawn the bundled Next
 // standalone server (with Electron's node) and load it locally.
@@ -78,7 +79,8 @@ function createWindow() {
     },
   });
   win.once("ready-to-show", () => win.show());
-  win.loadURL(appUrl);
+  // The desktop app boots straight into the SPA; / is the marketing landing.
+  win.loadURL(appUrl + "/app");
 
   if (process.env.STRIX_CAPTURE) {
     win.webContents.on("did-finish-load", () => {
@@ -94,6 +96,9 @@ function createWindow() {
 app.whenReady().then(async () => {
   registerAiIpc(ipcMain, shell);
   ipcMain.handle("auth:google", (_e, authUrl) => googleLoopback(authUrl));
+  // Auto-update: checks the generic feed (app-update.yml -> strixprep.com/downloads)
+  // and streams lifecycle events to the renderer. No-op in dev (not packaged).
+  registerUpdates({ ipcMain, shell, getWindow: () => win });
   if (app.isPackaged) {
     startBundledServer();
     await waitForServer(appUrl + "/");

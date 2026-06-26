@@ -8,12 +8,12 @@ export const dynamic = "force-dynamic";
 // verifier travels in a cookie set by the browser client), then redirects in.
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
-  const next = req.nextUrl.searchParams.get("next") || "/";
+  const next = req.nextUrl.searchParams.get("next") || "/app";
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
-      return NextResponse.redirect(new URL(`/?auth_error=${encodeURIComponent(error.message)}`, req.nextUrl.origin));
+      return NextResponse.redirect(new URL(`/app?auth_error=${encodeURIComponent(error.message)}`, req.nextUrl.origin));
     }
   }
   return NextResponse.redirect(new URL(next, req.nextUrl.origin));

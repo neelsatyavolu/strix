@@ -3,6 +3,7 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { aiStatus, isDesktop } from '@/lib/ai/bridge';
+import { useUpdates } from '@/lib/updates/useUpdates';
 
 // Settings — appearance, account, practice defaults.
 
@@ -76,6 +77,9 @@ function Settings({ go, dark, setDark }) {
         </div>
       </Card>
 
+      <SectionHead label="Software update" />
+      <SoftwareUpdate Card={Card} Button={Button} Badge={Badge} />
+
       <SectionHead label="Practice" />
       <Card padding="lg" style={{marginBottom: 18}}>
         <Toggle checked={warn5} onChange={setWarn5} label="Warn at 5 minutes left" description="The timer pulses when time is low." />
@@ -138,6 +142,57 @@ function Settings({ go, dark, setDark }) {
         </div>
       </Card>
     </div>
+  );
+}
+
+function SoftwareUpdate({ Card, Button, Badge }) {
+  const { desktop, status, progress, version, currentVersion, canInstall, check, install, openDownload } = useUpdates();
+
+  if (!desktop) {
+    return (
+      <Card padding="lg" style={{ marginBottom: 18 }}>
+        <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
+          You&apos;re using Strix on the web — it&apos;s always up to date. Download the Mac app for offline
+          practice and automatic updates.
+        </span>
+      </Card>
+    );
+  }
+
+  const line = {
+    checking: 'Checking for updates…',
+    downloading: `Downloading update… ${progress}%`,
+    downloaded: `Update ${version || ''} is ready — restart to install.`,
+    'up-to-date': "You're on the latest version.",
+    error: version ? `Version ${version} is available to download.` : "Couldn't check for updates.",
+  }[status] || (currentVersion ? `Version ${currentVersion}` : 'Up to date.');
+
+  let action;
+  if (canInstall) {
+    action = <Button variant="primary" size="sm" onClick={install}>Restart to install</Button>;
+  } else if (status === 'error' && version) {
+    action = <Button variant="primary" size="sm" onClick={openDownload}>Download</Button>;
+  } else {
+    action = (
+      <Button variant="secondary" size="sm" onClick={check} disabled={status === 'checking'}>
+        {status === 'checking' ? 'Checking…' : 'Check for updates'}
+      </Button>
+    );
+  }
+
+  return (
+    <Card padding="lg" style={{ marginBottom: 18 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)' }}>Strix for Mac</span>
+            {currentVersion && <Badge variant="neutral" size="sm">{`v${currentVersion}`}</Badge>}
+          </div>
+          <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginTop: 2 }}>{line}</span>
+        </div>
+        {action}
+      </div>
+    </Card>
   );
 }
 
