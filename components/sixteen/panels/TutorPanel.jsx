@@ -188,7 +188,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
           <div style={{ padding: '8px 0 10px' }}>
             <SegmentedControl
               value={mode} onChange={setMode} fullWidth size="sm"
-              options={[{ value: 'human', label: `Tutor · ${tutorName.split(' ')[0]}` }, { value: 'ai', label: 'AI tutor' }]}
+              options={[{ value: 'human', label: tutorName === 'your tutor' ? 'Tutor' : `Tutor · ${tutorName.split(' ')[0]}` }, { value: 'ai', label: 'AI tutor' }]}
             />
           </div>
         )}
