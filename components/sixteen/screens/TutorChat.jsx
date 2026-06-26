@@ -1,29 +1,66 @@
 'use client';
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
-import { Icon } from '@/components/sixteen';
-import { SixteenData } from '@/lib/mockData';
+import { useProfile } from '@/components/sixteen/session/ProfileContext';
+import { openTutorChannel, loadMessages, saveMessage } from '@/lib/tutor/realtime';
 
-// TutorChat — full-screen tutor chat (when not in a module).
+// TutorChat — the student's full-screen view of their human-tutor chat (when
+// not inside a module). Wired to the same Supabase Realtime + tutor_messages
+// system the TutorPanel uses.
 
 function TutorChat({ go }) {
-  const { Card, Avatar, Badge, MessageBubble, ChatComposer, TutorPresence } = SixteenNS;
-  const d = SixteenData;
-  const [messages, setMessages] = React.useState(d.chat);
+  const { Avatar, MessageBubble, ChatComposer, TutorPresence } = SixteenNS;
+  const { user } = useProfile();
+  const [messages, setMessages] = React.useState([]);
   const [draft, setDraft] = React.useState('');
+  const [tutorName, setTutorName] = React.useState('Your tutor');
   const streamRef = React.useRef(null);
+  const channelRef = React.useRef(null);
+
+  const append = (m) => setMessages((prev) => [...prev, m]);
 
   React.useEffect(() => {
     if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
   }, [messages]);
 
-  const send = (text) => {
+  // Open the realtime channel, load chat history, and relay incoming messages.
+  React.useEffect(() => {
+    if (!user?.id) return;
+    loadMessages(user.id).then((msgs) =>
+      setMessages(msgs.map((m) => ({ id: m.id, side: m.sender_id === user.id ? 'mine' : 'theirs', text: m.body }))),
+    );
+    const ch = openTutorChannel({
+      studentId: user.id,
+      userId: user.id,
+      role: 'student',
+      onChat: (m) => append({ id: m.id, side: m.sender_id === user.id ? 'mine' : 'theirs', text: m.body }),
+    });
+    channelRef.current = ch;
+    return () => { ch.close(); channelRef.current = null; };
+  }, [user?.id]);
+
+  // Resolve the connected tutor's name for the header + composer placeholder.
+  React.useEffect(() => {
+    let active = true;
+    fetch('/api/tutor/invite')
+      .then((r) => r.json())
+      .then((json) => {
+        if (!active) return;
+        const t = json?.data?.tutors?.[0];
+        const p = Array.isArray(t?.profiles) ? t.profiles[0] : t?.profiles;
+        if (p?.full_name) setTutorName(p.full_name);
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, []);
+
+  const send = async (text) => {
+    if (!text || !user?.id) return;
     const id = Date.now();
-    setMessages(prev => [...prev, { id, side: 'mine', text, time: 'now' }]);
+    append({ id, side: 'mine', text });
     setDraft('');
-    setTimeout(() => {
-      setMessages(prev => [...prev, { id: id + 1, side: 'theirs', text: "Got it — want me to look at Module 1 with you?", time: 'now' }]);
-    }, 1100);
+    const saved = await saveMessage({ studentId: user.id, senderId: user.id, role: 'student', body: text });
+    channelRef.current?.sendChat(saved || { id: String(id), sender_id: user.id, role: 'student', body: text });
   };
 
   return (
@@ -35,9 +72,9 @@ function TutorChat({ go }) {
         display: 'flex', alignItems:'center', justifyContent: 'space-between',
       }}>
         <div style={{display:'flex', alignItems:'center', gap: 12}}>
-          <Avatar name="Rachel Hsu" presence="online" />
+          <Avatar name={tutorName} presence="online" />
           <div style={{display:'flex', flexDirection:'column'}}>
-            <span style={{font:'var(--role-title-sm)'}}>Rachel Hsu</span>
+            <span style={{font:'var(--role-title-sm)'}}>{tutorName}</span>
             <TutorPresence name="" status="online" watching={false} />
           </div>
         </div>
@@ -45,11 +82,19 @@ function TutorChat({ go }) {
       </div>
 
       <div ref={streamRef} style={{ flex:1, overflow:'auto', padding: '20px 24px', display:'flex', flexDirection:'column', gap: 10, background:'var(--paper)' }}>
-        <DateChip text="Today" />
-        {messages.map(m => <MessageBubble key={m.id} side={m.side} text={m.text} time={m.time} />)}
+        {messages.length === 0 ? (
+          <div style={{flex:1, display:'flex', alignItems:'center', justifyContent:'center', font:'var(--role-body)', color:'var(--text-tertiary)'}}>
+            No messages yet — say hi to your tutor.
+          </div>
+        ) : (
+          <>
+            <DateChip text="Today" />
+            {messages.map(m => <MessageBubble key={m.id} side={m.side} text={m.text} time={m.time} />)}
+          </>
+        )}
       </div>
       <div style={{padding: 0}}>
-        <ChatComposer value={draft} onChange={setDraft} onSend={send} placeholder="Message Rachel" />
+        <ChatComposer value={draft} onChange={setDraft} onSend={send} placeholder={`Message ${tutorName.split(' ')[0]}`} />
       </div>
     </div>
   );

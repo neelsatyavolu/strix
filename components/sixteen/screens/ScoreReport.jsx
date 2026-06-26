@@ -2,11 +2,9 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
-import { SixteenData } from '@/lib/mockData';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 
-// ScoreReport — after a drill, shows real results + per-question review.
-// Falls back to the scaled full-section report for module/full sessions.
+// ScoreReport — drill report or scaled section report, from the live session.
 
 function ScoreReport({ go }) {
   const session = usePracticeSession();
@@ -14,7 +12,20 @@ function ScoreReport({ go }) {
     if (session.config?.mode === 'drill') return <DrillReport go={go} session={session} />;
     return <SectionReport go={go} session={session} />;
   }
-  return <FullSectionReport go={go} />;
+  return <NoResults go={go} />;
+}
+
+function NoResults({ go }) {
+  const { Button } = SixteenNS;
+  return (
+    <div style={{ padding: '60px 48px', maxWidth: 520, margin: '0 auto', textAlign: 'center' }}>
+      <h1 style={{ font: 'var(--role-title-md)', margin: '0 0 8px' }}>No results yet</h1>
+      <p style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', margin: '0 0 16px' }}>
+        Finish a practice session to see your score and review.
+      </p>
+      <Button variant="primary" onClick={() => go('practice-setup')}>Start practicing</Button>
+    </div>
+  );
 }
 
 function SectionReport({ go, session }) {
@@ -176,64 +187,6 @@ function ReviewItem({ item, n }) {
         <div className="cb-stem" style={{ fontSize: 14, marginTop: 6, paddingTop: 10, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.rationaleHtml }} />
       )}
     </Card>
-  );
-}
-
-function FullSectionReport({ go }) {
-  const { Card, Button, Badge, ScoreBadge } = SixteenNS;
-  const d = SixteenData;
-  const r = d.scoreReport;
-
-  const cat = (b) => (
-    <div key={b.id} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 60px', gap: 8, padding: '8px 0', alignItems: 'center' }}>
-      <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)' }}>{b.label}</span>
-      <div style={{ height: 6, background: 'var(--sunken)', borderRadius: 4, overflow: 'hidden' }}>
-        <div style={{ width: `${(b.correct / b.total) * 100}%`, height: '100%', background: b.correct === b.total ? 'var(--success)' : 'var(--brand-blue)' }} />
-      </div>
-      <span style={{ font: 'var(--role-numeric)', color: 'var(--text-secondary)', textAlign: 'right' }}>{b.correct} / {b.total}</span>
-    </div>
-  );
-
-  return (
-    <div style={{ padding: '36px 48px', maxWidth: 980, margin: '0 auto' }}>
-      <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>
-        Practice Score Report · Today
-      </span>
-      <h1 style={{ margin: '4px 0 0', font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>You finished both modules.</h1>
-      <p style={{ margin: '4px 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-        Scored on the official curve. Up {r.delta} from your last full section.
-      </p>
-
-      <Card padding="xl" style={{ marginBottom: 18 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: 28, alignItems: 'center' }}>
-          <ScoreBadge value={r.total} max={1600} label="Estimated total" size="xl" trend={`+${r.delta}`} />
-          <ScoreBadge value={r.rw} max={800} label="Reading & Writing" domain="rw" size="lg" />
-          <ScoreBadge value={r.math} max={800} label="Math" domain="math" size="lg" />
-        </div>
-      </Card>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 18 }}>
-        <Card padding="lg">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-            <h2 style={{ margin: 0, font: 'var(--role-title-md)' }}>Reading &amp; Writing</h2>
-            <Badge variant="rw" dot>{r.rw} / 800</Badge>
-          </div>
-          <div style={{ marginBottom: 8 }}>{r.rwBreakdown.map(cat)}</div>
-        </Card>
-        <Card padding="lg">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-            <h2 style={{ margin: 0, font: 'var(--role-title-md)' }}>Math</h2>
-            <Badge variant="math" dot>{r.math} / 800</Badge>
-          </div>
-          <div style={{ marginBottom: 8 }}>{r.mathBreakdown.map(cat)}</div>
-        </Card>
-      </div>
-
-      <div style={{ marginTop: 18, display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
-        <Button variant="ghost" onClick={() => go('dashboard')}>Back to home</Button>
-        <Button variant="secondary" onClick={() => go('stats')}>View all stats →</Button>
-      </div>
-    </div>
   );
 }
 

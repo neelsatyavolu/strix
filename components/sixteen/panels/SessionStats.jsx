@@ -2,12 +2,11 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
-import { SixteenData } from '@/lib/mockData';
 
 // Live "session stats" sidebar — appears next to the question column,
 // shows accuracy, time, and category breakdown for the current session.
 
-function SessionStats({ answered = 13, total = 27, accuracy = 78, median = 48, hidden = false, onToggle }) {
+function SessionStats({ answered = 0, total = 0, accuracy = 0, median = 0, correct = 0, incorrect = 0, skipped = 0, hidden = false, onToggle }) {
   const { StatCard, DomainBar, AccuracyRing, IconButton } = SixteenNS;
   if (hidden) {
     return (
@@ -53,13 +52,10 @@ function SessionStats({ answered = 13, total = 27, accuracy = 78, median = 48, h
       <div>
         <span style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)', display:'block', marginBottom: 6}}>Breakdown</span>
         <DomainBar segments={[
-          { value: 10, label:'Correct',   color:'var(--correct)'  },
-          { value: 2,  label:'Incorrect', color:'var(--incorrect)'},
-          { value: 1,  label:'Skipped',   color:'var(--unanswered)'},
+          { value: correct,   label:'Correct',   color:'var(--correct)'  },
+          { value: incorrect, label:'Incorrect', color:'var(--incorrect)'},
+          { value: skipped,   label:'Skipped',   color:'var(--unanswered)'},
         ]}/>
-      </div>
-      <div style={{padding: '8px 0 0', borderTop: '1px solid var(--border-1)', display:'flex', justifyContent:'space-between', font:'var(--role-caption)', color:'var(--text-secondary)'}}>
-        <span>Pace</span><span style={{fontFamily:'var(--font-mono)', color:'var(--success)'}}>+22s faster</span>
       </div>
     </aside>
   );

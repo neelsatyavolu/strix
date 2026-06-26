@@ -115,7 +115,7 @@ function Onboarding({ go }) {
               <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>or</span>
               <div style={{ flex: 1, height: 1, background: 'var(--border-1)' }} />
             </div>
-            <Field label="Full name"><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Maya Patel" /></Field>
+            <Field label="Full name"><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your full name" /></Field>
             <Field label="Email"><Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" /></Field>
             <Field label="Password"><Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 8 characters" /></Field>
             <Field label="I'm a">

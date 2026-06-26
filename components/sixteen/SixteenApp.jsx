@@ -2,7 +2,6 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
-import { SixteenData } from '@/lib/mockData';
 import Onboarding from './screens/Onboarding';
 import Dashboard from './screens/Dashboard';
 import PracticeSetup from './screens/PracticeSetup';
@@ -76,7 +75,7 @@ function App() {
         { id:'home',     label:'Home',                  icon: I('home'),            group:'Practice' },
         { id:'rw',       label:'Reading & Writing',     icon: I('book-open'),       group:'Practice' },
         { id:'math',     label:'Math',                  icon: I('square-function'), group:'Practice' },
-        { id:'stats',    label:'Stats',                 icon: I('bar-chart-3'),     group:'You', badge: '1480' },
+        { id:'stats',    label:'Stats',                 icon: I('bar-chart-3'),     group:'You' },
         { id:'tutor',    label:'Tutor',                 icon: I('message-circle'),  group:'You' },
         { id:'settings', label:'Settings',              icon: I('settings'),        group:'You' },
       ]}

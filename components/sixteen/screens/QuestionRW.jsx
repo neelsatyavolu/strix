@@ -126,7 +126,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
         </div>
 
         {kind === 'drill' && statsOn && (
-          <SessionStats answered={answered} total={total} accuracy={liveAcc} median={median} hidden={false} onToggle={() => setStatsOn(false)} />
+          <SessionStats answered={answered} total={total} accuracy={liveAcc} median={median} correct={liveCorrect} incorrect={answered - liveCorrect} skipped={total - answered} hidden={false} onToggle={() => setStatsOn(false)} />
         )}
         {kind === 'drill' && !statsOn && (
           <SessionStats hidden={true} onToggle={() => setStatsOn(true)} />

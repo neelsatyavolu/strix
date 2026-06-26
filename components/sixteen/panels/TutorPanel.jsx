@@ -2,7 +2,6 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
-import { SixteenData } from '@/lib/mockData';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { aiAsk, aiConnect, aiStatus, isDesktop, TUTOR_SYSTEM, questionContext } from '@/lib/ai/bridge';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
@@ -14,13 +13,22 @@ import { openTutorChannel, loadMessages, saveMessage } from '@/lib/tutor/realtim
 
 function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   const { MessageBubble, ChatComposer, IconButton, SegmentedControl, TutorPresence, Avatar } = SixteenNS;
-  const data = SixteenData;
   const isTutor = role === 'tutor';
   const aiAllowed = allowAI && !isTutor;
   const session = usePracticeSession();
-  const { user } = useProfile();
+  const { user, displayName } = useProfile();
   const desktop = isDesktop();
   const channelRef = React.useRef(null);
+  const [tutorName, setTutorName] = React.useState('your tutor');
+
+  React.useEffect(() => {
+    if (isTutor) return;
+    fetch('/api/tutor/invite').then((r) => r.json()).then((j) => {
+      const t = j?.data?.tutors?.[0];
+      const p = t && (Array.isArray(t.profiles) ? t.profiles[0] : t.profiles);
+      if (p?.full_name) setTutorName(p.full_name);
+    }).catch(() => {});
+  }, [isTutor]);
 
   const flip = (m) => (isTutor ? { ...m, side: m.side === 'mine' ? 'theirs' : 'mine' } : m);
 
@@ -159,14 +167,14 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 26, paddingBottom: isTutor ? 10 : 0 }}>
           {isTutor
             ? <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-                <Avatar name="Maya Patel" size="sm" presence="online" />
-                <span style={{ font: 'var(--role-label)', fontWeight: 600, color: 'var(--text-primary)' }}>Maya Patel</span>
+                <Avatar name={displayName} size="sm" presence="online" />
+                <span style={{ font: 'var(--role-label)', fontWeight: 600, color: 'var(--text-primary)' }}>{displayName}</span>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: 'var(--role-caption)', color: 'var(--success)', marginLeft: 2 }}>
                   <Icon name="eye" style={{ width: 12, height: 12 }} /> watching
                 </span>
               </div>
             : (mode === 'human'
-              ? <TutorPresence name={data.tutor.name} status="online" watching />
+              ? <TutorPresence name={tutorName} status="online" watching />
               : <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ width: 8, height: 8, borderRadius: '50%', background: connectedNow ? 'var(--brand-blue)' : 'var(--text-tertiary)' }} />
                   <span style={{ font: 'var(--role-label)', color: 'var(--text-primary)' }}>{aiName}</span>
@@ -180,7 +188,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
           <div style={{ padding: '8px 0 10px' }}>
             <SegmentedControl
               value={mode} onChange={setMode} fullWidth size="sm"
-              options={[{ value: 'human', label: `Tutor · ${data.tutor.name.split(' ')[0]}` }, { value: 'ai', label: 'AI tutor' }]}
+              options={[{ value: 'human', label: `Tutor · ${tutorName.split(' ')[0]}` }, { value: 'ai', label: 'AI tutor' }]}
             />
           </div>
         )}
@@ -227,7 +235,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
           value={draft}
           onChange={setDraft}
           onSend={send}
-          placeholder={isTutor ? 'Message Maya' : (mode === 'human' ? `Message ${data.tutor.name.split(' ')[0]}` : `Ask ${providerLabel}`)}
+          placeholder={isTutor ? `Message ${displayName.split(' ')[0]}` : (mode === 'human' ? `Message ${tutorName.split(' ')[0]}` : `Ask ${providerLabel}`)}
         />
       ) : (
         <AiConnect desktop={desktop} providerLabel={providerLabel} onConnect={onConnect} />

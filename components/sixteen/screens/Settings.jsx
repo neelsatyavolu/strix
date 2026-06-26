@@ -1,19 +1,39 @@
 'use client';
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
-import { Icon } from '@/components/sixteen';
-import { SixteenData } from '@/lib/mockData';
+import { useProfile } from '@/components/sixteen/session/ProfileContext';
+import { aiStatus, isDesktop } from '@/lib/ai/bridge';
 
 // Settings — appearance, account, practice defaults.
 
 function Settings({ go, dark, setDark }) {
   const { Card, Toggle, SegmentedControl, Input, Avatar, Button, Badge } = SixteenNS;
+  const { displayName, email, profile, signOut } = useProfile();
+
   const [theme, setTheme] = React.useState(dark ? 'dark' : 'light');
   React.useEffect(() => { setDark(theme === 'dark'); }, [theme]);
 
   const [warn5, setWarn5] = React.useState(true);
   const [pacing, setPacing] = React.useState(true);
-  const [name, setName] = React.useState('Maya Patel');
+
+  // Real AI connection status from the desktop bridge.
+  const desktop = isDesktop();
+  const [connected, setConnected] = React.useState({ codex: false, grok: false });
+  React.useEffect(() => { aiStatus().then(setConnected).catch(() => {}); }, []);
+
+  // Real connected tutors.
+  const [tutors, setTutors] = React.useState([]);
+  React.useEffect(() => {
+    fetch('/api/tutor/invite')
+      .then((r) => r.json())
+      .then((j) => { if (j?.success) setTutors(j.data.tutors || []); })
+      .catch(() => {});
+  }, []);
+
+  const handleSignOut = async () => {
+    await signOut();
+    go('onboarding');
+  };
 
   return (
     <div style={{padding: '28px 36px', maxWidth: 760}}>
@@ -22,18 +42,18 @@ function Settings({ go, dark, setDark }) {
       <SectionHead label="Profile" />
       <Card padding="lg" style={{marginBottom: 18}}>
         <div style={{display:'flex', alignItems:'center', gap: 14, marginBottom: 14}}>
-          <Avatar name={name} size="lg" />
+          <Avatar name={displayName} size="lg" />
           <div style={{flex: 1}}>
-            <div style={{font:'var(--role-title-sm)'}}>{name}</div>
-            <div style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>maya@example.com</div>
+            <div style={{font:'var(--role-title-sm)'}}>{displayName}</div>
+            <div style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>{email}</div>
           </div>
-          <Button variant="secondary" size="sm">Sign out</Button>
+          <Button variant="secondary" size="sm" onClick={handleSignOut}>Sign out</Button>
         </div>
         <FieldRow label="Display name">
-          <Input value={name} onChange={(e)=>setName(e.target.value)} />
+          <Input value={displayName} readOnly />
         </FieldRow>
         <FieldRow label="Target score">
-          <Input value="1500" />
+          <Input value={profile?.target_score ?? ''} placeholder="Not set" readOnly />
         </FieldRow>
       </Card>
 
@@ -70,46 +90,50 @@ function Settings({ go, dark, setDark }) {
         <p style={{margin:'0 0 14px', font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
           Connect a model to chat with an AI tutor during drills. AI tutors aren't available during full modules or scored sections.
         </p>
-        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap: 16, paddingBottom: 14, borderBottom: '1px solid var(--border-1)'}}>
-          <div style={{display:'flex', alignItems:'center', gap: 12, flex: 1}}>
-            <ProviderMark kind="chatgpt" />
-            <div style={{display:'flex', flexDirection:'column'}}>
-              <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>ChatGPT</span>
-              <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>Connected as maya@example.com · GPT-5.5, GPT-5.4 mini</span>
-            </div>
-          </div>
-          <div style={{display:'flex', alignItems:'center', gap: 8}}>
-            <Badge variant="success" size="sm">Connected</Badge>
-            <Button variant="ghost">Disconnect</Button>
-          </div>
-        </div>
-        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap: 16, paddingTop: 14}}>
-          <div style={{display:'flex', alignItems:'center', gap: 12, flex: 1}}>
-            <ProviderMark kind="grok" />
-            <div style={{display:'flex', flexDirection:'column'}}>
-              <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>Grok</span>
-              <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>Not connected · sign in with X to enable Grok 4.3</span>
-            </div>
-          </div>
-          <Button variant="secondary">Connect Grok</Button>
-        </div>
+        <ProviderRow
+          kind="chatgpt"
+          name="ChatGPT"
+          desktop={desktop}
+          connected={connected.codex}
+          Badge={Badge}
+          style={{paddingBottom: 14, borderBottom: '1px solid var(--border-1)'}}
+        />
+        <ProviderRow
+          kind="grok"
+          name="Grok"
+          desktop={desktop}
+          connected={connected.grok}
+          Badge={Badge}
+          style={{paddingTop: 14}}
+        />
       </Card>
 
       <SectionHead label="Tutor mode" />
       <Card padding="lg">
-        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap: 16}}>
-          <div style={{display:'flex', flexDirection:'column', flex: 1}}>
-            <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>Active tutor</span>
-            <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>Tutors can watch your practice and chat. They can't answer for you.</span>
+        <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
+          Tutors can watch your practice and chat. They can't answer for you.
+        </span>
+        {tutors.length === 0 ? (
+          <p style={{margin:'10px 0 0', font:'var(--role-body)', color:'var(--text-tertiary)'}}>No tutors connected yet.</p>
+        ) : (
+          <div style={{display:'flex', flexDirection:'column', gap: 12, marginTop: 12}}>
+            {tutors.map((t, i) => {
+              const p = Array.isArray(t.profiles) ? t.profiles[0] : t.profiles;
+              const tname = p?.full_name || 'Tutor';
+              return (
+                <div key={t.tutor_id || i} style={{display:'flex', alignItems:'center', gap: 10}}>
+                  <Avatar name={tname} size="sm" presence="online" />
+                  <div style={{flex: 1}}>
+                    <div style={{font:'var(--role-body)', color:'var(--text-primary)'}}>{tname}</div>
+                    <div style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>{p?.email || ''}</div>
+                  </div>
+                  <Badge variant="success" size="sm">Online</Badge>
+                </div>
+              );
+            })}
           </div>
-          <div style={{display:'flex', alignItems:'center', gap: 10}}>
-            <Avatar name="Rachel Hsu" size="sm" presence="online"/>
-            <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>Rachel Hsu</span>
-            <Badge variant="success" size="sm">Online</Badge>
-          </div>
-        </div>
+        )}
         <div style={{display:'flex', justifyContent:'flex-end', gap: 8, marginTop: 14, paddingTop: 14, borderTop: '1px solid var(--border-1)'}}>
-          <Button variant="ghost">Disconnect Rachel</Button>
           <Button variant="secondary" onClick={() => go('tutor-invite')}>Manage tutors</Button>
         </div>
       </Card>
@@ -121,6 +145,28 @@ function SectionHead({ label }) {
   return (
     <div style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)', margin:'18px 0 8px'}}>
       {label}
+    </div>
+  );
+}
+
+function ProviderRow({ kind, name, desktop, connected, Badge, style }) {
+  const caption = !desktop
+    ? 'Connect from the desktop app.'
+    : connected ? 'Connected' : 'Not connected';
+  return (
+    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap: 16, ...style}}>
+      <div style={{display:'flex', alignItems:'center', gap: 12, flex: 1}}>
+        <ProviderMark kind={kind} />
+        <div style={{display:'flex', flexDirection:'column'}}>
+          <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>{name}</span>
+          <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>{caption}</span>
+        </div>
+      </div>
+      {desktop && (
+        <Badge variant={connected ? 'success' : 'neutral'} size="sm">
+          {connected ? 'Connected' : 'Not connected'}
+        </Badge>
+      )}
     </div>
   );
 }

@@ -2,15 +2,21 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
-import { SixteenData } from '@/lib/mockData';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
+import { useStats } from '@/lib/data/hooks';
+import { RW_DOMAINS, MATH_DOMAINS, DOMAIN_TO_CATEGORY } from '@/lib/cb/domains';
 
 // PracticeSetup — pick section, mock module vs targeted drill, category, difficulty.
 
+const BASE_CATS = {
+  rw: Object.entries(RW_DOMAINS).map(([code, label]) => ({ id: DOMAIN_TO_CATEGORY[code], label, done: 0, accuracy: 0 })),
+  math: Object.entries(MATH_DOMAINS).map(([code, label]) => ({ id: DOMAIN_TO_CATEGORY[code], label, done: 0, accuracy: 0 })),
+};
+
 function PracticeSetup({ go, initial = {} }) {
   const { Card, Button, Badge, SegmentedControl, Tabs } = SixteenNS;
-  const d = SixteenData;
   const session = usePracticeSession();
+  const { stats } = useStats();
   const [domain, setDomain] = React.useState(initial.domain || 'rw');
   const [mode, setMode] = React.useState('drill'); // 'drill' | 'mock-m1' | 'mock-full'
   const [cat, setCat] = React.useState('info');
@@ -18,7 +24,7 @@ function PracticeSetup({ go, initial = {} }) {
   const [count, setCount] = React.useState(10);
   const [timed, setTimed] = React.useState('untimed'); // 'untimed' | 'per-q' | 'total'
 
-  const cats = domain === 'rw' ? d.rwCategories : d.mathCategories;
+  const cats = (stats?.categories?.[domain]?.length ? stats.categories[domain] : BASE_CATS[domain]);
   if (!cats.find(c => c.id === cat)) setCat(cats[0].id);
 
   const startLabel =
