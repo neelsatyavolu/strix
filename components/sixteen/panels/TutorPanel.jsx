@@ -5,6 +5,8 @@ import { Icon } from '@/components/sixteen';
 import { SixteenData } from '@/lib/mockData';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { aiAsk, aiConnect, aiStatus, isDesktop, TUTOR_SYSTEM, questionContext } from '@/lib/ai/bridge';
+import { useProfile } from '@/components/sixteen/session/ProfileContext';
+import { openTutorChannel, loadMessages, saveMessage } from '@/lib/tutor/realtime';
 
 // TutorPanel — the right-side tutor sidebar (320px). Human tutor (Phase 3 via
 // Supabase Realtime) or AI tutor powered by the user's OWN ChatGPT/Grok
@@ -16,7 +18,9 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   const isTutor = role === 'tutor';
   const aiAllowed = allowAI && !isTutor;
   const session = usePracticeSession();
+  const { user } = useProfile();
   const desktop = isDesktop();
+  const channelRef = React.useRef(null);
 
   const flip = (m) => (isTutor ? { ...m, side: m.side === 'mine' ? 'theirs' : 'mine' } : m);
 
@@ -27,7 +31,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   const [connected, setConnected] = React.useState({ codex: false, grok: false });
   const [thinking, setThinking] = React.useState(false);
 
-  const [humanMessages, setHumanMessages] = React.useState(data.chat);
+  const [humanMessages, setHumanMessages] = React.useState([]);
   const [aiMessages, setAiMessages] = React.useState([
     { id: 'a1', side: 'theirs', text: "Hi, I'm your AI tutor. Stuck on something? Tell me what you're thinking and I'll help you reason through it.", time: 'now' },
   ]);
@@ -50,6 +54,41 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
     if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
   }, [messages, mode, thinking]);
 
+  // Student side of live human tutoring: open the realtime channel, load chat
+  // history, and relay incoming tutor messages.
+  React.useEffect(() => {
+    if (isTutor || mode !== 'human' || !user?.id) return;
+    let ch;
+    loadMessages(user.id).then((msgs) =>
+      setHumanMessages(msgs.map((m) => ({ id: m.id, side: m.sender_id === user.id ? 'mine' : 'theirs', text: m.body, time: '' }))),
+    );
+    ch = openTutorChannel({
+      studentId: user.id,
+      userId: user.id,
+      role: 'student',
+      onChat: (m) => setHumanMessages((prev) => [...prev, { id: m.id, side: m.sender_id === user.id ? 'mine' : 'theirs', text: m.body, time: '' }]),
+    });
+    channelRef.current = ch;
+    return () => { ch?.close(); channelRef.current = null; };
+  }, [mode, isTutor, user?.id]);
+
+  // Broadcast the current question so a watching tutor sees what we're on.
+  React.useEffect(() => {
+    if (isTutor || mode !== 'human' || !channelRef.current) return;
+    const q = session.current;
+    if (!q) return;
+    channelRef.current.sendSession({
+      index: session.index,
+      total: session.questions.length,
+      section: q.section,
+      domainLabel: q.domainLabel,
+      stemHtml: q.stemHtml,
+      stimulusHtml: q.stimulusHtml,
+      choices: q.choices,
+      selected: session.responses[q.id]?.value || null,
+    });
+  }, [mode, isTutor, session.current, session.index, session.responses]);
+
   const providerLabel = aiProvider === 'chatgpt' ? 'ChatGPT' : 'Grok';
   const providerKey = aiProvider === 'chatgpt' ? 'codex' : 'grok';
   const connectedNow = connected[providerKey];
@@ -70,7 +109,12 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
     setMessages((prev) => [...prev, { id, side: isTutor ? 'theirs' : 'mine', text, time: 'now' }]);
     setDraft('');
     if (isTutor) return;
-    if (mode === 'human') return; // real-time human delivery: Phase 3 (Supabase)
+    if (mode === 'human') {
+      if (!user?.id) return;
+      const saved = await saveMessage({ studentId: user.id, senderId: user.id, role: 'student', body: text });
+      channelRef.current?.sendChat(saved || { id: String(id), sender_id: user.id, role: 'student', body: text });
+      return;
+    }
 
     if (!desktop || !connectedNow) {
       setMessages((prev) => [...prev, {
