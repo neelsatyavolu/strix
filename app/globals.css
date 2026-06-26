@@ -39,6 +39,28 @@ body {
   height: min(800px, calc(100vh - 32px));
 }
 
+/* Desktop (Electron): the OS window IS the frame — fill it, drop the wallpaper
+   + floating-card chrome so it looks like a native Mac app. */
+html.desktop,
+html.desktop body {
+  background: var(--surface-app);
+  background-image: none;
+}
+html.desktop[data-theme="dark"],
+html.desktop[data-theme="dark"] body {
+  background: var(--surface-app);
+}
+html.desktop #window {
+  position: static;
+  transform: none;
+  width: 100vw;
+  height: 100vh;
+}
+html.desktop #window > div {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
 /* Rendered College Board question HTML (passage / stem / choices). */
 .cb-passage {
   font-family: var(--font-passage);

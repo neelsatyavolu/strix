@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { PracticeSessionProvider } from "@/components/sixteen/session/SessionContext";
 
@@ -11,6 +12,13 @@ const SixteenApp = dynamic(() => import("@/components/sixteen/SixteenApp"), {
 });
 
 export default function AppMount() {
+  useEffect(() => {
+    const w = window as unknown as { proctorly?: { isDesktop?: boolean } };
+    if (w.proctorly?.isDesktop) {
+      document.documentElement.classList.add("desktop");
+    }
+  }, []);
+
   return (
     <PracticeSessionProvider>
       <SixteenApp />
