@@ -1,5 +1,5 @@
 /* Strix — app frame.
- * Reproduces the design's floating macOS window on a desktop wallpaper.
+ * The SPA fills the viewport edge-to-edge in both the browser and the Mac app.
  * Tokens + reset come from styles.css (imported before this in layout). */
 
 html,
@@ -7,56 +7,19 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background: #dcdce0;
+  background: var(--surface-app);
   overflow: hidden;
   font-family: var(--font-sans);
 }
 
-[data-theme="dark"] body {
-  background: #0e0e10;
-}
-
-body {
-  background-image:
-    radial-gradient(circle at 20% 10%, rgba(46, 91, 255, 0.18), transparent 50%),
-    radial-gradient(circle at 80% 90%, rgba(255, 159, 10, 0.1), transparent 55%),
-    linear-gradient(180deg, #d8dae3 0%, #c7cad5 100%);
-}
-
-[data-theme="dark"] body {
-  background-image:
-    radial-gradient(circle at 20% 10%, rgba(77, 120, 255, 0.2), transparent 50%),
-    radial-gradient(circle at 80% 90%, rgba(216, 114, 26, 0.1), transparent 55%),
-    linear-gradient(180deg, #0f1117 0%, #050608 100%);
-}
-
 #window {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(1280px, calc(100vw - 32px));
-  height: min(800px, calc(100vh - 32px));
-}
-
-/* Desktop (Electron): the OS window IS the frame — fill it, drop the wallpaper
-   + floating-card chrome so it looks like a native Mac app. */
-html.desktop,
-html.desktop body {
-  background: var(--surface-app);
-  background-image: none;
-}
-html.desktop[data-theme="dark"],
-html.desktop[data-theme="dark"] body {
-  background: var(--surface-app);
-}
-html.desktop #window {
-  position: static;
-  transform: none;
+  inset: 0;
   width: 100vw;
   height: 100vh;
 }
-html.desktop #window > div {
+/* Full-bleed: the SPA fills the viewport edge-to-edge, no floating-card chrome. */
+#window > div {
   border-radius: 0 !important;
   box-shadow: none !important;
 }
