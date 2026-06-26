@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.108.2",
     "isomorphic-dompurify": "^3.18.0",
     "katex": "^0.17.0",
     "lucide-react": "^1.21.0",
