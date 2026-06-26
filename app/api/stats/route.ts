@@ -56,10 +56,12 @@ export async function GET() {
   }
 
   const toCatList = (m: Map<string, CatAgg>) =>
-    [...m.values()].map((c) => ({
+    [...m.entries()].map(([code, c]) => ({
       id: c.id,
+      code, // CB domain code (e.g. "INI", "H") — used for category drill-down
       label: c.label,
       done: c.done,
+      correct: c.correct,
       accuracy: c.done ? Math.round((c.correct / c.done) * 100) : 0,
     }));
 

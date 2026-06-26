@@ -11,14 +11,17 @@ const toPascal = (name) =>
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join('');
 
+// Lucide renamed several icons; map the old kebab names we still call by to the
+// current ones so they don't silently fall back to the Circle placeholder.
+const ALIASES = {
+  'home': 'house',
+  'bar-chart-3': 'chart-column',
+  'function-square': 'square-function',
+};
+
 export function Icon({ name, size = 16, strokeWidth = 2, color, style, className, ...rest }) {
-  const key = toPascal(name);
-  const Cmp =
-    icons[key] ||
-    // tolerate the function-square / square-function rename either direction
-    icons[toPascal(String(name).replace('square-function', 'function-square'))] ||
-    icons[toPascal(String(name).replace('function-square', 'square-function'))] ||
-    icons.Circle;
+  const canonical = ALIASES[name] || name;
+  const Cmp = icons[toPascal(canonical)] || icons.Circle;
   return (
     <Cmp
       size={size}

@@ -12,6 +12,7 @@ import ScoreReport from './screens/ScoreReport';
 import ExamBreak from './screens/ExamBreak';
 import ExamReport from './screens/ExamReport';
 import Stats from './screens/Stats';
+import CategoryDetail from './screens/CategoryDetail';
 import TutorInvite from './screens/TutorInvite';
 import TutorChat from './screens/TutorChat';
 import Settings from './screens/Settings';
@@ -32,6 +33,21 @@ function App() {
   const [tutorOn, setTutorOn] = React.useState(false);
   const [statsOn, setStatsOn] = React.useState(true);
   const [role, setRole] = React.useState('student');   // 'student' | 'tutor'
+  const [canTutor, setCanTutor] = React.useState(false);   // is the current user a tutor for anyone?
+
+  // You can only enter "Tutor view" once a student has added you as their tutor —
+  // otherwise the toggle would just let you watch yourself.
+  React.useEffect(() => {
+    fetch('/api/tutor/students')
+      .then((r) => r.json())
+      .then((j) => { if (j?.success) setCanTutor((j.data.students || []).length > 0); })
+      .catch(() => {});
+  }, []);
+
+  // If tutor access goes away, fall back to the student view.
+  React.useEffect(() => {
+    if (!canTutor && role === 'tutor') { setRole('student'); setTutorOn(false); }
+  }, [canTutor, role]);
 
   // Entering tutor view auto-opens the chat with the student.
   const switchRole = (r) => {
@@ -57,6 +73,7 @@ function App() {
     'exam-break': 'home',
     'exam-report': 'home',
     'stats': 'stats',
+    'category-detail': 'stats',
     'tutor-chat': 'tutor',
     'tutor-invite': 'tutor',
     'settings': 'settings',
@@ -115,7 +132,7 @@ function App() {
     <Titlebar
       title={titleFor(view, isTutor)}
       trailing={<>
-        {!onboarding && (
+        {!onboarding && canTutor && (
           <div style={{marginRight: 6}}>
             <SegmentedControl
               size="sm"
@@ -152,6 +169,7 @@ function App() {
     case 'exam-break':      screen = <ExamBreak go={go} />; break;
     case 'exam-report':     screen = <ExamReport go={go} />; break;
     case 'stats':           screen = <Stats go={go} />; break;
+    case 'category-detail': screen = <CategoryDetail go={go} section={viewProps.section} domain={viewProps.domain} label={viewProps.label} />; break;
     case 'tutor-invite':    screen = <TutorInvite go={go} />; break;
     case 'tutor-chat':      screen = <TutorChat go={go} />; break;
     case 'settings':        screen = <Settings go={go} dark={dark} setDark={setDark} />; break;
@@ -191,6 +209,7 @@ function titleFor(view, isTutor) {
     'exam-break': 'Strix — Break',
     'exam-report': 'Strix — Full SAT',
     'stats': 'Strix — Stats',
+    'category-detail': 'Strix — Stats',
     'tutor-chat': 'Strix — Tutor',
     'tutor-invite': 'Strix — Tutor',
     'settings': 'Strix — Settings',

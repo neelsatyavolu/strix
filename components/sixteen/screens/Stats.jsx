@@ -3,6 +3,8 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { useStats, useSessions } from '@/lib/data/hooks';
+import { InsightCard } from '@/components/sixteen/stats/InsightCard';
+import { useInsight } from '@/lib/ai/insights';
 
 // Stats — overall + per-domain breakdown, driven by real practice data.
 
@@ -73,7 +75,7 @@ function Stats({ go }) {
           {tab === 'overall' && <OverallTab stats={stats} sessions={sessions} />}
           {tab === 'sessions' && <SessionsTab go={go} sessions={sessions} />}
           {tab !== 'overall' && tab !== 'sessions' && (
-            <DomainBreakdown domain={tab} stats={stats} />
+            <DomainBreakdown domain={tab} stats={stats} go={go} />
           )}
         </>
       )}
@@ -248,41 +250,89 @@ function StatCardLite({ label, value, sublabel }) {
   );
 }
 
-function DomainBreakdown({ domain, stats }) {
+// Deterministic best/worst read over a section's categories — the always-on
+// fallback when no AI provider is connected. Shape matches a parsed AI insight.
+function sectionBaseline(sectionLabel, cats) {
+  const pool = (cats ?? []).filter((c) => c.done > 0);
+  if (!pool.length) return null;
+  const eligible = pool.filter((c) => c.done >= 5);
+  const ranked = [...(eligible.length ? eligible : pool)].sort((a, b) => b.accuracy - a.accuracy);
+  const best = ranked[0];
+  const worst = ranked[ranked.length - 1];
+  const total = pool.reduce((a, c) => a + c.done, 0);
+  const same = best.id === worst.id;
+  return {
+    summary: same
+      ? `You've answered ${total} ${sectionLabel} questions so far, all in ${best.label} (${best.accuracy}%). Practice the other categories to round out your profile.`
+      : `You've answered ${total} ${sectionLabel} questions. You're strongest in ${best.label} (${best.accuracy}%) and weakest in ${worst.label} (${worst.accuracy}%).`,
+    strength: `${best.label} — ${best.accuracy}% across ${best.done} question${best.done === 1 ? '' : 's'}.`,
+    focus: same ? '' : `${worst.label} — ${worst.accuracy}%. Put your next sessions here.`,
+    actions: same
+      ? [`Practice categories you haven't tried yet`]
+      : [`Drill ${worst.label} questions`, `Review the ones you missed in ${worst.label}`],
+  };
+}
+
+function SectionInsights({ sectionLabel, cats, accent }) {
+  const baseline = React.useMemo(() => sectionBaseline(sectionLabel, cats), [sectionLabel, cats]);
+  const payload = React.useMemo(() => ({
+    section: sectionLabel,
+    topics: (cats ?? []).filter((c) => c.done > 0).map((c) => ({ topic: c.label, answered: c.done, accuracy: c.accuracy })),
+  }), [sectionLabel, cats]);
+  const ready = (cats ?? []).some((c) => c.done > 0);
+  const ins = useInsight({ scope: `section:${sectionLabel}`, payload, baseline, ready });
+  if (!ready) return null;
+  return <InsightCard title="Insights" accent={accent} {...ins} />;
+}
+
+function DomainBreakdown({ domain, stats, go }) {
   const { Card, AccuracyRing, Badge } = SixteenNS;
   const cats = (domain === 'rw' ? stats?.categories?.rw : stats?.categories?.math) ?? [];
   const color = domain === 'rw' ? 'var(--rw-color)' : 'var(--math-color)';
   return (
-    <Card padding="lg">
-      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom: 16}}>
-        <h2 style={{margin:0, font:'var(--role-title-md)'}}>By category</h2>
-        <Badge variant={domain} dot>{SECTION_LABEL[domain] ?? domain}</Badge>
-      </div>
-      {cats.length === 0 ? (
-        <div style={{padding:'24px 0', textAlign:'center', font:'var(--role-body)', color:'var(--text-tertiary)'}}>
-          No category data yet
+    <>
+      <SectionInsights sectionLabel={SECTION_LABEL[domain] ?? domain} cats={cats} accent={color} />
+      <Card padding="lg">
+        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom: 16}}>
+          <h2 style={{margin:0, font:'var(--role-title-md)'}}>By category</h2>
+          <Badge variant={domain} dot>{SECTION_LABEL[domain] ?? domain}</Badge>
         </div>
-      ) : (
-        <div style={{display:'flex', flexDirection:'column'}}>
-          {cats.map((c, i) => (
-            <div key={c.id} style={{
-              display:'grid', gridTemplateColumns:'auto 1fr auto auto', gap: 14, alignItems:'center',
-              padding:'14px 0', borderTop: i === 0 ? 0 : '1px solid var(--border-1)',
-            }}>
-              <AccuracyRing value={c.accuracy} size={44} stroke={5} color={color} />
-              <div style={{display:'flex', flexDirection:'column'}}>
-                <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>{c.label}</span>
-                <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
-                  {c.done} answered
-                </span>
-              </div>
-              <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)'}}>{c.accuracy}%</span>
-              <Icon name="chevron-right" style={{width:14, height:14, color:'var(--text-tertiary)'}}/>
-            </div>
-          ))}
-        </div>
-      )}
-    </Card>
+        {cats.length === 0 ? (
+          <div style={{padding:'24px 0', textAlign:'center', font:'var(--role-body)', color:'var(--text-tertiary)'}}>
+            No category data yet
+          </div>
+        ) : (
+          <div style={{display:'flex', flexDirection:'column'}}>
+            {cats.map((c, i) => {
+              const clickable = c.done > 0 && !!c.code;
+              return (
+                <button
+                  key={c.id}
+                  disabled={!clickable}
+                  onClick={() => clickable && go('category-detail', { section: domain, domain: c.code, label: c.label })}
+                  style={{
+                    display:'grid', gridTemplateColumns:'auto 1fr auto auto', gap: 14, alignItems:'center',
+                    padding:'14px 6px', borderTop: i === 0 ? 0 : '1px solid var(--border-1)',
+                    background:'transparent', border:0, borderRadius:'var(--radius-sm)',
+                    cursor: clickable ? 'pointer' : 'default', textAlign:'left', width:'100%',
+                  }}
+                >
+                  <AccuracyRing value={c.accuracy} size={44} stroke={5} color={color} />
+                  <div style={{display:'flex', flexDirection:'column'}}>
+                    <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>{c.label}</span>
+                    <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
+                      {c.done} answered{clickable ? ' · view detail' : ''}
+                    </span>
+                  </div>
+                  <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)'}}>{c.accuracy}%</span>
+                  <Icon name="chevron-right" style={{width:14, height:14, color: clickable ? 'var(--text-tertiary)' : 'transparent'}}/>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </Card>
+    </>
   );
 }
 

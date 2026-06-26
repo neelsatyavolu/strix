@@ -2,7 +2,7 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
-import { aiStatus, isDesktop } from '@/lib/ai/bridge';
+import { aiStatus, aiConnect, aiDisconnect, isDesktop } from '@/lib/ai/bridge';
 import { useUpdates } from '@/lib/updates/useUpdates';
 
 // Settings — appearance, account, practice defaults.
@@ -20,7 +20,31 @@ function Settings({ go, dark, setDark }) {
   // Real AI connection status from the desktop bridge.
   const desktop = isDesktop();
   const [connected, setConnected] = React.useState({ codex: false, grok: false });
-  React.useEffect(() => { aiStatus().then(setConnected).catch(() => {}); }, []);
+  const [busy, setBusy] = React.useState(null);   // 'chatgpt' | 'grok' | null
+  const [aiError, setAiError] = React.useState({});  // { [kind]: message }
+  const refreshAi = React.useCallback(() => aiStatus().then(setConnected).catch(() => {}), []);
+  React.useEffect(() => { refreshAi(); }, [refreshAi]);
+
+  const connectAi = async (kind) => {
+    setBusy(kind);
+    setAiError((e) => ({ ...e, [kind]: null }));
+    try {
+      const res = await aiConnect(kind);
+      if (res && res.ok === false) throw new Error(res.error || 'Connection was cancelled.');
+      await refreshAi();
+    } catch (err) {
+      setAiError((e) => ({ ...e, [kind]: err?.message || 'Could not connect.' }));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const disconnectAi = async (kind) => {
+    setBusy(kind);
+    try { await aiDisconnect(kind); await refreshAi(); }
+    catch { /* status refresh below reflects reality */ }
+    finally { setBusy(null); }
+  };
 
   // Real connected tutors.
   const [tutors, setTutors] = React.useState([]);
@@ -99,7 +123,12 @@ function Settings({ go, dark, setDark }) {
           name="ChatGPT"
           desktop={desktop}
           connected={connected.codex}
+          busy={busy === 'chatgpt'}
+          error={aiError.chatgpt}
+          onConnect={() => connectAi('chatgpt')}
+          onDisconnect={() => disconnectAi('chatgpt')}
           Badge={Badge}
+          Button={Button}
           style={{paddingBottom: 14, borderBottom: '1px solid var(--border-1)'}}
         />
         <ProviderRow
@@ -107,7 +136,12 @@ function Settings({ go, dark, setDark }) {
           name="Grok"
           desktop={desktop}
           connected={connected.grok}
+          busy={busy === 'grok'}
+          error={aiError.grok}
+          onConnect={() => connectAi('grok')}
+          onDisconnect={() => disconnectAi('grok')}
           Badge={Badge}
+          Button={Button}
           style={{paddingTop: 14}}
         />
       </Card>
@@ -204,23 +238,30 @@ function SectionHead({ label }) {
   );
 }
 
-function ProviderRow({ kind, name, desktop, connected, Badge, style }) {
-  const caption = !desktop
-    ? 'Connect from the desktop app.'
-    : connected ? 'Connected' : 'Not connected';
+function ProviderRow({ kind, name, desktop, connected, busy, error, onConnect, onDisconnect, Badge, Button, style }) {
+  const caption = error
+    ? error
+    : !desktop
+      ? 'Connect from the desktop app.'
+      : connected ? 'Connected' : 'Not connected';
   return (
     <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap: 16, ...style}}>
       <div style={{display:'flex', alignItems:'center', gap: 12, flex: 1}}>
         <ProviderMark kind={kind} />
         <div style={{display:'flex', flexDirection:'column'}}>
           <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>{name}</span>
-          <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>{caption}</span>
+          <span style={{font:'var(--role-caption)', color: error ? 'var(--danger, #d4564a)' : 'var(--text-tertiary)', marginTop: 2}}>{caption}</span>
         </div>
       </div>
       {desktop && (
-        <Badge variant={connected ? 'success' : 'neutral'} size="sm">
-          {connected ? 'Connected' : 'Not connected'}
-        </Badge>
+        connected ? (
+          <div style={{display:'flex', alignItems:'center', gap: 10}}>
+            <Badge variant="success" size="sm">Connected</Badge>
+            <Button variant="secondary" size="sm" loading={busy} disabled={busy} onClick={onDisconnect}>Disconnect</Button>
+          </div>
+        ) : (
+          <Button variant="primary" size="sm" loading={busy} disabled={busy} onClick={onConnect}>Connect</Button>
+        )
       )}
     </div>
   );

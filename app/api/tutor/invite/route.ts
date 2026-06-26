@@ -47,6 +47,7 @@ export async function GET() {
   const { data: members } = await supabase
     .from("tutor_memberships")
     .select("tutor_id, status, created_at, profiles!tutor_memberships_tutor_id_fkey(full_name, email)")
+    .eq("student_id", user.id)
     .eq("status", "active");
 
   return NextResponse.json({ success: true, data: { link: links?.[0] ?? null, tutors: members ?? [] } });
