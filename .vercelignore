@@ -7,3 +7,7 @@
 /.playwright-mcp
 *.png
 /SETUP.md
+# local build artifacts — Vercel builds fresh, must not receive a standalone .next
+/.next
+/dist-app
+/build

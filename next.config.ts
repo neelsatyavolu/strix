@@ -1,11 +1,15 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  // Self-contained server bundle for the Electron desktop app.
-  output: "standalone",
-  // A stray pnpm-lock.yaml in the home dir confuses workspace-root inference.
-  turbopack: { root: process.cwd() },
-  outputFileTracingRoot: process.cwd(),
-};
+// The Electron desktop build needs a self-contained `standalone` server plus
+// explicit roots (a stray ~/pnpm-lock.yaml otherwise confuses workspace-root
+// inference). But those same options misplace the build output on Vercel and
+// 404 every route — so on Vercel (VERCEL=1) use a pristine default config.
+const nextConfig: NextConfig = process.env.VERCEL
+  ? {}
+  : {
+      output: "standalone",
+      turbopack: { root: process.cwd() },
+      outputFileTracingRoot: process.cwd(),
+    };
 
 export default nextConfig;
