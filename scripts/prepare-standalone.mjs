@@ -33,7 +33,7 @@ const KEYS = [
   "NEXT_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_ANON_KEY",
 ];
-const runtime = { NEXT_PUBLIC_SITE_URL: "https://proctorly-rho.vercel.app" };
+const runtime = { NEXT_PUBLIC_SITE_URL: "https://strixprep.com" };
 for (const k of KEYS) if (env[k]) runtime[k] = env[k];
 fs.writeFileSync(path.join(SA, "runtime-env.json"), JSON.stringify(runtime, null, 2));
 

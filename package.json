@@ -1,5 +1,5 @@
 {
-  "name": "proctorly",
+  "name": "strix",
   "version": "0.1.0",
   "private": true,
   "main": "electron/main.cjs",
@@ -11,11 +11,11 @@
     "electron": "electron .",
     "build:icon": "node scripts/build-icon.mjs && iconutil -c icns build/icon.iconset -o build/icon.icns",
     "app": "concurrently -k -n next,electron \"next dev\" \"wait-on tcp:3000 && electron .\"",
-    "dist": "pnpm build:icon && NEXT_PUBLIC_SITE_URL=https://proctorly-rho.vercel.app next build && node scripts/prepare-standalone.mjs && electron-builder --mac"
+    "dist": "pnpm build:icon && NEXT_PUBLIC_SITE_URL=https://strixprep.com next build && node scripts/prepare-standalone.mjs && electron-builder --mac"
   },
   "build": {
-    "appId": "com.proctorly.app",
-    "productName": "Proctorly",
+    "appId": "com.strixprep.app",
+    "productName": "Strix",
     "files": [
       "package.json",
       "electron/**/*",

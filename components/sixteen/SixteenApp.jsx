@@ -89,9 +89,9 @@ function App() {
         else if (id === 'settings') go('settings');
       }}
       header={<>
-        <img src="/assets/logo-mark.svg" width="24" height="24" />
+        <img src="/assets/app-icon.svg" width="24" height="24" style={{borderRadius: 6}} />
         <div style={{display:'flex', flexDirection:'column'}}>
-          <span style={{font:'var(--role-title-sm)', color:'var(--text-primary)'}}>Proctorly</span>
+          <span style={{font:'var(--role-title-sm)', color:'var(--text-primary)'}}>Strix</span>
           <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>Practice for the SAT</span>
         </div>
       </>}
@@ -173,20 +173,20 @@ function App() {
 }
 
 function titleFor(view, isTutor) {
-  if (isTutor) return 'Proctorly — Tutor view';
+  if (isTutor) return 'Strix — Tutor view';
   return ({
-    'onboarding': 'Proctorly',
-    'dashboard': 'Proctorly',
-    'practice-setup': 'Proctorly — New session',
-    'rw-question': 'Proctorly — Reading & Writing',
-    'math-question': 'Proctorly — Math',
-    'module-review': 'Proctorly — Module review',
-    'score-report': 'Proctorly — Score report',
-    'stats': 'Proctorly — Stats',
-    'tutor-chat': 'Proctorly — Tutor',
-    'tutor-invite': 'Proctorly — Tutor',
-    'settings': 'Proctorly — Settings',
-  })[view] || 'Proctorly';
+    'onboarding': 'Strix',
+    'dashboard': 'Strix',
+    'practice-setup': 'Strix — New session',
+    'rw-question': 'Strix — Reading & Writing',
+    'math-question': 'Strix — Math',
+    'module-review': 'Strix — Module review',
+    'score-report': 'Strix — Score report',
+    'stats': 'Strix — Stats',
+    'tutor-chat': 'Strix — Tutor',
+    'tutor-invite': 'Strix — Tutor',
+    'settings': 'Strix — Settings',
+  })[view] || 'Strix';
 }
 
 export default App;

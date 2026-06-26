@@ -16,7 +16,7 @@ function Gate() {
   if (loading) {
     return (
       <div style={{ height: "100%", display: "grid", placeItems: "center", background: "var(--surface-app)" }}>
-        <span style={{ font: "var(--role-body)", color: "var(--text-secondary)" }}>Loading Proctorly…</span>
+        <span style={{ font: "var(--role-body)", color: "var(--text-secondary)" }}>Loading Strix…</span>
       </div>
     );
   }
@@ -25,8 +25,8 @@ function Gate() {
 
 export default function AppMount() {
   useEffect(() => {
-    const w = window as unknown as { proctorly?: { isDesktop?: boolean } };
-    if (w.proctorly?.isDesktop) {
+    const w = window as unknown as { strix?: { isDesktop?: boolean } };
+    if (w.strix?.isDesktop) {
       document.documentElement.classList.add("desktop");
     }
   }, []);

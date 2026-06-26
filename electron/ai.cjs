@@ -1,6 +1,6 @@
 "use strict";
 
-// Self-contained "connect your own subscription" AI module for Proctorly.
+// Self-contained "connect your own subscription" AI module for Strix.
 // Ports the ChatGPT (Codex CLI) + Grok (Grok CLI) OAuth + API logic.
 // The OAuth client_ids / URLs / scopes below impersonate the official CLI
 // clients and MUST be kept exactly as-is.
@@ -26,9 +26,9 @@ const GROK_SCOPE = "openid profile email offline_access grok-cli:access api:acce
 const DEFAULT_CODEX_MODEL = "gpt-5.5";
 const DEFAULT_GROK_MODEL = "grok-4.3";
 
-const KEYCHAIN_SERVICE = "Proctorly";
+const KEYCHAIN_SERVICE = "Strix";
 const KEY_PROVIDERS = new Set(["codex", "grok"]);
-const USER_AGENT = "Proctorly/1.0";
+const USER_AGENT = "Strix/1.0";
 const AI_PROVIDER_TIMEOUT_MS = 90000;
 const TOKEN_TIMEOUT_MS = 20000;
 
@@ -220,16 +220,16 @@ function waitForOAuthCallback(redirectUri, expectedState) {
       const state = url.searchParams.get("state");
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       if (error) {
-        res.end("<h1>Proctorly sign-in failed</h1><p>You can close this tab.</p>");
+        res.end("<h1>Strix sign-in failed</h1><p>You can close this tab.</p>");
         finish(new Error(`OAuth failed: ${error}`));
         return;
       }
       if (!code || state !== expectedState) {
-        res.end("<h1>Proctorly sign-in failed</h1><p>State mismatch. You can close this tab.</p>");
+        res.end("<h1>Strix sign-in failed</h1><p>State mismatch. You can close this tab.</p>");
         finish(new Error("OAuth state mismatch."));
         return;
       }
-      res.end("<h1>Proctorly sign-in complete</h1><p>You can close this tab and return to Proctorly.</p>");
+      res.end("<h1>Strix sign-in complete</h1><p>You can close this tab and return to Strix.</p>");
       finish(null, code);
     });
     const timer = setTimeout(() => finish(new Error("OAuth sign-in timed out.")), 5 * 60 * 1000);

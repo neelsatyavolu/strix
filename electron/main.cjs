@@ -7,7 +7,7 @@ const { registerAiIpc } = require("./ai.cjs");
 
 // Dev: load the running `next dev` server. Packaged: spawn the bundled Next
 // standalone server (with Electron's node) and load it locally.
-const DEV_URL = process.env.PROCTORLY_URL || "http://localhost:3000";
+const DEV_URL = process.env.STRIX_URL || "http://localhost:3000";
 const PROD_PORT = 41637;
 const OAUTH_PORT = 41639; // loopback for Google OAuth (Google blocks embedded webviews)
 
@@ -18,7 +18,7 @@ function googleLoopback(authUrl) {
     const server = http.createServer((req, res) => {
       if (!req.url || !req.url.startsWith("/auth/callback")) { res.writeHead(404); res.end(); return; }
       res.writeHead(200, { "Content-Type": "text/html" });
-      res.end("<!doctype html><meta charset=utf-8><body style=\"font-family:-apple-system;display:grid;place-items:center;height:90vh;color:#1d1d1f\"><div style=\"text-align:center\"><h2>Signed in to Proctorly</h2><p>You can close this tab and return to the app.</p></div>");
+      res.end("<!doctype html><meta charset=utf-8><body style=\"font-family:-apple-system;display:grid;place-items:center;height:90vh;color:#1d1d1f\"><div style=\"text-align:center\"><h2>Signed in to Strix</h2><p>You can close this tab and return to the app.</p></div>");
       const full = `http://127.0.0.1:${OAUTH_PORT}${req.url}`;
       try { server.close(); } catch { /* */ }
       resolve(full);
@@ -80,10 +80,10 @@ function createWindow() {
   win.once("ready-to-show", () => win.show());
   win.loadURL(appUrl);
 
-  if (process.env.PROCTORLY_CAPTURE) {
+  if (process.env.STRIX_CAPTURE) {
     win.webContents.on("did-finish-load", () => {
       setTimeout(async () => {
-        try { fs.writeFileSync(process.env.PROCTORLY_CAPTURE, (await win.webContents.capturePage()).toPNG()); }
+        try { fs.writeFileSync(process.env.STRIX_CAPTURE, (await win.webContents.capturePage()).toPNG()); }
         catch (e) { console.error("capture failed", e); }
         app.quit();
       }, 4000);

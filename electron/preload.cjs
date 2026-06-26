@@ -2,7 +2,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 // Bridge the renderer (the Next.js UI) to the Electron main process, where the
 // user's ChatGPT/Grok subscription OAuth + API calls live.
-contextBridge.exposeInMainWorld("proctorly", {
+contextBridge.exposeInMainWorld("strix", {
   isDesktop: true,
   platform: process.platform,
   ai: {

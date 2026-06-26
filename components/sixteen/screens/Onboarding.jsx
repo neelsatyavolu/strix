@@ -63,7 +63,7 @@ function Onboarding({ go }) {
   const handleGoogle = async () => {
     setError('');
     const supabase = createClient();
-    const desktop = typeof window !== 'undefined' && !!window.proctorly?.isDesktop;
+    const desktop = typeof window !== 'undefined' && !!window.strix?.isDesktop;
     const redirectTo = desktop
       ? `http://127.0.0.1:${DESKTOP_OAUTH_PORT}/auth/callback`
       : `${window.location.origin}/auth/callback`;
@@ -75,7 +75,7 @@ function Onboarding({ go }) {
       if (oErr) throw oErr;
       if (!desktop) return; // the browser is now redirecting to Google
       // Desktop: open Google in the system browser; the loopback returns the code.
-      const cbUrl = await window.proctorly.auth.google(data.url);
+      const cbUrl = await window.strix.auth.google(data.url);
       const code = new URL(cbUrl).searchParams.get('code');
       if (!code) throw new Error('Google sign-in was cancelled.');
       const { error: exErr } = await supabase.auth.exchangeCodeForSession(code);
@@ -106,7 +106,7 @@ function Onboarding({ go }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div>
               <h1 style={{ margin: '0 0 6px', font: 'var(--role-title-md)' }}>Welcome back</h1>
-              <p style={{ margin: 0, font: 'var(--role-body)', color: 'var(--text-secondary)' }}>Sign in to your Proctorly account.</p>
+              <p style={{ margin: 0, font: 'var(--role-body)', color: 'var(--text-secondary)' }}>Sign in to your Strix account.</p>
             </div>
             <button style={ssoBtn()} onClick={handleGoogle}><GoogleGlyph /> Continue with Google</button>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -125,7 +125,7 @@ function Onboarding({ go }) {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 18 }}>
             <img src="/assets/app-icon.svg" width="84" height="84" style={{ borderRadius: 20, boxShadow: 'var(--shadow-md)' }} />
             <div>
-              <h1 style={{ margin: '0 0 8px', font: 'var(--role-title-lg)' }}>Welcome to Proctorly</h1>
+              <h1 style={{ margin: '0 0 8px', font: 'var(--role-title-lg)' }}>Welcome to Strix</h1>
               <p style={{ margin: 0, font: 'var(--role-body-lg)', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                 Official SAT questions, the real test interface, and a tutor who can actually watch you work.
               </p>

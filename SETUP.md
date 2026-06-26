@@ -1,12 +1,12 @@
-# Proctorly — Setup
+# Strix — Setup
 
-Proctorly is a **Mac desktop app** (Electron) with a **Vercel + Supabase** backend.
+Strix is a **Mac desktop app** (Electron) with a **Vercel + Supabase** backend.
 The practice experience (real College Board questions) needs no credentials; auth,
 saved progress, and live tutoring use Supabase.
 
 ## Backend (already provisioned)
 
-- **Vercel project** `proctorly` — production at <https://proctorly-rho.vercel.app>.
+- **Vercel project** `proctorly` — production at <https://strixprep.com>.
 - **Supabase** provisioned via the Vercel Marketplace integration; env vars
   (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
   `SUPABASE_SERVICE_ROLE_KEY`, `POSTGRES_*`) live in Vercel and pull locally with
@@ -26,7 +26,7 @@ loopback). To turn it on:
    the Client ID + Client Secret.
 3. **Supabase** → Authentication → **URL Configuration → Redirect URLs** → add all
    three (web prod, web dev, desktop loopback):
-   - `https://proctorly-rho.vercel.app/auth/callback`
+   - `https://strixprep.com/auth/callback`
    - `http://localhost:3000/auth/callback`
    - `http://127.0.0.1:41639/auth/callback`
 

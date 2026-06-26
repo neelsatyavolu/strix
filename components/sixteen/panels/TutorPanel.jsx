@@ -127,7 +127,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
     if (!desktop || !connectedNow) {
       setMessages((prev) => [...prev, {
         id: id + 1, side: 'theirs',
-        text: !desktop ? 'The AI tutor runs in the Proctorly desktop app.' : `Connect your ${providerLabel} account above to start.`,
+        text: !desktop ? 'The AI tutor runs in the Strix desktop app.' : `Connect your ${providerLabel} account above to start.`,
         time: 'now',
       }]);
       return;
@@ -250,8 +250,8 @@ function AiConnect({ desktop, providerLabel, onConnect }) {
     <div style={{ padding: 14, borderTop: '1px solid var(--border-1)', background: 'var(--surface-sidebar)', display: 'flex', flexDirection: 'column', gap: 8 }}>
       <span style={{ font: 'var(--role-caption)', color: 'var(--text-secondary)', lineHeight: 1.45 }}>
         {desktop
-          ? `Connect your own ${providerLabel} account to tutor with it. Proctorly uses your subscription — nothing extra to pay.`
-          : 'The AI tutor runs in the Proctorly desktop app.'}
+          ? `Connect your own ${providerLabel} account to tutor with it. Strix uses your subscription — nothing extra to pay.`
+          : 'The AI tutor runs in the Strix desktop app.'}
       </span>
       {desktop && (
         <Button variant="primary" fullWidth onClick={onConnect}>
