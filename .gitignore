@@ -46,3 +46,6 @@ next-env.d.ts
 # playwright + local screenshots
 .playwright-mcp/
 /*.png
+
+# electron-builder output
+/dist-app

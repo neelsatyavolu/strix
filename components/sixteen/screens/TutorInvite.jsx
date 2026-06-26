@@ -22,7 +22,9 @@ function TutorInvite({ go }) {
     }).catch(() => {});
   }, []);
 
-  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+  // Prefer the public site URL so links open for remote tutors (the desktop app
+  // runs on localhost, but invites must point at the hosted Vercel server).
+  const origin = process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
   const link = token ? `${origin}/join/${token}` : '';
 
   const generate = async () => {
