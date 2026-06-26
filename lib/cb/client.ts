@@ -129,14 +129,11 @@ export async function drawQuestions(opts: DrawOptions): Promise<Question[]> {
   if (difficulty) stubs = stubs.filter((s) => s.difficulty === difficulty);
   if (preferQbank) stubs = stubs.filter((s) => s.externalId);
 
-  const picked = shuffle(stubs).slice(0, Math.max(0, limit) * 2); // overdraw for failures
-  const out: Question[] = [];
-  for (const stub of picked) {
-    if (out.length >= limit) break;
-    const q = await getQuestion(stub);
-    if (q && q.stemHtml) out.push(q);
-  }
-  return out;
+  // Overdraw a buffer to tolerate the odd failed detail fetch, then fetch
+  // details concurrently (much faster for full 22–27 question modules).
+  const picked = shuffle(stubs).slice(0, Math.max(0, limit) + 6);
+  const fetched = await Promise.all(picked.map((stub) => getQuestion(stub)));
+  return fetched.filter((q): q is Question => !!q && !!q.stemHtml).slice(0, limit);
 }
 
 /** Fetch a single question by external_id (used for resume / direct lookup). */

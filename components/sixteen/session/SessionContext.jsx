@@ -1,10 +1,11 @@
 'use client';
 
 import React from 'react';
+import { scaledSectionScore, routeModule2 } from '@/lib/scoring/curve';
 
-// Client-side practice session: fetches real College Board questions for the
-// chosen config, tracks responses/flags as the student works, and computes a
-// result on submit. (Server persistence is layered on once auth is wired.)
+// Client-side practice session. Supports two shapes:
+//  - drill / mock-m1: a single fixed set of real CB questions, scored on submit.
+//  - mock-full: adaptive Module 1 -> (route) -> Module 2A/2B, scaled on the curve.
 
 const SessionContext = React.createContext(null);
 
@@ -21,47 +22,68 @@ function normalizeSpr(s) {
 }
 
 function isResponseCorrect(question, response) {
-  if (!response) return false;
+  if (!response?.value) return false;
   if (question.type === 'spr') {
     const given = normalizeSpr(response.value);
-    if (!given) return false;
-    return (question.correct || []).some((k) => normalizeSpr(k) === given);
+    return !!given && (question.correct || []).some((k) => normalizeSpr(k) === given);
   }
   return (question.correct || []).includes(response.value);
 }
 
+async function fetchQuestions({ section, category, difficulty, limit }) {
+  const params = new URLSearchParams({ section, difficulty: difficulty ?? 'all', limit: String(limit) });
+  if (category) params.set('category', category);
+  const res = await fetch(`/api/questions?${params.toString()}`);
+  const json = await res.json();
+  if (!json.success || !json.data?.questions?.length) {
+    throw new Error(json.error || 'No questions were returned. Try a different filter.');
+  }
+  return json.data.questions;
+}
+
+const EMPTY = {
+  status: 'idle', // idle | loading | active | submitted | error
+  phase: 'drill', // drill | m1 | review | m2 | done
+  mode: null,
+  section: null,
+  config: null,
+  modules: [], // [{ key, label, variant, questions }]
+  activeModuleIndex: 0,
+  responses: {}, // questionId -> { value, flagged }
+  index: 0,
+  error: null,
+  startedAt: null,
+  m2Variant: null, // 'easy' | 'hard'
+};
+
 export function PracticeSessionProvider({ children }) {
-  const [state, setState] = React.useState({
-    status: 'idle', // idle | loading | active | submitted | error
-    config: null,
-    questions: [],
-    index: 0,
-    responses: {}, // questionId -> { value, flagged }
-    error: null,
-    startedAt: null,
-  });
+  const [state, setState] = React.useState(EMPTY);
+  const m2PromiseRef = React.useRef(null);
+  // Always-fresh snapshot of state for use inside event handlers (avoids stale
+  // closures and lets us navigate without calling setState side-effects in render).
+  const stateRef = React.useRef(state);
+  stateRef.current = state;
 
   const start = React.useCallback(async (config) => {
-    setState((s) => ({ ...s, status: 'loading', config, questions: [], index: 0, responses: {}, error: null }));
+    const mode = config.mode ?? 'drill';
+    const section = config.section;
+    m2PromiseRef.current = null;
+    setState({ ...EMPTY, status: 'loading', mode, section, config });
     try {
-      const isDrill = (config.mode ?? 'drill') === 'drill';
-      const limit = isDrill ? (config.count ?? 10) : SECTION_LEN[config.section] ?? 22;
-      const params = new URLSearchParams({
-        section: config.section,
-        difficulty: config.difficulty ?? 'all',
-        limit: String(limit),
+      const isDrill = mode === 'drill';
+      const limit = isDrill ? (config.count ?? 10) : SECTION_LEN[section] ?? 22;
+      const questions = await fetchQuestions({
+        section,
+        category: isDrill ? config.category : undefined,
+        difficulty: isDrill ? config.difficulty : 'all',
+        limit,
       });
-      if (isDrill && config.category) params.set('category', config.category);
-
-      const res = await fetch(`/api/questions?${params.toString()}`);
-      const json = await res.json();
-      if (!json.success || !json.data?.questions?.length) {
-        throw new Error(json.error || 'No questions were returned. Try a different filter.');
-      }
       setState((s) => ({
         ...s,
         status: 'active',
-        questions: json.data.questions,
+        phase: mode === 'mock-full' ? 'm1' : 'drill',
+        modules: [{ key: 'm1', label: mode === 'drill' ? 'Drill' : 'Module 1', variant: null, questions }],
+        activeModuleIndex: 0,
         index: 0,
         responses: {},
         startedAt: Date.now(),
@@ -71,81 +93,148 @@ export function PracticeSessionProvider({ children }) {
     }
   }, []);
 
-  const setValue = React.useCallback((value) => {
+  const updateResponse = (patch) =>
     setState((s) => {
-      const q = s.questions[s.index];
+      const q = s.modules[s.activeModuleIndex]?.questions[s.index];
       if (!q) return s;
       const prev = s.responses[q.id] || {};
-      return { ...s, responses: { ...s.responses, [q.id]: { ...prev, value } } };
+      return { ...s, responses: { ...s.responses, [q.id]: { ...prev, ...patch } } };
     });
-  }, []);
 
-  const toggleFlag = React.useCallback(() => {
+  const setValue = React.useCallback((value) => updateResponse({ value }), []);
+  const toggleFlag = React.useCallback(() =>
     setState((s) => {
-      const q = s.questions[s.index];
+      const q = s.modules[s.activeModuleIndex]?.questions[s.index];
       if (!q) return s;
       const prev = s.responses[q.id] || {};
       return { ...s, responses: { ...s.responses, [q.id]: { ...prev, flagged: !prev.flagged } } };
+    }), []);
+
+  const goTo = React.useCallback((i) =>
+    setState((s) => {
+      const len = s.modules[s.activeModuleIndex]?.questions.length ?? 0;
+      return { ...s, index: Math.max(0, Math.min(len - 1, i)) };
+    }), []);
+  const next = React.useCallback(() =>
+    setState((s) => {
+      const len = s.modules[s.activeModuleIndex]?.questions.length ?? 0;
+      return { ...s, index: Math.min(len - 1, s.index + 1) };
+    }), []);
+  const prev = React.useCallback(() => setState((s) => ({ ...s, index: Math.max(0, s.index - 1) })), []);
+
+  const submit = React.useCallback(() => setState((s) => ({ ...s, status: 'submitted', phase: 'done' })), []);
+  const reset = React.useCallback(() => { m2PromiseRef.current = null; setState(EMPTY); }, []);
+
+  // End the active module. For mock-full M1, route and load Module 2 then go to
+  // the review screen; otherwise finalize and go to the report.
+  const finishModule = React.useCallback((go) => {
+    const s = stateRef.current;
+    if (s.mode !== 'mock-full' || s.phase !== 'm1') {
+      setState((prev) => ({ ...prev, status: 'submitted', phase: 'done' }));
+      go('score-report');
+      return;
+    }
+    // route based on Module 1 performance
+    const m1 = s.modules[0];
+    const correct = m1.questions.filter((q) => isResponseCorrect(q, s.responses[q.id])).length;
+    const variant = routeModule2(correct, m1.questions.length);
+    // kick off Module 2 fetch
+    m2PromiseRef.current = fetchQuestions({
+      section: s.section,
+      difficulty: variant === 'hard' ? 'hard' : 'easy',
+      limit: SECTION_LEN[s.section] ?? 22,
     });
+    setState((prev) => ({ ...prev, phase: 'review', m2Variant: variant }));
+    go('module-review');
   }, []);
 
-  const goTo = React.useCallback((i) => {
-    setState((s) => ({ ...s, index: Math.max(0, Math.min(s.questions.length - 1, i)) }));
-  }, []);
-
-  const next = React.useCallback(() => {
-    setState((s) => ({ ...s, index: Math.min(s.questions.length - 1, s.index + 1) }));
-  }, []);
-
-  const prev = React.useCallback(() => {
-    setState((s) => ({ ...s, index: Math.max(0, s.index - 1) }));
-  }, []);
-
-  const submit = React.useCallback(() => {
-    setState((s) => ({ ...s, status: 'submitted' }));
-  }, []);
-
-  const reset = React.useCallback(() => {
-    setState({ status: 'idle', config: null, questions: [], index: 0, responses: {}, error: null, startedAt: null });
+  const startModule2 = React.useCallback(async (go) => {
+    setState((s) => ({ ...s, status: 'loading' }));
+    try {
+      const all = await m2PromiseRef.current;
+      // A question can appear in both modules (both draw from the same pool);
+      // drop any that were already in Module 1 so ids stay unique.
+      const m1Ids = new Set((stateRef.current.modules[0]?.questions || []).map((q) => q.id));
+      const questions = (all || []).filter((q) => !m1Ids.has(q.id));
+      setState((s) => ({
+        ...s,
+        status: 'active',
+        phase: 'm2',
+        modules: [...s.modules.slice(0, 1), { key: 'm2', label: s.m2Variant === 'hard' ? 'Module 2B' : 'Module 2A', variant: s.m2Variant, questions }],
+        activeModuleIndex: 1,
+        index: 0,
+      }));
+      go(stateRef.current.section === 'math' ? 'math-question' : 'rw-question', { kind: 'module' });
+    } catch (err) {
+      setState((s) => ({ ...s, status: 'error', error: err instanceof Error ? err.message : 'Failed to load Module 2' }));
+    }
   }, []);
 
   // ---- derived ----
-  const current = state.questions[state.index] || null;
-  const answeredCount = state.questions.filter((q) => state.responses[q.id]?.value).length;
+  const activeModule = state.modules[state.activeModuleIndex] || null;
+  const questions = activeModule?.questions || [];
+  const current = questions[state.index] || null;
+  const answeredCount = questions.filter((q) => state.responses[q.id]?.value).length;
 
-  const result = React.useMemo(() => {
-    if (!state.questions.length) return null;
-    const review = state.questions.map((q) => {
+  const buildResult = (qs) => {
+    const review = qs.map((q) => {
       const r = state.responses[q.id];
       return { question: q, response: r || null, isCorrect: isResponseCorrect(q, r) };
     });
     const correct = review.filter((x) => x.isCorrect).length;
-    const total = state.questions.length;
+    const total = qs.length;
     const byDomainMap = new Map();
     for (const x of review) {
-      const key = x.question.domain;
-      const e = byDomainMap.get(key) || { domain: key, label: x.question.domainLabel, correct: 0, total: 0 };
+      const e = byDomainMap.get(x.question.domain) || { domain: x.question.domain, label: x.question.domainLabel, correct: 0, total: 0 };
       e.total += 1;
       if (x.isCorrect) e.correct += 1;
-      byDomainMap.set(key, e);
+      byDomainMap.set(x.question.domain, e);
     }
+    return { correct, total, accuracy: total ? Math.round((correct / total) * 100) : 0, byDomain: [...byDomainMap.values()], review };
+  };
+
+  const moduleResult = React.useCallback((i) => {
+    const m = state.modules[i];
+    return m ? buildResult(m.questions) : null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.modules, state.responses]);
+
+  const result = React.useMemo(() => {
+    const allQs = state.modules.flatMap((m) => m.questions);
+    if (!allQs.length) return null;
+    const base = buildResult(allQs);
+    const routedEasy = state.m2Variant === 'easy';
+    const scaled = state.mode && state.mode !== 'drill'
+      ? scaledSectionScore(base.correct, base.total, routedEasy)
+      : null;
     return {
-      section: state.config?.section,
-      mode: state.config?.mode,
-      correct,
-      total,
-      accuracy: total ? Math.round((correct / total) * 100) : 0,
-      byDomain: [...byDomainMap.values()],
-      review,
+      ...base,
+      section: state.section,
+      mode: state.mode,
+      scaled,
+      routedEasy,
+      m2Variant: state.m2Variant,
       elapsedMs: state.startedAt ? Date.now() - state.startedAt : 0,
     };
-  }, [state.questions, state.responses, state.config, state.startedAt]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.modules, state.responses, state.mode, state.section, state.m2Variant, state.startedAt]);
 
   const value = {
-    ...state,
+    status: state.status,
+    phase: state.phase,
+    mode: state.mode,
+    section: state.section,
+    config: state.config,
+    error: state.error,
+    index: state.index,
+    m2Variant: state.m2Variant,
+    activeModule,
+    questions,
+    responses: state.responses,
     current,
     answeredCount,
     result,
+    moduleResult,
     start,
     setValue,
     toggleFlag,
@@ -153,6 +242,8 @@ export function PracticeSessionProvider({ children }) {
     next,
     prev,
     submit,
+    finishModule,
+    startModule2,
     reset,
     isResponseCorrect,
   };

@@ -10,10 +10,70 @@ import { usePracticeSession } from '@/components/sixteen/session/SessionContext'
 
 function ScoreReport({ go }) {
   const session = usePracticeSession();
-  if (session.status === 'submitted' && session.result && session.config?.mode === 'drill') {
-    return <DrillReport go={go} session={session} />;
+  if (session.status === 'submitted' && session.result) {
+    if (session.config?.mode === 'drill') return <DrillReport go={go} session={session} />;
+    return <SectionReport go={go} session={session} />;
   }
   return <FullSectionReport go={go} />;
+}
+
+function SectionReport({ go, session }) {
+  const { Card, Button, Badge } = SixteenNS;
+  const r = session.result;
+  const sectionLabel = r.section === 'math' ? 'Math' : 'Reading & Writing';
+  const sectionColor = r.section === 'math' ? 'var(--math-color)' : 'var(--rw-color)';
+  const routedLabel = r.m2Variant === 'hard' ? 'Module 2B (harder)' : r.m2Variant === 'easy' ? 'Module 2A (easier)' : null;
+
+  return (
+    <div style={{ padding: '36px 48px', maxWidth: 920, margin: '0 auto' }}>
+      <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>
+        Section score · {sectionLabel}
+      </span>
+      <h1 style={{ margin: '4px 0 0', font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>You finished the section.</h1>
+      <p style={{ margin: '4px 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
+        Estimated on a representative curve{routedLabel ? `. You were routed to ${routedLabel}.` : '.'} Real scores use College Board&rsquo;s per-form equating.
+      </p>
+
+      <Card padding="xl" style={{ marginBottom: 18 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 28, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', fontSize: 64, fontWeight: 600, color: sectionColor, lineHeight: 1 }}>
+              {r.scaled}
+            </div>
+            <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
+              {sectionLabel} · /800
+            </div>
+          </div>
+          <div style={{ flex: 1, minWidth: 240 }}>
+            <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 8 }}>
+              {r.correct} of {r.total} correct · {r.accuracy}% accuracy
+            </div>
+            {r.byDomain.map((b) => (
+              <div key={b.domain} style={{ display: 'grid', gridTemplateColumns: '1fr 90px 54px', gap: 10, padding: '7px 0', alignItems: 'center' }}>
+                <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)' }}>{b.label}</span>
+                <div style={{ height: 6, background: 'var(--sunken)', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ width: `${(b.correct / b.total) * 100}%`, height: '100%', background: b.correct === b.total ? 'var(--success)' : 'var(--brand-blue)' }} />
+                </div>
+                <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', textAlign: 'right' }}>{b.correct} / {b.total}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Card>
+
+      <h2 style={{ margin: '0 0 12px', font: 'var(--role-title-md)' }}>Question review</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {r.review.map((item, i) => (
+          <ReviewItem key={item.question.id} item={item} n={i + 1} />
+        ))}
+      </div>
+
+      <div style={{ marginTop: 22, display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+        <Button variant="ghost" onClick={() => { session.reset(); go('dashboard'); }}>Back to home</Button>
+        <Button variant="primary" onClick={() => { session.reset(); go('practice-setup', { domain: r.section }); }}>New section</Button>
+      </div>
+    </div>
+  );
 }
 
 function DrillReport({ go, session }) {

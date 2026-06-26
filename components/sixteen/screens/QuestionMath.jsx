@@ -78,7 +78,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   });
 
   const onNext = () => {
-    if (session.index >= total - 1) { session.submit(); go('score-report'); }
+    if (session.index >= total - 1) session.finishModule(go);
     else session.next();
   };
 
@@ -90,7 +90,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   return (
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', background: '#FFFFFF' }}>
       <TestHeader
-        sectionLabel={`Math${session.config?.mode === 'drill' ? ' — Drill' : ', Module 1'}`}
+        sectionLabel={session.activeModule?.label === 'Drill' ? 'Math — Drill' : `Math, ${session.activeModule?.label || 'Module 1'}`}
         timer={<Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
         tools={<>
           <MathToolBtn label="Calculator" icon="square-function" active={calcOpen} onClick={() => setCalcOpen(!calcOpen)} />
@@ -157,9 +157,9 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         <div style={{ position: 'absolute', bottom: 'calc(var(--test-footer-height) + 12px)', left: '50%', transform: 'translateX(-50%)', zIndex: 20 }}>
           <QuestionPalette
             items={items}
-            title={`${session.config?.mode === 'drill' ? 'Math — Drill' : 'Section 2, Module 1: Math'}`}
+            title={session.activeModule?.label === 'Drill' ? 'Math — Drill' : `Math — ${session.activeModule?.label || 'Module 1'}`}
             onSelect={(n) => { session.goTo(n - 1); setPaletteOpen(false); }}
-            onReviewAll={() => { session.submit(); go('score-report'); }}
+            onReviewAll={() => { setPaletteOpen(false); session.finishModule(go); }}
           />
         </div>
       )}
