@@ -30,6 +30,7 @@ function PracticeSetup({ go, initial = {} }) {
   const startLabel =
     mode === 'drill'      ? `Start drill · ${count} questions` :
     mode === 'mock-m1'    ? 'Start Module 1' :
+    mode === 'mock-exam'  ? 'Start full SAT' :
                             'Start Module 1 → Module 2';
 
   return (
@@ -41,26 +42,28 @@ function PracticeSetup({ go, initial = {} }) {
       </p>
 
       <div style={{display:'flex', flexDirection:'column', gap: 18}}>
-        <Card padding="lg">
-          <label style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)', display:'block', marginBottom: 10}}>
-            Section
-          </label>
-          <SegmentedControl
-            value={domain}
-            onChange={setDomain}
-            fullWidth
-            options={[
-              { value:'rw',   label:'Reading & Writing' },
-              { value:'math', label:'Math' },
-            ]}
-          />
-        </Card>
+        {mode !== 'mock-exam' && (
+          <Card padding="lg">
+            <label style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)', display:'block', marginBottom: 10}}>
+              Section
+            </label>
+            <SegmentedControl
+              value={domain}
+              onChange={setDomain}
+              fullWidth
+              options={[
+                { value:'rw',   label:'Reading & Writing' },
+                { value:'math', label:'Math' },
+              ]}
+            />
+          </Card>
+        )}
 
         <Card padding="lg">
           <label style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)', display:'block', marginBottom: 10}}>
             Mode
           </label>
-          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: 10}}>
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap: 10}}>
             <ModeTile
               selected={mode === 'drill'}
               onClick={() => setMode('drill')}
@@ -81,6 +84,14 @@ function PracticeSetup({ go, initial = {} }) {
               title="Full section"
               sub="Module 1 + adaptive Module 2 · scored on the curve"
               icon="layers"
+              badge={<Badge variant="brand" size="sm">SCORED</Badge>}
+            />
+            <ModeTile
+              selected={mode === 'mock-exam'}
+              onClick={() => setMode('mock-exam')}
+              title="Full SAT"
+              sub="Both sections · 10-min break · scored 400–1600"
+              icon="graduation-cap"
               badge={<Badge variant="brand" size="sm">SCORED</Badge>}
             />
           </div>
@@ -152,7 +163,9 @@ function PracticeSetup({ go, initial = {} }) {
               <div style={{flex: 1}}>
                 <span style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)'}}>Timing</span>
                 <p style={{margin:'4px 0 0', font:'var(--role-body)', color:'var(--text-body)'}}>
-                  {mode === 'mock-m1'
+                  {mode === 'mock-exam'
+                    ? 'A full SAT: Reading & Writing (two 32-min modules), a 10-minute break, then Math (two 35-min modules). Each module auto-advances when time runs out. Scored 400–1600.'
+                    : mode === 'mock-m1'
                     ? (domain === 'rw'
                       ? 'Module 1 is timed at 32 minutes for 27 questions — the real SAT pace. The clock starts when you tap Start.'
                       : 'Module 1 is timed at 35 minutes for 22 questions — the real SAT pace. The clock starts when you tap Start.')
@@ -166,7 +179,9 @@ function PracticeSetup({ go, initial = {} }) {
                 fontWeight: 600, fontSize: 32, color: 'var(--ink-1)',
                 background: 'var(--sunken)', padding: '8px 14px', borderRadius: 'var(--radius-md)',
               }}>
-                {mode === 'mock-m1'
+                {mode === 'mock-exam'
+                  ? '2h14'
+                  : mode === 'mock-m1'
                   ? (domain === 'rw' ? '32:00' : '35:00')
                   : (domain === 'rw' ? '64:00' : '70:00')}
               </div>
@@ -177,8 +192,13 @@ function PracticeSetup({ go, initial = {} }) {
         <div style={{display:'flex', justifyContent:'flex-end', gap: 10, marginTop: 4}}>
           <Button variant="ghost" onClick={() => go('dashboard')}>Cancel</Button>
           <Button variant="primary" size="lg" onClick={() => {
-            session.start({ section: domain, mode, category: cat, difficulty: diff, count });
-            go(domain === 'math' ? 'math-question' : 'rw-question', { kind: mode === 'drill' ? 'drill' : 'module' });
+            if (mode === 'mock-exam') {
+              session.start({ mode: 'mock-exam' });
+              go('rw-question', { kind: 'module' }); // a full SAT always opens with R&W
+            } else {
+              session.start({ section: domain, mode, category: cat, difficulty: diff, count });
+              go(domain === 'math' ? 'math-question' : 'rw-question', { kind: mode === 'drill' ? 'drill' : 'module' });
+            }
           }}>
             {startLabel}
           </Button>

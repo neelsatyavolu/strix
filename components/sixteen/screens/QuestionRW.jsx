@@ -3,6 +3,7 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
+import Highlightable from '@/components/sixteen/test/Highlightable';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
 
@@ -24,12 +25,25 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
   const [eliminator, setEliminator] = React.useState(false);
   const [elim, setElim] = React.useState({}); // questionId -> Set(letters)
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
+  const [annotate, setAnnotate] = React.useState(false);
+  const [marks, setMarks] = React.useState({}); // questionId -> { passage, stem } highlighted HTML
+  const expiredRef = React.useRef(false);
 
   React.useEffect(() => {
     if (session.config?.timing === 'untimed') return;
     const id = setInterval(() => setSeconds((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(id);
   }, [session.config]);
+
+  // Bluebook auto-advances when a module's time runs out (you can't return to it).
+  React.useEffect(() => {
+    if (session.config?.timing === 'untimed') return;
+    if (seconds === 0 && !expiredRef.current) {
+      expiredRef.current = true;
+      session.finishModule(go);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seconds]);
 
   if (session.status === 'loading') return <TestLoading label="Loading Reading & Writing questions…" />;
   if (session.status === 'error') return <TestMessage title="Couldn't load questions" body={session.error} onHome={() => go('practice-setup', { domain: 'rw' })} />;
@@ -75,7 +89,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
         sectionLabel={session.activeModule?.label === 'Drill' ? 'Reading & Writing — Drill' : `Reading & Writing, ${session.activeModule?.label || 'Module 1'}`}
         timer={<Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
         tools={<>
-          <ToolBtn label="Annotate" icon="pencil-line" />
+          <ToolBtn label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
           <ToolBtn label="Tutor" icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
           <ToolBtn label="More" icon="more-vertical" />
         </>}
@@ -87,7 +101,13 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
         {q.stimulusHtml && (
           <>
             <div style={{ overflow: 'auto', padding: '36px 56px 48px' }}>
-              <div className="cb-passage" dangerouslySetInnerHTML={{ __html: q.stimulusHtml }} />
+              <Highlightable
+                className="cb-passage"
+                html={q.stimulusHtml}
+                active={annotate}
+                value={marks[q.id]?.passage}
+                onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], passage: h } }))}
+              />
             </div>
             <div style={{ background: '#C8C8CC' }} />
           </>
@@ -107,7 +127,13 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
               <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
             </>}
           />
-          <div className="cb-stem" dangerouslySetInnerHTML={{ __html: q.stemHtml }} />
+          <Highlightable
+            className="cb-stem"
+            html={q.stemHtml}
+            active={annotate}
+            value={marks[q.id]?.stem}
+            onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], stem: h } }))}
+          />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 22 }}>
             {q.choices.map((o) => (
               <OptionRow

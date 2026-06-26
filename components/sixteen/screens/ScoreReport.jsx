@@ -141,7 +141,7 @@ function DrillReport({ go, session }) {
   );
 }
 
-function ReviewItem({ item, n }) {
+export function ReviewItem({ item, n }) {
   const { Card, Badge } = SixteenNS;
   const [open, setOpen] = React.useState(false);
   const { question: q, response, isCorrect } = item;
@@ -158,6 +158,7 @@ function ReviewItem({ item, n }) {
           {isCorrect ? 'Correct' : answered ? 'Incorrect' : 'Skipped'}
         </Badge>
         <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>{q.domainLabel}{q.skillLabel ? ` · ${q.skillLabel}` : ''}</span>
+        {item.isPretest && <Badge variant="neutral" size="sm">Unscored</Badge>}
         <span style={{ marginLeft: 'auto', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>Difficulty {q.difficulty}</span>
       </div>
 

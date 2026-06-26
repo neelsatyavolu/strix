@@ -9,6 +9,8 @@ import QuestionRW from './screens/QuestionRW';
 import QuestionMath from './screens/QuestionMath';
 import ModuleReview from './screens/ModuleReview';
 import ScoreReport from './screens/ScoreReport';
+import ExamBreak from './screens/ExamBreak';
+import ExamReport from './screens/ExamReport';
 import Stats from './screens/Stats';
 import TutorInvite from './screens/TutorInvite';
 import TutorChat from './screens/TutorChat';
@@ -52,6 +54,8 @@ function App() {
     'math-question': 'math',
     'module-review': 'rw',
     'score-report': 'home',
+    'exam-break': 'home',
+    'exam-report': 'home',
     'stats': 'stats',
     'tutor-chat': 'tutor',
     'tutor-invite': 'tutor',
@@ -145,6 +149,8 @@ function App() {
     case 'math-question':   screen = <QuestionMath go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'module-review':   screen = <ModuleReview go={go} />; break;
     case 'score-report':    screen = <ScoreReport go={go} />; break;
+    case 'exam-break':      screen = <ExamBreak go={go} />; break;
+    case 'exam-report':     screen = <ExamReport go={go} />; break;
     case 'stats':           screen = <Stats go={go} />; break;
     case 'tutor-invite':    screen = <TutorInvite go={go} />; break;
     case 'tutor-chat':      screen = <TutorChat go={go} />; break;
@@ -182,6 +188,8 @@ function titleFor(view, isTutor) {
     'math-question': 'Strix — Math',
     'module-review': 'Strix — Module review',
     'score-report': 'Strix — Score report',
+    'exam-break': 'Strix — Break',
+    'exam-report': 'Strix — Full SAT',
     'stats': 'Strix — Stats',
     'tutor-chat': 'Strix — Tutor',
     'tutor-invite': 'Strix — Tutor',

@@ -3,9 +3,10 @@
 import React from 'react';
 import { scaledSectionScore, routeModule2 } from '@/lib/scoring/curve';
 
-// Client-side practice session. Supports two shapes:
+// Client-side practice session. Shapes:
 //  - drill / mock-m1: a single fixed set of real CB questions, scored on submit.
 //  - mock-full: adaptive Module 1 -> (route) -> Module 2A/2B, scaled on the curve.
+//  - mock-exam: a full SAT — R&W (full) -> 10-min break -> Math (full) -> composite.
 
 const SessionContext = React.createContext(null);
 
@@ -15,7 +16,11 @@ export function usePracticeSession() {
   return ctx;
 }
 
-const SECTION_LEN = { rw: 27, math: 22 };
+const EXAM_SECTIONS = ['rw', 'math'];
+
+function isFullSection(mode) {
+  return mode === 'mock-full' || mode === 'mock-exam';
+}
 
 function normalizeSpr(s) {
   return String(s ?? '').trim().replace(/\s+/g, '').toLowerCase();
@@ -30,9 +35,18 @@ function isResponseCorrect(question, response) {
   return (question.correct || []).includes(response.value);
 }
 
-async function fetchQuestions({ section, category, difficulty, limit }) {
-  const params = new URLSearchParams({ section, difficulty: difficulty ?? 'all', limit: String(limit) });
-  if (category) params.set('category', category);
+// Mark ~2 questions per module as unscored "pretest" items, like the real test.
+function pickPretest(questions, n = 2) {
+  if (!questions || questions.length <= n) return [];
+  const pool = questions.map((q) => q.id);
+  const chosen = [];
+  for (let i = 0; i < n && pool.length; i++) {
+    chosen.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+  }
+  return chosen;
+}
+
+async function requestQuestions(params) {
   const res = await fetch(`/api/questions?${params.toString()}`);
   const json = await res.json();
   if (!json.success || !json.data?.questions?.length) {
@@ -41,15 +55,32 @@ async function fetchQuestions({ section, category, difficulty, limit }) {
   return json.data.questions;
 }
 
-function buildReview(questions, responses) {
+// Drill: a flat, filtered set (category + difficulty).
+async function fetchQuestions({ section, category, difficulty, limit }) {
+  const params = new URLSearchParams({ section, difficulty: difficulty ?? 'all', limit: String(limit) });
+  if (category) params.set('category', category);
+  return requestQuestions(params);
+}
+
+// Mock: a blueprinted full SAT module (domain-ordered, difficulty-ramped).
+async function fetchModule({ section, profile = 'mixed', exclude }) {
+  const params = new URLSearchParams({ section, mode: 'module', profile });
+  if (exclude?.length) params.set('exclude', exclude.join(','));
+  return requestQuestions(params);
+}
+
+function buildReview(questions, responses, pretestIds = []) {
+  const pretest = new Set(pretestIds);
   const review = questions.map((q) => {
     const r = responses[q.id];
-    return { question: q, response: r || null, isCorrect: isResponseCorrect(q, r) };
+    return { question: q, response: r || null, isCorrect: isResponseCorrect(q, r), isPretest: pretest.has(q.id) };
   });
-  const correct = review.filter((x) => x.isCorrect).length;
-  const total = questions.length;
+  // Operational (scored) items only — unscored pretest items don't count.
+  const scored = review.filter((x) => !x.isPretest);
+  const correct = scored.filter((x) => x.isCorrect).length;
+  const total = scored.length;
   const byDomainMap = new Map();
-  for (const x of review) {
+  for (const x of scored) {
     const e = byDomainMap.get(x.question.domain) || { domain: x.question.domain, label: x.question.domainLabel, correct: 0, total: 0 };
     e.total += 1;
     if (x.isCorrect) e.correct += 1;
@@ -58,15 +89,24 @@ function buildReview(questions, responses) {
   return { correct, total, accuracy: total ? Math.round((correct / total) * 100) : 0, byDomain: [...byDomainMap.values()], review };
 }
 
-// Persist a finalized session to the Vercel server (non-blocking).
+// Snapshot a finished section (used for the full-exam composite report).
+function sectionSnapshot(state) {
+  const allQs = state.modules.flatMap((m) => m.questions);
+  const base = buildReview(allQs, state.responses, state.pretestIds);
+  const scaled = scaledSectionScore(base.correct, base.total, state.m2Variant === 'easy', state.section);
+  return { ...base, section: state.section, scaled, m2Variant: state.m2Variant };
+}
+
+// Persist a finalized section to the Vercel server (non-blocking).
 async function persistSession(state) {
   try {
     const all = state.modules.flatMap((m) => m.questions.map((q) => ({ q, moduleKey: m.key })));
     if (!all.length) return;
-    const base = buildReview(all.map((x) => x.q), state.responses);
+    const base = buildReview(all.map((x) => x.q), state.responses, state.pretestIds);
     const scaled = state.mode && state.mode !== 'drill'
-      ? scaledSectionScore(base.correct, base.total, state.m2Variant === 'easy')
+      ? scaledSectionScore(base.correct, base.total, state.m2Variant === 'easy', state.section)
       : null;
+    const pretest = new Set(state.pretestIds || []);
     const questions = all.map(({ q, moduleKey }, i) => {
       const r = state.responses[q.id];
       return {
@@ -77,7 +117,7 @@ async function persistSession(state) {
         difficulty: q.difficulty,
         ordinal: i,
         module: moduleKey,
-        snapshot: q,
+        snapshot: { ...q, pretest: pretest.has(q.id) },
         value: r?.value ?? null,
         is_correct: isResponseCorrect(q, r),
         time_ms: null,
@@ -88,9 +128,10 @@ async function persistSession(state) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        mode: state.mode,
+        // 'mock-exam' isn't a DB mode; each section persists as a full section.
+        mode: state.mode === 'mock-exam' ? 'mock-full' : state.mode,
         section: state.section,
-        config: state.config || {},
+        config: { ...(state.config || {}), exam: state.mode === 'mock-exam' },
         score_correct: base.correct,
         score_total: base.total,
         accuracy: base.accuracy,
@@ -112,39 +153,50 @@ const EMPTY = {
   modules: [], // [{ key, label, variant, questions }]
   activeModuleIndex: 0,
   responses: {}, // questionId -> { value, flagged }
+  pretestIds: [], // unscored question ids for the current section
   index: 0,
   error: null,
   startedAt: null,
   m2Variant: null, // 'easy' | 'hard'
+  exam: null, // { sections, index, results: [sectionSnapshot] } for a full SAT
 };
 
 export function PracticeSessionProvider({ children }) {
   const [state, setState] = React.useState(EMPTY);
   const m2PromiseRef = React.useRef(null);
-  // Always-fresh snapshot of state for use inside event handlers (avoids stale
-  // closures and lets us navigate without calling setState side-effects in render).
+  // Always-fresh snapshot of state for use inside event handlers.
   const stateRef = React.useRef(state);
   stateRef.current = state;
 
   const start = React.useCallback(async (config) => {
     const mode = config.mode ?? 'drill';
-    const section = config.section;
+    const isExam = mode === 'mock-exam';
+    const section = isExam ? EXAM_SECTIONS[0] : config.section;
     m2PromiseRef.current = null;
-    setState({ ...EMPTY, status: 'loading', mode, section, config });
+    setState({
+      ...EMPTY,
+      status: 'loading',
+      mode,
+      section,
+      config,
+      exam: isExam ? { sections: EXAM_SECTIONS, index: 0, results: [] } : null,
+    });
     try {
       const isDrill = mode === 'drill';
-      const limit = isDrill ? (config.count ?? 10) : SECTION_LEN[section] ?? 22;
-      const questions = await fetchQuestions({
-        section,
-        category: isDrill ? config.category : undefined,
-        difficulty: isDrill ? config.difficulty : 'all',
-        limit,
-      });
+      const questions = isDrill
+        ? await fetchQuestions({
+            section,
+            category: config.category,
+            difficulty: config.difficulty,
+            limit: config.count ?? 10,
+          })
+        : await fetchModule({ section, profile: 'mixed' });
       setState((s) => ({
         ...s,
         status: 'active',
-        phase: mode === 'mock-full' ? 'm1' : 'drill',
+        phase: isFullSection(mode) ? 'm1' : 'drill',
         modules: [{ key: 'm1', label: mode === 'drill' ? 'Drill' : 'Module 1', variant: null, questions }],
+        pretestIds: isDrill ? [] : pickPretest(questions),
         activeModuleIndex: 0,
         index: 0,
         responses: {},
@@ -189,36 +241,51 @@ export function PracticeSessionProvider({ children }) {
   }, []);
   const reset = React.useCallback(() => { m2PromiseRef.current = null; setState(EMPTY); }, []);
 
-  // End the active module. For mock-full M1, route and load Module 2 then go to
-  // the review screen; otherwise finalize and go to the report.
+  // End the active module. Full-section M1 -> route + load M2 -> review screen.
+  // Otherwise the section is done: advance the exam, or finalize the report.
   const finishModule = React.useCallback((go) => {
     const s = stateRef.current;
-    if (s.mode !== 'mock-full' || s.phase !== 'm1') {
-      persistSession(s);
-      setState((prev) => ({ ...prev, status: 'submitted', phase: 'done' }));
-      go('score-report');
+
+    if (isFullSection(s.mode) && s.phase === 'm1') {
+      const m1 = s.modules[0];
+      const correct = m1.questions.filter((q) => isResponseCorrect(q, s.responses[q.id])).length;
+      const variant = routeModule2(correct, m1.questions.length);
+      m2PromiseRef.current = fetchModule({
+        section: s.section,
+        profile: variant === 'hard' ? 'hard' : 'easy',
+        exclude: m1.questions.map((q) => q.id),
+      });
+      setState((prev) => ({ ...prev, phase: 'review', m2Variant: variant }));
+      go('module-review');
       return;
     }
-    // route based on Module 1 performance
-    const m1 = s.modules[0];
-    const correct = m1.questions.filter((q) => isResponseCorrect(q, s.responses[q.id])).length;
-    const variant = routeModule2(correct, m1.questions.length);
-    // kick off Module 2 fetch
-    m2PromiseRef.current = fetchQuestions({
-      section: s.section,
-      difficulty: variant === 'hard' ? 'hard' : 'easy',
-      limit: SECTION_LEN[s.section] ?? 22,
-    });
-    setState((prev) => ({ ...prev, phase: 'review', m2Variant: variant }));
-    go('module-review');
+
+    // Section complete.
+    if (s.exam) {
+      persistSession(s);
+      const snapshot = sectionSnapshot(s);
+      const nextIndex = s.exam.index + 1;
+      const results = [...s.exam.results, snapshot];
+      if (nextIndex < s.exam.sections.length) {
+        setState((prev) => ({ ...prev, status: 'submitted', phase: 'done', exam: { ...prev.exam, index: nextIndex, results } }));
+        go('exam-break');
+      } else {
+        setState((prev) => ({ ...prev, status: 'submitted', phase: 'done', exam: { ...prev.exam, results } }));
+        go('exam-report');
+      }
+      return;
+    }
+
+    persistSession(s);
+    setState((prev) => ({ ...prev, status: 'submitted', phase: 'done' }));
+    go('score-report');
   }, []);
 
   const startModule2 = React.useCallback(async (go) => {
     setState((s) => ({ ...s, status: 'loading' }));
     try {
       const all = await m2PromiseRef.current;
-      // A question can appear in both modules (both draw from the same pool);
-      // drop any that were already in Module 1 so ids stay unique.
+      // Belt-and-suspenders: drop any id already in Module 1 (server already excludes).
       const m1Ids = new Set((stateRef.current.modules[0]?.questions || []).map((q) => q.id));
       const questions = (all || []).filter((q) => !m1Ids.has(q.id));
       setState((s) => ({
@@ -226,6 +293,7 @@ export function PracticeSessionProvider({ children }) {
         status: 'active',
         phase: 'm2',
         modules: [...s.modules.slice(0, 1), { key: 'm2', label: s.m2Variant === 'hard' ? 'Module 2B' : 'Module 2A', variant: s.m2Variant, questions }],
+        pretestIds: [...s.pretestIds, ...pickPretest(questions)],
         activeModuleIndex: 1,
         index: 0,
       }));
@@ -235,19 +303,47 @@ export function PracticeSessionProvider({ children }) {
     }
   }, []);
 
+  // Full SAT: after the break, load Module 1 of the next section.
+  const startExamNextSection = React.useCallback(async (go) => {
+    const s = stateRef.current;
+    if (!s.exam) return;
+    const section = s.exam.sections[s.exam.index];
+    m2PromiseRef.current = null;
+    setState((prev) => ({ ...prev, status: 'loading', section }));
+    try {
+      const questions = await fetchModule({ section, profile: 'mixed' });
+      setState((prev) => ({
+        ...prev,
+        status: 'active',
+        phase: 'm1',
+        section,
+        modules: [{ key: 'm1', label: 'Module 1', variant: null, questions }],
+        pretestIds: pickPretest(questions),
+        activeModuleIndex: 0,
+        index: 0,
+        responses: {},
+        m2Variant: null,
+        startedAt: Date.now(),
+      }));
+      go(section === 'math' ? 'math-question' : 'rw-question', { kind: 'module' });
+    } catch (err) {
+      setState((prev) => ({ ...prev, status: 'error', error: err instanceof Error ? err.message : 'Failed to load the next section' }));
+    }
+  }, []);
+
   // ---- derived ----
   const activeModule = state.modules[state.activeModuleIndex] || null;
   const questions = activeModule?.questions || [];
   const current = questions[state.index] || null;
   const answeredCount = questions.filter((q) => state.responses[q.id]?.value).length;
 
-  const buildResult = (qs) => buildReview(qs, state.responses);
+  const buildResult = (qs) => buildReview(qs, state.responses, state.pretestIds);
 
   const moduleResult = React.useCallback((i) => {
     const m = state.modules[i];
     return m ? buildResult(m.questions) : null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.modules, state.responses]);
+  }, [state.modules, state.responses, state.pretestIds]);
 
   const result = React.useMemo(() => {
     const allQs = state.modules.flatMap((m) => m.questions);
@@ -255,7 +351,7 @@ export function PracticeSessionProvider({ children }) {
     const base = buildResult(allQs);
     const routedEasy = state.m2Variant === 'easy';
     const scaled = state.mode && state.mode !== 'drill'
-      ? scaledSectionScore(base.correct, base.total, routedEasy)
+      ? scaledSectionScore(base.correct, base.total, routedEasy, state.section)
       : null;
     return {
       ...base,
@@ -267,7 +363,7 @@ export function PracticeSessionProvider({ children }) {
       elapsedMs: state.startedAt ? Date.now() - state.startedAt : 0,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.modules, state.responses, state.mode, state.section, state.m2Variant, state.startedAt]);
+  }, [state.modules, state.responses, state.pretestIds, state.mode, state.section, state.m2Variant, state.startedAt]);
 
   const value = {
     status: state.status,
@@ -278,6 +374,7 @@ export function PracticeSessionProvider({ children }) {
     error: state.error,
     index: state.index,
     m2Variant: state.m2Variant,
+    exam: state.exam,
     activeModule,
     questions,
     responses: state.responses,
@@ -294,6 +391,7 @@ export function PracticeSessionProvider({ children }) {
     submit,
     finishModule,
     startModule2,
+    startExamNextSection,
     reset,
     isResponseCorrect,
   };

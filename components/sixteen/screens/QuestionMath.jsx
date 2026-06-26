@@ -4,6 +4,7 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import renderMathInElement from 'katex/contrib/auto-render';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
+import Highlightable from '@/components/sixteen/test/Highlightable';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
 
@@ -27,12 +28,25 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
   const [eliminator, setEliminator] = React.useState(false);
   const [elim, setElim] = React.useState({});
+  const [annotate, setAnnotate] = React.useState(false);
+  const [marks, setMarks] = React.useState({}); // questionId -> { stem } highlighted HTML
+  const expiredRef = React.useRef(false);
 
   React.useEffect(() => {
     if (session.config?.timing === 'untimed') return;
     const id = setInterval(() => setSeconds((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(id);
   }, [session.config]);
+
+  // Bluebook auto-advances when a module's time runs out (you can't return to it).
+  React.useEffect(() => {
+    if (session.config?.timing === 'untimed') return;
+    if (seconds === 0 && !expiredRef.current) {
+      expiredRef.current = true;
+      session.finishModule(go);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seconds]);
 
   React.useEffect(() => {
     const el = document.getElementById('math-q-area');
@@ -47,7 +61,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         });
       } catch { /* MathML renders natively; ignore KaTeX failures */ }
     }
-  }, [q?.id, calcOpen, formulaOpen]);
+  }, [q?.id, calcOpen, formulaOpen, marks]);
 
   if (session.status === 'loading') return <TestLoading label="Loading Math questions…" />;
   if (session.status === 'error') return <TestMessage title="Couldn't load questions" body={session.error} onHome={() => go('practice-setup', { domain: 'math' })} />;
@@ -95,6 +109,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         tools={<>
           <MathToolBtn label="Calculator" icon="square-function" active={calcOpen} onClick={() => setCalcOpen(!calcOpen)} />
           <MathToolBtn label="Reference" icon="book-marked" active={formulaOpen} onClick={() => setFormulaOpen(!formulaOpen)} />
+          <MathToolBtn label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
           <MathToolBtn label="Tutor" icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
           <MathToolBtn label="More" icon="more-vertical" />
         </>}
@@ -119,7 +134,13 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
               <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
             </>}
           />
-          <div className="cb-stem" dangerouslySetInnerHTML={{ __html: q.stemHtml }} />
+          <Highlightable
+            className="cb-stem"
+            html={q.stemHtml}
+            active={annotate}
+            value={marks[q.id]?.stem}
+            onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], stem: h } }))}
+          />
 
           {q.type === 'spr' ? (
             <GridIn value={ans || ''} onChange={(v) => session.setValue(v)} />

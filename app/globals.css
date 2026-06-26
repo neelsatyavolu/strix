@@ -116,3 +116,14 @@ math {
 [data-theme="dark"] .cb-stem {
   color: var(--text-primary);
 }
+/* Bluebook-style highlighter (see components/sixteen/test/Highlightable.jsx) */
+mark.cb-hl {
+  background: #fce588;
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+[data-theme="dark"] mark.cb-hl {
+  background: #8a6d00;
+  color: #fff;
+}
