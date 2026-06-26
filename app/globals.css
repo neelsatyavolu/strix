@@ -38,3 +38,59 @@ body {
   width: min(1280px, calc(100vw - 32px));
   height: min(800px, calc(100vh - 32px));
 }
+
+/* Rendered College Board question HTML (passage / stem / choices). */
+.cb-passage {
+  font-family: var(--font-passage);
+  font-size: 17px;
+  line-height: 1.6;
+  color: #1d1d1f;
+  text-wrap: pretty;
+}
+.cb-passage p {
+  margin: 0 0 1em;
+}
+.cb-passage p:last-child {
+  margin-bottom: 0;
+}
+.cb-stem {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1d1d1f;
+}
+.cb-stem p {
+  margin: 0 0 0.6em;
+}
+.cb-stem p:last-child {
+  margin-bottom: 0;
+}
+.cb-choice p {
+  margin: 0;
+}
+.cb-passage table,
+.cb-stem table {
+  border-collapse: collapse;
+  margin: 0.6em 0;
+  font-size: 0.95em;
+}
+.cb-passage th,
+.cb-passage td,
+.cb-stem th,
+.cb-stem td {
+  border: 1px solid var(--border-2);
+  padding: 4px 10px;
+}
+.cb-passage img,
+.cb-stem img,
+.cb-choice img {
+  max-width: 100%;
+  height: auto;
+}
+math {
+  font-size: 1.05em;
+}
+[data-theme="dark"] .cb-passage,
+[data-theme="dark"] .cb-stem {
+  color: var(--text-primary);
+}

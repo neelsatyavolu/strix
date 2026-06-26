@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 const DIFF_MAP: Record<string, Difficulty | null> = {
   all: null,
   easy: "E",
+  med: "M",
   medium: "M",
   hard: "H",
   E: "E",

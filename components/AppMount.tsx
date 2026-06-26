@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { PracticeSessionProvider } from "@/components/sixteen/session/SessionContext";
 
 // The Sixteen app is a stateful client SPA (the design's interactive click-thru).
 // Render it client-only — there's no SSR benefit and it sidesteps window/document
@@ -10,5 +11,9 @@ const SixteenApp = dynamic(() => import("@/components/sixteen/SixteenApp"), {
 });
 
 export default function AppMount() {
-  return <SixteenApp />;
+  return (
+    <PracticeSessionProvider>
+      <SixteenApp />
+    </PracticeSessionProvider>
+  );
 }

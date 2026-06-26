@@ -10,6 +10,7 @@ export function QuestionPalette({
   items,
   onSelect,
   onReviewAll,
+  title = 'Section 1, Module 1: Reading and Writing',
   style: styleProp,
 }) {
   return (
@@ -30,7 +31,7 @@ export function QuestionPalette({
         alignItems: 'center',
       }}>
         <span style={{ font: 'var(--role-title-sm)', color: 'var(--ink-1)' }}>
-          Section 1, Module 1: Reading and Writing
+          {title}
         </span>
       </div>
       <div style={{

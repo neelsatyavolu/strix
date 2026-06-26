@@ -2,174 +2,160 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
-import { SixteenData } from '@/lib/mockData';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
+import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
+import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
 
-// QuestionRW — Bluebook-faithful Reading & Writing question screen.
+// QuestionRW — Bluebook-faithful Reading & Writing question screen, driven by
+// real College Board questions from the practice session.
 
-function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'drill', role = 'student' }) {
-  const isTutor = role === 'tutor';
+function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'drill' }) {
   const NS = SixteenNS;
   const {
-    TestHeader, DirectionsBar, Timer, IconButton, TestFooter,
+    TestHeader, DirectionsBar, Timer, TestFooter,
     OptionRow, QuestionPalette, FlagButton, QuestionNumberBadge,
   } = NS;
-  const d = SixteenData;
-  const q = d.rwQuestion;
-  const mod = d.rwModule;
+  const session = usePracticeSession();
+  const q = session.current;
 
-  const [seconds, setSeconds] = React.useState(28 * 60 + 14);
+  const [seconds, setSeconds] = React.useState(32 * 60);
   const [hidden, setHidden] = React.useState(false);
-  const [ans, setAns] = React.useState(isTutor ? 'B' : null);   // tutor watches Maya's pick
-  const [elim, setElim] = React.useState(new Set(isTutor ? ['A'] : []));
-  const [marked, setMarked] = React.useState(true);
   const [paletteOpen, setPaletteOpen] = React.useState(false);
   const [eliminator, setEliminator] = React.useState(false);
+  const [elim, setElim] = React.useState({}); // questionId -> Set(letters)
   const [directionsOpen, setDirectionsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    const id = setInterval(() => setSeconds(s => Math.max(0, s - 1)), 1000);
+    if (session.config?.timing === 'untimed') return;
+    const id = setInterval(() => setSeconds((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [session.config]);
 
-  const tog = (l) => { const s = new Set(elim); s.has(l) ? s.delete(l) : s.add(l); setElim(s); };
+  if (session.status === 'loading') return <TestLoading label="Loading Reading & Writing questions…" />;
+  if (session.status === 'error') return <TestMessage title="Couldn't load questions" body={session.error} onHome={() => go('practice-setup', { domain: 'rw' })} />;
+  if (!q) return <TestMessage title="No active session" body="Start a practice session to begin." onHome={() => go('practice-setup', { domain: 'rw' })} />;
 
-  const items = Array.from({length: mod.total}, (_, i) => {
-    const n = i + 1;
+  const total = session.questions.length;
+  const resp = session.responses[q.id] || {};
+  const ans = resp.value || null;
+  const marked = !!resp.flagged;
+  const elimSet = elim[q.id] || new Set();
+  const tog = (l) =>
+    setElim((prev) => {
+      const s = new Set(prev[q.id] || []);
+      s.has(l) ? s.delete(l) : s.add(l);
+      return { ...prev, [q.id]: s };
+    });
+
+  const items = session.questions.map((qq, i) => {
     let status = 'unanswered';
-    if (mod.answered.has(n)) status = 'answered';
-    if (n === mod.current) status = 'current';
-    return { n, status, marked: mod.marked.has(n) };
+    if (session.responses[qq.id]?.value) status = 'answered';
+    if (i === session.index) status = 'current';
+    return {
+      n: i + 1,
+      status,
+      marked: !!session.responses[qq.id]?.flagged,
+      onClick: () => { session.goTo(i); setPaletteOpen(false); },
+    };
   });
 
-  const I = (n, size = 18) => React.createElement(Icon, { name: n, size });
+  const onNext = () => {
+    if (session.index >= total - 1) { session.submit(); go('score-report'); }
+    else session.next();
+  };
+
+  const answered = session.answeredCount;
+  const liveCorrect = (session.result?.review || []).filter((r) => r.response?.value && r.isCorrect).length;
+  const liveAcc = answered ? Math.round((liveCorrect / answered) * 100) : 0;
+  const median = answered ? Math.round((session.result?.elapsedMs || 0) / 1000 / answered) : 0;
 
   return (
-    <div style={{
-      position:'relative', display:'flex', flexDirection:'column',
-      height:'100%', background:'#FFFFFF',
-    }}>
+    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', background: '#FFFFFF' }}>
       <TestHeader
-        sectionLabel={mod.title}
+        sectionLabel={`Reading & Writing${session.config?.mode === 'drill' ? ' — Drill' : ', Module 1'}`}
         timer={<Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
         tools={<>
           <ToolBtn label="Annotate" icon="pencil-line" />
-          <ToolBtn label="Tutor"     icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
-          <ToolBtn label="More"      icon="more-vertical" />
+          <ToolBtn label="Tutor" icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
+          <ToolBtn label="More" icon="more-vertical" />
         </>}
       />
 
-      <DirectionsBar onDirections={() => setDirectionsOpen(d => !d)} />
+      <DirectionsBar onDirections={() => setDirectionsOpen((v) => !v)} />
 
-      <div style={{ flex: 1, display:'grid', gridTemplateColumns:'1fr 1px 1fr', overflow:'hidden' }}>
-        {/* Passage */}
-        <div style={{ overflow:'auto', padding: '36px 56px 48px' }}>
-          <p style={{
-            fontFamily:'var(--font-passage)',
-            fontSize: 17, lineHeight: 1.6, color:'#1D1D1F',
-            margin: 0,
-            textWrap: 'pretty',
-          }}>
-            {q.passage.split('there was no need to hurry').map((part, i, arr) => i === arr.length - 1 ? part : (
-              <React.Fragment key={i}>
-                {part}
-                <mark style={{background:'#FFEB80', color:'inherit', padding:'1px 0'}}>there was no need to hurry</mark>
-              </React.Fragment>
-            ))}
-          </p>
-        </div>
-
-        {/* Divider */}
-        <div style={{background:'#C8C8CC'}}/>
-
-        {/* Question */}
-        <div style={{ overflow:'auto', padding: '24px 56px 48px', position:'relative' }}>
-          <QuestionNumberBadge
-            n={q.n}
-            flag={isTutor ? (
-              <span style={{display:'inline-flex', alignItems:'center', gap:6, font:'var(--role-caption)', color:'var(--test-flag)'}}>
-                <Icon name="eye" style={{width:14, height:14}}/> Watching
-              </span>
-            ) : (<>
-              <button onClick={() => setEliminator(e => !e)} title="Cross out answers" style={{
-                display:'inline-flex', alignItems:'center', gap: 4,
-                padding: '3px 8px',
-                background: eliminator ? '#1D1D1F' : 'transparent',
-                color: eliminator ? '#fff' : '#1D1D1F',
-                border: '1px solid #1D1D1F', borderRadius: 3,
-                cursor: 'pointer',
-                font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
-                textDecoration: 'line-through',
-                textDecorationThickness: '1.5px',
-                marginRight: 8,
-              }}>ABC</button>
-              <FlagButton marked={marked} onClick={() => setMarked(!marked)} />
-            </>)}
-          />
-          {isTutor && (
-            <div style={{display:'flex', alignItems:'center', gap:8, padding:'8px 12px', marginBottom: 14, background:'var(--brand-blue-soft)', borderRadius:'var(--radius-md)'}}>
-              <Icon name="lock" style={{width:13, height:13, color:'var(--brand-blue)'}}/>
-              <span style={{font:'var(--role-caption)', color:'var(--brand-ink)'}}>Maya selected <strong>B</strong>. You can see her work but can’t change her answer.</span>
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: q.stimulusHtml ? '1fr 1px 1fr' : '1fr', overflow: 'hidden' }}>
+        {q.stimulusHtml && (
+          <>
+            <div style={{ overflow: 'auto', padding: '36px 56px 48px' }}>
+              <div className="cb-passage" dangerouslySetInnerHTML={{ __html: q.stimulusHtml }} />
             </div>
-          )}
-          <p style={{
-            fontFamily:'var(--font-sans)',
-            fontSize: 16, lineHeight: 1.5,
-            color:'#1D1D1F', margin:'0 0 22px', fontWeight: 400,
-          }}>{q.prompt}</p>
-          <div style={{display:'flex', flexDirection:'column', gap: 10}}>
-            {q.options.map(o => (
+            <div style={{ background: '#C8C8CC' }} />
+          </>
+        )}
+
+        <div style={{ overflow: 'auto', padding: '24px 56px 48px', position: 'relative' }}>
+          <QuestionNumberBadge
+            n={session.index + 1}
+            flag={<>
+              <button onClick={() => setEliminator((e) => !e)} title="Cross out answers" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
+                background: eliminator ? '#1D1D1F' : 'transparent', color: eliminator ? '#fff' : '#1D1D1F',
+                border: '1px solid #1D1D1F', borderRadius: 3, cursor: 'pointer',
+                font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
+                textDecoration: 'line-through', textDecorationThickness: '1.5px', marginRight: 8,
+              }}>ABC</button>
+              <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
+            </>}
+          />
+          <div className="cb-stem" dangerouslySetInnerHTML={{ __html: q.stemHtml }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 22 }}>
+            {q.choices.map((o) => (
               <OptionRow
                 key={o.letter}
                 letter={o.letter}
                 selected={ans === o.letter}
-                eliminated={elim.has(o.letter)}
-                showEliminator={!isTutor && eliminator}
-                onSelect={isTutor ? undefined : () => setAns(o.letter)}
+                eliminated={elimSet.has(o.letter)}
+                showEliminator={eliminator}
+                onSelect={() => session.setValue(o.letter)}
                 onToggleEliminate={() => tog(o.letter)}
-                style={isTutor ? { cursor:'default', pointerEvents: o.letter === ans ? 'auto' : 'none' } : undefined}
-              >{o.text}</OptionRow>
+              >
+                <span className="cb-choice" dangerouslySetInnerHTML={{ __html: o.html }} />
+              </OptionRow>
             ))}
           </div>
         </div>
 
         {kind === 'drill' && statsOn && (
-          <SessionStats
-            answered={13} total={mod.total} accuracy={78} median={48}
-            hidden={false} onToggle={() => setStatsOn(false)}
-          />
+          <SessionStats answered={answered} total={total} accuracy={liveAcc} median={median} hidden={false} onToggle={() => setStatsOn(false)} />
         )}
         {kind === 'drill' && !statsOn && (
           <SessionStats hidden={true} onToggle={() => setStatsOn(true)} />
         )}
       </div>
 
-      {/* Question palette popover */}
       {paletteOpen && (
-        <div style={{
-          position:'absolute', bottom: 'calc(var(--test-footer-height) + 12px)',
-          left: '50%', transform:'translateX(-50%)', zIndex: 20,
-        }}>
+        <div style={{ position: 'absolute', bottom: 'calc(var(--test-footer-height) + 12px)', left: '50%', transform: 'translateX(-50%)', zIndex: 20 }}>
           <QuestionPalette
             items={items}
-            onSelect={() => setPaletteOpen(false)}
-            onReviewAll={() => setPaletteOpen(false)}
+            title={`${session.config?.mode === 'drill' ? 'Reading & Writing — Drill' : 'Section 1, Module 1: Reading and Writing'}`}
+            onSelect={(n) => { session.goTo(n - 1); setPaletteOpen(false); }}
+            onReviewAll={() => { session.submit(); go('score-report'); }}
           />
         </div>
       )}
-      {paletteOpen && <div onClick={() => setPaletteOpen(false)} style={{position:'absolute', inset: 0, background:'rgba(0,0,0,0.10)', zIndex: 10}} />}
+      {paletteOpen && <div onClick={() => setPaletteOpen(false)} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.10)', zIndex: 10 }} />}
 
-      {/* Directions modal */}
       {directionsOpen && <DirectionsModal onClose={() => setDirectionsOpen(false)} />}
 
       <TestFooter
-        studentName={d.student.name}
-        current={mod.current} total={mod.total}
-        onPalette={() => setPaletteOpen(o => !o)}
+        studentName="You"
+        current={session.index + 1}
+        total={total}
+        onPalette={() => setPaletteOpen((o) => !o)}
         paletteOpen={paletteOpen}
-        onBack={() => {}}
-        onNext={() => go('module-review')}
-        nextLabel="Next"
+        onBack={() => session.prev()}
+        onNext={onNext}
+        nextLabel={session.index >= total - 1 ? 'Submit' : 'Next'}
       />
     </div>
   );
@@ -184,16 +170,15 @@ function ToolBtn({ label, icon, active = false, onClick }) {
       onMouseLeave={() => setHover(false)}
       title={label}
       style={{
-        display:'flex', flexDirection:'column', alignItems:'center', gap: 2,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
         padding: '4px 8px', height: 'auto',
         background: active ? 'rgba(255,255,255,0.18)' : (hover ? 'rgba(255,255,255,0.10)' : 'transparent'),
-        color: '#fff', border: 0, cursor: 'pointer',
-        borderRadius: 4,
+        color: '#fff', border: 0, cursor: 'pointer', borderRadius: 4,
         font: 'var(--role-caption)', fontWeight: 500, fontSize: 11,
         transition: 'background var(--dur-fast) var(--ease-out)',
       }}
     >
-      <Icon name={icon} style={{width:18, height:18, color: '#fff'}}/>
+      <Icon name={icon} style={{ width: 18, height: 18, color: '#fff' }} />
       <span>{label}</span>
     </button>
   );
@@ -201,17 +186,13 @@ function ToolBtn({ label, icon, active = false, onClick }) {
 
 function DirectionsModal({ onClose }) {
   return (
-    <div style={{position:'absolute', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 50, display:'grid', placeItems:'center'}}>
-      <div style={{
-        width: 520, maxWidth: '90%', maxHeight: '80%',
-        background: '#FFFFFF', borderRadius: 8, boxShadow: 'var(--shadow-xl)',
-        overflow:'auto',
-      }}>
-        <div style={{padding: '16px 20px', borderBottom:'1px solid var(--border-1)', display:'flex', justifyContent:'space-between'}}>
-          <h2 style={{margin:0, font:'var(--role-title-sm)'}}>Section Directions</h2>
-          <button onClick={onClose} style={{border:0, background:'transparent', cursor:'pointer', fontSize: 18, color:'var(--text-secondary)'}}>×</button>
+    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 50, display: 'grid', placeItems: 'center' }}>
+      <div style={{ width: 520, maxWidth: '90%', maxHeight: '80%', background: '#FFFFFF', borderRadius: 8, boxShadow: 'var(--shadow-xl)', overflow: 'auto' }}>
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-1)', display: 'flex', justifyContent: 'space-between' }}>
+          <h2 style={{ margin: 0, font: 'var(--role-title-sm)' }}>Section Directions</h2>
+          <button onClick={onClose} style={{ border: 0, background: 'transparent', cursor: 'pointer', fontSize: 18, color: 'var(--text-secondary)' }}>×</button>
         </div>
-        <div style={{padding: 20, font:'var(--role-body-lg)', color:'var(--ink-1)', lineHeight: 1.55}}>
+        <div style={{ padding: 20, font: 'var(--role-body-lg)', color: 'var(--ink-1)', lineHeight: 1.55 }}>
           <p>The questions in this section address a number of important reading and writing skills. Each question includes one or more passages, which may include a table or graph. Read each passage and question carefully, and then choose the best answer to the question based on the passage(s).</p>
           <p>All questions in this section are multiple-choice with four answer choices. Each question has a single best answer.</p>
         </div>

@@ -3,12 +3,14 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { SixteenData } from '@/lib/mockData';
+import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 
 // PracticeSetup — pick section, mock module vs targeted drill, category, difficulty.
 
 function PracticeSetup({ go, initial = {} }) {
   const { Card, Button, Badge, SegmentedControl, Tabs } = SixteenNS;
   const d = SixteenData;
+  const session = usePracticeSession();
   const [domain, setDomain] = React.useState(initial.domain || 'rw');
   const [mode, setMode] = React.useState('drill'); // 'drill' | 'mock-m1' | 'mock-full'
   const [cat, setCat] = React.useState('info');
@@ -168,7 +170,10 @@ function PracticeSetup({ go, initial = {} }) {
 
         <div style={{display:'flex', justifyContent:'flex-end', gap: 10, marginTop: 4}}>
           <Button variant="ghost" onClick={() => go('dashboard')}>Cancel</Button>
-          <Button variant="primary" size="lg" onClick={() => go(domain === 'math' ? 'math-question' : 'rw-question', { kind: mode === 'drill' ? 'drill' : 'module' })}>
+          <Button variant="primary" size="lg" onClick={() => {
+            session.start({ section: domain, mode, category: cat, difficulty: diff, count });
+            go(domain === 'math' ? 'math-question' : 'rw-question', { kind: mode === 'drill' ? 'drill' : 'module' });
+          }}>
             {startLabel}
           </Button>
         </div>
