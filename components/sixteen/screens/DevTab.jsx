@@ -76,7 +76,7 @@ export default function DevTab() {
   const kindLabel = (k) => KINDS.find((x) => x.value === k)?.label ?? k;
 
   return (
-    <div style={{ padding: 24, maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div style={{ padding: '28px 36px', display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div>
         <div style={{ font: 'var(--role-title)', color: 'var(--text-primary)' }}>Dev — seed activity</div>
         <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginTop: 4 }}>

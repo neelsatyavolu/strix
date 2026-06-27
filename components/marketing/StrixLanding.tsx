@@ -410,7 +410,7 @@ export default function StrixLanding({ authed }: { authed: boolean }) {
                 <div className="feat">
                   <span className="ic"><Timer /></span>
                   <h3>Real timing</h3>
-                  <p>Module timers, a soft pulse under five minutes, and a between-module review screen.</p>
+                  <p>Separately timed modules, a soft pulse under five minutes, and a 10-minute break between sections.</p>
                 </div>
                 <div className="feat">
                   <span className="ic"><Calculator /></span>

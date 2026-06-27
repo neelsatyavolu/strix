@@ -36,6 +36,27 @@ function sessionLabel(s) {
   return `${sec} · Full section`;
 }
 
+// Caption under "Last session" — describes what the last session was, so a full
+// module/section/SAT reads as such instead of being mislabelled with a topic.
+function lastSessionLabel(ls, section) {
+  if (!ls) return 'No sessions yet';
+  if (ls.mode === 'mock-m1') return 'Module 1';
+  if (ls.mode === 'mock-full') return ls.exam ? 'Full SAT' : 'Full section';
+  if (ls.category) {
+    const code = CATEGORY_TO_DOMAIN[ls.category];
+    const label = code ? domainLabel(section, code) : null;
+    if (label) return label;
+  }
+  return 'Drill';
+}
+
+// Format a section-score delta as a signed badge string ('+20' / '-10'),
+// suppressing it when there's no movement or no prior score to compare.
+function trendBadge(score, delta) {
+  if (score == null || !delta) return undefined;
+  return delta > 0 ? `+${delta}` : String(delta);
+}
+
 // Placeholder shown on first load so the score/section cards never flash
 // zero-valued data before the real stats arrive.
 function DashboardSkeleton() {
@@ -81,11 +102,10 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
 
   const scores = stats?.scores || { rw: null, math: null, total: null };
   const totals = stats?.sectionTotals || { rw: { done: 0, correct: 0 }, math: { done: 0, correct: 0 } };
-  const lastAcc = stats?.lastAccuracy || { rw: null, math: null };
-  const cats = stats?.categories || { rw: [], math: [] };
+  const lastSession = stats?.lastSession || { rw: null, math: null };
+  const trend = stats?.trend || { rw: null, math: null };
   const focus = stats?.focus || [];
   const acc = (sec) => (totals[sec].done ? Math.round((totals[sec].correct / totals[sec].done) * 100) : 0);
-  const topCat = (sec) => (cats[sec] || []).slice().sort((a, b) => b.done - a.done)[0];
   const hasData = (stats?.sessionCount || 0) > 0;
 
   // One-click launch into a focused drill on a recommended weak skill.
@@ -96,7 +116,7 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
   };
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 980 }}>
+    <div style={{ padding: '28px 36px' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 22 }}>
         <div>
           <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>{greeting()}, {firstName}.</h1>
@@ -142,7 +162,8 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 20 }}>
         {['rw', 'math'].map((sec) => {
-          const tc = topCat(sec);
+          const ls = lastSession[sec];
+          const sc = scores[sec];
           return (
             <Card key={sec} padding="lg">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -152,8 +173,9 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
               <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 14 }}>
                 <AccuracyRing value={acc(sec)} size={64} color={sec === 'rw' ? 'var(--rw-color)' : 'var(--math-color)'} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
+                  <StatCard label="Est. score" value={sc != null ? String(sc) : '—'} trend={trendBadge(sc, trend[sec])} domain={sec} size="sm" />
                   <StatCard label="Questions done" value={totals[sec].done} size="sm" />
-                  <StatCard label="Last session" value={lastAcc[sec] != null ? String(lastAcc[sec]) : '—'} unit={lastAcc[sec] != null ? '%' : ''} size="sm" sublabel={tc ? tc.label : 'No drills yet'} />
+                  <StatCard label="Last session" value={ls?.accuracy != null ? String(ls.accuracy) : '—'} unit={ls?.accuracy != null ? '%' : ''} size="sm" sublabel={lastSessionLabel(ls, sec)} />
                 </div>
               </div>
               <Button variant="outline" fullWidth disabled={readOnly} iconRight={<Icon name="chevron-right" style={{ width: 14, height: 14 }} />} onClick={() => !readOnly && go('practice-setup', { domain: sec })}>

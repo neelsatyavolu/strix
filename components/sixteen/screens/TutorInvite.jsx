@@ -45,7 +45,7 @@ function TutorInvite({ go }) {
   };
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 760 }}>
+    <div style={{ padding: '28px 36px' }}>
       <button onClick={() => go('dashboard')} style={{ font: 'var(--role-label)', color: 'var(--text-secondary)', background: 'transparent', border: 0, cursor: 'pointer', marginBottom: 6 }}>← Home</button>
       <h1 style={{ margin: '0 0 4px', font: 'var(--role-title-lg)' }}>Invite a tutor</h1>
       <p style={{ margin: '0 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>

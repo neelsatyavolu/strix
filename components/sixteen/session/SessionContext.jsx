@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { scaledSectionScore, routeModule2 } from '@/lib/scoring/curve';
+import { moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
 
 // Client-side practice session. Shapes:
 //  - drill / mock-m1: a single fixed set of real CB questions, scored on submit.
@@ -197,7 +198,6 @@ const EMPTY = {
 
 export function PracticeSessionProvider({ children }) {
   const [state, setState] = React.useState(EMPTY);
-  const m2PromiseRef = React.useRef(null);
   // Always-fresh snapshot of state for use inside event handlers.
   const stateRef = React.useRef(state);
   stateRef.current = state;
@@ -232,7 +232,6 @@ export function PracticeSessionProvider({ children }) {
     // can pair them back into a single test (composite 400–1600).
     const examId = isExam ? (globalThis.crypto?.randomUUID?.() ?? `exam-${Date.now()}`) : null;
     const sessionConfig = isExam ? { ...config, examId } : config;
-    m2PromiseRef.current = null;
     resetTiming();
     setState({
       ...EMPTY,
@@ -332,7 +331,7 @@ export function PracticeSessionProvider({ children }) {
   const submit = React.useCallback(() => {
     setState((s) => ({ ...s, status: 'submitted', phase: 'done' }));
   }, []);
-  const reset = React.useCallback(() => { m2PromiseRef.current = null; resetTiming(); setState(EMPTY); }, []);
+  const reset = React.useCallback(() => { resetTiming(); setState(EMPTY); }, []);
 
   // Leave a session early. General practice ('drill') saves the questions already
   // answered (first-attempt stats) and discards the rest; full modules/sections/
@@ -345,23 +344,39 @@ export function PracticeSessionProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reset]);
 
-  // End the active module. Full-section M1 -> route + load M2 -> review screen.
+  // End the active module. Full-section M1 -> route + load M2 immediately.
   // Otherwise the section is done: advance the exam, or finalize the report.
-  const finishModule = React.useCallback((go) => {
+  const finishModule = React.useCallback(async (go) => {
     const s = stateRef.current;
 
     if (isFullSection(s.mode) && s.phase === 'm1') {
-      flushTiming(Date.now()); // stop counting M1's last question while on the review screen
+      flushTiming(Date.now()); // stop counting M1's last question while Module 2 loads
       const m1 = s.modules[0];
-      const correct = m1.questions.filter((q) => isResponseCorrect(q, s.responses[q.id])).length;
-      const variant = routeModule2(correct, m1.questions.length);
-      m2PromiseRef.current = fetchModule({
-        section: s.section,
-        profile: variant === 'hard' ? 'hard' : 'easy',
-        exclude: m1.questions.map((q) => q.id),
-      });
-      setState((prev) => ({ ...prev, phase: 'review', m2Variant: variant }));
-      go('module-review');
+      const routing = moduleRoutingStats(m1.questions, s.responses, s.pretestIds, isResponseCorrect);
+      const variant = routeModule2(routing.correct, routing.total);
+      setState((prev) => ({ ...prev, status: 'loading', phase: 'm2', m2Variant: variant }));
+      try {
+        const all = await fetchModule({
+          section: s.section,
+          profile: variant === 'hard' ? 'hard' : 'easy',
+          exclude: m1.questions.map((q) => q.id),
+        });
+        // Belt-and-suspenders: drop any id already in Module 1 (server already excludes).
+        const m1Ids = new Set(m1.questions.map((q) => q.id));
+        const questions = (all || []).filter((q) => !m1Ids.has(q.id));
+        setState((prev) => ({
+          ...prev,
+          status: 'active',
+          phase: 'm2',
+          modules: [...prev.modules.slice(0, 1), { key: 'm2', label: variant === 'hard' ? 'Module 2B' : 'Module 2A', variant, questions }],
+          pretestIds: [...prev.pretestIds, ...pickPretest(questions)],
+          activeModuleIndex: 1,
+          index: 0,
+        }));
+        go(questionViewForSection(s.section), { kind: 'module' });
+      } catch (err) {
+        setState((prev) => ({ ...prev, status: 'error', error: err instanceof Error ? err.message : 'Failed to load Module 2' }));
+      }
       return;
     }
 
@@ -386,34 +401,11 @@ export function PracticeSessionProvider({ children }) {
     go('score-report');
   }, []);
 
-  const startModule2 = React.useCallback(async (go) => {
-    setState((s) => ({ ...s, status: 'loading' }));
-    try {
-      const all = await m2PromiseRef.current;
-      // Belt-and-suspenders: drop any id already in Module 1 (server already excludes).
-      const m1Ids = new Set((stateRef.current.modules[0]?.questions || []).map((q) => q.id));
-      const questions = (all || []).filter((q) => !m1Ids.has(q.id));
-      setState((s) => ({
-        ...s,
-        status: 'active',
-        phase: 'm2',
-        modules: [...s.modules.slice(0, 1), { key: 'm2', label: s.m2Variant === 'hard' ? 'Module 2B' : 'Module 2A', variant: s.m2Variant, questions }],
-        pretestIds: [...s.pretestIds, ...pickPretest(questions)],
-        activeModuleIndex: 1,
-        index: 0,
-      }));
-      go(stateRef.current.section === 'math' ? 'math-question' : 'rw-question', { kind: 'module' });
-    } catch (err) {
-      setState((s) => ({ ...s, status: 'error', error: err instanceof Error ? err.message : 'Failed to load Module 2' }));
-    }
-  }, []);
-
   // Full SAT: after the break, load Module 1 of the next section.
   const startExamNextSection = React.useCallback(async (go) => {
     const s = stateRef.current;
     if (!s.exam) return;
     const section = s.exam.sections[s.exam.index];
-    m2PromiseRef.current = null;
     setState((prev) => ({ ...prev, status: 'loading', section }));
     try {
       const questions = await fetchModule({ section, profile: 'mixed' });
@@ -509,7 +501,6 @@ export function PracticeSessionProvider({ children }) {
     prev,
     submit,
     finishModule,
-    startModule2,
     startExamNextSection,
     reset,
     exitSession,

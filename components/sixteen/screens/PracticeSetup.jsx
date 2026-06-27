@@ -34,7 +34,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
                             'Start Module 1 → Module 2';
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 880, margin: '0 auto' }}>
+    <div style={{ padding: '28px 36px' }}>
       <button onClick={() => go('dashboard')} style={{font:'var(--role-label)', color:'var(--text-secondary)', background:'transparent', border:0, cursor:'pointer', marginBottom: 6, padding: 0}}>← Home</button>
       <h1 style={{ margin: '0 0 4px', font:'var(--role-title-lg)' }}>Practice Setup</h1>
       <p style={{ margin: '0 0 22px', font:'var(--role-body-lg)', color:'var(--text-secondary)' }}>

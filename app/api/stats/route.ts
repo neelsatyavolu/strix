@@ -78,9 +78,11 @@ export async function GET(req: NextRequest) {
 
   const rwCats = emptyCats(RW_DOMAINS);
   const mathCats = emptyCats(MATH_DOMAINS);
-  const sectionTotals: Record<Section, { done: number; correct: number }> = {
-    rw: { done: 0, correct: 0 },
-    math: { done: 0, correct: 0 },
+  // Per-section tallies. wDone/wCorrect carry the same recency weighting as the
+  // category aggregates so section + overall accuracy reflect recent practice.
+  const sectionTotals: Record<Section, { done: number; correct: number; wDone: number; wCorrect: number }> = {
+    rw: { done: 0, correct: 0, wDone: 0, wCorrect: 0 },
+    math: { done: 0, correct: 0, wDone: 0, wCorrect: 0 },
   };
 
   // `answers` is ordered newest-first, so `rank` counts how many more-recent
@@ -99,7 +101,11 @@ export async function GET(req: NextRequest) {
     const cats = meta.section === "math" ? mathCats : rwCats;
     const c = cats.get(meta.domain);
     sectionTotals[meta.section].done += 1;
-    if (row.is_correct) sectionTotals[meta.section].correct += 1;
+    sectionTotals[meta.section].wDone += w;
+    if (row.is_correct) {
+      sectionTotals[meta.section].correct += 1;
+      sectionTotals[meta.section].wCorrect += w;
+    }
     if (c) {
       c.done += 1;
       c.wDone += w;
@@ -109,6 +115,16 @@ export async function GET(req: NextRequest) {
       }
     }
   }
+
+  // Section/overall accuracy: keep done/correct for raw counts (questions
+  // answered, correct/incorrect bars) and add recentAccuracy as the headline
+  // figure — recency-weighted, null when nothing's been answered.
+  const sectionAccuracy = (t: { done: number; correct: number; wDone: number; wCorrect: number }) => ({
+    done: t.done,
+    correct: t.correct,
+    accuracy: t.done ? Math.round((t.correct / t.done) * 100) : 0,
+    recentAccuracy: t.wDone > 0 ? Math.round((t.wCorrect / t.wDone) * 100) : null,
+  });
 
   const toCatList = (m: Map<string, CatAgg>) =>
     [...m.entries()].map(([code, c]) => ({
@@ -152,7 +168,7 @@ export async function GET(req: NextRequest) {
   // 2. sessions for scores-over-time + latest section scores + last-session accuracy
   const { data: sessions, error: sErr } = await supabase
     .from("practice_sessions")
-    .select("section, mode, scaled_score, accuracy, created_at")
+    .select("section, mode, config, scaled_score, accuracy, created_at")
     .eq("user_id", targetId)
     .order("created_at", { ascending: true })
     .limit(500);
@@ -169,9 +185,29 @@ export async function GET(req: NextRequest) {
     const list = scored.filter((s) => s.section === section);
     return list.length ? list[list.length - 1].scaled_score : null;
   };
-  const lastAccuracy = (section: Section) => {
+  // The most recent session in a section, described by *what it was* — full SAT,
+  // full section, single module, or a topic drill — so the dashboard can label
+  // its accuracy honestly instead of stamping it with an unrelated top category.
+  const lastSession = (section: Section) => {
     const list = (sessions ?? []).filter((s) => s.section === section);
-    return list.length ? list[list.length - 1].accuracy : null;
+    if (!list.length) return null;
+    const s = list[list.length - 1];
+    const cfg = (s.config ?? {}) as { exam?: unknown; category?: unknown };
+    return {
+      accuracy: s.accuracy,
+      mode: s.mode,
+      exam: !!cfg.exam,
+      category: typeof cfg.category === "string" ? cfg.category : null,
+    };
+  };
+  // Movement in the section estimate: latest full-section score minus the one
+  // before it. Null until there are two scored sections to compare.
+  const scoreTrend = (section: Section) => {
+    const list = scored.filter((s) => s.section === section);
+    if (list.length < 2) return null;
+    const latest = list[list.length - 1].scaled_score;
+    const prev = list[list.length - 2].scaled_score;
+    return latest != null && prev != null ? latest - prev : null;
   };
 
   const rwScore = latestScore("rw");
@@ -185,8 +221,20 @@ export async function GET(req: NextRequest) {
         math: mathScore,
         total: rwScore != null && mathScore != null ? rwScore + mathScore : null,
       },
-      sectionTotals,
-      lastAccuracy: { rw: lastAccuracy("rw"), math: lastAccuracy("math") },
+      sectionTotals: {
+        rw: sectionAccuracy(sectionTotals.rw),
+        math: sectionAccuracy(sectionTotals.math),
+        // Overall recency-weighted accuracy across both sections — weights are a
+        // single global ranking over all answers, so the tallies sum directly.
+        overall: sectionAccuracy({
+          done: sectionTotals.rw.done + sectionTotals.math.done,
+          correct: sectionTotals.rw.correct + sectionTotals.math.correct,
+          wDone: sectionTotals.rw.wDone + sectionTotals.math.wDone,
+          wCorrect: sectionTotals.rw.wCorrect + sectionTotals.math.wCorrect,
+        }),
+      },
+      lastSession: { rw: lastSession("rw"), math: lastSession("math") },
+      trend: { rw: scoreTrend("rw"), math: scoreTrend("math") },
       categories: { rw: rwList, math: mathList },
       focus,
       overTime: scored.map((s) => ({ section: s.section, score: s.scaled_score, at: s.created_at })),

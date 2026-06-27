@@ -10,12 +10,9 @@ import ClearDataDialog from './ClearDataDialog';
 
 // Settings — appearance, account, practice defaults.
 
-function Settings({ go, dark, setDark }) {
+function Settings({ go, theme, setTheme }) {
   const { Card, Toggle, SegmentedControl, Input, Avatar, Button, Badge } = SixteenNS;
   const { displayName, email, profile, signOut, refresh, user, avatarUrl } = useProfile();
-
-  const [theme, setTheme] = React.useState(dark ? 'dark' : 'light');
-  React.useEffect(() => { setDark(theme === 'dark'); }, [theme]);
 
   // Editable target score, seeded from the saved profile.
   const savedTarget = profile?.target_score ?? null;
@@ -178,7 +175,7 @@ function Settings({ go, dark, setDark }) {
   };
 
   return (
-    <div style={{padding: '28px 36px', maxWidth: 760}}>
+    <div style={{padding: '28px 36px'}}>
       <h1 style={{margin:'0 0 22px', font:'var(--role-title-lg)'}}>Settings</h1>
 
       <SectionHead label="Profile" />

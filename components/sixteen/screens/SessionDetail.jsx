@@ -38,7 +38,7 @@ function SessionDetail({ go, id }) {
   const drillCat = isDrill ? (data?.review || []).find((r) => r.question?.domainLabel)?.question?.domainLabel : null;
 
   return (
-    <div style={{ padding: '36px 48px', maxWidth: 920, margin: '0 auto' }}>
+    <div style={{ padding: '36px 48px' }}>
       <button
         onClick={() => go('stats')}
         style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'transparent', border: 0, cursor: 'pointer', color: 'var(--text-secondary)', font: 'var(--role-label)', padding: 0, marginBottom: 14 }}

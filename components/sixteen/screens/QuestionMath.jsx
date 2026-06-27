@@ -8,6 +8,7 @@ import Highlightable from '@/components/sixteen/test/Highlightable';
 import { ExitTest } from '@/components/sixteen/test/ExitTest';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
+import { moduleSubmitDisabled, moduleTimerSeconds } from '@/lib/practice/sessionLogic.mjs';
 
 // QuestionMath — Bluebook-faithful Math question (real CB items), with Desmos
 // calculator + reference sheet. Renders MathML natively and KaTeX for \(...\).
@@ -22,7 +23,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const q = session.current;
   const isDrill = session.mode === 'drill';
 
-  const [seconds, setSeconds] = React.useState(35 * 60);
+  const [seconds, setSeconds] = React.useState(moduleTimerSeconds('math'));
   const [hidden, setHidden] = React.useState(false);
   const [paletteOpen, setPaletteOpen] = React.useState(false);
   const [calcOpen, setCalcOpen] = React.useState(false);
@@ -79,11 +80,10 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const hasAnswer = !!(resp.value && String(resp.value).trim());
   const triedWrong = new Set(resp.tried || []);
   const blocked = isDrill && (q.type === 'spr' ? !hasAnswer : !solved);
-  // No skipping: every question must be answered before the session can be
-  // submitted (general practice and full modules alike). A timeout still ends it.
+  // General practice stays no-skip; scored modules can be submitted with blanks,
+  // which count wrong in the section score.
   const isLast = session.index >= total - 1;
-  const finishBlocked = session.answeredCount < total;
-  const firstUnanswered = () => session.questions.findIndex((qq) => !session.responses[qq.id]?.value);
+  const submitDisabled = moduleSubmitDisabled({ isDrill, blocked });
   const elimSet = elim[q.id] || new Set();
   const tog = (l) =>
     setElim((prev) => {
@@ -107,16 +107,14 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const onNext = () => {
     if (blocked) return;
     if (isLast) {
-      if (finishBlocked) return; // can't submit a full module with blanks
       session.finishModule(go);
     } else session.next();
   };
 
-  // Palette "Go to Review Page": submit, unless blanks remain in a full module —
-  // then jump to the first unanswered question instead.
+  // Palette "Go to Review Page": submit the active module.
   const onReviewAll = () => {
     setPaletteOpen(false);
-    if (finishBlocked) { const i = firstUnanswered(); if (i >= 0) session.goTo(i); return; }
+    if (submitDisabled) return;
     session.finishModule(go);
   };
 
@@ -222,8 +220,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         paletteOpen={paletteOpen}
         onBack={() => session.prev()}
         onNext={onNext}
-        nextDisabled={blocked || (isLast && finishBlocked)}
-        nextTitle={isLast && finishBlocked ? 'Answer every question before submitting' : undefined}
+        nextDisabled={isLast ? submitDisabled : blocked}
         nextLabel={isLast ? 'Submit' : 'Next'}
       />
     </div>

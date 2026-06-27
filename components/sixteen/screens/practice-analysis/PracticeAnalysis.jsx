@@ -12,9 +12,9 @@ import { SECTION_SHORT, relTime, StatCardLite, EmptyState } from '@/components/s
 // it suggests taking a diagnostic (a full SAT).
 
 const KIND = {
-  tests:    { title: 'Practice Tests',    subtitle: 'Your completed full SATs — scored 400–1600.',     scope: 'tests',    accent: 'var(--brand-blue)', emptyTitle: 'No full SATs yet' },
-  sections: { title: 'Practice Sections', subtitle: 'Your completed full sections — Module 1 + adaptive Module 2.', scope: 'sections', accent: 'var(--rw-color)',   emptyTitle: 'No full sections yet' },
-  modules:  { title: 'Practice Modules',  subtitle: 'Your completed single timed modules.',             scope: 'modules',  accent: 'var(--math-color)', emptyTitle: 'No modules yet' },
+  tests:    { title: 'Practice Tests',    subtitle: 'Your completed full SATs — scored 400–1600.',     scope: 'tests',    emptyTitle: 'No full SATs yet' },
+  sections: { title: 'Practice Sections', subtitle: 'Your completed full sections — Module 1 + adaptive Module 2.', scope: 'sections', emptyTitle: 'No full sections yet' },
+  modules:  { title: 'Practice Modules',  subtitle: 'Your completed single timed modules.',             scope: 'modules',  emptyTitle: 'No modules yet' },
 };
 
 const HOUR = 3600 * 1000;
@@ -109,7 +109,7 @@ function PracticeAnalysis({ go, kind, studentId = null, readOnly = false }) {
   const isEmpty = kind === 'tests' ? tests.length === 0 : attempts.length === 0;
 
   return (
-    <div style={{padding: '28px 36px', maxWidth: 920, margin: '0 auto'}}>
+    <div style={{padding: '28px 36px'}}>
       <h1 style={{margin:'0 0 4px', font:'var(--role-title-lg)'}}>{cfg.title}</h1>
       <p style={{margin:'0 0 20px', font:'var(--role-body-lg)', color:'var(--text-secondary)'}}>{cfg.subtitle}</p>
 
@@ -125,7 +125,7 @@ function PracticeAnalysis({ go, kind, studentId = null, readOnly = false }) {
             ))}
           </div>
 
-          <WeakAreas stats={stats} accent={cfg.accent} go={go} />
+          <WeakAreas stats={stats} go={go} />
 
           {kind === 'tests'
             ? <TestList tests={tests} go={go} />
@@ -136,8 +136,9 @@ function PracticeAnalysis({ go, kind, studentId = null, readOnly = false }) {
   );
 }
 
-function WeakAreas({ stats, accent, go }) {
+function WeakAreas({ stats, go }) {
   const { Card, AccuracyRing } = SixteenNS;
+  const sectionColor = (section) => (section === 'math' ? 'var(--math-color)' : 'var(--rw-color)');
   const cats = React.useMemo(() => {
     const rw = (stats?.categories?.rw ?? []).map((c) => ({ ...c, section: 'rw' }));
     const math = (stats?.categories?.math ?? []).map((c) => ({ ...c, section: 'math' }));
@@ -166,7 +167,7 @@ function WeakAreas({ stats, accent, go }) {
                 background:'transparent', border:0, cursor: clickable ? 'pointer' : 'default', textAlign:'left', width:'100%',
               }}
             >
-              <AccuracyRing value={c.accuracy} size={40} stroke={5} color={accent} />
+              <AccuracyRing value={c.accuracy} size={40} stroke={5} color={sectionColor(c.section)} />
               <div style={{display:'flex', flexDirection:'column'}}>
                 <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>{c.label}</span>
                 <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>

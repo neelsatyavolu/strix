@@ -7,7 +7,6 @@ import Dashboard from './screens/Dashboard';
 import PracticeSetup from './screens/PracticeSetup';
 import QuestionRW from './screens/QuestionRW';
 import QuestionMath from './screens/QuestionMath';
-import ModuleReview from './screens/ModuleReview';
 import ScoreReport from './screens/ScoreReport';
 import ExamBreak from './screens/ExamBreak';
 import ExamReport from './screens/ExamReport';
@@ -41,7 +40,8 @@ function App() {
 
   const [view, setView] = React.useState(profile ? 'dashboard' : 'onboarding');
   const [viewProps, setViewProps] = React.useState({});
-  const [dark, setDark] = React.useState(false);
+  const [theme, setThemeState] = React.useState('system');  // 'light' | 'dark' | 'system'
+  const [systemDark, setSystemDark] = React.useState(false);
   const [tutorOn, setTutorOn] = React.useState(false);
   const [statsOn, setStatsOn] = React.useState(true);
   const [role, setRole] = React.useState('student');   // 'student' | 'tutor'
@@ -134,6 +134,31 @@ function App() {
     if (view === 'onboarding') setView('dashboard');
   };
 
+  // Hydrate the saved theme choice on mount (client-only to avoid SSR mismatch).
+  React.useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem('strix-theme');
+      if (saved === 'light' || saved === 'dark' || saved === 'system') setThemeState(saved);
+    } catch { /* localStorage unavailable */ }
+  }, []);
+
+  const setTheme = React.useCallback((next) => {
+    setThemeState(next);
+    try { window.localStorage.setItem('strix-theme', next); } catch { /* localStorage unavailable */ }
+  }, []);
+
+  // Track the OS color scheme so 'system' resolves live.
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    setSystemDark(mq.matches);
+    const onChange = (e) => setSystemDark(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  const dark = theme === 'system' ? systemDark : theme === 'dark';
+
   React.useEffect(() => {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
   }, [dark]);
@@ -146,7 +171,6 @@ function App() {
     'practice-setup': 'home',
     'rw-question': 'rw',
     'math-question': 'math',
-    'module-review': 'rw',
     'score-report': 'home',
     'exam-break': 'home',
     'exam-report': 'home',
@@ -281,7 +305,7 @@ function App() {
             {I('message-circle')}
           </IconButton>
         )}
-        <IconButton size="sm" variant="ghost" label="Dark mode" onClick={() => setDark(d => !d)}>
+        <IconButton size="sm" variant="ghost" label="Dark mode" onClick={() => setTheme(dark ? 'light' : 'dark')}>
           {dark ? I('sun') : I('moon')}
         </IconButton>
       </>}
@@ -297,9 +321,8 @@ function App() {
     case 'onboarding':      screen = <Onboarding go={go} />; break;
     case 'dashboard':       screen = <Dashboard go={go} {...watchProps} />; break;
     case 'practice-setup':  screen = <PracticeSetup go={go} initial={viewProps} {...watchProps} />; break;
-    case 'rw-question':     screen = <QuestionRW go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
-    case 'math-question':   screen = <QuestionMath go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
-    case 'module-review':   screen = <ModuleReview go={go} />; break;
+    case 'rw-question':     screen = <QuestionRW key={sessionLive.activeModule?.key || 'rw'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
+    case 'math-question':   screen = <QuestionMath key={sessionLive.activeModule?.key || 'math'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'score-report':    screen = <ScoreReport go={go} />; break;
     case 'exam-break':      screen = <ExamBreak go={go} />; break;
     case 'exam-report':     screen = <ExamReport go={go} />; break;
@@ -312,7 +335,7 @@ function App() {
     case 'session-detail':  screen = <SessionDetail go={go} id={viewProps.id} {...watchProps} />; break;
     case 'tutor-invite':    screen = <TutorInvite go={go} />; break;
     case 'tutor-chat':      screen = <TutorChat go={go} />; break;
-    case 'settings':        screen = <Settings go={go} dark={dark} setDark={setDark} />; break;
+    case 'settings':        screen = <Settings go={go} theme={theme} setTheme={setTheme} />; break;
     case 'dev':             screen = devEnabled ? <DevTab go={go} /> : <Dashboard go={go} />; break;
     default:                screen = <Dashboard go={go} />;
   }
@@ -401,7 +424,6 @@ function titleFor(view, isTutor) {
     'practice-setup': 'Strix — New session',
     'rw-question': 'Strix — Reading & Writing',
     'math-question': 'Strix — Math',
-    'module-review': 'Strix — Module review',
     'score-report': 'Strix — Score report',
     'exam-break': 'Strix — Break',
     'exam-report': 'Strix — Full SAT',

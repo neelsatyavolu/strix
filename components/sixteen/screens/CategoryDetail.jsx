@@ -116,7 +116,7 @@ function CategoryDetail({ go, section = 'rw', domain, label, studentId = null })
   const ins = useInsight({ scope: `cat:${section}:${domain}${studentId ? `:${studentId}` : ''}`, payload, baseline, ready: !loading && totals.done > 0 });
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 920, margin: '0 auto' }}>
+    <div style={{ padding: '28px 36px' }}>
       <button
         onClick={() => go('stats')}
         style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'transparent', border: 0, cursor: 'pointer', color: 'var(--text-secondary)', font: 'var(--role-label)', padding: 0, marginBottom: 14 }}

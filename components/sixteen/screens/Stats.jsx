@@ -51,11 +51,15 @@ function OverallTab({ stats, sessions }) {
   const scores = stats.scores ?? {};
   const rwTot = stats.sectionTotals?.rw ?? { done: 0, correct: 0 };
   const mathTot = stats.sectionTotals?.math ?? { done: 0, correct: 0 };
+  const overallTot = stats.sectionTotals?.overall ?? { done: 0, correct: 0 };
   const totalDone = rwTot.done + mathTot.done;
   const totalCorrect = rwTot.correct + mathTot.correct;
-  const overallAcc = totalDone ? Math.round((totalCorrect / totalDone) * 100) : 0;
-  const rwAcc = rwTot.done ? Math.round((rwTot.correct / rwTot.done) * 100) : 0;
-  const mathAcc = mathTot.done ? Math.round((mathTot.correct / mathTot.done) * 100) : 0;
+  // Headline accuracy follows the rest of the app: recency-weighted, falling
+  // back to all-time only when there's no recent signal.
+  const accOf = (t) => (t.recentAccuracy != null ? t.recentAccuracy : t.accuracy ?? 0);
+  const overallAcc = accOf(overallTot);
+  const rwAcc = accOf(rwTot);
+  const mathAcc = accOf(mathTot);
 
   const overTime = [...(stats.overTime ?? [])]
     .filter((p) => typeof p.score === 'number')
@@ -98,7 +102,7 @@ function OverallTab({ stats, sessions }) {
       <Card padding="lg">
         <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom: 14}}>
           <h2 style={{margin:0, font:'var(--role-title-sm)'}}>Accuracy by domain</h2>
-          <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>All time</span>
+          <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>Recent</span>
         </div>
         <div style={{display:'flex', alignItems:'center', gap: 28}}>
           <AccuracyRing value={rwAcc} color="var(--rw-color)" label="Reading & Writing" />
@@ -174,6 +178,10 @@ function DomainBreakdown({ domain, stats, go, studentId = null }) {
           <div style={{display:'flex', flexDirection:'column'}}>
             {cats.map((c, i) => {
               const clickable = c.done > 0 && !!c.code;
+              // Match the rest of the app: show recency-weighted accuracy, not
+              // all-time. Fall back to plain accuracy only when there's no
+              // recent signal (no answered questions → recentAccuracy null).
+              const pct = c.recentAccuracy != null ? c.recentAccuracy : c.accuracy;
               return (
                 <button
                   key={c.id}
@@ -186,14 +194,14 @@ function DomainBreakdown({ domain, stats, go, studentId = null }) {
                     cursor: clickable ? 'pointer' : 'default', textAlign:'left', width:'100%',
                   }}
                 >
-                  <AccuracyRing value={c.accuracy} size={44} stroke={5} color={color} />
+                  <AccuracyRing value={pct} size={44} stroke={5} color={color} />
                   <div style={{display:'flex', flexDirection:'column'}}>
                     <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>{c.label}</span>
                     <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
                       {c.done} answered{clickable ? ' · view detail' : ''}
                     </span>
                   </div>
-                  <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)'}}>{c.accuracy}%</span>
+                  <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)'}}>{pct}%</span>
                   <Icon name="chevron-right" style={{width:14, height:14, color: clickable ? 'var(--text-tertiary)' : 'transparent'}}/>
                 </button>
               );
@@ -233,20 +241,32 @@ function ScoreLine({ points }) {
             </div>
           ))}
         </div>
+        {/* Area + line live in a non-uniformly stretched SVG; dots and labels are
+            HTML overlays so they aren't distorted by preserveAspectRatio="none". */}
         <svg width="100%" height="100%" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" style={{position:'absolute', inset:0, paddingLeft: 38}}>
           <path d={path + ` L ${w} ${h} L 0 ${h} Z`} fill="var(--brand-blue-soft)" />
           <path d={path} stroke="var(--brand-blue)" strokeWidth="2" fill="none" />
-          {points.map((pt, i) => (
-            <g key={i}>
-              <circle cx={i * step} cy={yFor(pt.score)} r={3} fill={sectionColor(pt.section)} />
-              {(i === 0 || i === points.length - 1) && (
-                <text x={i * step + (i === 0 ? 6 : -6)} y={yFor(pt.score) - 8}
-                  fontFamily="var(--font-mono)" fontSize="11" fontWeight="600"
-                  textAnchor={i === 0 ? 'start' : 'end'} fill="var(--ink-1)">{pt.score}</text>
-              )}
-            </g>
-          ))}
         </svg>
+        <div style={{position:'absolute', top:0, bottom:0, left:38, right:0, pointerEvents:'none'}}>
+          {points.map((pt, i) => {
+            const xPct = (i / (points.length - 1)) * 100;
+            const yPct = (yFor(pt.score) / h) * 100;
+            const isFirst = i === 0, isLast = i === points.length - 1;
+            return (
+              <React.Fragment key={i}>
+                <div style={{position:'absolute', left:`${xPct}%`, top:`${yPct}%`, width:6, height:6, borderRadius:'50%', background: sectionColor(pt.section), transform:'translate(-50%, -50%)'}}/>
+                {(isFirst || isLast) && (
+                  <span style={{
+                    position:'absolute', left:`${xPct}%`, top:`calc(${yPct}% - 10px)`,
+                    transform:`translate(${isFirst ? '0' : '-100%'}, -100%)`,
+                    font:'var(--role-caption)', fontFamily:'var(--font-mono)', fontWeight:600,
+                    color:'var(--text-primary)', fontVariantNumeric:'tabular-nums', whiteSpace:'nowrap',
+                  }}>{pt.score}</span>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
       </div>
       <div style={{display:'grid', gridTemplateColumns:`repeat(${points.length}, 1fr)`, gap: 0, paddingLeft: 38, font:'var(--role-caption)', color:'var(--text-tertiary)', fontFamily:'var(--font-mono)'}}>
         {points.map((pt, i) => (
