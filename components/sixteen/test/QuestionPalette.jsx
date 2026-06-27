@@ -115,7 +115,7 @@ function PaletteCell({ n, status, marked, onClick }) {
   };
   let style;
   if (isCurrent) {
-    style = { ...base, background: 'var(--ink-1)', color: '#fff', boxShadow: '0 0 0 0.5px rgba(0,0,0,0.10)' };
+    style = { ...base, background: 'var(--test-fill)', color: 'var(--test-fill-fg)', boxShadow: '0 0 0 0.5px rgba(0,0,0,0.10)' };
   } else if (isAnswered) {
     style = { ...base, background: '#1B2A4B', color: '#fff' };
   } else {

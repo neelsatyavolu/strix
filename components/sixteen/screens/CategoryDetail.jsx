@@ -113,7 +113,7 @@ function CategoryDetail({ go, section = 'rw', domain, label, studentId = null })
       skill: a.skillLabel, difficulty: DIFF_LABEL[a.difficulty] || a.difficulty, question: a.stem.slice(0, 180),
     })),
   }), [label, section, totals, skills, attempts]);
-  const ins = useInsight({ scope: `cat:${section}:${domain}`, payload, baseline, ready: !loading && totals.done > 0 });
+  const ins = useInsight({ scope: `cat:${section}:${domain}${studentId ? `:${studentId}` : ''}`, payload, baseline, ready: !loading && totals.done > 0 });
 
   return (
     <div style={{ padding: '28px 36px', maxWidth: 920, margin: '0 auto' }}>

@@ -106,10 +106,10 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
   const median = answered ? Math.round((session.result?.elapsedMs || 0) / 1000 / answered) : 0;
 
   return (
-    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', background: '#FFFFFF' }}>
+    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--test-canvas)' }}>
       <TestHeader
         sectionLabel={session.activeModule?.label === 'Drill' ? 'Reading & Writing — Drill' : `Reading & Writing, ${session.activeModule?.label || 'Module 1'}`}
-        timer={<Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
+        timer={session.config?.timing === 'untimed' ? null : <Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
         tools={<>
           <ExitTest mode={session.mode} onConfirm={() => session.exitSession(go)} />
           <ToolBtn label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
@@ -132,7 +132,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
                 onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], passage: h } }))}
               />
             </div>
-            <div style={{ background: '#C8C8CC' }} />
+            <div style={{ background: 'var(--test-divider)' }} />
           </>
         )}
 
@@ -143,8 +143,8 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
               {!isDrill && (
                 <button onClick={() => setEliminator((e) => !e)} title="Cross out answers" style={{
                   display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
-                  background: eliminator ? '#1D1D1F' : 'transparent', color: eliminator ? '#fff' : '#1D1D1F',
-                  border: '1px solid #1D1D1F', borderRadius: 3, cursor: 'pointer',
+                  background: eliminator ? 'var(--test-fill)' : 'transparent', color: eliminator ? 'var(--test-fill-fg)' : 'var(--test-ink)',
+                  border: '1px solid var(--test-line)', borderRadius: 3, cursor: 'pointer',
                   font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
                   textDecoration: 'line-through', textDecorationThickness: '1.5px', marginRight: 8,
                 }}>ABC</button>
@@ -176,7 +176,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
               </OptionRow>
             ))}
           </div>
-          {isDrill && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} />}
+          {isDrill && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} rationaleHtml={q.rationaleHtml} />}
         </div>
 
         {kind === 'drill' && statsOn && (
@@ -218,13 +218,18 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
 }
 
 // General-practice inline feedback under the answer choices.
-function DrillFeedback({ solved, triedAny }) {
+function DrillFeedback({ solved, triedAny, rationaleHtml }) {
   if (!solved && !triedAny) return null;
   const color = solved ? 'var(--success)' : 'var(--error)';
   return (
-    <p role="status" style={{ margin: '14px 0 0', font: 'var(--role-label)', fontWeight: 600, color }}>
-      {solved ? 'Correct.' : 'Not quite — try again.'}
-    </p>
+    <div style={{ margin: '14px 0 0' }}>
+      <p role="status" style={{ margin: 0, font: 'var(--role-label)', fontWeight: 600, color }}>
+        {solved ? 'Correct.' : 'Not quite — try again.'}
+      </p>
+      {solved && rationaleHtml && (
+        <div className="cb-stem" style={{ fontSize: 14, marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: rationaleHtml }} />
+      )}
+    </div>
   );
 }
 
@@ -254,7 +259,7 @@ function ToolBtn({ label, icon, active = false, onClick }) {
 function DirectionsModal({ onClose }) {
   return (
     <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 50, display: 'grid', placeItems: 'center' }}>
-      <div style={{ width: 520, maxWidth: '90%', maxHeight: '80%', background: '#FFFFFF', borderRadius: 8, boxShadow: 'var(--shadow-xl)', overflow: 'auto' }}>
+      <div style={{ width: 520, maxWidth: '90%', maxHeight: '80%', background: 'var(--paper)', borderRadius: 8, boxShadow: 'var(--shadow-xl)', overflow: 'auto' }}>
         <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-1)', display: 'flex', justifyContent: 'space-between' }}>
           <h2 style={{ margin: 0, font: 'var(--role-title-sm)' }}>Section Directions</h2>
           <button onClick={onClose} style={{ border: 0, background: 'transparent', cursor: 'pointer', fontSize: 18, color: 'var(--text-secondary)' }}>×</button>

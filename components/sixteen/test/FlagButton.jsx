@@ -21,7 +21,7 @@ export function FlagButton({ marked = false, onClick, style: styleProp }) {
         fontWeight: 500,
         fontSize: 13,
         background: 'transparent',
-        color: '#1D1D1F',
+        color: 'var(--test-ink)',
         border: 'none',
         borderRadius: 0,
         cursor: 'pointer',
@@ -29,7 +29,7 @@ export function FlagButton({ marked = false, onClick, style: styleProp }) {
         ...styleProp,
       }}
     >
-      <FlagIcon size={14} filled={marked} color={marked ? 'var(--test-flag)' : '#1D1D1F'} />
+      <FlagIcon size={14} filled={marked} color={marked ? 'var(--test-flag)' : 'var(--test-ink)'} />
       {marked ? 'Marked for Review' : 'Mark for Review'}
     </button>
   );

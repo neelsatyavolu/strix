@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import renderMathInElement from 'katex/contrib/auto-render';
 
 /**
  * MessageBubble — iMessage-style speech bubble for tutor mode.
@@ -13,6 +14,26 @@ export function MessageBubble({
   style: styleProp,
 }) {
   const mine = side === 'mine';
+  const textRef = React.useRef(null);
+
+  // Typeset any LaTeX (\(...\) inline, \[...\] display) the tutor sends, matching
+  // QuestionMath's delimiters so AI math replies render instead of showing raw.
+  // Set textContent imperatively (rather than via a React child) so KaTeX's DOM
+  // mutations don't collide with React reconciliation on the next text update.
+  React.useEffect(() => {
+    const el = textRef.current;
+    if (!el) return;
+    el.textContent = text ?? '';
+    try {
+      renderMathInElement(el, {
+        delimiters: [
+          { left: '\\(', right: '\\)', display: false },
+          { left: '\\[', right: '\\]', display: true },
+        ],
+        throwOnError: false,
+      });
+    } catch { /* leave the plain text in place if KaTeX fails */ }
+  }, [text]);
   return (
     <div style={{
       display: 'flex',
@@ -39,7 +60,7 @@ export function MessageBubble({
         lineHeight: 1.35,
         wordWrap: 'break-word',
       }}>
-        {text}
+        <span ref={textRef} />
       </div>
       {time && (
         <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginTop: 2 }}>{time}</span>

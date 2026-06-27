@@ -24,6 +24,9 @@ interface CatAgg {
 const RECENCY_DECAY = 0.97;
 // Don't recommend a category the student has barely touched.
 const FOCUS_MIN_ATTEMPTS = 3;
+// Don't recommend a category the student has already mastered — anything at
+// 100% recent accuracy isn't a "skill to focus on".
+const FOCUS_MAX_ACCURACY = 100;
 // How many weak skills to surface on the dashboard.
 const FOCUS_COUNT = 2;
 
@@ -46,12 +49,27 @@ export async function GET(req: NextRequest) {
   if ("error" in scope) return NextResponse.json({ success: false, error: scope.error }, { status: scope.status });
   const targetId = scope.targetId;
 
-  // 1. per-question results joined to their section/domain.
+  // Optional practice-type scope — restricts every aggregate below to answers
+  // from one kind of session. Absent = all modes (the default behavior).
+  //  tests    → full SATs     (mode 'mock-full', config.exam === true)
+  //  sections → full sections (mode 'mock-full', no exam flag)
+  //  modules  → single modules (mode 'mock-m1')
+  const scopeKind = req.nextUrl.searchParams.get("scope");
+  const matchesScope = (mode: string | null, config: Record<string, unknown> | null): boolean => {
+    if (scopeKind !== "tests" && scopeKind !== "sections" && scopeKind !== "modules") return true;
+    const isExam = !!(config && (config as { exam?: unknown }).exam);
+    if (scopeKind === "modules") return mode === "mock-m1";
+    if (scopeKind === "sections") return mode === "mock-full" && !isExam;
+    return mode === "mock-full" && isExam; // tests
+  };
+
+  // 1. per-question results joined to their section/domain (and, for scoping,
+  // their parent session's mode/config — answers.session_id FKs straight to it).
   // Skipped questions (no answer recorded) are excluded so they don't drag
   // down accuracy — only attempts where the student actually answered count.
   const { data: answers, error: aErr } = await supabase
     .from("answers")
-    .select("is_correct, value, created_at, session_questions!inner(section, domain)")
+    .select("is_correct, value, created_at, session_questions!inner(section, domain), practice_sessions!inner(mode, config)")
     .eq("user_id", targetId)
     .not("value", "is", null)
     .order("created_at", { ascending: false })
@@ -73,6 +91,9 @@ export async function GET(req: NextRequest) {
     const sq = (row as { session_questions: { section: Section; domain: string } | { section: Section; domain: string }[] }).session_questions;
     const meta = Array.isArray(sq) ? sq[0] : sq;
     if (!meta) continue;
+    const psRaw = (row as { practice_sessions: { mode: string; config: Record<string, unknown> | null } | { mode: string; config: Record<string, unknown> | null }[] | null }).practice_sessions;
+    const ps = Array.isArray(psRaw) ? psRaw[0] : psRaw;
+    if (!matchesScope(ps?.mode ?? null, ps?.config ?? null)) continue;
     const w = Math.pow(RECENCY_DECAY, rank);
     rank += 1;
     const cats = meta.section === "math" ? mathCats : rwCats;
@@ -111,7 +132,12 @@ export async function GET(req: NextRequest) {
     ...rwList.map((c) => ({ ...c, section: "rw" as Section })),
     ...mathList.map((c) => ({ ...c, section: "math" as Section })),
   ]
-    .filter((c) => c.done >= FOCUS_MIN_ATTEMPTS && c.recentAccuracy != null)
+    .filter(
+      (c) =>
+        c.done >= FOCUS_MIN_ATTEMPTS &&
+        c.recentAccuracy != null &&
+        c.recentAccuracy < FOCUS_MAX_ACCURACY,
+    )
     .sort((a, b) => (a.recentAccuracy ?? 100) - (b.recentAccuracy ?? 100) || b.done - a.done)
     .slice(0, FOCUS_COUNT)
     .map((c) => ({
@@ -132,7 +158,13 @@ export async function GET(req: NextRequest) {
     .limit(500);
   if (sErr) return NextResponse.json({ success: false, error: sErr.message }, { status: 500 });
 
-  const scored = (sessions ?? []).filter((s) => s.scaled_score != null);
+  // A "score" only comes from a full-length section. Full sections and full SATs
+  // both persist as mode "mock-full"; Module-1-only practice ("mock-m1") is half a
+  // section, so it's excluded from both the estimate and the trend.
+  const scored = (sessions ?? []).filter((s) => s.scaled_score != null && s.mode === "mock-full");
+  // Recency superscore: each section's estimate is its most recent full-section
+  // score (sessions are ordered oldest→newest), and the total sums the two
+  // independently — so a fresh Math section updates Math without touching R&W.
   const latestScore = (section: Section) => {
     const list = scored.filter((s) => s.section === section);
     return list.length ? list[list.length - 1].scaled_score : null;

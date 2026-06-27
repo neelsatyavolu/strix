@@ -38,8 +38,8 @@ export function TestFooter({
         style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           padding: '7px 14px',
-          background: 'var(--ink-1)',
-          color: '#fff',
+          background: 'var(--test-fill)',
+          color: 'var(--test-fill-fg)',
           borderRadius: 'var(--radius-pill)',
           border: 0,
           font: 'var(--role-body)',

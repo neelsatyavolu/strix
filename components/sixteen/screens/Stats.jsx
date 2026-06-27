@@ -5,61 +5,9 @@ import { Icon } from '@/components/sixteen';
 import { useStats, useSessions } from '@/lib/data/hooks';
 import { InsightCard } from '@/components/sixteen/stats/InsightCard';
 import { useInsight } from '@/lib/ai/insights';
-import { CATEGORY_TO_DOMAIN, domainLabel } from '@/lib/cb/domains';
+import { SECTION_LABEL, shortAgo, EmptyState } from '@/components/sixteen/stats/shared';
 
 // Stats — overall + per-domain breakdown, driven by real practice data.
-
-const SECTION_LABEL = { rw: 'Reading & Writing', math: 'Math' };
-const SECTION_SHORT = { rw: 'R&W', math: 'Math' };
-const MODE_LABEL = { drill: 'drill', 'mock-m1': 'Module 1', 'mock-full': 'Full section' };
-const MODE_VARIANT = { drill: 'neutral', 'mock-m1': 'brand', 'mock-full': 'success' };
-
-// "Math · Algebra" for targeted drills; falls back to the section label.
-function sessionTitle(s) {
-  const sec = SECTION_LABEL[s.section] ?? s.section;
-  if (s.mode === 'drill') {
-    const code = CATEGORY_TO_DOMAIN[s.config?.category];
-    const cat = code ? domainLabel(s.section, code) : null;
-    if (cat) return `${sec} · ${cat}`;
-  }
-  return sec;
-}
-
-function relTime(iso) {
-  if (!iso) return '';
-  const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return '';
-  const s = Math.max(0, (Date.now() - then) / 1000);
-  if (s < 60) return 'Just now';
-  const m = s / 60;
-  if (m < 60) return `${Math.floor(m)}m ago`;
-  const h = m / 60;
-  if (h < 24) return `${Math.floor(h)}h ago`;
-  const d = h / 24;
-  if (d < 7) return `${Math.floor(d)}d ago`;
-  const w = d / 7;
-  if (w < 5) return `${Math.floor(w)}w ago`;
-  const mo = d / 30;
-  if (mo < 12) return `${Math.floor(mo)}mo ago`;
-  return `${Math.floor(d / 365)}y ago`;
-}
-
-function shortAgo(iso) {
-  if (!iso) return '';
-  const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return '';
-  const s = Math.max(0, (Date.now() - then) / 1000);
-  if (s < 90) return 'now';
-  const m = s / 60;
-  if (m < 60) return `${Math.floor(m)}m`;
-  const h = m / 60;
-  if (h < 24) return `${Math.floor(h)}h`;
-  const d = h / 24;
-  if (d < 7) return `${Math.floor(d)}d`;
-  const w = d / 7;
-  if (w < 5) return `${Math.floor(w)}w`;
-  return `${Math.floor(d / 30)}mo`;
-}
 
 function Stats({ go, studentId = null }) {
   const { Tabs } = SixteenNS;
@@ -75,7 +23,6 @@ function Stats({ go, studentId = null }) {
       <h1 style={{margin:'0 0 14px', font:'var(--role-title-lg)'}}>Stats</h1>
       <Tabs value={tab} onChange={setTab} style={{marginBottom: 18}} tabs={[
         { value:'overall',  label:'Overall' },
-        { value:'sessions', label:'Sessions', count: sessions.length },
         { value:'rw',       label:'Reading & Writing', count: rwDone },
         { value:'math',     label:'Math', count: mathDone },
       ]}/>
@@ -85,9 +32,8 @@ function Stats({ go, studentId = null }) {
       ) : (
         <>
           {tab === 'overall' && <OverallTab stats={stats} sessions={sessions} />}
-          {tab === 'sessions' && <SessionsTab go={go} sessions={sessions} />}
-          {tab !== 'overall' && tab !== 'sessions' && (
-            <DomainBreakdown domain={tab} stats={stats} go={go} />
+          {tab !== 'overall' && (
+            <DomainBreakdown domain={tab} stats={stats} go={go} studentId={studentId} />
           )}
         </>
       )}
@@ -169,99 +115,6 @@ function OverallTab({ stats, sessions }) {
   );
 }
 
-function SessionsTab({ go, sessions }) {
-  const { Card, Badge, SegmentedControl } = SixteenNS;
-  const [filter, setFilter] = React.useState('all');
-
-  if (sessions.length === 0) {
-    return <EmptyState title="No sessions yet" hint="Complete a drill or mock to see it here." />;
-  }
-
-  const filtered = sessions.filter((s) => {
-    if (filter === 'all') return true;
-    if (filter === 'modules') return s.mode === 'mock-m1';
-    if (filter === 'sections') return s.mode === 'mock-full';
-    return s.section === filter; // 'rw' | 'math'
-  });
-
-  const totalQ = sessions.reduce((a, s) => a + (s.score_total || 0), 0);
-  const totalCorrect = sessions.reduce((a, s) => a + (s.score_correct || 0), 0);
-  const avgAcc = totalQ ? Math.round((totalCorrect / totalQ) * 100) : 0;
-
-  return (
-    <>
-      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap: 12, marginBottom: 16}}>
-        <Card padding="md"><StatCardLite label="Sessions" value={sessions.length} sublabel="Recent" /></Card>
-        <Card padding="md"><StatCardLite label="Questions" value={totalQ} /></Card>
-        <Card padding="md"><StatCardLite label="Correct" value={totalCorrect} /></Card>
-        <Card padding="md"><StatCardLite label="Avg. accuracy" value={`${avgAcc}%`} /></Card>
-      </div>
-
-      <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: 10, gap: 12, flexWrap: 'wrap'}}>
-        <h2 style={{margin:0, font:'var(--role-title-sm)'}}>All sessions</h2>
-        <SegmentedControl
-          value={filter} onChange={setFilter}
-          options={[
-            { value:'all',      label:'All' },
-            { value:'modules',  label:'Modules' },
-            { value:'sections', label:'Full sections' },
-            { value:'rw',       label:'R&W' },
-            { value:'math',     label:'Math' },
-          ]}
-        />
-      </div>
-
-      <Card padding="none" style={{overflowX: 'auto'}}>
-        <div style={{minWidth: 720}}>
-        <div style={{
-          display:'grid', gridTemplateColumns:'120px minmax(220px, 1fr) 110px 60px 70px 80px 24px',
-          gap: 12, alignItems:'center', padding:'10px 16px',
-          font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)',
-          color:'var(--text-tertiary)', borderBottom:'1px solid var(--border-1)',
-        }}>
-          <span>When</span>
-          <span>Session</span>
-          <span>Kind</span>
-          <span style={{textAlign:'right'}}>Qs</span>
-          <span style={{textAlign:'right'}}>Score</span>
-          <span style={{textAlign:'right'}}>Accuracy</span>
-          <span/>
-        </div>
-        {filtered.map((s, i) => (
-          <button key={s.id} onClick={() => go('session-detail', { id: s.id })} style={{
-            display:'grid', gridTemplateColumns:'120px minmax(220px, 1fr) 110px 60px 70px 80px 24px',
-            gap: 12, alignItems:'center', padding:'12px 16px',
-            background:'transparent', border:0, borderTop: i === 0 ? 0 : '1px solid var(--border-1)',
-            cursor:'pointer', textAlign:'left', width:'100%',
-          }}>
-            <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{relTime(s.created_at)}</span>
-            <span style={{display:'flex', alignItems:'center', gap: 8, font:'var(--role-body)', color:'var(--text-primary)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>
-              <Badge variant={s.section} dot size="sm">{SECTION_SHORT[s.section] ?? s.section}</Badge>
-              <span style={{overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{sessionTitle(s)}</span>
-            </span>
-            <Badge variant={MODE_VARIANT[s.mode] ?? 'neutral'} size="sm">{MODE_LABEL[s.mode] ?? s.mode}</Badge>
-            <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)', textAlign:'right'}}>{s.score_total}</span>
-            <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)', textAlign:'right'}}>{s.scaled_score ?? '—'}</span>
-            <span style={{font:'var(--role-numeric)', textAlign:'right', color: s.accuracy >= 75 ? 'var(--success)' : s.accuracy >= 65 ? 'var(--warning)' : 'var(--error)'}}>{s.accuracy}%</span>
-            <Icon name="chevron-right" style={{width:14, height:14, color:'var(--text-tertiary)'}}/>
-          </button>
-        ))}
-        </div>
-      </Card>
-    </>
-  );
-}
-
-function StatCardLite({ label, value, sublabel }) {
-  return (
-    <div style={{display:'flex', flexDirection:'column', gap: 4}}>
-      <span style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)'}}>{label}</span>
-      <span style={{font:'var(--role-title-md)', color:'var(--text-primary)', fontFamily:'var(--font-mono)', fontVariantNumeric:'tabular-nums', lineHeight: 1}}>{value}</span>
-      {sublabel && <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>{sublabel}</span>}
-    </div>
-  );
-}
-
 // Deterministic best/worst read over a section's categories — the always-on
 // fallback when no AI provider is connected. Shape matches a parsed AI insight.
 function sectionBaseline(sectionLabel, cats) {
@@ -288,7 +141,7 @@ function sectionBaseline(sectionLabel, cats) {
   };
 }
 
-function SectionInsights({ sectionLabel, cats, accent }) {
+function SectionInsights({ sectionLabel, cats, accent, studentId = null }) {
   const baseline = React.useMemo(() => sectionBaseline(sectionLabel, cats), [sectionLabel, cats]);
   const payload = React.useMemo(() => ({
     section: sectionLabel,
@@ -296,18 +149,18 @@ function SectionInsights({ sectionLabel, cats, accent }) {
     topics: (cats ?? []).filter((c) => c.done > 0).map((c) => ({ topic: c.label, answered: c.done, accuracy: c.accuracy, recentAccuracy: c.recentAccuracy })),
   }), [sectionLabel, cats]);
   const ready = (cats ?? []).some((c) => c.done > 0);
-  const ins = useInsight({ scope: `section:${sectionLabel}`, payload, baseline, ready });
+  const ins = useInsight({ scope: `section:${sectionLabel}${studentId ? `:${studentId}` : ''}`, payload, baseline, ready });
   if (!ready) return null;
   return <InsightCard title="Insights" accent={accent} {...ins} />;
 }
 
-function DomainBreakdown({ domain, stats, go }) {
+function DomainBreakdown({ domain, stats, go, studentId = null }) {
   const { Card, AccuracyRing, Badge } = SixteenNS;
   const cats = (domain === 'rw' ? stats?.categories?.rw : stats?.categories?.math) ?? [];
   const color = domain === 'rw' ? 'var(--rw-color)' : 'var(--math-color)';
   return (
     <>
-      <SectionInsights sectionLabel={SECTION_LABEL[domain] ?? domain} cats={cats} accent={color} />
+      <SectionInsights sectionLabel={SECTION_LABEL[domain] ?? domain} cats={cats} accent={color} studentId={studentId} />
       <Card padding="lg">
         <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom: 16}}>
           <h2 style={{margin:0, font:'var(--role-title-md)'}}>By category</h2>
@@ -439,16 +292,6 @@ function LoadingState() {
     <div style={{padding:'48px 0', textAlign:'center', font:'var(--role-body)', color:'var(--text-tertiary)'}}>
       Loading your stats…
     </div>
-  );
-}
-
-function EmptyState({ title, hint }) {
-  const { Card } = SixteenNS;
-  return (
-    <Card padding="xl" style={{textAlign:'center'}}>
-      <div style={{font:'var(--role-title-sm)', color:'var(--text-primary)', marginBottom: 6}}>{title}</div>
-      <div style={{font:'var(--role-body)', color:'var(--text-tertiary)'}}>{hint}</div>
-    </Card>
   );
 }
 

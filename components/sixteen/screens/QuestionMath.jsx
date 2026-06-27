@@ -126,10 +126,10 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const median = answered ? Math.round((session.result?.elapsedMs || 0) / 1000 / answered) : 0;
 
   return (
-    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', background: '#FFFFFF' }}>
+    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--test-canvas)' }}>
       <TestHeader
         sectionLabel={session.activeModule?.label === 'Drill' ? 'Math — Drill' : `Math, ${session.activeModule?.label || 'Module 1'}`}
-        timer={<Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
+        timer={session.config?.timing === 'untimed' ? null : <Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
         tools={<>
           <ExitTest mode={session.mode} onConfirm={() => session.exitSession(go)} />
           <MathToolBtn label="Calculator" icon="square-function" active={calcOpen} onClick={() => setCalcOpen(!calcOpen)} />
@@ -150,8 +150,8 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
               {q.type === 'mcq' && !isDrill && (
                 <button onClick={() => setEliminator((e) => !e)} title="Cross out answers" style={{
                   display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
-                  background: eliminator ? '#1D1D1F' : 'transparent', color: eliminator ? '#fff' : '#1D1D1F',
-                  border: '1px solid #1D1D1F', borderRadius: 3, cursor: 'pointer',
+                  background: eliminator ? 'var(--test-fill)' : 'transparent', color: eliminator ? 'var(--test-fill-fg)' : 'var(--test-ink)',
+                  border: '1px solid var(--test-line)', borderRadius: 3, cursor: 'pointer',
                   font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
                   textDecoration: 'line-through', textDecorationThickness: '1.5px', marginRight: 8,
                 }}>ABC</button>
@@ -188,7 +188,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
               ))}
             </div>
           )}
-          {isDrill && q.type !== 'spr' && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} />}
+          {isDrill && q.type !== 'spr' && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} rationaleHtml={q.rationaleHtml} />}
         </div>
 
         {kind === 'drill' && statsOn && (
@@ -231,13 +231,18 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
 }
 
 // General-practice inline feedback under the answer choices.
-function DrillFeedback({ solved, triedAny }) {
+function DrillFeedback({ solved, triedAny, rationaleHtml }) {
   if (!solved && !triedAny) return null;
   const color = solved ? 'var(--success)' : 'var(--error)';
   return (
-    <p role="status" style={{ margin: '14px 0 0', font: 'var(--role-label)', fontWeight: 600, color }}>
-      {solved ? 'Correct.' : 'Not quite — try again.'}
-    </p>
+    <div style={{ margin: '14px 0 0' }}>
+      <p role="status" style={{ margin: 0, font: 'var(--role-label)', fontWeight: 600, color }}>
+        {solved ? 'Correct.' : 'Not quite — try again.'}
+      </p>
+      {solved && rationaleHtml && (
+        <div className="cb-stem" style={{ fontSize: 14, marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: rationaleHtml }} />
+      )}
+    </div>
   );
 }
 
@@ -255,7 +260,7 @@ function GridIn({ value, onChange }) {
         style={{
           width: '100%', padding: '12px 14px',
           font: 'var(--role-title-sm)', fontFamily: 'var(--font-mono)',
-          color: '#1D1D1F', background: '#FFFFFF',
+          color: 'var(--test-ink)', background: 'var(--test-canvas)',
           border: '2px solid var(--border-2)', borderRadius: 'var(--radius-md)',
           outline: 'none',
         }}
@@ -310,33 +315,77 @@ function loadDesmos() {
   return window.__desmosPromise;
 }
 
+const CALC_MIN_W = 320;
+const CALC_MIN_H = 280;
+
 function DesmosPanel({ onClose }) {
   const ref = React.useRef(null);
+  const calcRef = React.useRef(null);
   const [failed, setFailed] = React.useState(false);
+  const [size, setSize] = React.useState({ w: 460, h: 360 });
+  const [pos, setPos] = React.useState({ x: 18, y: 78 });
 
   React.useEffect(() => {
-    let calc;
     let alive = true;
     loadDesmos()
       .then((Desmos) => {
         if (!alive || !ref.current) return;
-        calc = Desmos.GraphingCalculator(ref.current, { keypad: true, expressions: true, settingsMenu: false });
+        calcRef.current = Desmos.GraphingCalculator(ref.current, { keypad: true, expressions: true, settingsMenu: false });
       })
       .catch(() => alive && setFailed(true));
     return () => {
       alive = false;
-      if (calc) calc.destroy();
+      if (calcRef.current) calcRef.current.destroy();
     };
   }, []);
 
+  // Drag the header to reposition the calculator, like real Bluebook.
+  const onHeaderDown = (e) => {
+    if (e.target.closest('button')) return; // let the close button work
+    e.preventDefault();
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const orig = pos;
+    const move = (ev) => {
+      setPos({ x: orig.x + (ev.clientX - startX), y: orig.y + (ev.clientY - startY) });
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  // Drag the bottom-right grip to enlarge the calculator, like real Bluebook.
+  const onResizeDown = (e) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const orig = size;
+    const move = (ev) => {
+      setSize({
+        w: Math.max(CALC_MIN_W, orig.w + (ev.clientX - startX)),
+        h: Math.max(CALC_MIN_H, orig.h + (ev.clientY - startY)),
+      });
+      if (calcRef.current) calcRef.current.resize();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
   return (
     <div style={{
-      position: 'absolute', left: 18, top: 78, width: 460, height: 360,
-      background: '#FFFFFF', borderRadius: 8, boxShadow: 'var(--shadow-lg)',
+      position: 'absolute', left: pos.x, top: pos.y, width: size.w, height: size.h,
+      background: 'var(--paper)', borderRadius: 8, boxShadow: 'var(--shadow-lg)',
       zIndex: 25, display: 'flex', flexDirection: 'column', overflow: 'hidden',
       border: '1px solid var(--border-2)',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 10px', background: '#2E7D32', color: '#fff' }}>
+      <div onMouseDown={onHeaderDown} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 10px', background: '#2E7D32', color: '#fff', cursor: 'move', userSelect: 'none' }}>
         <span style={{ font: 'var(--role-label)', fontWeight: 600 }}>Desmos Graphing Calculator</span>
         <button onClick={onClose} style={{ width: 18, height: 18, borderRadius: '50%', border: 0, background: 'rgba(255,255,255,0.18)', color: '#fff', cursor: 'pointer', display: 'grid', placeItems: 'center', fontSize: 12 }}>×</button>
       </div>
@@ -347,6 +396,15 @@ function DesmosPanel({ onClose }) {
       ) : (
         <div ref={ref} style={{ flex: 1 }} />
       )}
+      <div
+        onMouseDown={onResizeDown}
+        title="Drag to resize"
+        style={{
+          position: 'absolute', right: 0, bottom: 0, width: 18, height: 18,
+          cursor: 'nwse-resize', zIndex: 1,
+          background: 'linear-gradient(135deg, transparent 0 50%, var(--border-2) 50% 60%, transparent 60% 70%, var(--border-2) 70% 80%, transparent 80%)',
+        }}
+      />
     </div>
   );
 }
@@ -355,7 +413,7 @@ function FormulaSheet({ onClose }) {
   return (
     <div style={{
       position: 'absolute', right: 18, top: 78, width: 380, maxHeight: 420,
-      background: '#FFFFFF', borderRadius: 8, boxShadow: 'var(--shadow-lg)',
+      background: 'var(--paper)', borderRadius: 8, boxShadow: 'var(--shadow-lg)',
       border: '1px solid var(--border-2)', overflow: 'auto', zIndex: 25,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderBottom: '1px solid var(--border-1)' }}>
@@ -373,7 +431,7 @@ function FormulaSheet({ onClose }) {
         ].map(([k, v]) => (
           <div key={k} style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
             <span style={{ color: 'var(--text-secondary)' }}>{k}</span>
-            <span style={{ fontFamily: 'var(--font-mono)', color: '#1D1D1F' }}>{v}</span>
+            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--test-ink)' }}>{v}</span>
           </div>
         ))}
       </div>

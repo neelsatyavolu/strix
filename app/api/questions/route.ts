@@ -4,11 +4,48 @@ import { drawQuestions } from "@/lib/cb/client";
 import { drawModule } from "@/lib/cb/blueprint";
 import { CATEGORY_TO_DOMAIN } from "@/lib/cb/domains";
 import { createClient } from "@/lib/supabase/server";
+import { difficultyMix, recentAccuracy } from "@/lib/cb/adaptive";
 import type { Difficulty, Section } from "@/lib/cb/types";
 
 // Cap on how many historical ids we load — large enough to cover a full bank,
 // bounded so a power user's history can't blow up the query.
 const SEEN_LIMIT = 5000;
+
+// How many recent answers to weigh when picking an adaptive difficulty mix.
+// Recent attempts dominate via decay, so a few hundred is plenty.
+const RECENT_LIMIT = 300;
+
+/**
+ * Recency-weighted accuracy + attempt count for the signed-in user in a section
+ * (optionally a single domain), used to choose an adaptive difficulty mix for a
+ * drill. Best-effort: anonymous users / any failure yield no signal, which falls
+ * back to a balanced mix rather than breaking question loading.
+ */
+async function loadPerformance(
+  section: Section,
+  domainCode?: string,
+): Promise<{ accuracy: number | null; attempts: number }> {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { accuracy: null, attempts: 0 };
+    let query = supabase
+      .from("answers")
+      .select("is_correct, value, session_questions!inner(section, domain)")
+      .eq("user_id", user.id)
+      .eq("session_questions.section", section)
+      .not("value", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(RECENT_LIMIT);
+    if (domainCode) query = query.eq("session_questions.domain", domainCode);
+    const { data } = await query;
+    // Drop skipped answers (no value) so they don't dilute the signal.
+    const rows = (data ?? []).filter((r) => String((r as { value: unknown }).value ?? "").trim());
+    return { accuracy: recentAccuracy(rows), attempts: rows.length };
+  } catch {
+    return { accuracy: null, attempts: 0 };
+  }
+}
 
 /**
  * Ids the signed-in user has already been served in this section, so we can
@@ -79,6 +116,14 @@ export async function GET(req: NextRequest) {
 
   try {
     const seen = await loadSeen(section);
+    // When the student hasn't pinned a difficulty, serve an adaptive mix based on
+    // their recent accuracy in this domain (balanced mix if there's no history).
+    const mix =
+      mode === "drill" && diff === null
+        ? await loadPerformance(section, domainCode).then(({ accuracy, attempts }) =>
+            difficultyMix(accuracy, attempts),
+          )
+        : undefined;
     const questions =
       mode === "module"
         ? await drawModule({
@@ -93,6 +138,7 @@ export async function GET(req: NextRequest) {
             section,
             domains: domainCode ? [domainCode] : undefined,
             difficulty: diff,
+            mix,
             limit,
             seen,
           });

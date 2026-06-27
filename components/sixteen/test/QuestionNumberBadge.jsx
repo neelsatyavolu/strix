@@ -23,8 +23,8 @@ export function QuestionNumberBadge({
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#1D1D1F',
-        color: '#fff',
+        background: 'var(--test-fill)',
+        color: 'var(--test-fill-fg)',
         width: 30,
         height: 28,
         borderRadius: 4,
@@ -38,7 +38,7 @@ export function QuestionNumberBadge({
         display: 'flex',
         alignItems: 'center',
         gap: 12,
-        borderBottom: '1.5px dashed #1D1D1F',
+        borderBottom: '1.5px dashed var(--test-line)',
       }}>
         <div style={{ flex: 1 }}/>
         {flag}

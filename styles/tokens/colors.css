@@ -29,6 +29,11 @@
   --test-selected-fill: #EEF1F8;
   --test-button: #2563EB;         /* footer Next button blue */
   --test-button-hover: #1D4FD0;
+  --test-ink: #1D1D1F;            /* primary ink on the test paper */
+  --test-line: #1D1D1F;           /* answer-row outline, badge rule, eliminator */
+  --test-option-hover: #FAFAFB;   /* answer-row hover wash */
+  --test-fill: #1D1D1F;           /* selected / answered chip fill */
+  --test-fill-fg: #FFFFFF;        /* text on those chip fills */
 
   /* ── Neutrals (Apple-style warm gray scale) ─────────────── */
   --paper: #FFFFFF;               /* primary surface */
@@ -128,15 +133,19 @@
   --brand-blue-press: #3A65EE;
   --brand-blue-soft: rgba(77, 120, 255, 0.16);
 
-  /* Test screens stay light — the actual SAT runs light by spec.
-     We keep them legible by anchoring to the same canvas. */
-  --test-canvas: #FFFFFF;
-  --test-passage-bg: #FFFFFF;
-  --test-strikethrough: #1D1D1F;
-  --test-selected: #1B2A4B;
-  --test-selected-fill: #EEF1F8;
-  --test-rule: #E5E5E7;
-  --test-divider: #C8C8CC;
+  /* Test screens follow the app theme (dark when dark mode is on). */
+  --test-canvas: #1C1C1E;
+  --test-passage-bg: #1C1C1E;
+  --test-strikethrough: #F5F5F7;
+  --test-selected: #F5F5F7;
+  --test-selected-fill: #2C2C2E;
+  --test-rule: #38383A;
+  --test-divider: #38383A;
+  --test-ink: #F5F5F7;
+  --test-line: #8E8E93;
+  --test-option-hover: #2C2C2E;
+  --test-fill: #F5F5F7;
+  --test-fill-fg: #1C1C1E;
 
   --success-soft: rgba(31, 165, 106, 0.20);
   --warning-soft: rgba(216, 114, 26, 0.22);

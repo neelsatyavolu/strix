@@ -1,6 +1,7 @@
 import sanitizeHtml from "sanitize-html";
 import type { Choice, Question, QuestionStub, Section } from "./types";
 import { domainLabel } from "./domains";
+import { expandMfenced } from "./mfenced";
 
 const LETTERS = ["A", "B", "C", "D", "E", "F"];
 
@@ -47,9 +48,11 @@ const SANITIZE_OPTS: sanitizeHtml.IOptions = {
 };
 
 // Sanitize CB-supplied HTML — allow MathML/SVG/basic formatting, strip the rest.
+// <mfenced> survives sanitization but isn't rendered by MathML Core (current
+// Chrome/Safari), so expand it to <mrow>+<mo> form to keep fences visible.
 export function clean(html: unknown): string {
   if (typeof html !== "string" || !html) return "";
-  return sanitizeHtml(html, SANITIZE_OPTS);
+  return expandMfenced(sanitizeHtml(html, SANITIZE_OPTS));
 }
 
 interface RawDetail {

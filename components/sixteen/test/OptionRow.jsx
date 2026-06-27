@@ -27,10 +27,10 @@ export function OptionRow({
   const isCorrect = feedback === 'correct';
   const isWrong = feedback === 'wrong';
   const clickable = !eliminated && !locked && !isWrong;
-  const ring = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : selected ? 'var(--test-selected)' : '#1D1D1F';
+  const ring = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : selected ? 'var(--test-selected)' : 'var(--test-line)';
   const ringW = selected || isCorrect || isWrong ? 2 : 1;
-  const circleBg = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : selected ? '#1D1D1F' : 'transparent';
-  const circleBorder = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : '#1D1D1F';
+  const circleBg = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : selected ? 'var(--test-fill)' : 'transparent';
+  const circleBorder = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : 'var(--test-line)';
   const struck = eliminated || isWrong;
   return (
     <div
@@ -43,7 +43,7 @@ export function OptionRow({
         alignItems: 'center',
         gap: 14,
         padding: '14px 16px',
-        background: hover && clickable && !selected ? '#FAFAFB' : 'transparent',
+        background: hover && clickable && !selected ? 'var(--test-option-hover)' : 'transparent',
         border: `${ringW}px solid ${ring}`,
         borderRadius: 'var(--radius-md)',
         cursor: clickable ? 'pointer' : 'default',
@@ -59,14 +59,14 @@ export function OptionRow({
         display: 'grid', placeItems: 'center',
         fontFamily: 'var(--font-sans)',
         fontWeight: 700, fontSize: 14,
-        color: (selected || isCorrect || isWrong) ? '#fff' : '#1D1D1F',
+        color: (isCorrect || isWrong) ? '#fff' : selected ? 'var(--test-fill-fg)' : 'var(--test-ink)',
         background: circleBg,
       }}>{letter}</span>
       <span style={{
         flex: 1,
         fontFamily: 'var(--font-sans)',
         fontSize: 15, lineHeight: 1.4,
-        color: '#1D1D1F',
+        color: 'var(--test-ink)',
         textDecoration: struck ? 'line-through' : 'none',
         textDecorationThickness: '1.5px',
         opacity: struck ? 0.55 : 1,
@@ -81,9 +81,9 @@ export function OptionRow({
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
             width: 28, height: 28,
             borderRadius: '50%',
-            border: '1.5px solid #1D1D1F',
-            background: '#fff',
-            color: '#1D1D1F',
+            border: '1.5px solid var(--test-line)',
+            background: 'var(--test-canvas)',
+            color: 'var(--test-ink)',
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontWeight: 700, fontSize: 13,

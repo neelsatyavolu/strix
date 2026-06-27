@@ -228,6 +228,10 @@ export function PracticeSessionProvider({ children }) {
     const mode = config.mode ?? 'drill';
     const isExam = mode === 'mock-exam';
     const section = isExam ? EXAM_SECTIONS[0] : config.section;
+    // Tag a full SAT's two persisted halves with one id so "Practice Tests"
+    // can pair them back into a single test (composite 400–1600).
+    const examId = isExam ? (globalThis.crypto?.randomUUID?.() ?? `exam-${Date.now()}`) : null;
+    const sessionConfig = isExam ? { ...config, examId } : config;
     m2PromiseRef.current = null;
     resetTiming();
     setState({
@@ -235,8 +239,8 @@ export function PracticeSessionProvider({ children }) {
       status: 'loading',
       mode,
       section,
-      config,
-      exam: isExam ? { sections: EXAM_SECTIONS, index: 0, results: [] } : null,
+      config: sessionConfig,
+      exam: isExam ? { sections: EXAM_SECTIONS, index: 0, results: [], examId } : null,
     });
     try {
       const isDrill = mode === 'drill';

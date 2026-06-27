@@ -124,7 +124,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
                 <label style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)', display:'block', marginBottom: 6}}>Difficulty</label>
                 <SegmentedControl
                   value={diff} onChange={setDiff} fullWidth
-                  options={[{value:'all', label:'All'},{value:'easy', label:'Easy'},{value:'med', label:'Medium'},{value:'hard', label:'Hard'}]}
+                  options={[{value:'all', label:'Adaptive'},{value:'easy', label:'Easy'},{value:'med', label:'Medium'},{value:'hard', label:'Hard'}]}
                 />
               </div>
               <div>
@@ -198,7 +198,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
               session.start({ mode: 'mock-exam' });
               go('rw-question', { kind: 'module' }); // a full SAT always opens with R&W
             } else {
-              session.start({ section: domain, mode, category: cat, difficulty: diff, count });
+              session.start({ section: domain, mode, category: cat, difficulty: diff, count, timing: mode === 'drill' ? timed : 'total' });
               go(domain === 'math' ? 'math-question' : 'rw-question', { kind: mode === 'drill' ? 'drill' : 'module' });
             }
           }}>

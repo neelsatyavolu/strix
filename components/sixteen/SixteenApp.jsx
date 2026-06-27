@@ -12,11 +12,16 @@ import ScoreReport from './screens/ScoreReport';
 import ExamBreak from './screens/ExamBreak';
 import ExamReport from './screens/ExamReport';
 import Stats from './screens/Stats';
+import Sessions from './screens/Sessions';
+import PracticeTests from './screens/PracticeTests';
+import PracticeModules from './screens/PracticeModules';
+import PracticeSections from './screens/PracticeSections';
 import CategoryDetail from './screens/CategoryDetail';
 import SessionDetail from './screens/SessionDetail';
 import TutorInvite from './screens/TutorInvite';
 import TutorChat from './screens/TutorChat';
 import Settings from './screens/Settings';
+import DevTab from './screens/DevTab';
 import TutorPanel from './panels/TutorPanel';
 import LiveStudentsBanner from './panels/LiveStudentsBanner';
 import LiveQuestionView from '@/components/tutor/LiveQuestionView';
@@ -146,11 +151,16 @@ function App() {
     'exam-break': 'home',
     'exam-report': 'home',
     'stats': 'stats',
+    'sessions': 'sessions',
+    'practice-tests': 'practice-tests',
+    'practice-modules': 'practice-modules',
+    'practice-sections': 'practice-sections',
     'category-detail': 'stats',
     'session-detail': 'stats',
     'tutor-chat': 'tutor',
     'tutor-invite': 'tutor',
     'settings': 'settings',
+    'dev': 'dev',
   }[view] || 'home';
 
   const isTutor = role === 'tutor';
@@ -167,24 +177,42 @@ function App() {
 
   const onboarding = view === 'onboarding';
 
+  // Dev seeding tab — visible only to allowlisted accounts (same list the
+  // /api/dev/seed route enforces server-side). Unset env ⇒ hidden everywhere.
+  const devEmails = (process.env.NEXT_PUBLIC_DEV_SEED_EMAILS || '')
+    .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
+  const devEnabled = !!email && devEmails.includes(email.toLowerCase());
+
+  const sidebarItems = [
+    { id:'home',     label:'Home',                  icon: I('home'),            group:'Practice' },
+    { id:'rw',       label:'Reading & Writing',     icon: I('book-open'),       group:'Practice' },
+    { id:'math',     label:'Math',                  icon: I('square-function'), group:'Practice' },
+    { id:'stats',             label:'Stats',             icon: I('bar-chart-3'),     group:'You' },
+    { id:'practice-tests',    label:'Practice Tests',    icon: I('graduation-cap'),  group:'You' },
+    { id:'practice-modules',  label:'Practice Modules',  icon: I('square'),          group:'You' },
+    { id:'practice-sections', label:'Practice Sections', icon: I('layers'),          group:'You' },
+    { id:'sessions',          label:'Sessions',          icon: I('list'),            group:'You' },
+    { id:'tutor',             label:'Tutor',             icon: I('message-circle'),  group:'You' },
+    { id:'settings',          label:'Settings',          icon: I('settings'),        group:'You' },
+  ];
+  if (devEnabled) sidebarItems.push({ id:'dev', label:'Dev', icon: I('wrench'), group:'Dev' });
+
   const sidebar = (
     <Sidebar
-      items={[
-        { id:'home',     label:'Home',                  icon: I('home'),            group:'Practice' },
-        { id:'rw',       label:'Reading & Writing',     icon: I('book-open'),       group:'Practice' },
-        { id:'math',     label:'Math',                  icon: I('square-function'), group:'Practice' },
-        { id:'stats',    label:'Stats',                 icon: I('bar-chart-3'),     group:'You' },
-        { id:'tutor',    label:'Tutor',                 icon: I('message-circle'),  group:'You' },
-        { id:'settings', label:'Settings',              icon: I('settings'),        group:'You' },
-      ]}
+      items={sidebarItems}
       activeId={sidebarId}
       onSelect={(id) => {
         if (id === 'home')     go('dashboard');
         else if (id === 'rw')   go('practice-setup', { domain: 'rw' });
         else if (id === 'math') go('practice-setup', { domain: 'math' });
         else if (id === 'stats') go('stats');
+        else if (id === 'practice-tests') go('practice-tests');
+        else if (id === 'practice-modules') go('practice-modules');
+        else if (id === 'practice-sections') go('practice-sections');
+        else if (id === 'sessions') go('sessions');
         else if (id === 'tutor') go('tutor-invite');
         else if (id === 'settings') go('settings');
+        else if (id === 'dev') go('dev');
       }}
       header={<>
         <img src="/assets/app-icon.svg" width="24" height="24" style={{borderRadius: 6}} />
@@ -276,11 +304,16 @@ function App() {
     case 'exam-break':      screen = <ExamBreak go={go} />; break;
     case 'exam-report':     screen = <ExamReport go={go} />; break;
     case 'stats':           screen = <Stats go={go} {...watchProps} />; break;
+    case 'sessions':        screen = <Sessions go={go} {...watchProps} />; break;
+    case 'practice-tests':  screen = <PracticeTests go={go} {...watchProps} />; break;
+    case 'practice-modules': screen = <PracticeModules go={go} {...watchProps} />; break;
+    case 'practice-sections': screen = <PracticeSections go={go} {...watchProps} />; break;
     case 'category-detail': screen = <CategoryDetail go={go} section={viewProps.section} domain={viewProps.domain} label={viewProps.label} {...watchProps} />; break;
     case 'session-detail':  screen = <SessionDetail go={go} id={viewProps.id} {...watchProps} />; break;
     case 'tutor-invite':    screen = <TutorInvite go={go} />; break;
     case 'tutor-chat':      screen = <TutorChat go={go} />; break;
     case 'settings':        screen = <Settings go={go} dark={dark} setDark={setDark} />; break;
+    case 'dev':             screen = devEnabled ? <DevTab go={go} /> : <Dashboard go={go} />; break;
     default:                screen = <Dashboard go={go} />;
   }
 
@@ -373,10 +406,15 @@ function titleFor(view, isTutor) {
     'exam-break': 'Strix — Break',
     'exam-report': 'Strix — Full SAT',
     'stats': 'Strix — Stats',
+    'sessions': 'Strix — Sessions',
+    'practice-tests': 'Strix — Practice Tests',
+    'practice-modules': 'Strix — Practice Modules',
+    'practice-sections': 'Strix — Practice Sections',
     'category-detail': 'Strix — Stats',
     'tutor-chat': 'Strix — Tutor',
     'tutor-invite': 'Strix — Tutor',
     'settings': 'Strix — Settings',
+    'dev': 'Strix — Dev',
   })[view] || 'Strix';
 }
 
