@@ -172,7 +172,7 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
               </div>
               <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 14 }}>
                 <AccuracyRing value={acc(sec)} size={64} color={sec === 'rw' ? 'var(--rw-color)' : 'var(--math-color)'} />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
+                <div style={{ display: 'flex', flexDirection: 'row', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start', flex: 1 }}>
                   <StatCard label="Est. score" value={sc != null ? String(sc) : '—'} trend={trendBadge(sc, trend[sec])} domain={sec} size="sm" />
                   <StatCard label="Questions done" value={totals[sec].done} size="sm" />
                   <StatCard label="Last session" value={ls?.accuracy != null ? String(ls.accuracy) : '—'} unit={ls?.accuracy != null ? '%' : ''} size="sm" sublabel={lastSessionLabel(ls, sec)} />
