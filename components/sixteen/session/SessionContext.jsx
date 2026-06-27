@@ -113,7 +113,8 @@ function sectionSnapshot(state) {
 }
 
 // Persist a finalized section to the Vercel server (non-blocking).
-async function persistSession(state) {
+// `times` maps question id -> milliseconds on screen (see timingRef).
+async function persistSession(state, times = {}) {
   try {
     const all = state.modules.flatMap((m) => m.questions.map((q) => ({ q, moduleKey: m.key })));
     if (!all.length) return;
@@ -135,7 +136,7 @@ async function persistSession(state) {
         snapshot: { ...q, pretest: pretest.has(q.id) },
         value: (state.mode === 'drill' ? (r?.firstValue ?? r?.value) : r?.value) ?? null,
         is_correct: responseCorrect(state.mode, q, r),
-        time_ms: null,
+        time_ms: times[q.id] != null ? Math.round(times[q.id]) : null,
         flagged: !!r?.flagged,
       };
     });
@@ -183,11 +184,34 @@ export function PracticeSessionProvider({ children }) {
   const stateRef = React.useRef(state);
   stateRef.current = state;
 
+  // Per-question time on screen. Mock modes accumulate total dwell across
+  // revisits; general practice (drill) freezes at the first answer click, so the
+  // stored value is time-to-first-answer.
+  const timingRef = React.useRef({ currentId: null, shownAt: null, byId: {}, frozen: new Set() });
+  const resetTiming = () => { timingRef.current = { currentId: null, shownAt: null, byId: {}, frozen: new Set() }; };
+  const flushTiming = (now) => {
+    const t = timingRef.current;
+    if (t.currentId && t.shownAt != null && !t.frozen.has(t.currentId)) {
+      t.byId[t.currentId] = (t.byId[t.currentId] || 0) + (now - t.shownAt);
+    }
+    t.shownAt = null;
+  };
+  // Drill: close out time-to-first-answer and stop counting further retry time.
+  const freezeTiming = (qid) => {
+    const t = timingRef.current;
+    if (t.currentId === qid && t.shownAt != null && !t.frozen.has(qid)) {
+      t.byId[qid] = (t.byId[qid] || 0) + (Date.now() - t.shownAt);
+    }
+    t.frozen.add(qid);
+  };
+  const finalizeTimes = () => { flushTiming(Date.now()); return { ...timingRef.current.byId }; };
+
   const start = React.useCallback(async (config) => {
     const mode = config.mode ?? 'drill';
     const isExam = mode === 'mock-exam';
     const section = isExam ? EXAM_SECTIONS[0] : config.section;
     m2PromiseRef.current = null;
+    resetTiming();
     setState({
       ...EMPTY,
       status: 'loading',
@@ -235,7 +259,12 @@ export function PracticeSessionProvider({ children }) {
   // Drill MCQ: immediate-check, retry-until-correct. Records the first attempt's
   // correctness (stats), tracks wrong picks so they lock out, and only sets
   // `solved` (which ungates Next) when the correct option is chosen.
-  const answerDrillMCQ = React.useCallback((letter) =>
+  const answerDrillMCQ = React.useCallback((letter) => {
+    // Freeze time-to-first-answer on the first click (reads fresh state via ref).
+    const cur = stateRef.current;
+    const cq = cur.modules[cur.activeModuleIndex]?.questions[cur.index];
+    const cr = cq ? cur.responses[cq.id] : null;
+    if (cq && cr?.firstValue == null && !cr?.solved) freezeTiming(cq.id);
     setState((s) => {
       const q = s.modules[s.activeModuleIndex]?.questions[s.index];
       if (!q) return s;
@@ -255,7 +284,8 @@ export function PracticeSessionProvider({ children }) {
         next.tried = [...new Set([...(prev.tried || []), letter])];
       }
       return { ...s, responses: { ...s.responses, [q.id]: next } };
-    }), []);
+    });
+  }, []);
 
   const toggleFlag = React.useCallback(() =>
     setState((s) => {
@@ -280,7 +310,7 @@ export function PracticeSessionProvider({ children }) {
   const submit = React.useCallback(() => {
     setState((s) => ({ ...s, status: 'submitted', phase: 'done' }));
   }, []);
-  const reset = React.useCallback(() => { m2PromiseRef.current = null; setState(EMPTY); }, []);
+  const reset = React.useCallback(() => { m2PromiseRef.current = null; resetTiming(); setState(EMPTY); }, []);
 
   // End the active module. Full-section M1 -> route + load M2 -> review screen.
   // Otherwise the section is done: advance the exam, or finalize the report.
@@ -288,6 +318,7 @@ export function PracticeSessionProvider({ children }) {
     const s = stateRef.current;
 
     if (isFullSection(s.mode) && s.phase === 'm1') {
+      flushTiming(Date.now()); // stop counting M1's last question while on the review screen
       const m1 = s.modules[0];
       const correct = m1.questions.filter((q) => isResponseCorrect(q, s.responses[q.id])).length;
       const variant = routeModule2(correct, m1.questions.length);
@@ -303,7 +334,7 @@ export function PracticeSessionProvider({ children }) {
 
     // Section complete.
     if (s.exam) {
-      persistSession(s);
+      persistSession(s, finalizeTimes());
       const snapshot = sectionSnapshot(s);
       const nextIndex = s.exam.index + 1;
       const results = [...s.exam.results, snapshot];
@@ -317,7 +348,7 @@ export function PracticeSessionProvider({ children }) {
       return;
     }
 
-    persistSession(s);
+    persistSession(s, finalizeTimes());
     setState((prev) => ({ ...prev, status: 'submitted', phase: 'done' }));
     go('score-report');
   }, []);
@@ -377,6 +408,19 @@ export function PracticeSessionProvider({ children }) {
   const questions = activeModule?.questions || [];
   const current = questions[state.index] || null;
   const answeredCount = questions.filter((q) => state.responses[q.id]?.value).length;
+
+  // Track which question screen is showing; flush the previous one's dwell time
+  // and start the clock on the new one. (Drill freezes separately at first answer.)
+  React.useEffect(() => {
+    const id = current?.id ?? null;
+    const t = timingRef.current;
+    if (t.currentId !== id) {
+      flushTiming(Date.now());
+      t.currentId = id;
+      t.shownAt = id ? Date.now() : null;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current?.id]);
 
   const buildResult = (qs) => buildReview(qs, state.responses, state.pretestIds, state.mode);
 

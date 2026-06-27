@@ -216,7 +216,7 @@ function SessionsTab({ go, sessions }) {
           <span/>
         </div>
         {filtered.map((s, i) => (
-          <button key={s.id} onClick={() => go('score-report')} style={{
+          <button key={s.id} onClick={() => go('session-detail', { id: s.id })} style={{
             display:'grid', gridTemplateColumns:'120px minmax(220px, 1fr) 110px 60px 70px 80px 24px',
             gap: 12, alignItems:'center', padding:'12px 16px',
             background:'transparent', border:0, borderTop: i === 0 ? 0 : '1px solid var(--border-1)',

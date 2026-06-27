@@ -13,6 +13,7 @@ import ExamBreak from './screens/ExamBreak';
 import ExamReport from './screens/ExamReport';
 import Stats from './screens/Stats';
 import CategoryDetail from './screens/CategoryDetail';
+import SessionDetail from './screens/SessionDetail';
 import TutorInvite from './screens/TutorInvite';
 import TutorChat from './screens/TutorChat';
 import Settings from './screens/Settings';
@@ -146,6 +147,7 @@ function App() {
     'exam-report': 'home',
     'stats': 'stats',
     'category-detail': 'stats',
+    'session-detail': 'stats',
     'tutor-chat': 'tutor',
     'tutor-invite': 'tutor',
     'settings': 'settings',
@@ -270,6 +272,7 @@ function App() {
     case 'exam-report':     screen = <ExamReport go={go} />; break;
     case 'stats':           screen = <Stats go={go} {...watchProps} />; break;
     case 'category-detail': screen = <CategoryDetail go={go} section={viewProps.section} domain={viewProps.domain} label={viewProps.label} {...watchProps} />; break;
+    case 'session-detail':  screen = <SessionDetail go={go} id={viewProps.id} {...watchProps} />; break;
     case 'tutor-invite':    screen = <TutorInvite go={go} />; break;
     case 'tutor-chat':      screen = <TutorChat go={go} />; break;
     case 'settings':        screen = <Settings go={go} dark={dark} setDark={setDark} />; break;
