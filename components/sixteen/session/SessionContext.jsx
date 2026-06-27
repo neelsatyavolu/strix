@@ -112,11 +112,23 @@ function sectionSnapshot(state) {
   return { ...base, section: state.section, scaled, m2Variant: state.m2Variant };
 }
 
+// Effective stored value for a question (drill records the first attempt).
+function storedValue(mode, response) {
+  return (mode === 'drill' ? (response?.firstValue ?? response?.value) : response?.value) ?? null;
+}
+function hasAnswer(mode, response) {
+  const v = storedValue(mode, response);
+  return v != null && String(v).trim() !== '';
+}
+
 // Persist a finalized section to the Vercel server (non-blocking).
 // `times` maps question id -> milliseconds on screen (see timingRef).
-async function persistSession(state, times = {}) {
+// `answeredOnly` (early exit from general practice) keeps just the questions the
+// student actually answered, so unanswered ones are discarded rather than scored.
+async function persistSession(state, times = {}, { answeredOnly = false } = {}) {
   try {
-    const all = state.modules.flatMap((m) => m.questions.map((q) => ({ q, moduleKey: m.key })));
+    let all = state.modules.flatMap((m) => m.questions.map((q) => ({ q, moduleKey: m.key })));
+    if (answeredOnly) all = all.filter(({ q }) => hasAnswer(state.mode, state.responses[q.id]));
     if (!all.length) return;
     const base = buildReview(all.map((x) => x.q), state.responses, state.pretestIds, state.mode);
     const scaled = state.mode && state.mode !== 'drill'
@@ -134,7 +146,7 @@ async function persistSession(state, times = {}) {
         ordinal: i,
         module: moduleKey,
         snapshot: { ...q, pretest: pretest.has(q.id) },
-        value: (state.mode === 'drill' ? (r?.firstValue ?? r?.value) : r?.value) ?? null,
+        value: storedValue(state.mode, r),
         is_correct: responseCorrect(state.mode, q, r),
         time_ms: times[q.id] != null ? Math.round(times[q.id]) : null,
         flagged: !!r?.flagged,
@@ -312,6 +324,17 @@ export function PracticeSessionProvider({ children }) {
   }, []);
   const reset = React.useCallback(() => { m2PromiseRef.current = null; resetTiming(); setState(EMPTY); }, []);
 
+  // Leave a session early. General practice ('drill') saves the questions already
+  // answered (first-attempt stats) and discards the rest; full modules/sections/
+  // exams save nothing at all. Then return home.
+  const exitSession = React.useCallback((go) => {
+    const s = stateRef.current;
+    if (s.mode === 'drill') persistSession(s, finalizeTimes(), { answeredOnly: true });
+    reset();
+    if (go) go('dashboard');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reset]);
+
   // End the active module. Full-section M1 -> route + load M2 -> review screen.
   // Otherwise the section is done: advance the exam, or finalize the report.
   const finishModule = React.useCallback((go) => {
@@ -479,6 +502,7 @@ export function PracticeSessionProvider({ children }) {
     startModule2,
     startExamNextSection,
     reset,
+    exitSession,
     isResponseCorrect,
   };
 

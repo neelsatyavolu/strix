@@ -4,6 +4,7 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
 import Highlightable from '@/components/sixteen/test/Highlightable';
+import { ExitTest } from '@/components/sixteen/test/ExitTest';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
 
@@ -58,6 +59,10 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
   const solved = !!resp.solved;
   const triedWrong = new Set(resp.tried || []);
   const blocked = isDrill && !solved; // can't advance until the right answer is chosen
+  // Full modules/sections/exams: every question must be answered before submitting.
+  const isLast = session.index >= total - 1;
+  const finishBlocked = !isDrill && session.answeredCount < total;
+  const firstUnanswered = () => session.questions.findIndex((qq) => !session.responses[qq.id]?.value);
   const elimSet = elim[q.id] || new Set();
   const tog = (l) =>
     setElim((prev) => {
@@ -80,8 +85,18 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
 
   const onNext = () => {
     if (blocked) return;
-    if (session.index >= total - 1) session.finishModule(go);
-    else session.next();
+    if (isLast) {
+      if (finishBlocked) return; // can't submit a full module with blanks
+      session.finishModule(go);
+    } else session.next();
+  };
+
+  // Palette "Go to Review Page": submit, unless blanks remain in a full module —
+  // then jump to the first unanswered question instead.
+  const onReviewAll = () => {
+    setPaletteOpen(false);
+    if (finishBlocked) { const i = firstUnanswered(); if (i >= 0) session.goTo(i); return; }
+    session.finishModule(go);
   };
 
   const answered = session.answeredCount;
@@ -95,6 +110,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
         sectionLabel={session.activeModule?.label === 'Drill' ? 'Reading & Writing — Drill' : `Reading & Writing, ${session.activeModule?.label || 'Module 1'}`}
         timer={<Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
         tools={<>
+          <ExitTest mode={session.mode} onConfirm={() => session.exitSession(go)} />
           <ToolBtn label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
           <ToolBtn label="Tutor" icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
           <ToolBtn label="More" icon="more-vertical" />
@@ -176,7 +192,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
             items={items}
             title={session.activeModule?.label === 'Drill' ? 'Reading & Writing — Drill' : `Reading & Writing — ${session.activeModule?.label || 'Module 1'}`}
             onSelect={(n) => { session.goTo(n - 1); setPaletteOpen(false); }}
-            onReviewAll={() => { setPaletteOpen(false); session.finishModule(go); }}
+            onReviewAll={onReviewAll}
           />
         </div>
       )}
@@ -192,8 +208,9 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
         paletteOpen={paletteOpen}
         onBack={() => session.prev()}
         onNext={onNext}
-        nextDisabled={blocked}
-        nextLabel={session.index >= total - 1 ? 'Submit' : 'Next'}
+        nextDisabled={blocked || (isLast && finishBlocked)}
+        nextTitle={isLast && finishBlocked ? 'Answer every question before submitting' : undefined}
+        nextLabel={isLast ? 'Submit' : 'Next'}
       />
     </div>
   );

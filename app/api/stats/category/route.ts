@@ -50,13 +50,15 @@ export async function GET(req: NextRequest) {
   const label = domains[domain];
   if (!label) return NextResponse.json({ success: false, error: "Unknown category" }, { status: 400 });
 
-  // 1. Lightweight skill aggregates across ALL attempts in this category.
+  // 1. Lightweight skill aggregates across ALL *answered* attempts in this
+  // category. Skipped questions (no value) are excluded from accuracy.
   const { data: all, error: allErr } = await supabase
     .from("answers")
-    .select("is_correct, session_questions!inner(section, domain, skill)")
+    .select("is_correct, value, session_questions!inner(section, domain, skill)")
     .eq("user_id", targetId)
     .eq("session_questions.section", section)
     .eq("session_questions.domain", domain)
+    .not("value", "is", null)
     .limit(10000);
   if (allErr) return NextResponse.json({ success: false, error: allErr.message }, { status: 500 });
 
@@ -64,6 +66,7 @@ export async function GET(req: NextRequest) {
   let done = 0;
   let correct = 0;
   for (const row of all ?? []) {
+    if (!String((row as { value: unknown }).value ?? "").trim()) continue; // skipped
     const sq = one(row.session_questions as { skill?: string } | { skill?: string }[]);
     const skill = sq?.skill || "—";
     done += 1;
@@ -81,6 +84,7 @@ export async function GET(req: NextRequest) {
     .eq("user_id", targetId)
     .eq("session_questions.section", section)
     .eq("session_questions.domain", domain)
+    .not("value", "is", null) // skipped questions don't appear in the attempt history
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1);
   if (hErr) return NextResponse.json({ success: false, error: hErr.message }, { status: 500 });
@@ -108,6 +112,16 @@ export async function GET(req: NextRequest) {
       skill,
       skillLabel,
       stem: stripHtml(snap.stemHtml),
+      // Full (sanitized) question payload so the history row can expand into a
+      // read-only review with stimulus, stem, choices and explanation.
+      question: {
+        type: String(snap.type || "mcq"),
+        stimulusHtml: snap.stimulusHtml ? String(snap.stimulusHtml) : null,
+        stemHtml: String(snap.stemHtml ?? ""),
+        choices: Array.isArray(snap.choices) ? snap.choices : [],
+        correct: correctArr,
+        rationaleHtml: snap.rationaleHtml ? String(snap.rationaleHtml) : null,
+      },
       timeMs: row.time_ms ?? null,
     };
   });

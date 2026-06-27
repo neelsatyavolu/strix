@@ -33,11 +33,14 @@ export async function GET(req: NextRequest) {
   if ("error" in scope) return NextResponse.json({ success: false, error: scope.error }, { status: scope.status });
   const targetId = scope.targetId;
 
-  // 1. per-question results joined to their section/domain
+  // 1. per-question results joined to their section/domain.
+  // Skipped questions (no answer recorded) are excluded so they don't drag
+  // down accuracy — only attempts where the student actually answered count.
   const { data: answers, error: aErr } = await supabase
     .from("answers")
-    .select("is_correct, session_questions!inner(section, domain)")
+    .select("is_correct, value, session_questions!inner(section, domain)")
     .eq("user_id", targetId)
+    .not("value", "is", null)
     .limit(10000);
   if (aErr) return NextResponse.json({ success: false, error: aErr.message }, { status: 500 });
 
@@ -49,6 +52,7 @@ export async function GET(req: NextRequest) {
   };
 
   for (const row of answers ?? []) {
+    if (!String((row as { value: unknown }).value ?? "").trim()) continue; // skipped
     const sq = (row as { session_questions: { section: Section; domain: string } | { section: Section; domain: string }[] }).session_questions;
     const meta = Array.isArray(sq) ? sq[0] : sq;
     if (!meta) continue;

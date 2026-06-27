@@ -40,6 +40,7 @@ export function ProfileProvider({ children }) {
     signOut,
     displayName: state.profile?.full_name || 'You',
     email: state.profile?.email || state.user?.email || '',
+    avatarUrl: state.profile?.avatar_url || null,
   };
   return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>;
 }

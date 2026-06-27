@@ -46,6 +46,7 @@ export async function GET(req: NextRequest) {
     .from("answers")
     .select("is_correct, value, time_ms, created_at, session_questions!inner(section, domain, skill, difficulty, snapshot)")
     .eq("user_id", targetId)
+    .not("value", "is", null) // skipped questions aren't part of the answer history
     .order("created_at", { ascending: false });
   if (section) query = query.eq("session_questions.section", section);
   if (onlyWrong) query = query.eq("is_correct", false);

@@ -49,6 +49,35 @@ export function MessageBubble({
 }
 
 /**
+ * TypingBubble — iMessage-style "…" indicator shown while the other person is
+ * typing. A 'theirs' bubble with three bouncing dots and no label.
+ */
+export function TypingBubble() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
+      <style>{`
+        @keyframes mb-type-bounce { 0%, 80%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+      `}</style>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 4,
+        padding: '9px 13px',
+        background: 'var(--bubble-theirs)',
+        color: 'var(--bubble-theirs-fg)',
+        borderRadius: 18, borderBottomLeftRadius: 4,
+      }}>
+        {[0, 1, 2].map((i) => (
+          <span key={i} style={{
+            width: 6, height: 6, borderRadius: '50%',
+            background: 'currentColor',
+            animation: `mb-type-bounce 1.4s infinite ease-in-out ${i * 0.16}s`,
+          }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
  * ThinkingBubble — animated "Thinking" indicator shown while the tutor/AI
  * composes a reply. Styled as a 'theirs' bubble with a label + bouncing dots.
  */

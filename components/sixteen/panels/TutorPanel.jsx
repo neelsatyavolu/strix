@@ -5,14 +5,15 @@ import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { aiAsk, aiConnect, aiSubmitCode, aiCancelConnect, aiStatus, isDesktop, TUTOR_SYSTEM, questionContext, statsContext, historyContext, historyResultText, parseHistoryCall, stripHistoryMarker } from '@/lib/ai/bridge';
 import { useStats, useHistory, fetchHistory } from '@/lib/data/hooks';
+import { useTypingEmitter } from '@/lib/tutor/useTyping';
 
 // TutorPanel — the right-side tutor sidebar (320px). The live chat (human tutor
 // ↔ student) is owned by the parent via Supabase Realtime and passed in as
 // `messages`/`onSend`; the AI tutor (the user's OWN ChatGPT/Grok subscription
 // via the Electron bridge) is local. The AI toggle only appears in drills.
 
-function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, messages: liveMessages = [], onSend: onLiveSend, peerName }) {
-  const { MessageBubble, ThinkingBubble, ChatComposer, IconButton, SegmentedControl, TutorPresence, Avatar } = SixteenNS;
+function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, messages: liveMessages = [], onSend: onLiveSend, peerName, peerTyping = false, onTyping }) {
+  const { MessageBubble, ThinkingBubble, TypingBubble, ChatComposer, IconButton, SegmentedControl, TutorPresence, Avatar } = SixteenNS;
   const isTutor = role === 'tutor';
   const aiAllowed = allowAI && !isTutor;
   const session = usePracticeSession();
@@ -59,6 +60,13 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
   const [draft, setDraft] = React.useState('');
   const streamRef = React.useRef(null);
 
+  // Typing indicator only flows on the live (human↔student) thread, not the AI.
+  const typing = useTypingEmitter(onTyping);
+  const onDraftChange = (v) => {
+    setDraft(v);
+    if (liveMode) { v.trim() ? typing.bump() : typing.stop(); }
+  };
+
   const MODELS = {
     chatgpt: [
       { value: 'gpt-5.5', label: 'GPT-5.5' },
@@ -72,7 +80,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
   React.useEffect(() => { setPasteOpen(false); setAiConnecting(false); setConnectError(''); }, [aiProvider, mode]);
   React.useEffect(() => {
     if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
-  }, [messages, mode, thinking]);
+  }, [messages, mode, thinking, peerTyping]);
 
   const providerLabel = aiProvider === 'chatgpt' ? 'ChatGPT' : 'Grok';
   const providerKey = aiProvider === 'chatgpt' ? 'codex' : 'grok';
@@ -128,14 +136,14 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
     const id = Date.now();
     setDraft('');
     // Live thread (human tutor ↔ student): the parent owns send + optimistic UI.
-    if (liveMode) { onLiveSend?.(text); return; }
+    if (liveMode) { typing.stop(); onLiveSend?.(text); return; }
 
     setAiMessages((prev) => [...prev, { id, side: 'mine', text, time: 'now' }]);
 
-    if (!desktop || !connectedNow) {
+    if (!connectedNow) {
       setAiMessages((prev) => [...prev, {
         id: id + 1, side: 'theirs',
-        text: !desktop ? 'The AI tutor runs in the Strix desktop app.' : `Connect your ${providerLabel} account above to start.`,
+        text: `Connect your ${providerLabel} account above to start.`,
         time: 'now',
       }]);
       return;
@@ -174,7 +182,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
     }
   };
 
-  const showComposer = isTutor || mode === 'human' || (desktop && connectedNow);
+  const showComposer = isTutor || mode === 'human' || connectedNow;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -202,7 +210,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
                   <span style={{ width: 8, height: 8, borderRadius: '50%', background: connectedNow ? 'var(--brand-blue)' : 'var(--text-tertiary)' }} />
                   <span style={{ font: 'var(--role-label)', color: 'var(--text-primary)' }}>{aiName}</span>
                 </div>)}
-          <IconButton size="sm" variant="ghost" label={isTutor ? 'Leave tutor view' : 'Close tutor'} onClick={onClose}>
+          <IconButton size="sm" variant="ghost" label={isTutor ? 'Collapse chat' : 'Hide tutor'} onClick={onClose}>
             <Icon name="x" style={{ width: 14, height: 14 }} />
           </IconButton>
         </div>
@@ -251,18 +259,20 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
       <div ref={streamRef} style={{ flex: 1, overflow: 'auto', padding: 14, display: 'flex', flexDirection: 'column', gap: 8, background: 'var(--paper)' }}>
         {messages.map((m) => <MessageBubble key={m.id} side={m.side} text={m.text} time={m.time} />)}
         {thinking && <ThinkingBubble />}
+        {liveMode && peerTyping && <TypingBubble />}
       </div>
 
       {showComposer ? (
         <ChatComposer
           value={draft}
-          onChange={setDraft}
+          onChange={onDraftChange}
           onSend={send}
           placeholder={isTutor ? `Message ${String(peerName || 'student').split(' ')[0]}` : (mode === 'human' ? `Message ${tutorName.split(' ')[0]}` : `Ask ${providerLabel}`)}
         />
       ) : (
         <AiConnect
           desktop={desktop}
+          kind={aiProvider}
           providerLabel={providerLabel}
           onConnect={onConnect}
           busy={aiConnecting}
@@ -278,25 +288,34 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
   );
 }
 
-function AiConnect({ desktop, providerLabel, onConnect, busy, pasteOpen, pasteVal, onPasteChange, onSubmitCode, onCancelConnect, error }) {
+// Paste instructions depend on platform + provider: on the desktop the loopback
+// usually finishes sign-in automatically (pasting is the fallback); on the web
+// the user copies the callback link (ChatGPT) or the code (Grok) the browser shows.
+function pasteHelp(desktop, kind, providerLabel) {
+  if (desktop) return `Finish signing in to ${providerLabel} in your browser. If it shows an authorization code, paste it here.`;
+  return kind === 'chatgpt'
+    ? "Sign in to ChatGPT in the new tab. It'll redirect to a page that won't load — copy that page's full address and paste it here."
+    : 'Sign in to Grok in the new tab, then paste the authorization code it shows you here.';
+}
+
+function AiConnect({ desktop, kind, providerLabel, onConnect, busy, pasteOpen, pasteVal, onPasteChange, onSubmitCode, onCancelConnect, error }) {
   const { Button, Input } = SixteenNS;
+  const placeholder = !desktop && kind === 'chatgpt' ? 'Paste the callback link' : 'Paste authorization code';
   return (
     <div style={{ padding: 14, borderTop: '1px solid var(--border-1)', background: 'var(--surface-sidebar)', display: 'flex', flexDirection: 'column', gap: 8 }}>
       <span style={{ font: 'var(--role-caption)', color: error ? 'var(--error)' : 'var(--text-secondary)', lineHeight: 1.45 }}>
-        {!desktop
-          ? 'The AI tutor runs in the Strix desktop app.'
-          : error
-            ? error
-            : pasteOpen
-              ? `Finish signing in to ${providerLabel} in your browser. If it shows an authorization code, paste it here.`
-              : `Connect your own ${providerLabel} account to tutor with it. Strix uses your subscription — nothing extra to pay.`}
+        {error
+          ? error
+          : pasteOpen
+            ? pasteHelp(desktop, kind, providerLabel)
+            : `Connect your own ${providerLabel} account to tutor with it. Strix uses your subscription — nothing extra to pay.`}
       </span>
-      {desktop && (pasteOpen ? (
+      {pasteOpen ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Input
             value={pasteVal}
             onChange={(e) => onPasteChange(e?.target ? e.target.value : e)}
-            placeholder="Paste authorization code"
+            placeholder={placeholder}
             onKeyDown={(e) => { if (e.key === 'Enter') onSubmitCode(); }}
             style={{ flex: 1 }}
           />
@@ -307,7 +326,7 @@ function AiConnect({ desktop, providerLabel, onConnect, busy, pasteOpen, pasteVa
         <Button variant="primary" fullWidth loading={busy} disabled={busy} onClick={onConnect}>
           Connect {providerLabel}
         </Button>
-      ))}
+      )}
     </div>
   );
 }

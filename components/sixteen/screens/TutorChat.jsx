@@ -3,25 +3,33 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { openTutorChannel, loadMessages, saveMessage } from '@/lib/tutor/realtime';
+import { useTypingEmitter, usePeerTyping } from '@/lib/tutor/useTyping';
 
 // TutorChat — the student's full-screen view of their human-tutor chat (when
 // not inside a module). Wired to the same Supabase Realtime + tutor_messages
 // system the TutorPanel uses.
 
 function TutorChat({ go }) {
-  const { Avatar, MessageBubble, ChatComposer, TutorPresence } = SixteenNS;
+  const { Avatar, MessageBubble, TypingBubble, ChatComposer, TutorPresence } = SixteenNS;
   const { user } = useProfile();
   const [messages, setMessages] = React.useState([]);
   const [draft, setDraft] = React.useState('');
   const [tutorName, setTutorName] = React.useState('Your tutor');
+  const [peerTyping, setPeerTyping] = usePeerTyping();
   const streamRef = React.useRef(null);
   const channelRef = React.useRef(null);
+
+  const notifyTyping = React.useCallback((on) => {
+    channelRef.current?.sendTyping({ role: 'student', typing: !!on });
+  }, []);
+  const typing = useTypingEmitter(notifyTyping);
+  const onDraftChange = (v) => { setDraft(v); v.trim() ? typing.bump() : typing.stop(); };
 
   const append = (m) => setMessages((prev) => [...prev, m]);
 
   React.useEffect(() => {
     if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
-  }, [messages]);
+  }, [messages, peerTyping]);
 
   // Open the realtime channel, load chat history, and relay incoming messages.
   React.useEffect(() => {
@@ -34,10 +42,11 @@ function TutorChat({ go }) {
       userId: user.id,
       role: 'student',
       onChat: (m) => append({ id: m.id, side: m.sender_id === user.id ? 'mine' : 'theirs', text: m.body }),
+      onTyping: (p) => { if (p?.role !== 'student') setPeerTyping(!!p?.typing); },
     });
     channelRef.current = ch;
     return () => { ch.close(); channelRef.current = null; };
-  }, [user?.id]);
+  }, [user?.id, setPeerTyping]);
 
   // Resolve the connected tutor's name for the header + composer placeholder.
   React.useEffect(() => {
@@ -59,6 +68,7 @@ function TutorChat({ go }) {
     const id = Date.now();
     append({ id, side: 'mine', text });
     setDraft('');
+    typing.stop();
     const saved = await saveMessage({ studentId: user.id, senderId: user.id, role: 'student', body: text });
     channelRef.current?.sendChat(saved || { id: String(id), sender_id: user.id, role: 'student', body: text });
   };
@@ -82,7 +92,7 @@ function TutorChat({ go }) {
       </div>
 
       <div ref={streamRef} style={{ flex:1, overflow:'auto', padding: '20px 24px', display:'flex', flexDirection:'column', gap: 10, background:'var(--paper)' }}>
-        {messages.length === 0 ? (
+        {messages.length === 0 && !peerTyping ? (
           <div style={{flex:1, display:'flex', alignItems:'center', justifyContent:'center', font:'var(--role-body)', color:'var(--text-tertiary)'}}>
             No messages yet — say hi to your tutor.
           </div>
@@ -90,11 +100,12 @@ function TutorChat({ go }) {
           <>
             <DateChip text="Today" />
             {messages.map(m => <MessageBubble key={m.id} side={m.side} text={m.text} time={m.time} />)}
+            {peerTyping && <TypingBubble />}
           </>
         )}
       </div>
       <div style={{padding: 0}}>
-        <ChatComposer value={draft} onChange={setDraft} onSend={send} placeholder={`Message ${tutorName.split(' ')[0]}`} />
+        <ChatComposer value={draft} onChange={onDraftChange} onSend={send} placeholder={`Message ${tutorName.split(' ')[0]}`} />
       </div>
     </div>
   );

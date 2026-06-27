@@ -31,7 +31,7 @@ import { useTutorWatch } from '@/lib/tutor/useTutorWatch';
 function App() {
   const NS = SixteenNS;
   const { AppShell, Titlebar, Sidebar, IconButton, Avatar } = NS;
-  const { profile, displayName, email, user } = useProfile();
+  const { profile, displayName, email, user, avatarUrl } = useProfile();
   const sessionLive = usePracticeSession();
 
   const [view, setView] = React.useState(profile ? 'dashboard' : 'onboarding');
@@ -194,7 +194,7 @@ function App() {
         </div>
       </>}
       footer={<button onClick={() => go('settings')} style={{display:'flex', gap:8, alignItems:'center', width:'100%', padding:'6px 8px', borderRadius:'var(--radius-md)', background:'transparent', border:0, cursor:'pointer', textAlign:'left'}}>
-        <Avatar name={displayName} size="sm" />
+        <Avatar name={displayName} src={avatarUrl} size="sm" />
         <div style={{display:'flex', flexDirection:'column', flex:1, minWidth:0}}>
           <span style={{font:'var(--role-label)', color:'var(--text-primary)'}}>{displayName}</span>
           <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', overflow:'hidden', textOverflow:'ellipsis'}}>{email}</span>
@@ -243,8 +243,13 @@ function App() {
             />
           </div>
         )}
-        {!isTutor && (
-          <IconButton size="sm" variant={tutorOn ? 'solid' : 'ghost'} label={tutorOn ? 'Hide tutor' : 'Show tutor'} onClick={() => setTutorOn(!tutorOn)}>
+        {!onboarding && (
+          <IconButton
+            size="sm"
+            variant={tutorOn ? 'solid' : 'ghost'}
+            label={tutorOn ? (isTutor ? 'Collapse chat' : 'Hide tutor') : (isTutor ? 'Show chat' : 'Show tutor')}
+            onClick={() => setTutorOn(!tutorOn)}
+          >
             {I('message-circle')}
           </IconButton>
         )}
@@ -298,8 +303,8 @@ function App() {
   // Chat for the tutor pane: tutor↔watched-student when tutoring, else our own
   // tutor chat as the student.
   const chat = isTutor
-    ? { messages: tutorWatch.messages, onSend: tutorWatch.sendChat, peerName: watchedName }
-    : { messages: studentLive.messages, onSend: studentLive.sendChat, peerName: null };
+    ? { messages: tutorWatch.messages, onSend: tutorWatch.sendChat, peerName: watchedName, peerTyping: tutorWatch.peerTyping, onTyping: tutorWatch.notifyTyping }
+    : { messages: studentLive.messages, onSend: studentLive.sendChat, peerName: null, peerTyping: studentLive.peerTyping, onTyping: studentLive.notifyTyping };
 
   return (
     <>
@@ -316,13 +321,15 @@ function App() {
         sidebar={inModule ? null : sidebar}
         tutorPane={tutorOn ? (
           <TutorPanel
-            onClose={() => isTutor ? switchRole('student') : setTutorOn(false)}
+            onClose={() => setTutorOn(false)}
             allowAI={!isTutor && (!inModule || inDrill)}
             role={role}
             selfId={user?.id}
             messages={chat.messages}
             onSend={chat.onSend}
             peerName={chat.peerName}
+            peerTyping={chat.peerTyping}
+            onTyping={chat.onTyping}
           />
         ) : null}
         variant={inModule ? 'test' : 'app'}

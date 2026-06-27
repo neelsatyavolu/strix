@@ -5,6 +5,7 @@ import { Icon } from '@/components/sixteen';
 import renderMathInElement from 'katex/contrib/auto-render';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
 import Highlightable from '@/components/sixteen/test/Highlightable';
+import { ExitTest } from '@/components/sixteen/test/ExitTest';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
 
@@ -72,10 +73,16 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const resp = session.responses[q.id] || {};
   const ans = resp.value || null;
   const marked = !!resp.flagged;
-  // General practice: MCQs retry-until-correct; SPR (grid-in) stays single-attempt.
+  // General practice: no skipping. MCQs retry until correct; SPR (grid-in) just
+  // needs a non-empty answer (single attempt) before you can move on.
   const solved = !!resp.solved;
+  const hasAnswer = !!(resp.value && String(resp.value).trim());
   const triedWrong = new Set(resp.tried || []);
-  const blocked = isDrill && q.type !== 'spr' && !solved;
+  const blocked = isDrill && (q.type === 'spr' ? !hasAnswer : !solved);
+  // Full modules/sections/exams: every question must be answered before submitting.
+  const isLast = session.index >= total - 1;
+  const finishBlocked = !isDrill && session.answeredCount < total;
+  const firstUnanswered = () => session.questions.findIndex((qq) => !session.responses[qq.id]?.value);
   const elimSet = elim[q.id] || new Set();
   const tog = (l) =>
     setElim((prev) => {
@@ -98,8 +105,18 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
 
   const onNext = () => {
     if (blocked) return;
-    if (session.index >= total - 1) session.finishModule(go);
-    else session.next();
+    if (isLast) {
+      if (finishBlocked) return; // can't submit a full module with blanks
+      session.finishModule(go);
+    } else session.next();
+  };
+
+  // Palette "Go to Review Page": submit, unless blanks remain in a full module —
+  // then jump to the first unanswered question instead.
+  const onReviewAll = () => {
+    setPaletteOpen(false);
+    if (finishBlocked) { const i = firstUnanswered(); if (i >= 0) session.goTo(i); return; }
+    session.finishModule(go);
   };
 
   const answered = session.answeredCount;
@@ -113,6 +130,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         sectionLabel={session.activeModule?.label === 'Drill' ? 'Math — Drill' : `Math, ${session.activeModule?.label || 'Module 1'}`}
         timer={<Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
         tools={<>
+          <ExitTest mode={session.mode} onConfirm={() => session.exitSession(go)} />
           <MathToolBtn label="Calculator" icon="square-function" active={calcOpen} onClick={() => setCalcOpen(!calcOpen)} />
           <MathToolBtn label="Reference" icon="book-marked" active={formulaOpen} onClick={() => setFormulaOpen(!formulaOpen)} />
           <MathToolBtn label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
@@ -189,7 +207,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
             items={items}
             title={session.activeModule?.label === 'Drill' ? 'Math — Drill' : `Math — ${session.activeModule?.label || 'Module 1'}`}
             onSelect={(n) => { session.goTo(n - 1); setPaletteOpen(false); }}
-            onReviewAll={() => { setPaletteOpen(false); session.finishModule(go); }}
+            onReviewAll={onReviewAll}
           />
         </div>
       )}
@@ -203,8 +221,9 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         paletteOpen={paletteOpen}
         onBack={() => session.prev()}
         onNext={onNext}
-        nextDisabled={blocked}
-        nextLabel={session.index >= total - 1 ? 'Submit' : 'Next'}
+        nextDisabled={blocked || (isLast && finishBlocked)}
+        nextTitle={isLast && finishBlocked ? 'Answer every question before submitting' : undefined}
+        nextLabel={isLast ? 'Submit' : 'Next'}
       />
     </div>
   );

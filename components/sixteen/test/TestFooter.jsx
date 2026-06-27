@@ -15,6 +15,7 @@ export function TestFooter({
   onNext,
   nextDisabled = false,
   nextLabel = 'Next',
+  nextTitle,
   style: styleProp,
 }) {
   return (
@@ -60,6 +61,7 @@ export function TestFooter({
           type="button"
           onClick={onNext}
           disabled={nextDisabled}
+          title={nextTitle}
           style={btnStyle({ kind: 'next', disabled: nextDisabled })}
         >{nextLabel}</button>
       </div>

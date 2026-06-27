@@ -2,6 +2,8 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
+import { updateTargetScore } from '@/lib/auth/actions';
+import { createClient } from '@/lib/supabase/client';
 import { aiStatus, aiConnect, aiSubmitCode, aiCancelConnect, aiDisconnect, isDesktop } from '@/lib/ai/bridge';
 import { useUpdates } from '@/lib/updates/useUpdates';
 
@@ -9,10 +11,35 @@ import { useUpdates } from '@/lib/updates/useUpdates';
 
 function Settings({ go, dark, setDark }) {
   const { Card, Toggle, SegmentedControl, Input, Avatar, Button, Badge } = SixteenNS;
-  const { displayName, email, profile, signOut } = useProfile();
+  const { displayName, email, profile, signOut, refresh, user, avatarUrl } = useProfile();
 
   const [theme, setTheme] = React.useState(dark ? 'dark' : 'light');
   React.useEffect(() => { setDark(theme === 'dark'); }, [theme]);
+
+  // Editable target score, seeded from the saved profile.
+  const savedTarget = profile?.target_score ?? null;
+  const [target, setTarget] = React.useState(savedTarget == null ? '' : String(savedTarget));
+  const [targetSaving, setTargetSaving] = React.useState(false);
+  const [targetError, setTargetError] = React.useState(null);
+  React.useEffect(() => {
+    setTarget(savedTarget == null ? '' : String(savedTarget));
+  }, [savedTarget]);
+
+  const targetDirty = target.trim() !== (savedTarget == null ? '' : String(savedTarget));
+
+  const saveTarget = async () => {
+    const trimmed = target.trim();
+    const score = trimmed === '' ? null : Number(trimmed);
+    setTargetError(null);
+    setTargetSaving(true);
+    try {
+      const res = await updateTargetScore(score);
+      if (!res.ok) { setTargetError(res.error || 'Could not save.'); return; }
+      await refresh();
+    } finally {
+      setTargetSaving(false);
+    }
+  };
 
   const [warn5, setWarn5] = React.useState(true);
   const [pacing, setPacing] = React.useState(true);
@@ -98,6 +125,55 @@ function Settings({ go, dark, setDark }) {
     go('onboarding');
   };
 
+  // Profile picture upload — direct to Supabase Storage (RLS-guarded), max 1MB.
+  const AVATAR_MAX_BYTES = 1024 * 1024;
+  const fileInputRef = React.useRef(null);
+  const [avatarUploading, setAvatarUploading] = React.useState(false);
+  const [avatarError, setAvatarError] = React.useState(null);
+
+  const pickAvatar = () => fileInputRef.current?.click();
+
+  const onAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';  // let the user re-pick the same file later
+    if (!file) return;
+    setAvatarError(null);
+    if (!file.type.startsWith('image/')) {
+      setAvatarError('Please choose an image file.');
+      return;
+    }
+    if (file.size > AVATAR_MAX_BYTES) {
+      setAvatarError('Image must be 1MB or smaller.');
+      return;
+    }
+    if (!user?.id) {
+      setAvatarError('You must be signed in to change your picture.');
+      return;
+    }
+    setAvatarUploading(true);
+    try {
+      const supabase = createClient();
+      const path = `${user.id}/avatar`;  // one file per user; upsert overwrites
+      const { error: upErr } = await supabase.storage
+        .from('avatars')
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      const { data: pub } = supabase.storage.from('avatars').getPublicUrl(path);
+      // Cache-bust so the CDN serves the new image after an overwrite.
+      const url = `${pub.publicUrl}?v=${Date.now()}`;
+      const { error: dbErr } = await supabase
+        .from('profiles')
+        .update({ avatar_url: url, updated_at: new Date().toISOString() })
+        .eq('id', user.id);
+      if (dbErr) throw dbErr;
+      await refresh();
+    } catch (err) {
+      setAvatarError(err?.message || 'Could not update your picture.');
+    } finally {
+      setAvatarUploading(false);
+    }
+  };
+
   return (
     <div style={{padding: '28px 36px', maxWidth: 760}}>
       <h1 style={{margin:'0 0 22px', font:'var(--role-title-lg)'}}>Settings</h1>
@@ -105,18 +181,59 @@ function Settings({ go, dark, setDark }) {
       <SectionHead label="Profile" />
       <Card padding="lg" style={{marginBottom: 18}}>
         <div style={{display:'flex', alignItems:'center', gap: 14, marginBottom: 14}}>
-          <Avatar name={displayName} size="lg" />
+          <button
+            type="button"
+            onClick={pickAvatar}
+            disabled={avatarUploading}
+            title="Change picture"
+            style={{padding: 0, border: 0, background: 'transparent', borderRadius: '50%', cursor: avatarUploading ? 'default' : 'pointer', lineHeight: 0, opacity: avatarUploading ? 0.6 : 1}}
+          >
+            <Avatar name={displayName} src={avatarUrl} size="lg" />
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            onChange={onAvatarChange}
+            style={{display: 'none'}}
+          />
           <div style={{flex: 1}}>
             <div style={{font:'var(--role-title-sm)'}}>{displayName}</div>
             <div style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>{email}</div>
+            {avatarError && (
+              <div style={{font:'var(--role-caption)', color:'var(--danger, #d4564a)', marginTop: 2}}>{avatarError}</div>
+            )}
           </div>
+          <Button variant="secondary" size="sm" loading={avatarUploading} disabled={avatarUploading} onClick={pickAvatar}>
+            {avatarUploading ? 'Uploading…' : 'Change'}
+          </Button>
           <Button variant="secondary" size="sm" onClick={handleSignOut}>Sign out</Button>
         </div>
         <FieldRow label="Display name">
           <Input value={displayName} readOnly />
         </FieldRow>
         <FieldRow label="Target score">
-          <Input value={profile?.target_score ?? ''} placeholder="Not set" readOnly />
+          <div style={{display:'flex', flexDirection:'column', gap: 6}}>
+            <div style={{display:'flex', alignItems:'center', gap: 8}}>
+              <Input
+                type="number"
+                min={400}
+                max={1600}
+                step={10}
+                value={target}
+                placeholder="Not set"
+                onChange={(e) => setTarget(e?.target ? e.target.value : e)}
+                onKeyDown={(e) => { if (e.key === 'Enter' && targetDirty) saveTarget(); }}
+                style={{flex: 1}}
+              />
+              {targetDirty && (
+                <Button variant="primary" size="sm" loading={targetSaving} disabled={targetSaving} onClick={saveTarget}>Save</Button>
+              )}
+            </div>
+            {targetError && (
+              <span style={{font:'var(--role-caption)', color:'var(--danger, #d4564a)'}}>{targetError}</span>
+            )}
+          </div>
         </FieldRow>
       </Card>
 
@@ -159,7 +276,6 @@ function Settings({ go, dark, setDark }) {
         <ProviderRow
           kind="chatgpt"
           name="ChatGPT"
-          desktop={desktop}
           connected={connected.codex}
           busy={busy === 'chatgpt'}
           error={aiError.chatgpt}
@@ -171,6 +287,8 @@ function Settings({ go, dark, setDark }) {
         />
         {pasteOpen.chatgpt && (
           <CodeEntry
+            kind="chatgpt"
+            desktop={desktop}
             value={pasteVal.chatgpt || ''}
             busy={busy === 'chatgpt'}
             onChange={(v) => setPasteVal((s) => ({ ...s, chatgpt: v }))}
@@ -183,7 +301,6 @@ function Settings({ go, dark, setDark }) {
         <ProviderRow
           kind="grok"
           name="Grok"
-          desktop={desktop}
           connected={connected.grok}
           busy={busy === 'grok'}
           error={aiError.grok}
@@ -195,6 +312,8 @@ function Settings({ go, dark, setDark }) {
         />
         {pasteOpen.grok && (
           <CodeEntry
+            kind="grok"
+            desktop={desktop}
             value={pasteVal.grok || ''}
             busy={busy === 'grok'}
             onChange={(v) => setPasteVal((s) => ({ ...s, grok: v }))}
@@ -301,12 +420,8 @@ function SectionHead({ label }) {
   );
 }
 
-function ProviderRow({ kind, name, desktop, connected, busy, error, onConnect, onDisconnect, Badge, Button, style }) {
-  const caption = error
-    ? error
-    : !desktop
-      ? 'Connect from the desktop app.'
-      : connected ? 'Connected' : 'Not connected';
+function ProviderRow({ kind, name, connected, busy, error, onConnect, onDisconnect, Badge, Button, style }) {
+  const caption = error ? error : connected ? 'Connected' : 'Not connected';
   return (
     <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap: 16, ...style}}>
       <div style={{display:'flex', alignItems:'center', gap: 12, flex: 1}}>
@@ -316,31 +431,41 @@ function ProviderRow({ kind, name, desktop, connected, busy, error, onConnect, o
           <span style={{font:'var(--role-caption)', color: error ? 'var(--danger, #d4564a)' : 'var(--text-tertiary)', marginTop: 2}}>{caption}</span>
         </div>
       </div>
-      {desktop && (
-        connected ? (
-          <div style={{display:'flex', alignItems:'center', gap: 10}}>
-            <Badge variant="success" size="sm">Connected</Badge>
-            <Button variant="secondary" size="sm" loading={busy} disabled={busy} onClick={onDisconnect}>Disconnect</Button>
-          </div>
-        ) : (
-          <Button variant="primary" size="sm" loading={busy} disabled={busy} onClick={onConnect}>Connect</Button>
-        )
+      {connected ? (
+        <div style={{display:'flex', alignItems:'center', gap: 10}}>
+          <Badge variant="success" size="sm">Connected</Badge>
+          <Button variant="secondary" size="sm" loading={busy} disabled={busy} onClick={onDisconnect}>Disconnect</Button>
+        </div>
+      ) : (
+        <Button variant="primary" size="sm" loading={busy} disabled={busy} onClick={onConnect}>Connect</Button>
       )}
     </div>
   );
 }
 
-function CodeEntry({ value, busy, onChange, onSubmit, onCancel, Input, Button }) {
+// What to paste depends on platform + provider. On the desktop the loopback
+// usually finishes sign-in automatically and pasting is the fallback; on the
+// web there's no loopback, so the user copies the callback link (ChatGPT) or
+// the authorization code (Grok) their browser shows.
+function pasteHelp(desktop, kind) {
+  if (desktop) return 'Finish in your browser. If it shows an authorization code, paste it here.';
+  return kind === 'chatgpt'
+    ? "Sign in to ChatGPT in the new tab. It'll redirect to a page that won't load — copy that page's full address and paste it here."
+    : 'Sign in to Grok in the new tab, then paste the authorization code it shows you here.';
+}
+
+function CodeEntry({ kind, desktop, value, busy, onChange, onSubmit, onCancel, Input, Button }) {
+  const placeholder = !desktop && kind === 'chatgpt' ? 'Paste the callback link' : 'Paste authorization code';
   return (
     <div style={{display:'flex', flexDirection:'column', gap: 8, padding: '12px 0 4px'}}>
       <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
-        Finish in your browser. If it shows an authorization code, paste it here.
+        {pasteHelp(desktop, kind)}
       </span>
       <div style={{display:'flex', alignItems:'center', gap: 8}}>
         <Input
           value={value}
           onChange={(e) => onChange(e?.target ? e.target.value : e)}
-          placeholder="Paste authorization code"
+          placeholder={placeholder}
           onKeyDown={(e) => { if (e.key === 'Enter') onSubmit(); }}
           style={{flex: 1}}
         />

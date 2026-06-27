@@ -222,43 +222,133 @@ function SkillRow({ skill, accent, best, worst }) {
 
 function AttemptRow({ a, first }) {
   const { Badge } = SixteenNS;
+  const [open, setOpen] = React.useState(false);
   const t = fmtTime(a.timeMs);
+  const q = a.question;
+  const stemHtml = q?.stemHtml;
+  const canExpand = !!q;
+
   return (
-    <div style={{
-      display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 12, alignItems: 'flex-start',
-      padding: '13px 0', borderTop: first ? 0 : '1px solid var(--border-1)',
-    }}>
-      <span style={{
-        width: 22, height: 22, borderRadius: '50%', display: 'grid', placeItems: 'center', marginTop: 1,
-        background: a.isCorrect ? 'color-mix(in srgb, var(--success) 16%, transparent)' : 'color-mix(in srgb, var(--error) 16%, transparent)',
-        color: a.isCorrect ? 'var(--success)' : 'var(--error)', flexShrink: 0,
-      }}>
-        <Icon name={a.isCorrect ? 'check' : 'x'} style={{ width: 13, height: 13 }} />
-      </span>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 0 }}>
+    <div style={{ borderTop: first ? 0 : '1px solid var(--border-1)' }}>
+      <div
+        role={canExpand ? 'button' : undefined}
+        tabIndex={canExpand ? 0 : undefined}
+        aria-expanded={canExpand ? open : undefined}
+        onClick={canExpand ? () => setOpen((o) => !o) : undefined}
+        onKeyDown={canExpand ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((o) => !o); } } : undefined}
+        style={{
+          display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 12, alignItems: 'flex-start',
+          padding: '13px 0', cursor: canExpand ? 'pointer' : 'default',
+        }}
+      >
         <span style={{
-          font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45,
-          display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+          width: 22, height: 22, borderRadius: '50%', display: 'grid', placeItems: 'center', marginTop: 1,
+          background: a.isCorrect ? 'color-mix(in srgb, var(--success) 16%, transparent)' : 'color-mix(in srgb, var(--error) 16%, transparent)',
+          color: a.isCorrect ? 'var(--success)' : 'var(--error)', flexShrink: 0,
         }}>
-          {a.stem || `${a.skillLabel} question`}
+          <Icon name={a.isCorrect ? 'check' : 'x'} style={{ width: 13, height: 13 }} />
         </span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-          {a.difficulty && <Badge variant={DIFF_VARIANT[a.difficulty] || 'neutral'} size="sm">{DIFF_LABEL[a.difficulty] || a.difficulty}</Badge>}
-          <span>{a.skillLabel}</span>
-          {a.type === 'mcq' ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 0 }}>
+          {stemHtml ? (
+            <div
+              className="cb-stem"
+              style={{
+                font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45,
+                ...(open ? {} : { maxHeight: '2.9em', overflow: 'hidden' }),
+              }}
+              dangerouslySetInnerHTML={{ __html: stemHtml }}
+            />
+          ) : (
+            <span style={{
+              font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45,
+              display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+            }}>
+              {a.stem || `${a.skillLabel} question`}
+            </span>
+          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
+            {a.difficulty && <Badge variant={DIFF_VARIANT[a.difficulty] || 'neutral'} size="sm">{DIFF_LABEL[a.difficulty] || a.difficulty}</Badge>}
+            <span>{a.skillLabel}</span>
             <span>
               You: <b style={{ color: a.isCorrect ? 'var(--success)' : 'var(--error)' }}>{a.yourAnswer || '—'}</b>
               {!a.isCorrect && a.correct ? <> · Correct: <b style={{ color: 'var(--text-secondary)' }}>{a.correct}</b></> : null}
             </span>
-          ) : (
-            <span>You: <b style={{ color: a.isCorrect ? 'var(--success)' : 'var(--error)' }}>{a.yourAnswer || '—'}</b>{!a.isCorrect && a.correct ? <> · Correct: <b style={{ color: 'var(--text-secondary)' }}>{a.correct}</b></> : null}</span>
-          )}
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0, font: 'var(--role-caption)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+          <span>{ago(a.at)}</span>
+          {t && <span>{t}</span>}
+          {canExpand && <Icon name={open ? 'chevron-up' : 'chevron-down'} style={{ width: 15, height: 15, color: 'var(--text-tertiary)' }} />}
         </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0, font: 'var(--role-caption)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-        <span>{ago(a.at)}</span>
-        {t && <span>{t}</span>}
-      </div>
+      {open && q && <ExpandedReview q={q} yourAnswer={a.yourAnswer} isCorrect={a.isCorrect} />}
+    </div>
+  );
+}
+
+function ExpandedReview({ q, yourAnswer, isCorrect }) {
+  const [showExp, setShowExp] = React.useState(false);
+  const isMcq = q.type === 'mcq';
+  const correct = Array.isArray(q.correct) ? q.correct : [];
+
+  return (
+    <div style={{
+      padding: '14px 0 18px 34px', display: 'flex', flexDirection: 'column', gap: 14,
+    }}>
+      {q.stimulusHtml && (
+        <div className="cb-stem" style={{ fontSize: 14, color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.stimulusHtml }} />
+      )}
+
+      {isMcq && q.choices.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {q.choices.map((o) => {
+            const isCorrectChoice = correct.includes(o.letter);
+            const isYours = yourAnswer === o.letter;
+            const tone = isCorrectChoice ? 'var(--success)' : isYours ? 'var(--error)' : null;
+            return (
+              <div key={o.letter} style={{
+                display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 10, alignItems: 'center',
+                padding: '9px 12px', borderRadius: 8,
+                border: `1px solid ${tone || 'var(--border-1)'}`,
+                background: tone ? `color-mix(in srgb, ${tone} 8%, transparent)` : 'transparent',
+              }}>
+                <span style={{
+                  width: 22, height: 22, borderRadius: '50%', display: 'grid', placeItems: 'center', flexShrink: 0,
+                  font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
+                  border: `1.5px solid ${tone || 'var(--border-2)'}`, color: tone || 'var(--text-secondary)',
+                }}>{o.letter}</span>
+                <span className="cb-choice" style={{ font: 'var(--role-body)' }} dangerouslySetInnerHTML={{ __html: o.html }} />
+                {isCorrectChoice ? <span style={{ font: 'var(--role-caption)', color: 'var(--success)', fontWeight: 600 }}>Correct</span>
+                  : isYours ? <span style={{ font: 'var(--role-caption)', color: 'var(--error)', fontWeight: 600 }}>Your answer</span> : null}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {!isMcq && (
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', font: 'var(--role-body)' }}>
+          <div>
+            <span style={{ color: 'var(--text-tertiary)' }}>Your answer: </span>
+            <b style={{ fontFamily: 'var(--font-mono)', color: isCorrect ? 'var(--success)' : 'var(--error)' }}>{yourAnswer || '—'}</b>
+          </div>
+          <div>
+            <span style={{ color: 'var(--text-tertiary)' }}>Correct: </span>
+            <b style={{ fontFamily: 'var(--font-mono)', color: 'var(--success)' }}>{correct.join(' or ') || '—'}</b>
+          </div>
+        </div>
+      )}
+
+      {q.rationaleHtml && (
+        <div>
+          <button onClick={() => setShowExp((s) => !s)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'transparent', border: 0, cursor: 'pointer', font: 'var(--role-label)', color: 'var(--brand-blue)', padding: '2px 0' }}>
+            <Icon name={showExp ? 'chevron-down' : 'chevron-right'} style={{ width: 14, height: 14 }} /> {showExp ? 'Hide explanation' : 'Show explanation'}
+          </button>
+          {showExp && (
+            <div className="cb-stem" style={{ fontSize: 14, marginTop: 6, paddingTop: 10, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.rationaleHtml }} />
+          )}
+        </div>
+      )}
     </div>
   );
 }
