@@ -249,13 +249,10 @@ function AttemptRow({ a, first }) {
           <Icon name={a.isCorrect ? 'check' : 'x'} style={{ width: 13, height: 13 }} />
         </span>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 0 }}>
-          {stemHtml ? (
+          {open && stemHtml ? (
             <div
               className="cb-stem"
-              style={{
-                font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45,
-                ...(open ? {} : { maxHeight: '2.9em', overflow: 'hidden' }),
-              }}
+              style={{ font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45 }}
               dangerouslySetInnerHTML={{ __html: stemHtml }}
             />
           ) : (
