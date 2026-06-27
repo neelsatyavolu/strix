@@ -1,8 +1,9 @@
 'use client';
-import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
+import { useStats, useSessions } from '@/lib/data/hooks';
+import { CATEGORY_TO_DOMAIN, domainLabel } from '@/lib/cb/domains';
 
 // Dashboard — landing screen, backed by the user's real practice data.
 
@@ -26,11 +27,46 @@ function relTime(iso) {
 function sessionLabel(s) {
   const sec = SECTION_LABEL[s.section] || s.section;
   if (s.mode === 'drill') {
-    const cat = s.config?.category;
-    return cat ? `${sec} · drill` : `${sec} · drill`;
+    const code = CATEGORY_TO_DOMAIN[s.config?.category];
+    const cat = code ? domainLabel(s.section, code) : null;
+    return cat ? `${sec} · ${cat}` : `${sec} · drill`;
   }
   if (s.mode === 'mock-m1') return `${sec} · Module 1`;
   return `${sec} · Full section`;
+}
+
+// Placeholder shown on first load so the score/section cards never flash
+// zero-valued data before the real stats arrive.
+function DashboardSkeleton() {
+  const { Card } = SixteenNS;
+  const block = { background: 'var(--sunken)', borderRadius: 6, animation: 'dash-pulse 1.2s ease-in-out infinite' };
+  return (
+    <>
+      <style>{`@keyframes dash-pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }`}</style>
+      <Card padding="lg" style={{ marginBottom: 20 }}>
+        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+          <div style={{ ...block, width: 120, height: 40 }} />
+          <div style={{ width: 1, height: 56, background: 'var(--border-1)' }} />
+          <div style={{ ...block, width: 90, height: 32 }} />
+          <div style={{ ...block, width: 90, height: 32 }} />
+        </div>
+      </Card>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 20 }}>
+        {[0, 1].map((i) => (
+          <Card key={i} padding="lg">
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 14 }}>
+              <div style={{ ...block, width: 64, height: 64, borderRadius: '50%' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
+                <div style={{ ...block, width: '70%', height: 14 }} />
+                <div style={{ ...block, width: '50%', height: 14 }} />
+              </div>
+            </div>
+            <div style={{ ...block, width: '100%', height: 36 }} />
+          </Card>
+        ))}
+      </div>
+    </>
+  );
 }
 
 function Dashboard({ go, studentId = null, readOnly = false }) {
@@ -38,24 +74,8 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
   const { displayName } = useProfile();
   const firstName = (displayName || '').split(' ')[0] || 'there';
 
-  const [stats, setStats] = React.useState(null);
-  const [sessions, setSessions] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    let alive = true;
-    const q = studentId ? `&studentId=${encodeURIComponent(studentId)}` : '';
-    Promise.all([
-      fetch(`/api/stats${studentId ? `?studentId=${encodeURIComponent(studentId)}` : ''}`).then((r) => r.json()).catch(() => null),
-      fetch(`/api/sessions?limit=6${q}`).then((r) => r.json()).catch(() => null),
-    ]).then(([st, se]) => {
-      if (!alive) return;
-      if (st?.success) setStats(st.data);
-      if (se?.success) setSessions(se.data.sessions || []);
-      setLoading(false);
-    });
-    return () => { alive = false; };
-  }, [studentId]);
+  const { stats, loading } = useStats(studentId);
+  const { sessions } = useSessions(6, studentId);
 
   const scores = stats?.scores || { rw: null, math: null, total: null };
   const totals = stats?.sectionTotals || { rw: { done: 0, correct: 0 }, math: { done: 0, correct: 0 } };
@@ -80,6 +100,10 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
         </div>
       </div>
 
+      {loading ? (
+        <DashboardSkeleton />
+      ) : (
+      <>
       <Card padding="lg" style={{ marginBottom: 20 }}>
         <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
           {scores.total != null ? (
@@ -129,6 +153,8 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
           );
         })}
       </div>
+      </>
+      )}
 
       <div>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 10 }}>

@@ -34,6 +34,8 @@ function SessionDetail({ go, id }) {
   const section = data?.section || 'rw';
   const sectionColor = section === 'math' ? 'var(--math-color)' : 'var(--rw-color)';
   const isDrill = (data?.mode || 'drill') === 'drill';
+  // For a targeted drill every question shares one domain — surface it.
+  const drillCat = isDrill ? (data?.review || []).find((r) => r.question?.domainLabel)?.question?.domainLabel : null;
 
   return (
     <div style={{ padding: '36px 48px', maxWidth: 920, margin: '0 auto' }}>
@@ -55,7 +57,7 @@ function SessionDetail({ go, id }) {
         <>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
             <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>
-              {MODE_LABEL[data.mode] || data.mode} · {SECTION_LABEL[section]}
+              {MODE_LABEL[data.mode] || data.mode} · {SECTION_LABEL[section]}{drillCat ? ` · ${drillCat}` : ''}
             </span>
             <Badge variant={section} dot size="sm">{section === 'rw' ? 'R&W' : 'Math'}</Badge>
           </div>

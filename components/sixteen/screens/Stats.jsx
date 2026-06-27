@@ -5,6 +5,7 @@ import { Icon } from '@/components/sixteen';
 import { useStats, useSessions } from '@/lib/data/hooks';
 import { InsightCard } from '@/components/sixteen/stats/InsightCard';
 import { useInsight } from '@/lib/ai/insights';
+import { CATEGORY_TO_DOMAIN, domainLabel } from '@/lib/cb/domains';
 
 // Stats — overall + per-domain breakdown, driven by real practice data.
 
@@ -12,6 +13,17 @@ const SECTION_LABEL = { rw: 'Reading & Writing', math: 'Math' };
 const SECTION_SHORT = { rw: 'R&W', math: 'Math' };
 const MODE_LABEL = { drill: 'drill', 'mock-m1': 'Module 1', 'mock-full': 'Full section' };
 const MODE_VARIANT = { drill: 'neutral', 'mock-m1': 'brand', 'mock-full': 'success' };
+
+// "Math · Algebra" for targeted drills; falls back to the section label.
+function sessionTitle(s) {
+  const sec = SECTION_LABEL[s.section] ?? s.section;
+  if (s.mode === 'drill') {
+    const code = CATEGORY_TO_DOMAIN[s.config?.category];
+    const cat = code ? domainLabel(s.section, code) : null;
+    if (cat) return `${sec} · ${cat}`;
+  }
+  return sec;
+}
 
 function relTime(iso) {
   if (!iso) return '';
@@ -225,7 +237,7 @@ function SessionsTab({ go, sessions }) {
             <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{relTime(s.created_at)}</span>
             <span style={{display:'flex', alignItems:'center', gap: 8, font:'var(--role-body)', color:'var(--text-primary)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>
               <Badge variant={s.section} dot size="sm">{SECTION_SHORT[s.section] ?? s.section}</Badge>
-              <span style={{overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{SECTION_LABEL[s.section] ?? s.section}</span>
+              <span style={{overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{sessionTitle(s)}</span>
             </span>
             <Badge variant={MODE_VARIANT[s.mode] ?? 'neutral'} size="sm">{MODE_LABEL[s.mode] ?? s.mode}</Badge>
             <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)', textAlign:'right'}}>{s.score_total}</span>
