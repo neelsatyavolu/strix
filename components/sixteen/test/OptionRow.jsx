@@ -7,35 +7,46 @@ import React from 'react';
  *  - Text in sans-serif body
  *  - Cross-out button on the right when `showEliminator` is on
  *  - Selected: blue ring + filled circle; Eliminated: 50% opacity + strikethrough
+ *  - General-practice feedback: `feedback='correct'` (green) | 'wrong' (red,
+ *    struck, locked out). `locked` makes the whole question non-interactive once
+ *    solved. Tried-wrong and locked options ignore clicks.
  */
 export function OptionRow({
   letter,
   selected = false,
   eliminated = false,
   showEliminator = true,
+  feedback = null, // null | 'correct' | 'wrong'
+  locked = false,
   onSelect,
   onToggleEliminate,
   children,
   style: styleProp,
 }) {
   const [hover, setHover] = React.useState(false);
-  const ring = selected ? 'var(--test-selected)' : '#1D1D1F';
-  const ringW = selected ? 2 : 1;
+  const isCorrect = feedback === 'correct';
+  const isWrong = feedback === 'wrong';
+  const clickable = !eliminated && !locked && !isWrong;
+  const ring = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : selected ? 'var(--test-selected)' : '#1D1D1F';
+  const ringW = selected || isCorrect || isWrong ? 2 : 1;
+  const circleBg = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : selected ? '#1D1D1F' : 'transparent';
+  const circleBorder = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : '#1D1D1F';
+  const struck = eliminated || isWrong;
   return (
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onClick={() => !eliminated && onSelect?.()}
+      onClick={() => clickable && onSelect?.()}
       style={{
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
         gap: 14,
         padding: '14px 16px',
-        background: hover && !eliminated && !selected ? '#FAFAFB' : 'transparent',
+        background: hover && clickable && !selected ? '#FAFAFB' : 'transparent',
         border: `${ringW}px solid ${ring}`,
         borderRadius: 'var(--radius-md)',
-        cursor: eliminated ? 'default' : 'pointer',
+        cursor: clickable ? 'pointer' : 'default',
         transition: 'var(--xn-color), border-width var(--dur-fast) var(--ease-out)',
         ...styleProp,
       }}
@@ -44,21 +55,21 @@ export function OptionRow({
         flexShrink: 0,
         width: 28, height: 28,
         borderRadius: '50%',
-        border: '1.5px solid #1D1D1F',
+        border: `1.5px solid ${circleBorder}`,
         display: 'grid', placeItems: 'center',
         fontFamily: 'var(--font-sans)',
         fontWeight: 700, fontSize: 14,
-        color: selected ? '#fff' : '#1D1D1F',
-        background: selected ? '#1D1D1F' : 'transparent',
+        color: (selected || isCorrect || isWrong) ? '#fff' : '#1D1D1F',
+        background: circleBg,
       }}>{letter}</span>
       <span style={{
         flex: 1,
         fontFamily: 'var(--font-sans)',
         fontSize: 15, lineHeight: 1.4,
         color: '#1D1D1F',
-        textDecoration: eliminated ? 'line-through' : 'none',
+        textDecoration: struck ? 'line-through' : 'none',
         textDecorationThickness: '1.5px',
-        opacity: eliminated ? 0.55 : 1,
+        opacity: struck ? 0.55 : 1,
       }}>{children}</span>
       {showEliminator && (
         <button

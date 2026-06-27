@@ -19,6 +19,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   } = NS;
   const session = usePracticeSession();
   const q = session.current;
+  const isDrill = session.mode === 'drill';
 
   const [seconds, setSeconds] = React.useState(35 * 60);
   const [hidden, setHidden] = React.useState(false);
@@ -71,6 +72,10 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const resp = session.responses[q.id] || {};
   const ans = resp.value || null;
   const marked = !!resp.flagged;
+  // General practice: MCQs retry-until-correct; SPR (grid-in) stays single-attempt.
+  const solved = !!resp.solved;
+  const triedWrong = new Set(resp.tried || []);
+  const blocked = isDrill && q.type !== 'spr' && !solved;
   const elimSet = elim[q.id] || new Set();
   const tog = (l) =>
     setElim((prev) => {
@@ -92,6 +97,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   });
 
   const onNext = () => {
+    if (blocked) return;
     if (session.index >= total - 1) session.finishModule(go);
     else session.next();
   };
@@ -122,7 +128,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
           <QuestionNumberBadge
             n={session.index + 1}
             flag={<>
-              {q.type === 'mcq' && (
+              {q.type === 'mcq' && !isDrill && (
                 <button onClick={() => setEliminator((e) => !e)} title="Cross out answers" style={{
                   display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
                   background: eliminator ? '#1D1D1F' : 'transparent', color: eliminator ? '#fff' : '#1D1D1F',
@@ -150,10 +156,12 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
                 <OptionRow
                   key={o.letter}
                   letter={o.letter}
-                  selected={ans === o.letter}
-                  eliminated={elimSet.has(o.letter)}
-                  showEliminator={eliminator}
-                  onSelect={() => session.setValue(o.letter)}
+                  selected={isDrill ? (solved && resp.value === o.letter) : ans === o.letter}
+                  feedback={isDrill ? (solved && resp.value === o.letter ? 'correct' : triedWrong.has(o.letter) ? 'wrong' : null) : null}
+                  locked={isDrill && solved}
+                  eliminated={!isDrill && elimSet.has(o.letter)}
+                  showEliminator={!isDrill && eliminator}
+                  onSelect={() => (isDrill ? session.answerDrillMCQ(o.letter) : session.setValue(o.letter))}
                   onToggleEliminate={() => tog(o.letter)}
                 >
                   <span className="cb-choice" dangerouslySetInnerHTML={{ __html: o.html }} />
@@ -161,6 +169,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
               ))}
             </div>
           )}
+          {isDrill && q.type !== 'spr' && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} />}
         </div>
 
         {kind === 'drill' && statsOn && (
@@ -194,9 +203,21 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         paletteOpen={paletteOpen}
         onBack={() => session.prev()}
         onNext={onNext}
+        nextDisabled={blocked}
         nextLabel={session.index >= total - 1 ? 'Submit' : 'Next'}
       />
     </div>
+  );
+}
+
+// General-practice inline feedback under the answer choices.
+function DrillFeedback({ solved, triedAny }) {
+  if (!solved && !triedAny) return null;
+  const color = solved ? 'var(--success)' : 'var(--error)';
+  return (
+    <p role="status" style={{ margin: '14px 0 0', font: 'var(--role-label)', fontWeight: 600, color }}>
+      {solved ? 'Correct.' : 'Not quite — try again.'}
+    </p>
   );
 }
 

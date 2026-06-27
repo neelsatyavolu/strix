@@ -35,6 +35,18 @@ function isResponseCorrect(question, response) {
   return (question.correct || []).includes(response.value);
 }
 
+// General practice ('drill') lets students retry MCQs until correct, but only the
+// FIRST attempt counts. For MCQs (firstValue recorded) use firstCorrect; for SPR
+// and unanswered items there is a single attempt, so fall back to the final value.
+function drillResponseCorrect(question, response) {
+  if (response?.firstValue != null) return !!response.firstCorrect;
+  return isResponseCorrect(question, response);
+}
+
+function responseCorrect(mode, question, response) {
+  return mode === 'drill' ? drillResponseCorrect(question, response) : isResponseCorrect(question, response);
+}
+
 // Mark ~2 questions per module as unscored "pretest" items, like the real test.
 function pickPretest(questions, n = 2) {
   if (!questions || questions.length <= n) return [];
@@ -69,11 +81,14 @@ async function fetchModule({ section, profile = 'mixed', exclude }) {
   return requestQuestions(params);
 }
 
-function buildReview(questions, responses, pretestIds = []) {
+function buildReview(questions, responses, pretestIds = [], mode = null) {
   const pretest = new Set(pretestIds);
   const review = questions.map((q) => {
     const r = responses[q.id];
-    return { question: q, response: r || null, isCorrect: isResponseCorrect(q, r), isPretest: pretest.has(q.id) };
+    // In drill mode, surface the FIRST answer (and its correctness) so the review
+    // reflects what counted toward stats, not the eventually-correct retry.
+    const response = mode === 'drill' && r ? { ...r, value: r.firstValue ?? r.value ?? null } : (r || null);
+    return { question: q, response, isCorrect: responseCorrect(mode, q, r), isPretest: pretest.has(q.id) };
   });
   // Operational (scored) items only — unscored pretest items don't count.
   const scored = review.filter((x) => !x.isPretest);
@@ -92,7 +107,7 @@ function buildReview(questions, responses, pretestIds = []) {
 // Snapshot a finished section (used for the full-exam composite report).
 function sectionSnapshot(state) {
   const allQs = state.modules.flatMap((m) => m.questions);
-  const base = buildReview(allQs, state.responses, state.pretestIds);
+  const base = buildReview(allQs, state.responses, state.pretestIds, state.mode);
   const scaled = scaledSectionScore(base.correct, base.total, state.m2Variant === 'easy', state.section);
   return { ...base, section: state.section, scaled, m2Variant: state.m2Variant };
 }
@@ -102,7 +117,7 @@ async function persistSession(state) {
   try {
     const all = state.modules.flatMap((m) => m.questions.map((q) => ({ q, moduleKey: m.key })));
     if (!all.length) return;
-    const base = buildReview(all.map((x) => x.q), state.responses, state.pretestIds);
+    const base = buildReview(all.map((x) => x.q), state.responses, state.pretestIds, state.mode);
     const scaled = state.mode && state.mode !== 'drill'
       ? scaledSectionScore(base.correct, base.total, state.m2Variant === 'easy', state.section)
       : null;
@@ -118,8 +133,8 @@ async function persistSession(state) {
         ordinal: i,
         module: moduleKey,
         snapshot: { ...q, pretest: pretest.has(q.id) },
-        value: r?.value ?? null,
-        is_correct: isResponseCorrect(q, r),
+        value: (state.mode === 'drill' ? (r?.firstValue ?? r?.value) : r?.value) ?? null,
+        is_correct: responseCorrect(state.mode, q, r),
         time_ms: null,
         flagged: !!r?.flagged,
       };
@@ -152,7 +167,7 @@ const EMPTY = {
   config: null,
   modules: [], // [{ key, label, variant, questions }]
   activeModuleIndex: 0,
-  responses: {}, // questionId -> { value, flagged }
+  responses: {}, // questionId -> { value, flagged, firstValue?, firstCorrect?, tried?, solved? }
   pretestIds: [], // unscored question ids for the current section
   index: 0,
   error: null,
@@ -216,6 +231,32 @@ export function PracticeSessionProvider({ children }) {
     });
 
   const setValue = React.useCallback((value) => updateResponse({ value }), []);
+
+  // Drill MCQ: immediate-check, retry-until-correct. Records the first attempt's
+  // correctness (stats), tracks wrong picks so they lock out, and only sets
+  // `solved` (which ungates Next) when the correct option is chosen.
+  const answerDrillMCQ = React.useCallback((letter) =>
+    setState((s) => {
+      const q = s.modules[s.activeModuleIndex]?.questions[s.index];
+      if (!q) return s;
+      const prev = s.responses[q.id] || {};
+      if (prev.solved) return s; // locked once correct
+      const isCorrect = (q.correct || []).includes(letter);
+      const firstAttempt = prev.firstValue == null;
+      const next = {
+        ...prev,
+        firstValue: prev.firstValue ?? letter,
+        firstCorrect: firstAttempt ? isCorrect : prev.firstCorrect,
+      };
+      if (isCorrect) {
+        next.value = letter;
+        next.solved = true;
+      } else {
+        next.tried = [...new Set([...(prev.tried || []), letter])];
+      }
+      return { ...s, responses: { ...s.responses, [q.id]: next } };
+    }), []);
+
   const toggleFlag = React.useCallback(() =>
     setState((s) => {
       const q = s.modules[s.activeModuleIndex]?.questions[s.index];
@@ -337,7 +378,7 @@ export function PracticeSessionProvider({ children }) {
   const current = questions[state.index] || null;
   const answeredCount = questions.filter((q) => state.responses[q.id]?.value).length;
 
-  const buildResult = (qs) => buildReview(qs, state.responses, state.pretestIds);
+  const buildResult = (qs) => buildReview(qs, state.responses, state.pretestIds, state.mode);
 
   const moduleResult = React.useCallback((i) => {
     const m = state.modules[i];
@@ -384,6 +425,7 @@ export function PracticeSessionProvider({ children }) {
     moduleResult,
     start,
     setValue,
+    answerDrillMCQ,
     toggleFlag,
     goTo,
     next,
