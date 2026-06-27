@@ -6,6 +6,7 @@ import { updateTargetScore } from '@/lib/auth/actions';
 import { createClient } from '@/lib/supabase/client';
 import { aiStatus, aiConnect, aiSubmitCode, aiCancelConnect, aiDisconnect, isDesktop } from '@/lib/ai/bridge';
 import { useUpdates } from '@/lib/updates/useUpdates';
+import ClearDataDialog from './ClearDataDialog';
 
 // Settings — appearance, account, practice defaults.
 
@@ -122,6 +123,10 @@ function Settings({ go, dark, setDark }) {
     await signOut();
     go('onboarding');
   };
+
+  // Clear-data dialog.
+  const [clearOpen, setClearOpen] = React.useState(false);
+  const [clearedMsg, setClearedMsg] = React.useState(null);
 
   // Profile picture upload — direct to Supabase Storage (RLS-guarded), max 1MB.
   const AVATAR_MAX_BYTES = 1024 * 1024;
@@ -352,6 +357,26 @@ function Settings({ go, dark, setDark }) {
           <Button variant="secondary" onClick={() => go('tutor-invite')}>Manage tutors</Button>
         </div>
       </Card>
+
+      <SectionHead label="Data" />
+      <Card padding="lg">
+        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap: 16}}>
+          <div style={{display:'flex', flexDirection:'column', flex: 1}}>
+            <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>Clear practice data</span>
+            <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>
+              {clearedMsg || 'Delete your practice sessions, questions, and answers. This can’t be undone.'}
+            </span>
+          </div>
+          <Button variant="destructive" onClick={() => { setClearedMsg(null); setClearOpen(true); }}>Clear data…</Button>
+        </div>
+      </Card>
+
+      {clearOpen && (
+        <ClearDataDialog
+          onClose={() => setClearOpen(false)}
+          onCleared={(deleted) => setClearedMsg(`Deleted ${deleted} ${deleted === 1 ? 'session' : 'sessions'}.`)}
+        />
+      )}
     </div>
   );
 }
