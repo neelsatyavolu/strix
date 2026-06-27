@@ -13,7 +13,7 @@ const BASE_CATS = {
   math: Object.entries(MATH_DOMAINS).map(([code, label]) => ({ id: DOMAIN_TO_CATEGORY[code], label, done: 0, accuracy: 0 })),
 };
 
-function PracticeSetup({ go, initial = {} }) {
+function PracticeSetup({ go, initial = {}, readOnly = false }) {
   const { Card, Button, Badge, SegmentedControl, Tabs } = SixteenNS;
   const session = usePracticeSession();
   const { stats } = useStats();
@@ -189,9 +189,11 @@ function PracticeSetup({ go, initial = {} }) {
           </Card>
         )}
 
-        <div style={{display:'flex', justifyContent:'flex-end', gap: 10, marginTop: 4}}>
-          <Button variant="ghost" onClick={() => go('dashboard')}>Cancel</Button>
-          <Button variant="primary" size="lg" onClick={() => {
+        <div style={{display:'flex', justifyContent:'flex-end', alignItems:'center', gap: 10, marginTop: 4}}>
+          {readOnly && <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginRight:'auto'}}>You&rsquo;re viewing this student read-only — they start their own practice.</span>}
+          <Button variant="ghost" onClick={() => go('dashboard')}>{readOnly ? 'Back' : 'Cancel'}</Button>
+          <Button variant="primary" size="lg" disabled={readOnly} onClick={() => {
+            if (readOnly) return;
             if (mode === 'mock-exam') {
               session.start({ mode: 'mock-exam' });
               go('rw-question', { kind: 'module' }); // a full SAT always opens with R&W

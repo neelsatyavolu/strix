@@ -52,7 +52,7 @@ function categoryBaseline(label, skills, totals) {
   };
 }
 
-function CategoryDetail({ go, section = 'rw', domain, label }) {
+function CategoryDetail({ go, section = 'rw', domain, label, studentId = null }) {
   const { Card, Badge, AccuracyRing, Button } = SixteenNS;
   const accent = section === 'rw' ? 'var(--rw-color)' : 'var(--math-color)';
 
@@ -64,11 +64,12 @@ function CategoryDetail({ go, section = 'rw', domain, label }) {
   const [hasMore, setHasMore] = React.useState(false);
 
   const fetchPage = React.useCallback(async (offset) => {
-    const res = await fetch(`/api/stats/category?section=${section}&domain=${domain}&limit=100&offset=${offset}`);
+    const sq = studentId ? `&studentId=${encodeURIComponent(studentId)}` : '';
+    const res = await fetch(`/api/stats/category?section=${section}&domain=${domain}&limit=100&offset=${offset}${sq}`);
     const json = await res.json();
     if (!json?.success) throw new Error(json?.error || 'Failed to load category');
     return json.data;
-  }, [section, domain]);
+  }, [section, domain, studentId]);
 
   React.useEffect(() => {
     let on = true;

@@ -49,10 +49,10 @@ function shortAgo(iso) {
   return `${Math.floor(d / 30)}mo`;
 }
 
-function Stats({ go }) {
+function Stats({ go, studentId = null }) {
   const { Tabs } = SixteenNS;
-  const { stats, loading } = useStats();
-  const { sessions } = useSessions(50);
+  const { stats, loading } = useStats(studentId);
+  const { sessions } = useSessions(50, studentId);
   const [tab, setTab] = React.useState('overall');
 
   const rwDone = stats?.sectionTotals?.rw?.done ?? 0;

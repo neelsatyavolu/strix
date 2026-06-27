@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { resolveTargetUser } from "@/lib/tutor/scope";
 import { RW_DOMAINS, MATH_DOMAINS } from "@/lib/cb/domains";
 import type { Section } from "@/lib/cb/types";
 
@@ -36,6 +37,10 @@ export async function GET(req: NextRequest) {
   if (!user) return NextResponse.json({ success: false, error: "Not signed in" }, { status: 401 });
 
   const sp = req.nextUrl.searchParams;
+  const scope = await resolveTargetUser(supabase, user.id, sp.get("studentId"));
+  if ("error" in scope) return NextResponse.json({ success: false, error: scope.error }, { status: scope.status });
+  const targetId = scope.targetId;
+
   const section: Section = sp.get("section") === "math" ? "math" : "rw";
   const domain = sp.get("domain") ?? "";
   const limit = Math.min(100, Math.max(1, Number(sp.get("limit") ?? 100)));
@@ -49,6 +54,7 @@ export async function GET(req: NextRequest) {
   const { data: all, error: allErr } = await supabase
     .from("answers")
     .select("is_correct, session_questions!inner(section, domain, skill)")
+    .eq("user_id", targetId)
     .eq("session_questions.section", section)
     .eq("session_questions.domain", domain)
     .limit(10000);
@@ -72,6 +78,7 @@ export async function GET(req: NextRequest) {
   const { data: hist, error: hErr } = await supabase
     .from("answers")
     .select("is_correct, value, time_ms, created_at, session_questions!inner(section, domain, skill, difficulty, snapshot)")
+    .eq("user_id", targetId)
     .eq("session_questions.section", section)
     .eq("session_questions.domain", domain)
     .order("created_at", { ascending: false })

@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { resolveTargetUser } from "@/lib/tutor/scope";
 import { RW_DOMAINS, MATH_DOMAINS, DOMAIN_TO_CATEGORY } from "@/lib/cb/domains";
 import type { Section } from "@/lib/cb/types";
 
@@ -21,16 +22,22 @@ function emptyCats(domains: Record<string, string>): Map<string, CatAgg> {
   return m;
 }
 
-// GET /api/stats — aggregate the signed-in user's practice into dashboard/stats data.
-export async function GET() {
+// GET /api/stats — aggregate a user's practice into dashboard/stats data.
+// Defaults to the signed-in user; a tutor may pass ?studentId= to read a student.
+export async function GET(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ success: false, error: "Not signed in" }, { status: 401 });
+
+  const scope = await resolveTargetUser(supabase, user.id, req.nextUrl.searchParams.get("studentId"));
+  if ("error" in scope) return NextResponse.json({ success: false, error: scope.error }, { status: scope.status });
+  const targetId = scope.targetId;
 
   // 1. per-question results joined to their section/domain
   const { data: answers, error: aErr } = await supabase
     .from("answers")
     .select("is_correct, session_questions!inner(section, domain)")
+    .eq("user_id", targetId)
     .limit(10000);
   if (aErr) return NextResponse.json({ success: false, error: aErr.message }, { status: 500 });
 
@@ -69,6 +76,7 @@ export async function GET() {
   const { data: sessions, error: sErr } = await supabase
     .from("practice_sessions")
     .select("section, mode, scaled_score, accuracy, created_at")
+    .eq("user_id", targetId)
     .order("created_at", { ascending: true })
     .limit(500);
   if (sErr) return NextResponse.json({ success: false, error: sErr.message }, { status: 500 });
