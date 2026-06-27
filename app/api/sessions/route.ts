@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { resolveTargetUser } from "@/lib/tutor/scope";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -106,10 +107,14 @@ export async function GET(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ success: false, error: "Not signed in" }, { status: 401 });
 
+  const scope = await resolveTargetUser(supabase, user.id, req.nextUrl.searchParams.get("studentId"));
+  if ("error" in scope) return NextResponse.json({ success: false, error: scope.error }, { status: scope.status });
+
   const limit = Math.min(50, Math.max(1, Number(req.nextUrl.searchParams.get("limit") ?? 8)));
   const { data, error } = await supabase
     .from("practice_sessions")
     .select("id, mode, section, config, score_correct, score_total, accuracy, scaled_score, submitted_at, created_at")
+    .eq("user_id", scope.targetId)
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });

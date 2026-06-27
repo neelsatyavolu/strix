@@ -33,7 +33,7 @@ function sessionLabel(s) {
   return `${sec} · Full section`;
 }
 
-function Dashboard({ go }) {
+function Dashboard({ go, studentId = null, readOnly = false }) {
   const { Card, Button, Badge, ScoreBadge, AccuracyRing, StatCard } = SixteenNS;
   const { displayName } = useProfile();
   const firstName = (displayName || '').split(' ')[0] || 'there';
@@ -44,9 +44,10 @@ function Dashboard({ go }) {
 
   React.useEffect(() => {
     let alive = true;
+    const q = studentId ? `&studentId=${encodeURIComponent(studentId)}` : '';
     Promise.all([
-      fetch('/api/stats').then((r) => r.json()).catch(() => null),
-      fetch('/api/sessions?limit=6').then((r) => r.json()).catch(() => null),
+      fetch(`/api/stats${studentId ? `?studentId=${encodeURIComponent(studentId)}` : ''}`).then((r) => r.json()).catch(() => null),
+      fetch(`/api/sessions?limit=6${q}`).then((r) => r.json()).catch(() => null),
     ]).then(([st, se]) => {
       if (!alive) return;
       if (st?.success) setStats(st.data);
@@ -54,7 +55,7 @@ function Dashboard({ go }) {
       setLoading(false);
     });
     return () => { alive = false; };
-  }, []);
+  }, [studentId]);
 
   const scores = stats?.scores || { rw: null, math: null, total: null };
   const totals = stats?.sectionTotals || { rw: { done: 0, correct: 0 }, math: { done: 0, correct: 0 } };
@@ -97,9 +98,11 @@ function Dashboard({ go }) {
             </div>
           )}
           <div style={{ flex: 1, minWidth: 0 }} />
-          <Button variant="primary" size="lg" onClick={() => go('practice-setup')} icon={<Icon name="play" style={{ width: 14, height: 14 }} />}>
-            New session
-          </Button>
+          {!readOnly && (
+            <Button variant="primary" size="lg" onClick={() => go('practice-setup')} icon={<Icon name="play" style={{ width: 14, height: 14 }} />}>
+              New session
+            </Button>
+          )}
         </div>
       </Card>
 
@@ -119,7 +122,7 @@ function Dashboard({ go }) {
                   <StatCard label="Last session" value={lastAcc[sec] != null ? String(lastAcc[sec]) : '—'} unit={lastAcc[sec] != null ? '%' : ''} size="sm" sublabel={tc ? tc.label : 'No drills yet'} />
                 </div>
               </div>
-              <Button variant="outline" fullWidth iconRight={<Icon name="chevron-right" style={{ width: 14, height: 14 }} />} onClick={() => go('practice-setup', { domain: sec })}>
+              <Button variant="outline" fullWidth disabled={readOnly} iconRight={<Icon name="chevron-right" style={{ width: 14, height: 14 }} />} onClick={() => !readOnly && go('practice-setup', { domain: sec })}>
                 Drill {SECTION_LABEL[sec]}
               </Button>
             </Card>

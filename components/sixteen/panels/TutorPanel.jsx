@@ -3,22 +3,22 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
-import { aiAsk, aiConnect, aiSubmitCode, aiCancelConnect, aiStatus, isDesktop, TUTOR_SYSTEM, questionContext } from '@/lib/ai/bridge';
-import { useProfile } from '@/components/sixteen/session/ProfileContext';
-import { openTutorChannel, loadMessages, saveMessage } from '@/lib/tutor/realtime';
+import { aiAsk, aiConnect, aiSubmitCode, aiCancelConnect, aiStatus, isDesktop, TUTOR_SYSTEM, questionContext, statsContext, historyContext, historyResultText, parseHistoryCall, stripHistoryMarker } from '@/lib/ai/bridge';
+import { useStats, useHistory, fetchHistory } from '@/lib/data/hooks';
 
-// TutorPanel — the right-side tutor sidebar (320px). Human tutor (Phase 3 via
-// Supabase Realtime) or AI tutor powered by the user's OWN ChatGPT/Grok
-// subscription (Electron bridge). The AI toggle only appears in drills.
+// TutorPanel — the right-side tutor sidebar (320px). The live chat (human tutor
+// ↔ student) is owned by the parent via Supabase Realtime and passed in as
+// `messages`/`onSend`; the AI tutor (the user's OWN ChatGPT/Grok subscription
+// via the Electron bridge) is local. The AI toggle only appears in drills.
 
-function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
+function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, messages: liveMessages = [], onSend: onLiveSend, peerName }) {
   const { MessageBubble, ThinkingBubble, ChatComposer, IconButton, SegmentedControl, TutorPresence, Avatar } = SixteenNS;
   const isTutor = role === 'tutor';
   const aiAllowed = allowAI && !isTutor;
   const session = usePracticeSession();
-  const { user, displayName } = useProfile();
+  const { stats } = useStats();
+  const { attempts } = useHistory(15);
   const desktop = isDesktop();
-  const channelRef = React.useRef(null);
   const [tutorName, setTutorName] = React.useState('your tutor');
 
   React.useEffect(() => {
@@ -29,8 +29,6 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
       if (p?.full_name) setTutorName(p.full_name);
     }).catch(() => {});
   }, [isTutor]);
-
-  const flip = (m) => (isTutor ? { ...m, side: m.side === 'mine' ? 'theirs' : 'mine' } : m);
 
   const [mode, setMode] = React.useState('ai'); // 'human' | 'ai'
   const [aiProvider, setAiProvider] = React.useState('chatgpt'); // 'chatgpt' | 'grok'
@@ -45,12 +43,18 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   const [pasteVal, setPasteVal] = React.useState('');
   const [connectError, setConnectError] = React.useState('');
 
-  const [humanMessages, setHumanMessages] = React.useState([]);
   const [aiMessages, setAiMessages] = React.useState([
     { id: 'a1', side: 'theirs', text: "Hi, I'm your AI tutor. Stuck on something? Tell me what you're thinking and I'll help you reason through it.", time: 'now' },
   ]);
-  const messages = mode === 'human' ? humanMessages : aiMessages;
-  const setMessages = mode === 'human' ? setHumanMessages : setAiMessages;
+
+  // The live (human↔student) thread is owned by the parent; map raw rows to
+  // bubble shape, with "mine" relative to whoever is signed in here.
+  const liveDisplay = React.useMemo(
+    () => (liveMessages || []).map((m) => ({ id: m.id, side: m.sender_id === selfId ? 'mine' : 'theirs', text: m.body, time: '' })),
+    [liveMessages, selfId],
+  );
+  const liveMode = isTutor || mode === 'human';
+  const messages = liveMode ? liveDisplay : aiMessages;
 
   const [draft, setDraft] = React.useState('');
   const streamRef = React.useRef(null);
@@ -69,41 +73,6 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
   React.useEffect(() => {
     if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
   }, [messages, mode, thinking]);
-
-  // Student side of live human tutoring: open the realtime channel, load chat
-  // history, and relay incoming tutor messages.
-  React.useEffect(() => {
-    if (isTutor || mode !== 'human' || !user?.id) return;
-    let ch;
-    loadMessages(user.id).then((msgs) =>
-      setHumanMessages(msgs.map((m) => ({ id: m.id, side: m.sender_id === user.id ? 'mine' : 'theirs', text: m.body, time: '' }))),
-    );
-    ch = openTutorChannel({
-      studentId: user.id,
-      userId: user.id,
-      role: 'student',
-      onChat: (m) => setHumanMessages((prev) => [...prev, { id: m.id, side: m.sender_id === user.id ? 'mine' : 'theirs', text: m.body, time: '' }]),
-    });
-    channelRef.current = ch;
-    return () => { ch?.close(); channelRef.current = null; };
-  }, [mode, isTutor, user?.id]);
-
-  // Broadcast the current question so a watching tutor sees what we're on.
-  React.useEffect(() => {
-    if (isTutor || mode !== 'human' || !channelRef.current) return;
-    const q = session.current;
-    if (!q) return;
-    channelRef.current.sendSession({
-      index: session.index,
-      total: session.questions.length,
-      section: q.section,
-      domainLabel: q.domainLabel,
-      stemHtml: q.stemHtml,
-      stimulusHtml: q.stimulusHtml,
-      choices: q.choices,
-      selected: session.responses[q.id]?.value || null,
-    });
-  }, [mode, isTutor, session.current, session.index, session.responses]);
 
   const providerLabel = aiProvider === 'chatgpt' ? 'ChatGPT' : 'Grok';
   const providerKey = aiProvider === 'chatgpt' ? 'codex' : 'grok';
@@ -157,18 +126,14 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
 
   const send = async (text) => {
     const id = Date.now();
-    setMessages((prev) => [...prev, { id, side: isTutor ? 'theirs' : 'mine', text, time: 'now' }]);
     setDraft('');
-    if (isTutor) return;
-    if (mode === 'human') {
-      if (!user?.id) return;
-      const saved = await saveMessage({ studentId: user.id, senderId: user.id, role: 'student', body: text });
-      channelRef.current?.sendChat(saved || { id: String(id), sender_id: user.id, role: 'student', body: text });
-      return;
-    }
+    // Live thread (human tutor ↔ student): the parent owns send + optimistic UI.
+    if (liveMode) { onLiveSend?.(text); return; }
+
+    setAiMessages((prev) => [...prev, { id, side: 'mine', text, time: 'now' }]);
 
     if (!desktop || !connectedNow) {
-      setMessages((prev) => [...prev, {
+      setAiMessages((prev) => [...prev, {
         id: id + 1, side: 'theirs',
         text: !desktop ? 'The AI tutor runs in the Strix desktop app.' : `Connect your ${providerLabel} account above to start.`,
         time: 'now',
@@ -181,16 +146,29 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
       const history = aiMessages.map((m) => ({ role: m.side === 'mine' ? 'user' : 'assistant', content: m.text }));
       const sel = session.current ? session.responses[session.current.id]?.value : null;
       const ctx = questionContext(session.current, sel);
-      const res = await aiAsk({
-        provider: aiProvider,
-        model: aiModel,
-        system: TUTOR_SYSTEM + (ctx ? '\n\n' + ctx : ''),
-        messages: [...history, { role: 'user', content: text }],
-      });
-      const reply = res?.ok ? res.text : `Couldn't reach ${providerLabel}: ${res?.error || 'unknown error'}`;
-      setMessages((prev) => [...prev, { id: id + 1, side: 'theirs', text: reply, time: 'now' }]);
+      const today = `Today's date is ${new Date().toISOString().slice(0, 10)}.`;
+      const perf = statsContext(stats);
+      const hist = historyContext(attempts);
+      const system = [TUTOR_SYSTEM, today, perf, hist, ctx].filter(Boolean).join('\n\n');
+
+      // Agentic loop: the model can request history lookups (any scope) which we
+      // run client-side and feed back, until it answers or we hit the hop cap.
+      const MAX_HOPS = 3;
+      let convo = [...history, { role: 'user', content: text }];
+      let reply = '';
+      for (let hop = 0; ; hop++) {
+        const res = await aiAsk({ provider: aiProvider, model: aiModel, system, messages: convo });
+        if (!res?.ok) { reply = `Couldn't reach ${providerLabel}: ${res?.error || 'unknown error'}`; break; }
+        const call = hop < MAX_HOPS ? parseHistoryCall(res.text) : null;
+        if (!call) { reply = stripHistoryMarker(res.text); break; }
+        const rows = await fetchHistory(call);
+        convo = [...convo,
+          { role: 'assistant', content: res.text },
+          { role: 'user', content: historyResultText(rows, call) }];
+      }
+      setAiMessages((prev) => [...prev, { id: id + 1, side: 'theirs', text: reply, time: 'now' }]);
     } catch (e) {
-      setMessages((prev) => [...prev, { id: id + 1, side: 'theirs', text: e.message || 'AI request failed.', time: 'now' }]);
+      setAiMessages((prev) => [...prev, { id: id + 1, side: 'theirs', text: e.message || 'AI request failed.', time: 'now' }]);
     } finally {
       setThinking(false);
     }
@@ -212,8 +190,8 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 26, paddingBottom: isTutor ? 10 : 0 }}>
           {isTutor
             ? <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-                <Avatar name={displayName} size="sm" presence="online" />
-                <span style={{ font: 'var(--role-label)', fontWeight: 600, color: 'var(--text-primary)' }}>{displayName}</span>
+                <Avatar name={peerName || 'Student'} size="sm" presence="online" />
+                <span style={{ font: 'var(--role-label)', fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{peerName || 'Student'}</span>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: 'var(--role-caption)', color: 'var(--success)', marginLeft: 2 }}>
                   <Icon name="eye" style={{ width: 12, height: 12 }} /> watching
                 </span>
@@ -271,7 +249,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
       </div>
 
       <div ref={streamRef} style={{ flex: 1, overflow: 'auto', padding: 14, display: 'flex', flexDirection: 'column', gap: 8, background: 'var(--paper)' }}>
-        {messages.map((m) => { const fm = flip(m); return <MessageBubble key={m.id} side={fm.side} text={fm.text} time={fm.time} />; })}
+        {messages.map((m) => <MessageBubble key={m.id} side={m.side} text={m.text} time={m.time} />)}
         {thinking && <ThinkingBubble />}
       </div>
 
@@ -280,7 +258,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
           value={draft}
           onChange={setDraft}
           onSend={send}
-          placeholder={isTutor ? `Message ${displayName.split(' ')[0]}` : (mode === 'human' ? `Message ${tutorName.split(' ')[0]}` : `Ask ${providerLabel}`)}
+          placeholder={isTutor ? `Message ${String(peerName || 'student').split(' ')[0]}` : (mode === 'human' ? `Message ${tutorName.split(' ')[0]}` : `Ask ${providerLabel}`)}
         />
       ) : (
         <AiConnect
