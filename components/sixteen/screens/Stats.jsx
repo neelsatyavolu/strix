@@ -267,18 +267,21 @@ function StatCardLite({ label, value, sublabel }) {
 function sectionBaseline(sectionLabel, cats) {
   const pool = (cats ?? []).filter((c) => c.done > 0);
   if (!pool.length) return null;
+  // Rank by recency-weighted accuracy when available so the strength/focus call
+  // reflects how the student is doing lately, not their all-time average.
+  const accOf = (c) => (c.recentAccuracy != null ? c.recentAccuracy : c.accuracy);
   const eligible = pool.filter((c) => c.done >= 5);
-  const ranked = [...(eligible.length ? eligible : pool)].sort((a, b) => b.accuracy - a.accuracy);
+  const ranked = [...(eligible.length ? eligible : pool)].sort((a, b) => accOf(b) - accOf(a));
   const best = ranked[0];
   const worst = ranked[ranked.length - 1];
   const total = pool.reduce((a, c) => a + c.done, 0);
   const same = best.id === worst.id;
   return {
     summary: same
-      ? `You've answered ${total} ${sectionLabel} questions so far, all in ${best.label} (${best.accuracy}%). Practice the other categories to round out your profile.`
-      : `You've answered ${total} ${sectionLabel} questions. You're strongest in ${best.label} (${best.accuracy}%) and weakest in ${worst.label} (${worst.accuracy}%).`,
-    strength: `${best.label} — ${best.accuracy}% across ${best.done} question${best.done === 1 ? '' : 's'}.`,
-    focus: same ? '' : `${worst.label} — ${worst.accuracy}%. Put your next sessions here.`,
+      ? `You've answered ${total} ${sectionLabel} questions so far, all in ${best.label} (${accOf(best)}%). Practice the other categories to round out your profile.`
+      : `You've answered ${total} ${sectionLabel} questions. Lately you're strongest in ${best.label} (${accOf(best)}%) and weakest in ${worst.label} (${accOf(worst)}%).`,
+    strength: `${best.label} — ${accOf(best)}% recently across ${best.done} question${best.done === 1 ? '' : 's'}.`,
+    focus: same ? '' : `${worst.label} — ${accOf(worst)}%. Put your next sessions here.`,
     actions: same
       ? [`Practice categories you haven't tried yet`]
       : [`Drill ${worst.label} questions`, `Review the ones you missed in ${worst.label}`],
@@ -289,7 +292,8 @@ function SectionInsights({ sectionLabel, cats, accent }) {
   const baseline = React.useMemo(() => sectionBaseline(sectionLabel, cats), [sectionLabel, cats]);
   const payload = React.useMemo(() => ({
     section: sectionLabel,
-    topics: (cats ?? []).filter((c) => c.done > 0).map((c) => ({ topic: c.label, answered: c.done, accuracy: c.accuracy })),
+    note: 'recentAccuracy weights recent attempts more heavily — prioritize it over all-time accuracy when recommending focus areas.',
+    topics: (cats ?? []).filter((c) => c.done > 0).map((c) => ({ topic: c.label, answered: c.done, accuracy: c.accuracy, recentAccuracy: c.recentAccuracy })),
   }), [sectionLabel, cats]);
   const ready = (cats ?? []).some((c) => c.done > 0);
   const ins = useInsight({ scope: `section:${sectionLabel}`, payload, baseline, ready });

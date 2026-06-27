@@ -59,9 +59,10 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
   const solved = !!resp.solved;
   const triedWrong = new Set(resp.tried || []);
   const blocked = isDrill && !solved; // can't advance until the right answer is chosen
-  // Full modules/sections/exams: every question must be answered before submitting.
+  // No skipping: every question must be answered before the session can be
+  // submitted (general practice and full modules alike). A timeout still ends it.
   const isLast = session.index >= total - 1;
-  const finishBlocked = !isDrill && session.answeredCount < total;
+  const finishBlocked = session.answeredCount < total;
   const firstUnanswered = () => session.questions.findIndex((qq) => !session.responses[qq.id]?.value);
   const elimSet = elim[q.id] || new Set();
   const tog = (l) =>

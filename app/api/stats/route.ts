@@ -12,12 +12,25 @@ interface CatAgg {
   label: string;
   done: number;
   correct: number;
+  // Recency-weighted tallies: each answer contributes RECENCY_DECAY^rank, where
+  // rank 0 is the most recent attempt. Recent attempts dominate the average.
+  wDone: number;
+  wCorrect: number;
 }
+
+// Per-answer weight decays with how long ago it was attempted. 0.97 gives a
+// half-life of ~23 answers — recent practice drives the recommendation while
+// older attempts still count a little.
+const RECENCY_DECAY = 0.97;
+// Don't recommend a category the student has barely touched.
+const FOCUS_MIN_ATTEMPTS = 3;
+// How many weak skills to surface on the dashboard.
+const FOCUS_COUNT = 2;
 
 function emptyCats(domains: Record<string, string>): Map<string, CatAgg> {
   const m = new Map<string, CatAgg>();
   for (const [code, label] of Object.entries(domains)) {
-    m.set(code, { id: DOMAIN_TO_CATEGORY[code] ?? code, label, done: 0, correct: 0 });
+    m.set(code, { id: DOMAIN_TO_CATEGORY[code] ?? code, label, done: 0, correct: 0, wDone: 0, wCorrect: 0 });
   }
   return m;
 }
@@ -38,9 +51,10 @@ export async function GET(req: NextRequest) {
   // down accuracy — only attempts where the student actually answered count.
   const { data: answers, error: aErr } = await supabase
     .from("answers")
-    .select("is_correct, value, session_questions!inner(section, domain)")
+    .select("is_correct, value, created_at, session_questions!inner(section, domain)")
     .eq("user_id", targetId)
     .not("value", "is", null)
+    .order("created_at", { ascending: false })
     .limit(10000);
   if (aErr) return NextResponse.json({ success: false, error: aErr.message }, { status: 500 });
 
@@ -51,18 +65,27 @@ export async function GET(req: NextRequest) {
     math: { done: 0, correct: 0 },
   };
 
+  // `answers` is ordered newest-first, so `rank` counts how many more-recent
+  // attempts precede each one — the basis for its recency weight.
+  let rank = 0;
   for (const row of answers ?? []) {
     if (!String((row as { value: unknown }).value ?? "").trim()) continue; // skipped
     const sq = (row as { session_questions: { section: Section; domain: string } | { section: Section; domain: string }[] }).session_questions;
     const meta = Array.isArray(sq) ? sq[0] : sq;
     if (!meta) continue;
+    const w = Math.pow(RECENCY_DECAY, rank);
+    rank += 1;
     const cats = meta.section === "math" ? mathCats : rwCats;
     const c = cats.get(meta.domain);
     sectionTotals[meta.section].done += 1;
     if (row.is_correct) sectionTotals[meta.section].correct += 1;
     if (c) {
       c.done += 1;
-      if (row.is_correct) c.correct += 1;
+      c.wDone += w;
+      if (row.is_correct) {
+        c.correct += 1;
+        c.wCorrect += w;
+      }
     }
   }
 
@@ -74,6 +97,30 @@ export async function GET(req: NextRequest) {
       done: c.done,
       correct: c.correct,
       accuracy: c.done ? Math.round((c.correct / c.done) * 100) : 0,
+      // Recency-weighted accuracy — recent attempts count for more. Null when
+      // the category has no answered questions.
+      recentAccuracy: c.wDone > 0 ? Math.round((c.wCorrect / c.wDone) * 100) : null,
+    }));
+
+  const rwList = toCatList(rwCats);
+  const mathList = toCatList(mathCats);
+
+  // "Skills to focus on" — the weakest categories by recency-weighted accuracy,
+  // across both sections, limited to ones the student has actually practiced.
+  const focus = [
+    ...rwList.map((c) => ({ ...c, section: "rw" as Section })),
+    ...mathList.map((c) => ({ ...c, section: "math" as Section })),
+  ]
+    .filter((c) => c.done >= FOCUS_MIN_ATTEMPTS && c.recentAccuracy != null)
+    .sort((a, b) => (a.recentAccuracy ?? 100) - (b.recentAccuracy ?? 100) || b.done - a.done)
+    .slice(0, FOCUS_COUNT)
+    .map((c) => ({
+      section: c.section,
+      id: c.id,
+      code: c.code,
+      label: c.label,
+      accuracy: c.recentAccuracy,
+      attempts: c.done,
     }));
 
   // 2. sessions for scores-over-time + latest section scores + last-session accuracy
@@ -108,7 +155,8 @@ export async function GET(req: NextRequest) {
       },
       sectionTotals,
       lastAccuracy: { rw: lastAccuracy("rw"), math: lastAccuracy("math") },
-      categories: { rw: toCatList(rwCats), math: toCatList(mathCats) },
+      categories: { rw: rwList, math: mathList },
+      focus,
       overTime: scored.map((s) => ({ section: s.section, score: s.scaled_score, at: s.created_at })),
       sessionCount: (sessions ?? []).length,
     },

@@ -2,6 +2,7 @@
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
+import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useStats, useSessions } from '@/lib/data/hooks';
 import { CATEGORY_TO_DOMAIN, domainLabel } from '@/lib/cb/domains';
 
@@ -74,6 +75,7 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
   const { displayName } = useProfile();
   const firstName = (displayName || '').split(' ')[0] || 'there';
 
+  const session = usePracticeSession();
   const { stats, loading } = useStats(studentId);
   const { sessions } = useSessions(6, studentId);
 
@@ -81,9 +83,17 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
   const totals = stats?.sectionTotals || { rw: { done: 0, correct: 0 }, math: { done: 0, correct: 0 } };
   const lastAcc = stats?.lastAccuracy || { rw: null, math: null };
   const cats = stats?.categories || { rw: [], math: [] };
+  const focus = stats?.focus || [];
   const acc = (sec) => (totals[sec].done ? Math.round((totals[sec].correct / totals[sec].done) * 100) : 0);
   const topCat = (sec) => (cats[sec] || []).slice().sort((a, b) => b.done - a.done)[0];
   const hasData = (stats?.sessionCount || 0) > 0;
+
+  // One-click launch into a focused drill on a recommended weak skill.
+  const launchFocus = (f) => {
+    if (readOnly) return;
+    session.start({ section: f.section, mode: 'drill', category: f.id, difficulty: 'all', count: 10 });
+    go(f.section === 'math' ? 'math-question' : 'rw-question', { kind: 'drill' });
+  };
 
   return (
     <div style={{ padding: '28px 36px', maxWidth: 980 }}>
@@ -153,6 +163,42 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
           );
         })}
       </div>
+
+      {focus.length > 0 && (
+        <Card padding="lg" style={{ marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 }}>
+            <h2 style={{ margin: 0, font: 'var(--role-title-md)' }}>Skills to focus on</h2>
+            <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>From your recent practice</span>
+          </div>
+          <p style={{ margin: '0 0 14px', font: 'var(--role-body)', color: 'var(--text-secondary)' }}>
+            These are where your recent accuracy is lowest. A quick drill is the fastest way to bring them up.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {focus.map((f) => (
+              <div key={`${f.section}-${f.id}`} style={{
+                display: 'grid', gridTemplateColumns: 'auto auto 1fr auto', alignItems: 'center', gap: 12,
+                padding: '12px 14px', background: 'var(--sunken)', borderRadius: 'var(--radius-md)',
+              }}>
+                <AccuracyRing value={f.accuracy ?? 0} size={40} stroke={5} color={f.section === 'rw' ? 'var(--rw-color)' : 'var(--math-color)'} />
+                <Badge variant={f.section} dot>{f.section === 'rw' ? 'R&W' : 'Math'}</Badge>
+                <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                  <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{f.label}</span>
+                  <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>{f.accuracy ?? 0}% recent · {f.attempts} answered</span>
+                </div>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  disabled={readOnly}
+                  icon={<Icon name="play" style={{ width: 12, height: 12 }} />}
+                  onClick={() => launchFocus(f)}
+                >
+                  Practice
+                </Button>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
       </>
       )}
 

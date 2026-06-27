@@ -123,19 +123,25 @@ function hasAnswer(mode, response) {
 
 // Persist a finalized section to the Vercel server (non-blocking).
 // `times` maps question id -> milliseconds on screen (see timingRef).
-// `answeredOnly` (early exit from general practice) keeps just the questions the
-// student actually answered, so unanswered ones are discarded rather than scored.
-async function persistSession(state, times = {}, { answeredOnly = false } = {}) {
+// Skipped (unanswered) questions are excluded from the score, accuracy and the
+// persisted per-question rows so they never count toward stats. The scaled score
+// (mocks only) is still computed over the whole section, since an unanswered SAT
+// question loses points.
+async function persistSession(state, times = {}) {
   try {
-    let all = state.modules.flatMap((m) => m.questions.map((q) => ({ q, moduleKey: m.key })));
-    if (answeredOnly) all = all.filter(({ q }) => hasAnswer(state.mode, state.responses[q.id]));
+    const all = state.modules.flatMap((m) => m.questions.map((q) => ({ q, moduleKey: m.key })));
     if (!all.length) return;
-    const base = buildReview(all.map((x) => x.q), state.responses, state.pretestIds, state.mode);
+    // Whole section (skipped items count as wrong) — drives the scaled score.
+    const full = buildReview(all.map((x) => x.q), state.responses, state.pretestIds, state.mode);
     const scaled = state.mode && state.mode !== 'drill'
-      ? scaledSectionScore(base.correct, base.total, state.m2Variant === 'easy', state.section)
+      ? scaledSectionScore(full.correct, full.total, state.m2Variant === 'easy', state.section)
       : null;
+    // Answered questions only — drives score / accuracy and what we store.
+    const answered = all.filter(({ q }) => hasAnswer(state.mode, state.responses[q.id]));
+    if (!answered.length) return;
+    const base = buildReview(answered.map((x) => x.q), state.responses, state.pretestIds, state.mode);
     const pretest = new Set(state.pretestIds || []);
-    const questions = all.map(({ q, moduleKey }, i) => {
+    const questions = answered.map(({ q, moduleKey }, i) => {
       const r = state.responses[q.id];
       return {
         external_id: q.id,
@@ -329,7 +335,7 @@ export function PracticeSessionProvider({ children }) {
   // exams save nothing at all. Then return home.
   const exitSession = React.useCallback((go) => {
     const s = stateRef.current;
-    if (s.mode === 'drill') persistSession(s, finalizeTimes(), { answeredOnly: true });
+    if (s.mode === 'drill') persistSession(s, finalizeTimes());
     reset();
     if (go) go('dashboard');
     // eslint-disable-next-line react-hooks/exhaustive-deps

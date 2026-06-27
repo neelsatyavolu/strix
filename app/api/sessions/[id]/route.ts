@@ -34,17 +34,24 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   ]);
 
   const ansByQ = new Map((ans ?? []).map((a) => [a.session_question_id, a]));
-  const review = (sqs ?? []).map((sq) => {
-    const a = ansByQ.get(sq.id);
-    const q = (sq.snapshot ?? {}) as Record<string, unknown>;
-    return {
-      question: q,
-      response: a ? { value: a.value, flagged: a.flagged } : null,
-      isCorrect: !!a?.is_correct,
-      isPretest: !!q.pretest,
-      timeMs: a?.time_ms ?? null,
-    };
-  });
+  const review = (sqs ?? [])
+    // Skipped questions (no answer recorded) don't count toward stats, so they're
+    // not shown in the review — keeps the list consistent with the score header.
+    .filter((sq) => {
+      const a = ansByQ.get(sq.id);
+      return a && a.value != null && String(a.value).trim() !== "";
+    })
+    .map((sq) => {
+      const a = ansByQ.get(sq.id);
+      const q = (sq.snapshot ?? {}) as Record<string, unknown>;
+      return {
+        question: q,
+        response: a ? { value: a.value, flagged: a.flagged } : null,
+        isCorrect: !!a?.is_correct,
+        isPretest: !!q.pretest,
+        timeMs: a?.time_ms ?? null,
+      };
+    });
 
   const byDomain = new Map<string, { domain: string; label: string; correct: number; total: number }>();
   for (const item of review) {

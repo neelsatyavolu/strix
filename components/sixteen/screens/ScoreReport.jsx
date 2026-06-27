@@ -147,8 +147,8 @@ export function ReviewItem({ item, n }) {
   const { question: q, response, isCorrect } = item;
   const answered = !!response?.value;
   const yourLetter = response?.value;
-  const yourChoice = q.choices.find((c) => c.letter === yourLetter);
-  const correctChoices = q.choices.filter((c) => q.correct.includes(c.letter));
+  const isMcq = q.type !== 'spr' && (q.choices?.length ?? 0) > 0;
+  const correct = Array.isArray(q.correct) ? q.correct : [];
 
   return (
     <Card padding="lg">
@@ -164,20 +164,43 @@ export function ReviewItem({ item, n }) {
 
       <div className="cb-stem" style={{ fontSize: 15 }} dangerouslySetInnerHTML={{ __html: q.stemHtml }} />
 
-      <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', margin: '12px 0 4px', font: 'var(--role-body)' }}>
-        <div>
-          <span style={{ color: 'var(--text-tertiary)' }}>Your answer: </span>
-          {q.type === 'spr'
-            ? <span style={{ fontFamily: 'var(--font-mono)', color: isCorrect ? 'var(--success)' : 'var(--error)' }}>{yourLetter || '—'}</span>
-            : <span style={{ color: isCorrect ? 'var(--success)' : 'var(--error)' }}>{yourLetter ? yourLetter : '—'}{yourChoice ? ' · ' : ''}<span dangerouslySetInnerHTML={{ __html: yourChoice?.html || '' }} /></span>}
+      {isMcq ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, margin: '12px 0 4px' }}>
+          {q.choices.map((o) => {
+            const isCorrectChoice = correct.includes(o.letter);
+            const isYours = yourLetter === o.letter;
+            const tone = isCorrectChoice ? 'var(--success)' : isYours ? 'var(--error)' : null;
+            return (
+              <div key={o.letter} style={{
+                display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 10, alignItems: 'center',
+                padding: '9px 12px', borderRadius: 8,
+                border: `1px solid ${tone || 'var(--border-1)'}`,
+                background: tone ? `color-mix(in srgb, ${tone} 8%, transparent)` : 'transparent',
+              }}>
+                <span style={{
+                  width: 22, height: 22, borderRadius: '50%', display: 'grid', placeItems: 'center', flexShrink: 0,
+                  font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
+                  border: `1.5px solid ${tone || 'var(--border-2)'}`, color: tone || 'var(--text-secondary)',
+                }}>{o.letter}</span>
+                <span className="cb-choice" style={{ font: 'var(--role-body)' }} dangerouslySetInnerHTML={{ __html: o.html }} />
+                {isCorrectChoice ? <span style={{ font: 'var(--role-caption)', color: 'var(--success)', fontWeight: 600 }}>Correct</span>
+                  : isYours ? <span style={{ font: 'var(--role-caption)', color: 'var(--error)', fontWeight: 600 }}>Your answer</span> : null}
+              </div>
+            );
+          })}
         </div>
-        <div>
-          <span style={{ color: 'var(--text-tertiary)' }}>Correct: </span>
-          {q.type === 'spr'
-            ? <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--success)' }}>{q.correct.join(' or ')}</span>
-            : <span style={{ color: 'var(--success)' }}>{q.correct.join(', ')}{correctChoices.length ? ' · ' : ''}<span dangerouslySetInnerHTML={{ __html: correctChoices.map((c) => c.html).join(' / ') }} /></span>}
+      ) : (
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', margin: '12px 0 4px', font: 'var(--role-body)' }}>
+          <div>
+            <span style={{ color: 'var(--text-tertiary)' }}>Your answer: </span>
+            <span style={{ fontFamily: 'var(--font-mono)', color: isCorrect ? 'var(--success)' : 'var(--error)' }}>{yourLetter || '—'}</span>
+          </div>
+          <div>
+            <span style={{ color: 'var(--text-tertiary)' }}>Correct: </span>
+            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--success)' }}>{correct.join(' or ') || '—'}</span>
+          </div>
         </div>
-      </div>
+      )}
 
       {q.rationaleHtml && (
         <button onClick={() => setOpen((o) => !o)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'transparent', border: 0, cursor: 'pointer', font: 'var(--role-label)', color: 'var(--brand-blue)', padding: '4px 0' }}>
