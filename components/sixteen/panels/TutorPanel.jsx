@@ -98,16 +98,18 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
     setPasteOpen(true);
     aiConnect(aiProvider)
       .then(async (res) => {
-        if (res && res.ok === false) {
-          const s = await aiStatus();
-          if (!s[providerKey] && res.error && res.error !== 'Connection was cancelled.') {
-            setConnectError(res.error);
-          }
+        const s = await aiStatus();
+        setConnected(s);
+        if (s[providerKey]) {
+          // Connected outright (desktop loopback) — no code to paste.
+          setPasteOpen(false);
+        } else if (res && res.ok === false && res.error && res.error !== 'Connection was cancelled.') {
+          setConnectError(res.error);
         }
-        await refreshStatus();
+        // Otherwise keep the paste field open for the callback link / code.
       })
       .catch((e) => setConnectError(e?.message || 'Connection failed.'))
-      .finally(() => { setAiConnecting(false); setPasteOpen(false); });
+      .finally(() => setAiConnecting(false));
   };
 
   const onSubmitCode = async () => {
@@ -122,6 +124,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
       setPasteOpen(false);
     } catch (e) {
       setConnectError(e?.message || 'That code did not work.');
+    } finally {
       setAiConnecting(false);
     }
   };

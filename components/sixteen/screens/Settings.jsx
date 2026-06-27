@@ -65,20 +65,18 @@ function Settings({ go, dark, setDark }) {
     setPasteOpen((s) => ({ ...s, [kind]: true }));
     aiConnect(kind)
       .then(async (res) => {
-        if (res && res.ok === false) {
-          const s = await aiStatus();
-          // Only surface real failures — not a cancel we triggered via paste.
-          if (!s[bridgeKey(kind)] && res.error && res.error !== 'Connection was cancelled.') {
-            setAiError((e) => ({ ...e, [kind]: res.error }));
-          }
+        const s = await aiStatus();
+        setConnected(s);
+        if (s[bridgeKey(kind)]) {
+          // Connected outright (desktop loopback) — no code to paste.
+          setPasteOpen((p) => ({ ...p, [kind]: false }));
+        } else if (res && res.ok === false && res.error && res.error !== 'Connection was cancelled.') {
+          setAiError((e) => ({ ...e, [kind]: res.error }));
         }
-        await refreshAi();
+        // Otherwise keep the paste field open for the callback link / code.
       })
       .catch((err) => setAiError((e) => ({ ...e, [kind]: err?.message || 'Could not connect.' })))
-      .finally(() => {
-        setBusy(null);
-        setPasteOpen((s) => ({ ...s, [kind]: false }));
-      });
+      .finally(() => setBusy(null));
   };
 
   const submitCode = async (kind) => {
@@ -91,9 +89,9 @@ function Settings({ go, dark, setDark }) {
       if (res && res.ok === false) throw new Error(res.error || 'That code did not work.');
       await refreshAi();
       setPasteOpen((s) => ({ ...s, [kind]: false }));
-      // aiConnect's promise resolves via cancel(); its finally clears busy.
     } catch (err) {
       setAiError((e) => ({ ...e, [kind]: err?.message || 'That code did not work.' }));
+    } finally {
       setBusy(null);
     }
   };
