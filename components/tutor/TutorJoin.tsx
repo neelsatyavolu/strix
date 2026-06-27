@@ -25,7 +25,9 @@ export default function TutorJoin({ token }: { token: string }) {
       body: JSON.stringify({ token }),
     }).then((r) => r.json()).catch(() => null);
     if (!res?.success) { setError(res?.error || "Could not join."); setPhase("error"); return; }
-    router.replace("/app");
+    // Land in Tutor view watching the student you just accepted.
+    const sid = res.data?.studentId;
+    router.replace(sid ? `/app?watch=${encodeURIComponent(sid)}` : "/app");
   }, [token, router]);
 
   React.useEffect(() => {

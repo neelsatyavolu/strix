@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,9 +47,29 @@ export async function GET() {
 
   const { data: members } = await supabase
     .from("tutor_memberships")
-    .select("tutor_id, status, created_at, profiles!tutor_memberships_tutor_id_fkey(full_name, email)")
+    .select("tutor_id, status, created_at")
     .eq("student_id", user.id)
     .eq("status", "active");
 
-  return NextResponse.json({ success: true, data: { link: links?.[0] ?? null, tutors: members ?? [] } });
+  // A student can't read their tutor's profile under RLS (only tutor→student is
+  // allowed), and student_id/tutor_id reference auth.users (no profile embed),
+  // so resolve tutor names with the admin client.
+  const ids = (members ?? []).map((m) => m.tutor_id);
+  let profilesById: Record<string, { full_name: string | null; email: string | null }> = {};
+  if (ids.length) {
+    const admin = createAdminClient();
+    const { data: profs } = await admin
+      .from("profiles")
+      .select("id, full_name, email")
+      .in("id", ids);
+    profilesById = Object.fromEntries((profs ?? []).map((p) => [p.id, { full_name: p.full_name, email: p.email }]));
+  }
+  const tutors = (members ?? []).map((m) => ({
+    tutor_id: m.tutor_id,
+    status: m.status,
+    created_at: m.created_at,
+    profiles: profilesById[m.tutor_id] ?? null,
+  }));
+
+  return NextResponse.json({ success: true, data: { link: links?.[0] ?? null, tutors } });
 }

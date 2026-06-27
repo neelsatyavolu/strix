@@ -5,18 +5,39 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // GET /api/tutor/students — students who have added the current user as their
-// tutor. Used to decide whether the "Tutor view" switch should be offered at all.
+// tutor. Used to decide whether the "Tutor view" switch should be offered.
+//
+// tutor_memberships.student_id references auth.users (not profiles), so we can't
+// embed the profile via a PostgREST relationship — fetch names in a second
+// query (allowed by the profiles_tutor_read RLS policy).
 export async function GET() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ success: false, error: "Not signed in" }, { status: 401 });
 
-  const { data: students, error } = await supabase
+  const { data: memberships, error } = await supabase
     .from("tutor_memberships")
-    .select("student_id, status, created_at, profiles!tutor_memberships_student_id_fkey(full_name, email)")
+    .select("student_id, status, created_at")
     .eq("tutor_id", user.id)
     .eq("status", "active");
   if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });
 
-  return NextResponse.json({ success: true, data: { students: students ?? [] } });
+  const ids = (memberships ?? []).map((m) => m.student_id);
+  let profilesById: Record<string, { full_name: string | null; email: string | null }> = {};
+  if (ids.length) {
+    const { data: profs } = await supabase
+      .from("profiles")
+      .select("id, full_name, email")
+      .in("id", ids);
+    profilesById = Object.fromEntries((profs ?? []).map((p) => [p.id, { full_name: p.full_name, email: p.email }]));
+  }
+
+  const students = (memberships ?? []).map((m) => ({
+    student_id: m.student_id,
+    status: m.status,
+    created_at: m.created_at,
+    profiles: profilesById[m.student_id] ?? null,
+  }));
+
+  return NextResponse.json({ success: true, data: { students } });
 }

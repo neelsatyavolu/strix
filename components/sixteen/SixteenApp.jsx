@@ -43,6 +43,12 @@ function App() {
   const [watchedStudentId, setWatchedStudentId] = React.useState(null);
   const canTutor = students.length > 0;
 
+  // A fresh accept-invite redirect (/app?watch=<id>) lands straight in Tutor view
+  // watching that student — read once on mount.
+  const initialWatch = React.useRef(
+    typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('watch') : null,
+  );
+
   // You can only enter "Tutor view" once a student has added you as their tutor —
   // otherwise the toggle would just let you watch yourself.
   React.useEffect(() => {
@@ -50,10 +56,20 @@ function App() {
       .then((r) => r.json())
       .then((j) => {
         if (!j?.success) return;
-        setStudents((j.data.students || []).map((s) => {
+        const list = (j.data.students || []).map((s) => {
           const p = Array.isArray(s.profiles) ? s.profiles[0] : s.profiles;
           return { id: s.student_id, name: p?.full_name || p?.email || 'Student' };
-        }));
+        });
+        setStudents(list);
+        const watch = initialWatch.current;
+        initialWatch.current = null;
+        if (watch && list.some((s) => s.id === watch)) {
+          setRole('tutor');
+          setTutorOn(true);
+          setWatchedStudentId(watch);
+          setView((v) => (v === 'onboarding' ? 'dashboard' : v));
+          if (typeof window !== 'undefined') window.history.replaceState({}, '', '/app');
+        }
       })
       .catch(() => {});
   }, []);
