@@ -27,6 +27,8 @@ export function Titlebar({
       borderBottom: '1px solid var(--border-1)',
       WebkitUserSelect: 'none',
       userSelect: 'none',
+      // Make the title bar a drag handle for the desktop window (no-op on web).
+      WebkitAppRegion: 'drag',
       ...styleProp,
     }}>
       {/* Reserve the leading slot: the desktop app fills it with native OS
@@ -43,7 +45,14 @@ export function Titlebar({
       }}>
         {title}
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4, justifyContent: 'flex-end' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 4,
+        justifyContent: 'flex-end',
+        // Keep the action buttons clickable inside the drag region.
+        WebkitAppRegion: 'no-drag',
+      }}>
         {trailing}
       </div>
     </div>

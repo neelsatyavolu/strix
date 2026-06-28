@@ -18,10 +18,13 @@ interface CatAgg {
   wCorrect: number;
 }
 
-// Per-answer weight decays with how long ago it was attempted. 0.94 puts ~80%
-// of the weight on the last ~25 answers (half-life ~11), so the figure tracks
-// the student's recent window closely while older attempts fade quickly.
-const RECENCY_DECAY = 0.94;
+// Recency weight decays per practice SESSION, not per answer. A whole section is
+// saved with one timestamp, so per-answer ordering within it is undefined —
+// ranking by session keeps the figure stable and meaningful. Every answer in the
+// newest session weighs 1, the next session 0.8, then 0.8², … (half-life ~3
+// sessions), so the last few sittings drive the number while count still matters
+// (a big section outweighs a 2-question drill even one tier older).
+const RECENCY_DECAY = 0.8;
 // Shrinkage pseudo-count for a category's recency-weighted accuracy. With little
 // recent practice the figure is pulled toward the category's all-time rate, so a
 // short cherry-picked drill (e.g. 10 easy algebra questions) can't alone flip a
@@ -75,7 +78,7 @@ export async function GET(req: NextRequest) {
   // down accuracy — only attempts where the student actually answered count.
   const { data: answers, error: aErr } = await supabase
     .from("answers")
-    .select("is_correct, value, created_at, session_questions!inner(section, domain), practice_sessions!inner(mode, config)")
+    .select("session_id, is_correct, value, created_at, session_questions!inner(section, domain), practice_sessions!inner(mode, config)")
     .eq("user_id", targetId)
     .not("value", "is", null)
     .order("created_at", { ascending: false })
@@ -92,9 +95,10 @@ export async function GET(req: NextRequest) {
     math: { done: 0, correct: 0 },
   };
 
-  // `answers` is ordered newest-first, so `rank` counts how many more-recent
-  // attempts precede each one — the basis for its recency weight.
-  let rank = 0;
+  // `answers` is ordered newest-first. Each distinct session gets a recency tier
+  // in that order (newest session = tier 0); every answer in a session shares its
+  // tier, so the weight is stable regardless of how tied-timestamp rows sort.
+  const sessionTier = new Map<string, number>();
   for (const row of answers ?? []) {
     if (!String((row as { value: unknown }).value ?? "").trim()) continue; // skipped
     const sq = (row as { session_questions: { section: Section; domain: string } | { section: Section; domain: string }[] }).session_questions;
@@ -103,8 +107,9 @@ export async function GET(req: NextRequest) {
     const psRaw = (row as { practice_sessions: { mode: string; config: Record<string, unknown> | null } | { mode: string; config: Record<string, unknown> | null }[] | null }).practice_sessions;
     const ps = Array.isArray(psRaw) ? psRaw[0] : psRaw;
     if (!matchesScope(ps?.mode ?? null, ps?.config ?? null)) continue;
-    const w = Math.pow(RECENCY_DECAY, rank);
-    rank += 1;
+    const sid = String((row as { session_id: string | null }).session_id ?? "");
+    if (!sessionTier.has(sid)) sessionTier.set(sid, sessionTier.size);
+    const w = Math.pow(RECENCY_DECAY, sessionTier.get(sid) ?? 0);
     const cats = meta.section === "math" ? mathCats : rwCats;
     const c = cats.get(meta.domain);
     sectionTotals[meta.section].done += 1;
