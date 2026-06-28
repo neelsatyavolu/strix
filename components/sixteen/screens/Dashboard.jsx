@@ -32,6 +32,7 @@ function sessionLabel(s) {
     const cat = code ? domainLabel(s.section, code) : null;
     return cat ? `${sec} · ${cat}` : `${sec} · drill`;
   }
+  if (s.mode === 'review') return `${sec} · Review`;
   if (s.mode === 'mock-m1') return `${sec} · Module 1`;
   return `${sec} · Full section`;
 }
@@ -48,6 +49,16 @@ function lastSessionLabel(ls, section) {
     if (label) return label;
   }
   return 'Drill';
+}
+
+// Label for the "pick up where you left off" banner — the section plus the topic
+// (drills) or "Review", mirroring how a session reads in the recent-sessions list.
+function resumableLabel(r) {
+  const sec = SECTION_LABEL[r.section] || r.section;
+  if (r.mode === 'review') return `${sec} · Review`;
+  const code = CATEGORY_TO_DOMAIN[r.category];
+  const cat = code ? domainLabel(r.section, code) : null;
+  return cat ? `${sec} · ${cat}` : `${sec} · Drill`;
 }
 
 // Format a section-estimate delta as a signed badge string ('+20' / '-10'),
@@ -127,6 +138,14 @@ function Dashboard({ go, studentId = null, readOnly = false, studentName = null 
     go(f.section === 'math' ? 'math-question' : 'rw-question', { kind: 'drill' });
   };
 
+  // A drill / review / assignment left unfinished can be picked back up. (Never in
+  // a tutor's read-only view — the snapshot belongs to the signed-in account.)
+  const resumable = readOnly ? null : session.resumable;
+  const resumeNow = () => {
+    const snap = session.resume();
+    if (snap) go(snap.section === 'math' ? 'math-question' : 'rw-question', { kind: 'drill' });
+  };
+
   return (
     <div style={{ padding: '28px 36px' }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 22 }}>
@@ -141,6 +160,24 @@ function Dashboard({ go, studentId = null, readOnly = false, studentName = null 
           </p>
         </div>
       </div>
+
+      {resumable && (
+        <Card padding="lg" style={{ marginBottom: 20, border: '1px solid var(--brand-blue)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+            <span style={{ width: 40, height: 40, borderRadius: '50%', display: 'grid', placeItems: 'center', background: 'var(--sunken)', flexShrink: 0 }}>
+              <Icon name="rotate-ccw" style={{ width: 18, height: 18, color: 'var(--brand-blue)' }} />
+            </span>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <div style={{ font: 'var(--role-title-sm)', color: 'var(--text-primary)' }}>Pick up where you left off</div>
+              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)' }}>
+                {resumableLabel(resumable)} · {resumable.answered}/{resumable.total} answered
+              </div>
+            </div>
+            <Button variant="ghost" onClick={() => session.discardResumable()}>Discard</Button>
+            <Button variant="primary" onClick={resumeNow} icon={<Icon name="play" style={{ width: 13, height: 13 }} />}>Resume</Button>
+          </div>
+        </Card>
+      )}
 
       {loading ? (
         <DashboardSkeleton />

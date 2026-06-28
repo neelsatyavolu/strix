@@ -31,9 +31,11 @@ export default function DesmosPanel({ onClose, readOnly = false, state = null, o
   const [failed, setFailed] = React.useState(false);
   const [sizeState, setSizeState] = React.useState(sizeProp || { w: 460, h: 360 });
   const [posState, setPosState] = React.useState(posProp || { x: 18, y: 78 });
-  // Read-only mirror follows externally supplied geometry directly; the student
-  // copy owns its own draggable/resizable position.
-  const pos = readOnly && posProp ? posProp : posState;
+  // The read-only tutor mirror follows the student's broadcast position until the
+  // tutor drags the panel; after that the tutor controls position locally so they
+  // can move it aside to see behind it while the student's work keeps streaming in.
+  const [tutorMoved, setTutorMoved] = React.useState(false);
+  const pos = readOnly && posProp && !tutorMoved ? posProp : posState;
   const size = readOnly && sizeProp ? sizeProp : sizeState;
 
   // Resize the embedded calculator when the mirrored size changes.
@@ -73,10 +75,12 @@ export default function DesmosPanel({ onClose, readOnly = false, state = null, o
   const reportGeometry = () => { if (onGeometry) onGeometry({ pos, size }); };
 
   const onHeaderDown = (e) => {
-    if (readOnly) return;
     if (e.target.closest('button')) return; // let the close button work
     e.preventDefault();
     const startX = e.clientX, startY = e.clientY, orig = pos;
+    // Tutor mirror: hand position control to the tutor from the current spot so
+    // dragging starts where the panel sits and stops following the broadcast.
+    if (readOnly) { setPosState(orig); setTutorMoved(true); }
     const move = (ev) => setPosState({ x: orig.x + (ev.clientX - startX), y: orig.y + (ev.clientY - startY) });
     const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); reportGeometry(); };
     window.addEventListener('mousemove', move);
@@ -103,7 +107,7 @@ export default function DesmosPanel({ onClose, readOnly = false, state = null, o
       zIndex: 25, display: 'flex', flexDirection: 'column', overflow: 'hidden',
       border: '1px solid var(--border-2)',
     }}>
-      <div onMouseDown={onHeaderDown} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 10px', background: '#2E7D32', color: '#fff', cursor: readOnly ? 'default' : 'move', userSelect: 'none' }}>
+      <div onMouseDown={onHeaderDown} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 10px', background: '#2E7D32', color: '#fff', cursor: 'move', userSelect: 'none' }}>
         <span style={{ font: 'var(--role-label)', fontWeight: 600 }}>Desmos Graphing Calculator{readOnly ? ' (view only)' : ''}</span>
         {!readOnly && (
           <button onClick={onClose} style={{ width: 18, height: 18, borderRadius: '50%', border: 0, background: 'rgba(255,255,255,0.18)', color: '#fff', cursor: 'pointer', display: 'grid', placeItems: 'center', fontSize: 12 }}>×</button>

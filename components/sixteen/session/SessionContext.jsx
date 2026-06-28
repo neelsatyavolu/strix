@@ -30,6 +30,22 @@ function usesDrillSemantics(mode) {
   return mode === 'drill' || mode === 'review';
 }
 
+// Resumable in-progress session. Only drill-semantics sessions (targeted drills,
+// tutor assignments and spaced-repetition review) are snapshotted to localStorage
+// so a student who leaves mid-set can pick up exactly where they left off. Full
+// modules / sections / exams are never resumable.
+const SNAPSHOT_KEY = 'strix-active-session';
+
+function loadSnapshot() {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(SNAPSHOT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
 function normalizeSpr(s) {
   return String(s ?? '').trim().replace(/\s+/g, '').toLowerCase();
 }
@@ -347,16 +363,84 @@ export function PracticeSessionProvider({ children }) {
   }, []);
   const reset = React.useCallback(() => { resetTiming(); setState(EMPTY); }, []);
 
-  // Leave a session early. General practice ('drill') saves the questions already
-  // answered (first-attempt stats) and discards the rest; full modules/sections/
+  // ---- resumable snapshot (drill / review / assignment sessions only) ----
+  // `resumable` is a lightweight summary of the saved snapshot for the dashboard
+  // banner; the full snapshot lives in localStorage and is read on resume.
+  const [resumable, setResumable] = React.useState(null);
+
+  const writeSnapshot = React.useCallback((s) => {
+    if (!usesDrillSemantics(s.mode) || s.status !== 'active') return;
+    const questions = s.modules?.[0]?.questions || [];
+    if (!questions.length) return;
+    const snap = {
+      mode: s.mode,
+      section: s.section,
+      config: s.config || null,
+      label: s.modules[0]?.label || null,
+      questions,
+      responses: s.responses,
+      pretestIds: s.pretestIds || [],
+      index: s.index,
+      startedAt: s.startedAt,
+    };
+    try { window.localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(snap)); } catch { /* quota / unavailable */ }
+    const answered = questions.filter((q) => hasAnswer(s.mode, s.responses[q.id])).length;
+    setResumable({ mode: s.mode, section: s.section, category: s.config?.category ?? null, label: snap.label, answered, total: questions.length });
+  }, []);
+
+  const clearSnapshot = React.useCallback(() => {
+    try { window.localStorage.removeItem(SNAPSHOT_KEY); } catch { /* unavailable */ }
+    setResumable(null);
+  }, []);
+
+  // Surface any snapshot left over from a previous visit (tab close / reload) so
+  // the dashboard can offer to resume it.
+  React.useEffect(() => {
+    const snap = loadSnapshot();
+    if (!snap?.questions?.length) return;
+    const answered = snap.questions.filter((q) => hasAnswer(snap.mode, snap.responses?.[q.id])).length;
+    setResumable({ mode: snap.mode, section: snap.section, category: snap.config?.category ?? null, label: snap.label, answered, total: snap.questions.length });
+  }, []);
+
+  // Keep the snapshot current while an eligible session is in progress, so it's
+  // saved even if the student closes the tab without using Exit.
+  React.useEffect(() => {
+    if (state.status === 'active' && usesDrillSemantics(state.mode)) writeSnapshot(stateRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.status, state.mode, state.responses, state.index]);
+
+  // Restore a saved session into active state. Returns the snapshot (so the caller
+  // can navigate to the right question screen) or null if none is resumable.
+  const resume = React.useCallback(() => {
+    const snap = loadSnapshot();
+    if (!snap?.questions?.length) { clearSnapshot(); return null; }
+    resetTiming();
+    setState({
+      ...EMPTY,
+      status: 'active',
+      phase: 'drill',
+      mode: snap.mode,
+      section: snap.section,
+      config: snap.config,
+      modules: [{ key: 'm1', label: snap.label || (snap.mode === 'review' ? 'Review' : 'Drill'), variant: null, questions: snap.questions }],
+      pretestIds: snap.pretestIds || [],
+      activeModuleIndex: 0,
+      index: Math.min(snap.index || 0, snap.questions.length - 1),
+      responses: snap.responses || {},
+      startedAt: snap.startedAt || Date.now(),
+    });
+    return snap;
+  }, [clearSnapshot]);
+
+  // Leave a session early. Drill / review / assignment sessions keep their saved
+  // snapshot so they can be resumed from the dashboard; full modules / sections /
   // exams save nothing at all. Then return home.
   const exitSession = React.useCallback((go) => {
     const s = stateRef.current;
-    if (usesDrillSemantics(s.mode)) persistSession(s, finalizeTimes());
+    if (usesDrillSemantics(s.mode)) writeSnapshot(s);
     reset();
     if (go) go('dashboard');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reset]);
+  }, [reset, writeSnapshot]);
 
   // End the active module. Full-section M1 -> route + load M2 immediately.
   // Otherwise the section is done: advance the exam, or finalize the report.
@@ -411,8 +495,10 @@ export function PracticeSessionProvider({ children }) {
     }
 
     persistSession(s, finalizeTimes());
+    if (usesDrillSemantics(s.mode)) clearSnapshot();
     setState((prev) => ({ ...prev, status: 'submitted', phase: 'done' }));
     go('score-report');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Full SAT: after the break, load Module 1 of the next section.
@@ -518,6 +604,9 @@ export function PracticeSessionProvider({ children }) {
     startExamNextSection,
     reset,
     exitSession,
+    resumable,
+    resume,
+    discardResumable: clearSnapshot,
     isResponseCorrect,
   };
 

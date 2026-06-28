@@ -316,30 +316,26 @@ function App() {
 
   const reviewDue = reviewQueue?.count ? reviewQueue.count : 0;
   const sidebarItems = [
-    { id:'home',     label:'Home',                  icon: I('home'),            group:'Practice' },
-    { id:'rw',       label:'Reading & Writing',     icon: I('book-open'),       group:'Practice' },
-    { id:'math',     label:'Math',                  icon: I('square-function'), group:'Practice' },
+    // Dashboard — overview + records
+    { id:'home',     label:'Home',        icon: I('home'),         group:'Dashboard' },
+    { id:'stats',    label:'Stats',       icon: I('bar-chart-3'),  group:'Dashboard' },
+    { id:'sessions', label:'Sessions',    icon: I('list'),         group:'Dashboard' },
+    { id:'assignments', label:'Assignments', icon: I('clipboard-list'), group:'Dashboard' },
+    // Practice — targeted drills + the study loop (Study Plan + Review render the
+    // watched student's data read-only when tutoring)
+    { id:'rw',       label:'Reading & Writing', icon: I('book-open'),       group:'Practice' },
+    { id:'math',     label:'Math',              icon: I('square-function'), group:'Practice' },
+    { id:'plan',     label:'Study Plan',        icon: I('target'),          group:'Practice' },
+    { id:'review',   label:'Review',            icon: I('rotate-ccw'),      group:'Practice', badge: reviewDue || undefined },
+    // Full Practice — timed, exam-shaped surfaces
+    { id:'practice-modules',  label:'Practice Modules',  icon: I('square'),         group:'Full Practice' },
+    { id:'practice-sections', label:'Practice Sections', icon: I('layers'),         group:'Full Practice' },
+    { id:'practice-tests',    label:'Practice Exams',     icon: I('graduation-cap'), group:'Full Practice' },
+    // You — people + config
+    { id:'tutor',    label:'Tutor',    icon: I('message-circle'), group:'You', dot: tutorUnread },
+    { id:'settings', label:'Settings', icon: I('settings'),       group:'You' },
   ];
-  const assignmentsItem = { id:'assignments', label:'Assignments', icon: I('clipboard-list'), group:'You' };
-  // A tutor gets the assignment tool first, then the student's own loop tools
-  // (Study Plan + Review) which render the watched student's data read-only. A
-  // student gets the loop tools then their assignments list.
-  if (isTutor) sidebarItems.push(assignmentsItem);
-  sidebarItems.push(
-    { id:'plan',   label:'Study Plan', icon: I('target'),     group:'You' },
-    { id:'review', label:'Review',     icon: I('rotate-ccw'), group:'You', badge: reviewDue || undefined },
-  );
-  if (!isTutor) sidebarItems.push(assignmentsItem);
-  sidebarItems.push(
-    { id:'stats',             label:'Stats',             icon: I('bar-chart-3'),     group:'You' },
-    { id:'practice-tests',    label:'Practice Tests',    icon: I('graduation-cap'),  group:'You' },
-    { id:'practice-modules',  label:'Practice Modules',  icon: I('square'),          group:'You' },
-    { id:'practice-sections', label:'Practice Sections', icon: I('layers'),          group:'You' },
-    { id:'sessions',          label:'Sessions',          icon: I('list'),            group:'You' },
-    { id:'tutor',             label:'Tutor',             icon: I('message-circle'),  group:'You', dot: tutorUnread },
-    { id:'settings',          label:'Settings',          icon: I('settings'),        group:'You' },
-  );
-  if (devEnabled) sidebarItems.push({ id:'dev', label:'Dev', icon: I('wrench'), group:'Dev' });
+  if (devEnabled) sidebarItems.push({ id:'dev', label:'Dev', icon: I('wrench'), group:'You' });
   // While watching a live student, pin a "Live Session" tab to the very top.
   if (isTutor && watchedIsLive) {
     sidebarItems.unshift({ id:'live-session', label:'Live Session', icon: I('radio'), group:'Live', live: true });
@@ -511,7 +507,7 @@ function App() {
   // Chat for the tutor pane: tutor↔watched-student when tutoring, else our own
   // tutor chat as the student.
   const chat = isTutor
-    ? { messages: tutorWatch.messages, onSend: tutorWatch.sendChat, peerName: watchedName, peerTyping: tutorWatch.peerTyping, onTyping: tutorWatch.notifyTyping, peerOnline: !!tutorWatch.onlineStudents[watchedStudentId] }
+    ? { messages: tutorWatch.messages, onSend: tutorWatch.sendChat, peerName: watchedName, peerTyping: tutorWatch.peerTyping, onTyping: tutorWatch.notifyTyping, peerOnline: !!tutorWatch.onlineStudents[watchedStudentId] || !!tutorWatch.liveStudents[watchedStudentId]?.active }
     : { messages: studentLive.messages, onSend: studentLive.sendChat, peerName: null, peerTyping: studentLive.peerTyping, onTyping: studentLive.notifyTyping, peerOnline: studentLive.peerOnline };
 
   return (
@@ -588,7 +584,7 @@ function titleFor(view, isTutor) {
     'exam-report': 'Strix — Full SAT',
     'stats': 'Strix — Stats',
     'sessions': 'Strix — Sessions',
-    'practice-tests': 'Strix — Practice Tests',
+    'practice-tests': 'Strix — Practice Exams',
     'practice-modules': 'Strix — Practice Modules',
     'practice-sections': 'Strix — Practice Sections',
     'category-detail': 'Strix — Stats',

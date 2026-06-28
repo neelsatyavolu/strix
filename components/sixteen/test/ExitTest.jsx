@@ -3,12 +3,13 @@ import React from 'react';
 import { Icon } from '@/components/sixteen';
 
 // ExitTest — header "Exit" control for the in-test surface. Targeted/general
-// practice ('drill') saves the questions answered so far; full modules, sections
-// and exams discard everything, so we warn before leaving.
+// practice ('drill') and spaced-repetition review keep their progress so the
+// session can be resumed later; full modules, sections and exams discard
+// everything, so we warn before leaving.
 export function ExitTest({ mode, onConfirm }) {
   const [open, setOpen] = React.useState(false);
   const [hover, setHover] = React.useState(false);
-  const isDrill = mode === 'drill';
+  const isDrill = mode === 'drill' || mode === 'review';
 
   return (
     <>
@@ -59,7 +60,7 @@ function ConfirmExit({ isDrill, onCancel, onConfirm }) {
           </h2>
           <p style={{ margin: '10px 0 0', font: 'var(--role-body)', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
             {isDrill ? (
-              <>The questions you&rsquo;ve answered will be saved to your stats. Unanswered questions are discarded.</>
+              <>Your progress is saved. You can pick this session back up from your dashboard.</>
             ) : (
               <><strong style={{ color: 'var(--error)' }}>None of this attempt will be saved</strong> — including questions you&rsquo;ve already answered. This can&rsquo;t be undone.</>
             )}
