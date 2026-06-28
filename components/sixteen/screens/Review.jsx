@@ -8,16 +8,17 @@ import { useReviewQueue } from '@/lib/data/hooks';
 // a schedule; getting one right twice retires it. Runs one section at a time
 // because the practice surface is section-specific.
 
-function Review({ go }) {
+function Review({ go, studentId = null, readOnly = false, studentName = null }) {
   const { Card, Button, Badge } = SixteenNS;
   const session = usePracticeSession();
-  const { queue, loading } = useReviewQueue();
+  const { queue, loading } = useReviewQueue(studentId);
 
   const count = queue?.count ?? 0;
   const bySection = queue?.bySection ?? { rw: 0, math: 0 };
   const byDomain = queue?.byDomain ?? [];
 
   const startReview = (section) => {
+    if (readOnly) return;
     session.start({ mode: 'review', section });
     go(section === 'math' ? 'math-question' : 'rw-question', { kind: 'drill' });
   };
@@ -29,7 +30,9 @@ function Review({ go }) {
         <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Review</h1>
       </div>
       <p style={{ margin: '4px 0 22px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-        Questions you&rsquo;ve missed, brought back at the right moment so they stick.
+        {studentName
+          ? `Questions ${studentName.split(' ')[0]} has missed, queued to resurface at the right moment.`
+          : 'Questions you’ve missed, brought back at the right moment so they stick.'}
       </p>
 
       {loading ? (
@@ -41,9 +44,11 @@ function Review({ go }) {
           <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)' }}>
             Nothing is due for review right now. Questions you miss in practice will appear here as they come due.
           </div>
-          <div style={{ marginTop: 16 }}>
-            <Button variant="primary" onClick={() => go('practice-setup')} icon={<Icon name="play" size={13} />}>Practice instead</Button>
-          </div>
+          {!readOnly && (
+            <div style={{ marginTop: 16 }}>
+              <Button variant="primary" onClick={() => go('practice-setup')} icon={<Icon name="play" size={13} />}>Practice instead</Button>
+            </div>
+          )}
         </Card>
       ) : (
         <>
@@ -57,7 +62,7 @@ function Review({ go }) {
                 <div key={sec} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: 'var(--sunken)', borderRadius: 'var(--radius-md)' }}>
                   <Badge variant={sec} dot>{sec === 'rw' ? 'R&W' : 'Math'}</Badge>
                   <span style={{ flex: 1, font: 'var(--role-body)', color: 'var(--text-primary)' }}>{bySection[sec]} due</span>
-                  <Button variant="primary" size="sm" disabled={!bySection[sec]} icon={<Icon name="play" size={12} />} onClick={() => startReview(sec)}>
+                  <Button variant="primary" size="sm" disabled={!bySection[sec] || readOnly} icon={<Icon name="play" size={12} />} onClick={() => startReview(sec)}>
                     Review
                   </Button>
                 </div>

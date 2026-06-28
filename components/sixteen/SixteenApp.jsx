@@ -45,7 +45,6 @@ function App() {
 
   const [view, setView] = React.useState(profile ? 'dashboard' : 'onboarding');
   const [viewProps, setViewProps] = React.useState({});
-  const { queue: reviewQueue } = useReviewQueue();
   const [theme, setThemeState] = React.useState(() => {
     try {
       const saved = typeof window !== 'undefined' ? window.localStorage.getItem('strix-theme') : null;
@@ -107,7 +106,12 @@ function App() {
         if (!j?.success) return;
         const list = (j.data.students || []).map((s) => {
           const p = Array.isArray(s.profiles) ? s.profiles[0] : s.profiles;
-          return { id: s.student_id, name: p?.full_name || p?.email || 'Student' };
+          return {
+            id: s.student_id,
+            name: p?.full_name || p?.email || 'Student',
+            targetScore: p?.target_score ?? null,
+            testDate: p?.test_date ?? null,
+          };
         });
         setStudents(list);
         const watch = initialWatch.current;
@@ -287,6 +291,9 @@ function App() {
 
   const isTutor = role === 'tutor';
   const watching = isTutor && !!watchedStudentId;
+  // Review due-count for the sidebar badge — the watched student's when tutoring,
+  // otherwise the signed-in student's own.
+  const { queue: reviewQueue } = useReviewQueue(watching ? watchedStudentId : null);
 
   // is the current view "inside a module"? (test surface) — never while tutoring,
   // so the sidebar/app chrome stays put when watching a student.
@@ -305,21 +312,21 @@ function App() {
     .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
   const devEnabled = !!email && devEmails.includes(email.toLowerCase());
 
-  const reviewDue = !isTutor && reviewQueue?.count ? reviewQueue.count : 0;
+  const reviewDue = reviewQueue?.count ? reviewQueue.count : 0;
   const sidebarItems = [
     { id:'home',     label:'Home',                  icon: I('home'),            group:'Practice' },
     { id:'rw',       label:'Reading & Writing',     icon: I('book-open'),       group:'Practice' },
     { id:'math',     label:'Math',                  icon: I('square-function'), group:'Practice' },
   ];
-  // Student-only loop tools; a tutor's sidebar swaps these for assignment tools.
-  if (!isTutor) {
-    sidebarItems.push(
-      { id:'plan',   label:'Study Plan', icon: I('target'),     group:'You' },
-      { id:'review', label:'Review',     icon: I('rotate-ccw'), group:'You', badge: reviewDue || undefined },
-    );
-  } else {
+  // A tutor gets the assignment tool plus the student's own loop tools (Study
+  // Plan + Review), which render the watched student's data read-only.
+  if (isTutor) {
     sidebarItems.push({ id:'assignments', label:'Assignments', icon: I('clipboard-list'), group:'You' });
   }
+  sidebarItems.push(
+    { id:'plan',   label:'Study Plan', icon: I('target'),     group:'You' },
+    { id:'review', label:'Review',     icon: I('rotate-ccw'), group:'You', badge: reviewDue || undefined },
+  );
   sidebarItems.push(
     { id:'stats',             label:'Stats',             icon: I('bar-chart-3'),     group:'You' },
     { id:'practice-tests',    label:'Practice Tests',    icon: I('graduation-cap'),  group:'You' },
@@ -441,7 +448,17 @@ function App() {
 
   // When watching an idle student, the normal screens render that student's
   // data, read-only (they can't start practice or change anything).
-  const watchProps = watching ? { studentId: watchedStudentId, readOnly: true, studentName: watchedName } : {};
+  const watchedStudent = students.find((s) => s.id === watchedStudentId) || null;
+  const watchProps = watching
+    ? {
+        studentId: watchedStudentId,
+        readOnly: true,
+        studentName: watchedName,
+        studentProfile: watchedStudent
+          ? { target_score: watchedStudent.targetScore, test_date: watchedStudent.testDate }
+          : null,
+      }
+    : {};
 
   let screen;
   switch (view) {
@@ -451,8 +468,8 @@ function App() {
     case 'rw-question':     screen = <QuestionRW key={sessionLive.activeModule?.key || 'rw'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'math-question':   screen = <QuestionMath key={sessionLive.activeModule?.key || 'math'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'score-report':    screen = <ScoreReport go={go} />; break;
-    case 'plan':            screen = <StudyPlan go={go} />; break;
-    case 'review':          screen = <Review go={go} />; break;
+    case 'plan':            screen = <StudyPlan go={go} {...watchProps} />; break;
+    case 'review':          screen = <Review go={go} {...watchProps} />; break;
     case 'tutor-assignments': screen = <TutorAssignments go={go} {...watchProps} />; break;
     case 'exam-break':      screen = <ExamBreak go={go} />; break;
     case 'exam-report':     screen = <ExamReport go={go} />; break;

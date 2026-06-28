@@ -22,15 +22,20 @@ function dueLabel(iso) {
 
 const TASK_ICON = { review: 'rotate-ccw', drill: 'target', diagnostic: 'graduation-cap' };
 
-function StudyPlan({ go }) {
+function StudyPlan({ go, studentId = null, readOnly = false, studentName = null, studentProfile = null }) {
   const { Card, Button, Badge } = SixteenNS;
-  const { profile } = useProfile();
+  const { profile: ownProfile } = useProfile();
+  // When a tutor is viewing, use the watched student's goal + scoped data.
+  const profile = studentId ? studentProfile : ownProfile;
   const session = usePracticeSession();
-  const { plan, loading } = usePlan(profile);
+  const { plan, loading } = usePlan(profile, studentId);
   const { assignments } = useAssignments();
-  const openAssignments = (assignments || []).filter((a) => a.status === 'assigned');
+  // The "assigned by your tutor" list is the signed-in student's own work; a
+  // tutor reviews assignments from the Assignments tab instead.
+  const openAssignments = studentId ? [] : (assignments || []).filter((a) => a.status === 'assigned');
 
   const startTask = (t) => {
+    if (readOnly) return;
     if (t.kind === 'review') { go('review'); return; }
     if (t.kind === 'diagnostic') {
       session.start({ section: t.section, mode: 'mock-full' });
@@ -42,6 +47,7 @@ function StudyPlan({ go }) {
   };
 
   const startAssignment = (a) => {
+    if (readOnly) return;
     session.start({
       section: a.section, mode: 'drill', category: a.domain || undefined,
       difficulty: a.difficulty || 'all', count: a.question_count || 10, timing: 'untimed', assignmentId: a.id,
@@ -51,9 +57,13 @@ function StudyPlan({ go }) {
 
   return (
     <div style={{ padding: '28px 36px', maxWidth: 880, margin: '0 auto' }}>
-      <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Your plan this week</h1>
+      <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>
+        {studentName ? `${studentName}’s plan this week` : 'Your plan this week'}
+      </h1>
       <p style={{ margin: '4px 0 22px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-        A focused path toward your goal, built from where you are right now.
+        {studentName
+          ? 'Where they stand and what to focus on next.'
+          : 'A focused path toward your goal, built from where you are right now.'}
       </p>
 
       {/* Goal + progress */}
@@ -132,7 +142,7 @@ function StudyPlan({ go }) {
                   </div>
                   <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>{t.reason}</div>
                 </div>
-                <Button variant={t.kind === 'review' ? 'secondary' : 'primary'} size="sm" icon={<Icon name="play" size={12} />} onClick={() => startTask(t)}>
+                <Button variant={t.kind === 'review' ? 'secondary' : 'primary'} size="sm" disabled={readOnly} icon={<Icon name="play" size={12} />} onClick={() => startTask(t)}>
                   {t.kind === 'review' ? 'Review' : 'Start'}
                 </Button>
               </div>
