@@ -3,7 +3,7 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
-import { useStats, useSessions } from '@/lib/data/hooks';
+import { useStats, useSessions, useReviewQueue, useAssignments } from '@/lib/data/hooks';
 import { CATEGORY_TO_DOMAIN, domainLabel } from '@/lib/cb/domains';
 
 // Dashboard — landing screen, backed by the user's real practice data.
@@ -101,6 +101,16 @@ function Dashboard({ go, studentId = null, readOnly = false, studentName = null 
   const session = usePracticeSession();
   const { stats, loading } = useStats(studentId);
   const { sessions } = useSessions(6, studentId);
+  const { queue: reviewQueue } = useReviewQueue(studentId);
+  const { assignments } = useAssignments();
+  const reviewDue = reviewQueue?.count ?? 0;
+  const assignedOpen = readOnly ? 0 : (assignments || []).filter((a) => a.status === 'assigned').length;
+  const planSummary = (() => {
+    const parts = [];
+    if (assignedOpen) parts.push(`${assignedOpen} assigned by your tutor`);
+    if (reviewDue) parts.push(`${reviewDue} due for review`);
+    return parts.length ? parts.join(' · ') : 'A focused set of practice, built from your goal and weak areas.';
+  })();
 
   const scores = stats?.scores || { rw: null, math: null, total: null };
   const totals = stats?.sectionTotals || { rw: { done: 0, correct: 0 }, math: { done: 0, correct: 0 } };
@@ -161,6 +171,28 @@ function Dashboard({ go, studentId = null, readOnly = false, studentName = null 
           )}
         </div>
       </Card>
+
+      {!readOnly && (
+        <Card padding="lg" style={{ marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+            <span style={{ width: 40, height: 40, borderRadius: '50%', display: 'grid', placeItems: 'center', background: 'var(--sunken)', flexShrink: 0 }}>
+              <Icon name="target" style={{ width: 18, height: 18, color: 'var(--brand-blue)' }} />
+            </span>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <div style={{ font: 'var(--role-title-sm)', color: 'var(--text-primary)' }}>Your plan this week</div>
+              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)' }}>{planSummary}</div>
+            </div>
+            {reviewDue > 0 && (
+              <Button variant="secondary" onClick={() => go('review')} icon={<Icon name="rotate-ccw" style={{ width: 13, height: 13 }} />}>
+                Review {reviewDue}
+              </Button>
+            )}
+            <Button variant="primary" onClick={() => go('plan')} iconRight={<Icon name="chevron-right" style={{ width: 14, height: 14 }} />}>
+              Open plan
+            </Button>
+          </div>
+        </Card>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 20 }}>
         {['rw', 'math'].map((sec) => {

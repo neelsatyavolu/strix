@@ -3,13 +3,15 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
+import { ExplainPanel } from '@/components/sixteen/stats/ExplainPanel';
 
 // ScoreReport — drill report or scaled section report, from the live session.
 
 function ScoreReport({ go }) {
   const session = usePracticeSession();
   if (session.status === 'submitted' && session.result) {
-    if (session.config?.mode === 'drill') return <DrillReport go={go} session={session} />;
+    const mode = session.config?.mode;
+    if (mode === 'drill' || mode === 'review') return <DrillReport go={go} session={session} />;
     return <SectionReport go={go} session={session} />;
   }
   return <NoResults go={go} />;
@@ -95,12 +97,13 @@ function SectionReport({ go, session }) {
 function DrillReport({ go, session }) {
   const { Card, Button, Badge } = SixteenNS;
   const r = session.result;
+  const isReview = session.config?.mode === 'review';
   const sectionColor = r.section === 'math' ? 'var(--math-color)' : 'var(--rw-color)';
 
   return (
     <div style={{ padding: '36px 48px', maxWidth: 860, margin: '0 auto' }}>
       <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>
-        Drill results · {r.section === 'math' ? 'Math' : 'Reading & Writing'}
+        {isReview ? 'Review results' : 'Drill results'} · {r.section === 'math' ? 'Math' : 'Reading & Writing'}
       </span>
       <h1 style={{ margin: '4px 0 0', font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>
         You answered {r.correct} of {r.total} correctly.
@@ -215,6 +218,8 @@ export function ReviewItem({ item, n }) {
       {open && q.rationaleHtml && (
         <div className="cb-stem" style={{ fontSize: 14, marginTop: 6, paddingTop: 10, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.rationaleHtml }} />
       )}
+
+      {!isCorrect && <ExplainPanel question={q} choice={yourLetter} />}
     </Card>
   );
 }

@@ -23,13 +23,18 @@ export async function GET() {
   if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });
 
   const ids = (memberships ?? []).map((m) => m.student_id);
-  let profilesById: Record<string, { full_name: string | null; email: string | null }> = {};
+  let profilesById: Record<string, { full_name: string | null; email: string | null; target_score: number | null; test_date: string | null }> = {};
   if (ids.length) {
     const { data: profs } = await supabase
       .from("profiles")
-      .select("id, full_name, email")
+      .select("id, full_name, email, target_score, test_date")
       .in("id", ids);
-    profilesById = Object.fromEntries((profs ?? []).map((p) => [p.id, { full_name: p.full_name, email: p.email }]));
+    profilesById = Object.fromEntries(
+      (profs ?? []).map((p) => [
+        p.id,
+        { full_name: p.full_name, email: p.email, target_score: p.target_score, test_date: p.test_date },
+      ]),
+    );
   }
 
   const students = (memberships ?? []).map((m) => ({

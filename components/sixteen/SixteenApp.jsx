@@ -8,6 +8,9 @@ import PracticeSetup from './screens/PracticeSetup';
 import QuestionRW from './screens/QuestionRW';
 import QuestionMath from './screens/QuestionMath';
 import ScoreReport from './screens/ScoreReport';
+import StudyPlan from './screens/StudyPlan';
+import Review from './screens/Review';
+import TutorAssignments from './screens/TutorAssignments';
 import ExamBreak from './screens/ExamBreak';
 import ExamReport from './screens/ExamReport';
 import Stats from './screens/Stats';
@@ -27,6 +30,7 @@ import LiveTestView from '@/components/tutor/LiveTestView';
 import SessionStats from './panels/SessionStats';
 import { useProfile } from './session/ProfileContext';
 import { usePracticeSession } from './session/SessionContext';
+import { useReviewQueue } from '@/lib/data/hooks';
 import { LiveBroadcastProvider } from './session/LiveBroadcastContext';
 import { useStudentLive } from '@/lib/tutor/useStudentLive';
 import { useTutorWatch } from '@/lib/tutor/useTutorWatch';
@@ -41,6 +45,7 @@ function App() {
 
   const [view, setView] = React.useState(profile ? 'dashboard' : 'onboarding');
   const [viewProps, setViewProps] = React.useState({});
+  const { queue: reviewQueue } = useReviewQueue();
   const [theme, setThemeState] = React.useState(() => {
     try {
       const saved = typeof window !== 'undefined' ? window.localStorage.getItem('strix-theme') : null;
@@ -258,6 +263,9 @@ function App() {
   const sidebarId = {
     'dashboard': 'home',
     'practice-setup': 'home',
+    'plan': 'plan',
+    'review': 'review',
+    'tutor-assignments': 'assignments',
     'rw-question': 'rw',
     'math-question': 'math',
     'score-report': 'home',
@@ -297,10 +305,22 @@ function App() {
     .split(',').map((s) => s.trim().toLowerCase()).filter(Boolean);
   const devEnabled = !!email && devEmails.includes(email.toLowerCase());
 
+  const reviewDue = !isTutor && reviewQueue?.count ? reviewQueue.count : 0;
   const sidebarItems = [
     { id:'home',     label:'Home',                  icon: I('home'),            group:'Practice' },
     { id:'rw',       label:'Reading & Writing',     icon: I('book-open'),       group:'Practice' },
     { id:'math',     label:'Math',                  icon: I('square-function'), group:'Practice' },
+  ];
+  // Student-only loop tools; a tutor's sidebar swaps these for assignment tools.
+  if (!isTutor) {
+    sidebarItems.push(
+      { id:'plan',   label:'Study Plan', icon: I('target'),     group:'You' },
+      { id:'review', label:'Review',     icon: I('rotate-ccw'), group:'You', badge: reviewDue || undefined },
+    );
+  } else {
+    sidebarItems.push({ id:'assignments', label:'Assignments', icon: I('clipboard-list'), group:'You' });
+  }
+  sidebarItems.push(
     { id:'stats',             label:'Stats',             icon: I('bar-chart-3'),     group:'You' },
     { id:'practice-tests',    label:'Practice Tests',    icon: I('graduation-cap'),  group:'You' },
     { id:'practice-modules',  label:'Practice Modules',  icon: I('square'),          group:'You' },
@@ -308,7 +328,7 @@ function App() {
     { id:'sessions',          label:'Sessions',          icon: I('list'),            group:'You' },
     { id:'tutor',             label:'Tutor',             icon: I('message-circle'),  group:'You', dot: tutorUnread },
     { id:'settings',          label:'Settings',          icon: I('settings'),        group:'You' },
-  ];
+  );
   if (devEnabled) sidebarItems.push({ id:'dev', label:'Dev', icon: I('wrench'), group:'Dev' });
   // While watching a live student, pin a "Live Session" tab to the very top.
   if (isTutor && watchedIsLive) {
@@ -322,6 +342,9 @@ function App() {
       onSelect={(id) => {
         if (id === 'live-session') go('live-session');
         else if (id === 'home')     go('dashboard');
+        else if (id === 'plan') go('plan');
+        else if (id === 'review') go('review');
+        else if (id === 'assignments') go('tutor-assignments');
         else if (id === 'rw')   go('practice-setup', { domain: 'rw' });
         else if (id === 'math') go('practice-setup', { domain: 'math' });
         else if (id === 'stats') go('stats');
@@ -428,6 +451,9 @@ function App() {
     case 'rw-question':     screen = <QuestionRW key={sessionLive.activeModule?.key || 'rw'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'math-question':   screen = <QuestionMath key={sessionLive.activeModule?.key || 'math'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'score-report':    screen = <ScoreReport go={go} />; break;
+    case 'plan':            screen = <StudyPlan go={go} />; break;
+    case 'review':          screen = <Review go={go} />; break;
+    case 'tutor-assignments': screen = <TutorAssignments go={go} {...watchProps} />; break;
     case 'exam-break':      screen = <ExamBreak go={go} />; break;
     case 'exam-report':     screen = <ExamReport go={go} />; break;
     case 'stats':           screen = <Stats go={go} {...watchProps} />; break;
@@ -529,6 +555,9 @@ function titleFor(view, isTutor) {
   return ({
     'onboarding': 'Strix',
     'dashboard': 'Strix',
+    'plan': 'Strix — Study Plan',
+    'review': 'Strix — Review',
+    'tutor-assignments': 'Strix — Assignments',
     'practice-setup': 'Strix — New session',
     'rw-question': 'Strix — Reading & Writing',
     'math-question': 'Strix — Math',

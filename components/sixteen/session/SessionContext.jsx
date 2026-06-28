@@ -23,6 +23,13 @@ function isFullSection(mode) {
   return mode === 'mock-full' || mode === 'mock-exam';
 }
 
+// General practice ('drill') and spaced-repetition review ('review') share the
+// same shape: a single set of questions with retry-until-correct MCQs where the
+// first attempt is what counts toward stats and review scheduling.
+function usesDrillSemantics(mode) {
+  return mode === 'drill' || mode === 'review';
+}
+
 function normalizeSpr(s) {
   return String(s ?? '').trim().replace(/\s+/g, '').toLowerCase();
 }
@@ -45,7 +52,7 @@ function drillResponseCorrect(question, response) {
 }
 
 function responseCorrect(mode, question, response) {
-  return mode === 'drill' ? drillResponseCorrect(question, response) : isResponseCorrect(question, response);
+  return usesDrillSemantics(mode) ? drillResponseCorrect(question, response) : isResponseCorrect(question, response);
 }
 
 async function requestQuestions(params) {
@@ -64,6 +71,17 @@ async function fetchQuestions({ section, category, difficulty, limit }) {
   return requestQuestions(params);
 }
 
+// Review: spaced-repetition items due now for one section, served from the
+// stored snapshots (no College Board round-trip).
+async function fetchReviewQuestions({ section }) {
+  const res = await fetch(`/api/review/queue?section=${section}`);
+  const json = await res.json();
+  if (!json.success || !json.data?.questions?.length) {
+    throw new Error(json.error || 'Nothing is due for review right now.');
+  }
+  return json.data.questions;
+}
+
 // Mock: a blueprinted full SAT module (domain-ordered, difficulty-ramped).
 async function fetchModule({ section, profile = 'mixed', exclude }) {
   const params = new URLSearchParams({ section, mode: 'module', profile });
@@ -77,7 +95,7 @@ function buildReview(questions, responses, pretestIds = [], mode = null) {
     const r = responses[q.id];
     // In drill mode, surface the FIRST answer (and its correctness) so the review
     // reflects what counted toward stats, not the eventually-correct retry.
-    const response = mode === 'drill' && r ? { ...r, value: r.firstValue ?? r.value ?? null } : (r || null);
+    const response = usesDrillSemantics(mode) && r ? { ...r, value: r.firstValue ?? r.value ?? null } : (r || null);
     return { question: q, response, isCorrect: responseCorrect(mode, q, r), isPretest: !!q.pretest || pretest.has(q.id) };
   });
   // Operational (scored) items only — unscored pretest items don't count.
@@ -104,7 +122,7 @@ function sectionSnapshot(state) {
 
 // Effective stored value for a question (drill records the first attempt).
 function storedValue(mode, response) {
-  return (mode === 'drill' ? (response?.firstValue ?? response?.value) : response?.value) ?? null;
+  return (usesDrillSemantics(mode) ? (response?.firstValue ?? response?.value) : response?.value) ?? null;
 }
 function hasAnswer(mode, response) {
   const v = storedValue(mode, response);
@@ -232,20 +250,27 @@ export function PracticeSessionProvider({ children }) {
     });
     try {
       const isDrill = mode === 'drill';
-      const questions = isDrill
-        ? await fetchQuestions({
-            section,
-            category: config.category,
-            difficulty: config.difficulty,
-            limit: config.count ?? 10,
-          })
-        : await fetchModule({ section, profile: 'mixed' });
+      const isReview = mode === 'review';
+      let questions;
+      if (isReview) {
+        questions = await fetchReviewQuestions({ section });
+      } else if (isDrill) {
+        questions = await fetchQuestions({
+          section,
+          category: config.category,
+          difficulty: config.difficulty,
+          limit: config.count ?? 10,
+        });
+      } else {
+        questions = await fetchModule({ section, profile: 'mixed' });
+      }
+      const moduleLabel = isDrill ? 'Drill' : isReview ? 'Review' : 'Module 1';
       setState((s) => ({
         ...s,
         status: 'active',
         phase: isFullSection(mode) ? 'm1' : 'drill',
-        modules: [{ key: 'm1', label: mode === 'drill' ? 'Drill' : 'Module 1', variant: null, questions }],
-        pretestIds: isDrill ? [] : modulePretestIds(questions),
+        modules: [{ key: 'm1', label: moduleLabel, variant: null, questions }],
+        pretestIds: usesDrillSemantics(mode) ? [] : modulePretestIds(questions),
         activeModuleIndex: 0,
         index: 0,
         responses: {},
@@ -327,7 +352,7 @@ export function PracticeSessionProvider({ children }) {
   // exams save nothing at all. Then return home.
   const exitSession = React.useCallback((go) => {
     const s = stateRef.current;
-    if (s.mode === 'drill') persistSession(s, finalizeTimes());
+    if (usesDrillSemantics(s.mode)) persistSession(s, finalizeTimes());
     reset();
     if (go) go('dashboard');
     // eslint-disable-next-line react-hooks/exhaustive-deps

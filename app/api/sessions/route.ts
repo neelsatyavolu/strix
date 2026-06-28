@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { resolveTargetUser } from "@/lib/tutor/scope";
+import { enrollReviews } from "@/lib/review/enroll";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,7 +23,7 @@ const QuestionResult = z.object({
 });
 
 const SaveSession = z.object({
-  mode: z.enum(["drill", "mock-m1", "mock-full"]),
+  mode: z.enum(["drill", "mock-m1", "mock-full", "review"]),
   section: z.enum(["rw", "math"]),
   config: z.record(z.string(), z.unknown()).default({}),
   score_correct: z.number().int(),
@@ -93,6 +94,34 @@ export async function POST(req: NextRequest) {
     }));
     const { error: aErr } = await supabase.from("answers").insert(answerRows);
     if (aErr) throw new Error(aErr.message);
+
+    // Spaced-repetition: enroll misses / advance reviewed questions. Best-effort —
+    // a scheduling hiccup must never lose the saved session.
+    try {
+      const { data: profile } = await supabase
+        .from("profiles").select("test_date").eq("id", user.id).single();
+      await enrollReviews(supabase, user.id, p.questions, profile?.test_date ?? null);
+    } catch { /* review scheduling is best-effort */ }
+
+    // If this drill fulfilled a tutor assignment, mark it complete with the score.
+    const assignmentId = typeof (p.config as { assignmentId?: unknown }).assignmentId === "string"
+      ? (p.config as { assignmentId: string }).assignmentId
+      : null;
+    if (assignmentId) {
+      try {
+        await supabase
+          .from("assignments")
+          .update({
+            status: "completed",
+            session_id: session.id,
+            score_correct: p.score_correct,
+            score_total: p.score_total,
+            completed_at: new Date().toISOString(),
+          })
+          .eq("id", assignmentId)
+          .eq("student_id", user.id);
+      } catch { /* assignment completion is best-effort */ }
+    }
 
     return NextResponse.json({ success: true, data: { id: session.id } });
   } catch (err) {
