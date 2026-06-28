@@ -95,13 +95,17 @@ export async function POST(req: NextRequest) {
     const { error: aErr } = await supabase.from("answers").insert(answerRows);
     if (aErr) throw new Error(aErr.message);
 
-    // Spaced-repetition: enroll misses / advance reviewed questions. Best-effort —
-    // a scheduling hiccup must never lose the saved session.
-    try {
-      const { data: profile } = await supabase
-        .from("profiles").select("test_date").eq("id", user.id).single();
-      await enrollReviews(supabase, user.id, p.questions, profile?.test_date ?? null);
-    } catch { /* review scheduling is best-effort */ }
+    // Spaced-repetition: enroll misses / advance reviewed questions. Drills are
+    // retry-until-correct in the moment, so they don't feed Review — only full
+    // modules/sections/exams (and review re-attempts) do. Best-effort: a
+    // scheduling hiccup must never lose the saved session.
+    if (p.mode !== "drill") {
+      try {
+        const { data: profile } = await supabase
+          .from("profiles").select("test_date").eq("id", user.id).single();
+        await enrollReviews(supabase, user.id, p.questions, profile?.test_date ?? null);
+      } catch { /* review scheduling is best-effort */ }
+    }
 
     // If this drill fulfilled a tutor assignment, mark it complete with the score.
     const assignmentId = typeof (p.config as { assignmentId?: unknown }).assignmentId === "string"
