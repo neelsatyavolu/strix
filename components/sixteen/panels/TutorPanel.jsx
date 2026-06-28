@@ -12,7 +12,7 @@ import { useTypingEmitter } from '@/lib/tutor/useTyping';
 // `messages`/`onSend`; the AI tutor (the user's OWN ChatGPT/Grok subscription
 // via the Electron bridge) is local. The AI toggle only appears in drills.
 
-function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, messages: liveMessages = [], onSend: onLiveSend, peerName, peerTyping = false, onTyping }) {
+function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, messages: liveMessages = [], onSend: onLiveSend, peerName, peerTyping = false, peerOnline = false, onTyping }) {
   const { MessageBubble, ThinkingBubble, TypingBubble, ChatComposer, IconButton, SegmentedControl, TutorPresence, Avatar } = SixteenNS;
   const isTutor = role === 'tutor';
   const aiAllowed = allowAI && !isTutor;
@@ -201,14 +201,16 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minHeight: 26, paddingBottom: isTutor ? 10 : 0 }}>
           {isTutor
             ? <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, minWidth: 0 }}>
-                <Avatar name={peerName || 'Student'} size="sm" presence="online" />
+                <Avatar name={peerName || 'Student'} size="sm" presence={peerOnline ? 'online' : 'offline'} />
                 <span style={{ font: 'var(--role-label)', fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{peerName || 'Student'}</span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: 'var(--role-caption)', color: 'var(--success)', marginLeft: 2 }}>
-                  <Icon name="eye" style={{ width: 12, height: 12 }} /> watching
-                </span>
+                {peerOnline
+                  ? <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, font: 'var(--role-caption)', color: 'var(--success)', marginLeft: 2 }}>
+                      <Icon name="eye" style={{ width: 12, height: 12 }} /> watching
+                    </span>
+                  : <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginLeft: 2 }}>offline</span>}
               </div>
             : (mode === 'human'
-              ? <TutorPresence name={tutorName} status="online" watching />
+              ? <TutorPresence name={tutorName} status={peerOnline ? 'online' : 'offline'} />
               : <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ width: 8, height: 8, borderRadius: '50%', background: connectedNow ? 'var(--brand-blue)' : 'var(--text-tertiary)' }} />
                   <span style={{ font: 'var(--role-label)', color: 'var(--text-primary)' }}>{aiName}</span>

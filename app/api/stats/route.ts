@@ -18,10 +18,10 @@ interface CatAgg {
   wCorrect: number;
 }
 
-// Per-answer weight decays with how long ago it was attempted. 0.97 gives a
-// half-life of ~23 answers — recent practice drives the recommendation while
-// older attempts still count a little.
-const RECENCY_DECAY = 0.97;
+// Per-answer weight decays with how long ago it was attempted. 0.94 puts ~80%
+// of the weight on the last ~25 answers (half-life ~11), so the figure tracks
+// the student's recent window closely while older attempts fade quickly.
+const RECENCY_DECAY = 0.94;
 // Shrinkage pseudo-count for a category's recency-weighted accuracy. With little
 // recent practice the figure is pulled toward the category's all-time rate, so a
 // short cherry-picked drill (e.g. 10 easy algebra questions) can't alone flip a

@@ -73,6 +73,7 @@ function CategoryDetail({ go, section = 'rw', domain, label, studentId = null })
 
   React.useEffect(() => {
     let on = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
     fetchPage(0)

@@ -31,12 +31,44 @@ let win;
 const appUrl =
   process.env.STRIX_URL || (app.isPackaged ? "https://strixprep.com" : "http://localhost:3000");
 
+// Persist the window's size/position across launches in a small JSON file under
+// userData. Restored bounds are clamped to the minimums below.
+const DEFAULT_BOUNDS = { width: 1280, height: 832 };
+const MIN_WIDTH = 980;
+const MIN_HEIGHT = 640;
+const stateFile = () => path.join(app.getPath("userData"), "window-state.json");
+
+function loadBounds() {
+  try {
+    const saved = JSON.parse(fs.readFileSync(stateFile(), "utf8"));
+    if (Number.isFinite(saved.width) && Number.isFinite(saved.height)) {
+      return {
+        ...saved,
+        width: Math.max(MIN_WIDTH, saved.width),
+        height: Math.max(MIN_HEIGHT, saved.height),
+      };
+    }
+  } catch { /* no saved state yet */ }
+  return DEFAULT_BOUNDS;
+}
+
+let saveTimer;
+function persistBounds() {
+  if (!win || win.isDestroyed()) return;
+  // Use normal (non-maximized) bounds so a maximized window doesn't fill the file.
+  const { x, y, width, height } = win.getNormalBounds();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try { fs.writeFileSync(stateFile(), JSON.stringify({ x, y, width, height })); }
+    catch (e) { console.error("window-state save failed", e); }
+  }, 300);
+}
+
 function createWindow() {
   win = new BrowserWindow({
-    width: 1280,
-    height: 832,
-    minWidth: 980,
-    minHeight: 640,
+    ...loadBounds(),
+    minWidth: MIN_WIDTH,
+    minHeight: MIN_HEIGHT,
     titleBarStyle: "hiddenInset",
     trafficLightPosition: { x: 13, y: 13 },
     backgroundColor: "#0e0e10",
@@ -48,6 +80,8 @@ function createWindow() {
     },
   });
   win.once("ready-to-show", () => win.show());
+  win.on("resize", persistBounds);
+  win.on("move", persistBounds);
   // The desktop app boots straight into the SPA; / is the marketing landing.
   win.loadURL(appUrl + "/app");
 

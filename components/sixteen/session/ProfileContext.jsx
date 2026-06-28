@@ -27,7 +27,10 @@ export function ProfileProvider({ children }) {
     }
   }, []);
 
-  React.useEffect(() => { refresh(); }, [refresh]);
+  React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    refresh();
+  }, [refresh]);
 
   const signOut = React.useCallback(async () => {
     await doSignOut();

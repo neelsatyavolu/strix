@@ -91,10 +91,12 @@ function DashboardSkeleton() {
   );
 }
 
-function Dashboard({ go, studentId = null, readOnly = false }) {
+function Dashboard({ go, studentId = null, readOnly = false, studentName = null }) {
   const { Card, Button, Badge, ScoreBadge, AccuracyRing, StatCard } = SixteenNS;
   const { displayName } = useProfile();
-  const firstName = (displayName || '').split(' ')[0] || 'there';
+  // When a tutor is watching a student, greet the student by name, not the tutor.
+  const greetName = studentName || displayName;
+  const firstName = (greetName || '').split(' ')[0] || 'there';
 
   const session = usePracticeSession();
   const { stats, loading } = useStats(studentId);
@@ -236,16 +238,17 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
                 {loading ? 'Loading…' : 'No sessions yet. Start a drill or a full section to see it here.'}
               </div>
             ) : sessions.map((s, i) => (
-              <div key={s.id} style={{
+              <button key={s.id} onClick={() => go('session-detail', { id: s.id })} style={{
                 display: 'grid', gridTemplateColumns: 'auto minmax(160px, 1fr) auto auto auto', alignItems: 'center',
                 gap: 14, padding: '12px 16px', borderTop: i === 0 ? 0 : '1px solid var(--border-1)',
+                background: 'transparent', border: 0, cursor: 'pointer', textAlign: 'left', width: '100%',
               }}>
                 <Badge variant={s.section} dot>{s.section === 'rw' ? 'R&W' : 'Math'}</Badge>
                 <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sessionLabel(s)}</span>
                 <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>{relTime(s.created_at)}</span>
                 <span style={{ font: 'var(--role-numeric)', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>{s.score_total} qs</span>
                 <span style={{ font: 'var(--role-numeric)', color: (s.accuracy ?? 0) >= 75 ? 'var(--success)' : 'var(--warning)', whiteSpace: 'nowrap' }}>{s.accuracy ?? 0}%</span>
-              </div>
+              </button>
             ))}
           </div>
         </Card>

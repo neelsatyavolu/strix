@@ -15,6 +15,7 @@ function TutorChat({ go }) {
   const [messages, setMessages] = React.useState([]);
   const [draft, setDraft] = React.useState('');
   const [tutorName, setTutorName] = React.useState('Your tutor');
+  const [tutorOnline, setTutorOnline] = React.useState(false);
   const [peerTyping, setPeerTyping] = usePeerTyping();
   const streamRef = React.useRef(null);
   const channelRef = React.useRef(null);
@@ -43,6 +44,9 @@ function TutorChat({ go }) {
       role: 'student',
       onChat: (m) => append({ id: m.id, side: m.sender_id === user.id ? 'mine' : 'theirs', text: m.body }),
       onTyping: (p) => { if (p?.role !== 'student') setPeerTyping(!!p?.typing); },
+      onPresence: (state) => setTutorOnline(
+        Object.values(state || {}).some((metas) => metas.some((e) => e.role === 'tutor')),
+      ),
     });
     channelRef.current = ch;
     return () => { ch.close(); channelRef.current = null; };
@@ -82,10 +86,10 @@ function TutorChat({ go }) {
         display: 'flex', alignItems:'center', justifyContent: 'space-between',
       }}>
         <div style={{display:'flex', alignItems:'center', gap: 12}}>
-          <Avatar name={tutorName} presence="online" />
+          <Avatar name={tutorName} presence={tutorOnline ? 'online' : 'offline'} />
           <div style={{display:'flex', flexDirection:'column'}}>
             <span style={{font:'var(--role-title-sm)'}}>{tutorName}</span>
-            <TutorPresence name="" status="online" watching={false} />
+            <TutorPresence name="" status={tutorOnline ? 'online' : 'offline'} watching={false} />
           </div>
         </div>
         <button onClick={() => go('tutor-invite')} style={{font:'var(--role-label)', background:'transparent', border:0, color:'var(--text-link)', cursor:'pointer'}}>Tutor settings →</button>

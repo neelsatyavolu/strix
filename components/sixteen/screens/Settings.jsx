@@ -271,7 +271,7 @@ function Settings({ go, theme, setTheme }) {
       <SectionHead label="AI tutor connections" />
       <Card padding="lg" style={{marginBottom: 18}}>
         <p style={{margin:'0 0 14px', font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
-          Connect a model to chat with an AI tutor during drills. AI tutors aren't available during full modules or scored sections.
+          Connect a model to chat with an AI tutor during drills. AI tutors aren&apos;t available during full modules or scored sections.
         </p>
         <ProviderRow
           kind="chatgpt"
@@ -328,7 +328,7 @@ function Settings({ go, theme, setTheme }) {
       <SectionHead label="Tutor mode" />
       <Card padding="lg">
         <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
-          Tutors can watch your practice and chat. They can't answer for you.
+          Tutors can watch your practice and chat. They can&apos;t answer for you.
         </span>
         {tutors.length === 0 ? (
           <p style={{margin:'10px 0 0', font:'var(--role-body)', color:'var(--text-tertiary)'}}>No tutors connected yet.</p>

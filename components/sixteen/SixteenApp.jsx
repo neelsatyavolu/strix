@@ -41,8 +41,19 @@ function App() {
 
   const [view, setView] = React.useState(profile ? 'dashboard' : 'onboarding');
   const [viewProps, setViewProps] = React.useState({});
-  const [theme, setThemeState] = React.useState('system');  // 'light' | 'dark' | 'system'
-  const [systemDark, setSystemDark] = React.useState(false);
+  const [theme, setThemeState] = React.useState(() => {
+    try {
+      const saved = typeof window !== 'undefined' ? window.localStorage.getItem('strix-theme') : null;
+      return saved === 'light' || saved === 'dark' || saved === 'system' ? saved : 'system';
+    } catch {
+      return 'system';
+    }
+  });  // 'light' | 'dark' | 'system'
+  const [systemDark, setSystemDark] = React.useState(() => (
+    typeof window !== 'undefined' && window.matchMedia
+      ? window.matchMedia('(prefers-color-scheme: dark)').matches
+      : false
+  ));
   const [tutorOn, setTutorOn] = React.useState(false);
   const [statsOn, setStatsOn] = React.useState(true);
   const [role, setRole] = React.useState('student');   // 'student' | 'tutor'
@@ -69,6 +80,19 @@ function App() {
     typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('watch') : null,
   );
 
+  // Restore the last student/tutor mode (and watched student) so reloading the
+  // app doesn't drop tutors back into the student view. Read once on mount;
+  // actually applied after the students list loads (a tutor must still have a
+  // student). `hydrated` gates the persist effect so the default 'student' state
+  // never clobbers a saved 'tutor' before the async restore runs.
+  const savedRole = React.useRef(
+    typeof window !== 'undefined' ? window.localStorage.getItem('strix-role') : null,
+  );
+  const savedWatch = React.useRef(
+    typeof window !== 'undefined' ? window.localStorage.getItem('strix-watch') : null,
+  );
+  const hydrated = React.useRef(false);
+
   // You can only enter "Tutor view" once a student has added you as their tutor —
   // otherwise the toggle would just let you watch yourself.
   React.useEffect(() => {
@@ -89,15 +113,38 @@ function App() {
           setWatchedStudentId(watch);
           setView((v) => (v === 'onboarding' ? 'dashboard' : v));
           if (typeof window !== 'undefined') window.history.replaceState({}, '', '/app');
+        } else if (savedRole.current === 'tutor' && list.length > 0) {
+          // Restore the persisted tutor mode (the URL redirect takes precedence).
+          setRole('tutor');
+          setTutorOn(true);
+          const sw = savedWatch.current;
+          setWatchedStudentId(
+            sw && list.some((s) => s.id === sw) ? sw : (list.length === 1 ? list[0].id : null),
+          );
+          setView((v) => (v === 'onboarding' ? 'dashboard' : v));
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => { hydrated.current = true; });
   }, []);
 
   // If tutor access goes away, fall back to the student view.
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!canTutor && role === 'tutor') { setRole('student'); setTutorOn(false); setWatchedStudentId(null); }
   }, [canTutor, role]);
+
+  // Persist the student/tutor mode (and watched student) across reloads. Gated on
+  // `hydrated` so the initial default 'student' render doesn't overwrite a saved
+  // 'tutor' before the students fetch restores it.
+  React.useEffect(() => {
+    if (!hydrated.current) return;
+    try {
+      window.localStorage.setItem('strix-role', role);
+      if (watchedStudentId) window.localStorage.setItem('strix-watch', watchedStudentId);
+      else window.localStorage.removeItem('strix-watch');
+    } catch { /* localStorage unavailable */ }
+  }, [role, watchedStudentId]);
 
   // Broadcast our own live practice state so a watching tutor stays in sync; and
   // (if we're a tutor) subscribe to our students' channels for the live banner.
@@ -185,14 +232,6 @@ function App() {
     if (view === 'onboarding') setView('dashboard');
   };
 
-  // Hydrate the saved theme choice on mount (client-only to avoid SSR mismatch).
-  React.useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem('strix-theme');
-      if (saved === 'light' || saved === 'dark' || saved === 'system') setThemeState(saved);
-    } catch { /* localStorage unavailable */ }
-  }, []);
-
   const setTheme = React.useCallback((next) => {
     setThemeState(next);
     try { window.localStorage.setItem('strix-theme', next); } catch { /* localStorage unavailable */ }
@@ -202,7 +241,6 @@ function App() {
   React.useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return;
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    setSystemDark(mq.matches);
     const onChange = (e) => setSystemDark(e.matches);
     mq.addEventListener('change', onChange);
     return () => mq.removeEventListener('change', onChange);
@@ -380,7 +418,7 @@ function App() {
 
   // When watching an idle student, the normal screens render that student's
   // data, read-only (they can't start practice or change anything).
-  const watchProps = watching ? { studentId: watchedStudentId, readOnly: true } : {};
+  const watchProps = watching ? { studentId: watchedStudentId, readOnly: true, studentName: watchedName } : {};
 
   let screen;
   switch (view) {
@@ -426,8 +464,8 @@ function App() {
   // Chat for the tutor pane: tutor↔watched-student when tutoring, else our own
   // tutor chat as the student.
   const chat = isTutor
-    ? { messages: tutorWatch.messages, onSend: tutorWatch.sendChat, peerName: watchedName, peerTyping: tutorWatch.peerTyping, onTyping: tutorWatch.notifyTyping }
-    : { messages: studentLive.messages, onSend: studentLive.sendChat, peerName: null, peerTyping: studentLive.peerTyping, onTyping: studentLive.notifyTyping };
+    ? { messages: tutorWatch.messages, onSend: tutorWatch.sendChat, peerName: watchedName, peerTyping: tutorWatch.peerTyping, onTyping: tutorWatch.notifyTyping, peerOnline: !!tutorWatch.onlineStudents[watchedStudentId] }
+    : { messages: studentLive.messages, onSend: studentLive.sendChat, peerName: null, peerTyping: studentLive.peerTyping, onTyping: studentLive.notifyTyping, peerOnline: studentLive.peerOnline };
 
   return (
     <>
@@ -452,6 +490,7 @@ function App() {
             onSend={chat.onSend}
             peerName={chat.peerName}
             peerTyping={chat.peerTyping}
+            peerOnline={chat.peerOnline}
             onTyping={chat.onTyping}
           />
         ) : null}
