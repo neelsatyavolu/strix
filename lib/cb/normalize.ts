@@ -47,12 +47,23 @@ const SANITIZE_OPTS: sanitizeHtml.IOptions = {
   parser: { lowerCaseTags: false, lowerCaseAttributeNames: false },
 };
 
+// CB pretty-prints its MathML with newlines/tabs between tags (e.g.
+// "<mi>x</mi>\n</math>", "<mrow>\n\t<mi>x</mi>..."). HTML collapses such
+// inter-tag whitespace, but MathML Core renders it as visible blank space —
+// producing the stray gaps after inline numbers/variables ("55   miles").
+// Collapse whitespace that sits *between* tags inside each <math> block only;
+// ">\s+<" never matches inside token text (e.g. <mtext> miles per hour </mtext>),
+// so meaningful spacing is preserved.
+function collapseMathWhitespace(html: string): string {
+  return html.replace(/<math\b[\s\S]*?<\/math>/g, (m) => m.replace(/>\s+</g, "><"));
+}
+
 // Sanitize CB-supplied HTML — allow MathML/SVG/basic formatting, strip the rest.
 // <mfenced> survives sanitization but isn't rendered by MathML Core (current
 // Chrome/Safari), so expand it to <mrow>+<mo> form to keep fences visible.
 export function clean(html: unknown): string {
   if (typeof html !== "string" || !html) return "";
-  return expandMfenced(sanitizeHtml(html, SANITIZE_OPTS));
+  return collapseMathWhitespace(expandMfenced(sanitizeHtml(html, SANITIZE_OPTS)));
 }
 
 interface RawDetail {
