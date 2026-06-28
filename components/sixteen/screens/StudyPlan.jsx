@@ -56,7 +56,7 @@ function StudyPlan({ go, studentId = null, readOnly = false, studentName = null,
   };
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 880, margin: '0 auto' }}>
+    <div style={{ padding: '28px 36px' }}>
       <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>
         {studentName ? `${studentName}’s plan this week` : 'Your plan this week'}
       </h1>

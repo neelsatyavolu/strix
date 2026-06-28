@@ -13,7 +13,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from("assignments")
     .select(
-      "id, tutor_id, title, section, domain, difficulty, question_count, due_at, status, session_id, score_correct, score_total, created_at, completed_at",
+      "id, tutor_id, title, section, domain, difficulty, question_count, due_at, status, session_id, score_correct, score_total, feedback, created_at, completed_at",
     )
     .eq("student_id", user.id)
     .order("status", { ascending: true }) // 'assigned' before 'completed'

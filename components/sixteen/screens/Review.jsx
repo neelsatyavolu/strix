@@ -24,7 +24,7 @@ function Review({ go, studentId = null, readOnly = false, studentName = null }) 
   };
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 760, margin: '0 auto' }}>
+    <div style={{ padding: '28px 36px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
         <Icon name="rotate-ccw" size={22} style={{ color: 'var(--brand-blue)' }} />
         <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Review</h1>

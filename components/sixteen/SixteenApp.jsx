@@ -11,6 +11,7 @@ import ScoreReport from './screens/ScoreReport';
 import StudyPlan from './screens/StudyPlan';
 import Review from './screens/Review';
 import TutorAssignments from './screens/TutorAssignments';
+import StudentAssignments from './screens/StudentAssignments';
 import ExamBreak from './screens/ExamBreak';
 import ExamReport from './screens/ExamReport';
 import Stats from './screens/Stats';
@@ -270,6 +271,7 @@ function App() {
     'plan': 'plan',
     'review': 'review',
     'tutor-assignments': 'assignments',
+    'student-assignments': 'assignments',
     'rw-question': 'rw',
     'math-question': 'math',
     'score-report': 'home',
@@ -318,15 +320,16 @@ function App() {
     { id:'rw',       label:'Reading & Writing',     icon: I('book-open'),       group:'Practice' },
     { id:'math',     label:'Math',                  icon: I('square-function'), group:'Practice' },
   ];
-  // A tutor gets the assignment tool plus the student's own loop tools (Study
-  // Plan + Review), which render the watched student's data read-only.
-  if (isTutor) {
-    sidebarItems.push({ id:'assignments', label:'Assignments', icon: I('clipboard-list'), group:'You' });
-  }
+  const assignmentsItem = { id:'assignments', label:'Assignments', icon: I('clipboard-list'), group:'You' };
+  // A tutor gets the assignment tool first, then the student's own loop tools
+  // (Study Plan + Review) which render the watched student's data read-only. A
+  // student gets the loop tools then their assignments list.
+  if (isTutor) sidebarItems.push(assignmentsItem);
   sidebarItems.push(
     { id:'plan',   label:'Study Plan', icon: I('target'),     group:'You' },
     { id:'review', label:'Review',     icon: I('rotate-ccw'), group:'You', badge: reviewDue || undefined },
   );
+  if (!isTutor) sidebarItems.push(assignmentsItem);
   sidebarItems.push(
     { id:'stats',             label:'Stats',             icon: I('bar-chart-3'),     group:'You' },
     { id:'practice-tests',    label:'Practice Tests',    icon: I('graduation-cap'),  group:'You' },
@@ -351,7 +354,7 @@ function App() {
         else if (id === 'home')     go('dashboard');
         else if (id === 'plan') go('plan');
         else if (id === 'review') go('review');
-        else if (id === 'assignments') go('tutor-assignments');
+        else if (id === 'assignments') go(isTutor ? 'tutor-assignments' : 'student-assignments');
         else if (id === 'rw')   go('practice-setup', { domain: 'rw' });
         else if (id === 'math') go('practice-setup', { domain: 'math' });
         else if (id === 'stats') go('stats');
@@ -471,6 +474,7 @@ function App() {
     case 'plan':            screen = <StudyPlan go={go} {...watchProps} />; break;
     case 'review':          screen = <Review go={go} {...watchProps} />; break;
     case 'tutor-assignments': screen = <TutorAssignments go={go} {...watchProps} />; break;
+    case 'student-assignments': screen = <StudentAssignments go={go} />; break;
     case 'exam-break':      screen = <ExamBreak go={go} />; break;
     case 'exam-report':     screen = <ExamReport go={go} />; break;
     case 'stats':           screen = <Stats go={go} {...watchProps} />; break;
@@ -575,6 +579,7 @@ function titleFor(view, isTutor) {
     'plan': 'Strix — Study Plan',
     'review': 'Strix — Review',
     'tutor-assignments': 'Strix — Assignments',
+    'student-assignments': 'Strix — Assignments',
     'practice-setup': 'Strix — New session',
     'rw-question': 'Strix — Reading & Writing',
     'math-question': 'Strix — Math',

@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const ASSIGNMENT_COLS =
-  "id, student_id, title, section, domain, skill, difficulty, question_count, due_at, status, session_id, score_correct, score_total, created_at, completed_at";
+  "id, student_id, title, section, domain, skill, difficulty, question_count, due_at, status, session_id, score_correct, score_total, feedback, created_at, completed_at";
 
 // GET /api/tutor/assignments[?studentId=] — assignments this tutor has created.
 export async function GET(req: NextRequest) {
@@ -70,4 +70,31 @@ export async function POST(req: NextRequest) {
     .single();
   if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   return NextResponse.json({ success: true, data: { id: data.id } });
+}
+
+const EditAssignment = z.object({
+  id: z.uuid(),
+  feedback: z.string().max(2000).nullable().optional(),
+});
+
+// PATCH /api/tutor/assignments — leave/update tutor feedback on an assignment.
+export async function PATCH(req: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ success: false, error: "Not signed in" }, { status: 401 });
+
+  const parsed = EditAssignment.safeParse(await req.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json({ success: false, error: parsed.error.issues[0]?.message ?? "Invalid body" }, { status: 400 });
+  }
+  const { id, feedback } = parsed.data;
+
+  // RLS limits the update to assignments this tutor owns for an active student.
+  const { error } = await supabase
+    .from("assignments")
+    .update({ feedback: feedback ?? null })
+    .eq("id", id)
+    .eq("tutor_id", user.id);
+  if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  return NextResponse.json({ success: true, data: { id } });
 }

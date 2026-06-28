@@ -74,7 +74,7 @@ function TutorAssignments({ go, studentId = null, studentName = null }) {
   };
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 820, margin: '0 auto' }}>
+    <div style={{ padding: '28px 36px' }}>
       <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Assignments</h1>
       <p style={{ margin: '4px 0 22px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
         Assign focused practice to {studentName || 'your student'} and see exactly how they did.
@@ -146,6 +146,7 @@ function TutorAssignments({ go, studentId = null, studentName = null }) {
                 </div>
                 <Badge variant="neutral" size="sm">Waiting</Badge>
               </div>
+              <FeedbackEditor assignment={a} onSaved={reload} />
             </Card>
           ))}
         </div>
@@ -176,11 +177,74 @@ function TutorAssignments({ go, studentId = null, studentName = null }) {
                     <Button variant="outline" size="sm" onClick={() => go('session-detail', { id: a.session_id })}>Open review</Button>
                   )}
                 </div>
+                <FeedbackEditor assignment={a} onSaved={reload} />
               </Card>
             );
           })}
         </div>
       )}
+    </div>
+  );
+}
+
+const linkBtn = {
+  display: 'inline-flex', alignItems: 'center', gap: 4, background: 'transparent',
+  border: 0, cursor: 'pointer', font: 'var(--role-label)', color: 'var(--brand-blue)', padding: 0,
+};
+
+// Inline tutor-feedback editor on a single assignment (read view + edit form).
+function FeedbackEditor({ assignment, onSaved }) {
+  const { Button } = SixteenNS;
+  const [editing, setEditing] = React.useState(false);
+  const [text, setText] = React.useState(assignment.feedback || '');
+  const [busy, setBusy] = React.useState(false);
+
+  const save = async () => {
+    setBusy(true);
+    try {
+      const res = await fetch('/api/tutor/assignments', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: assignment.id, feedback: text.trim() || null }),
+      });
+      const json = await res.json();
+      if (json?.success) { setEditing(false); onSaved?.(); }
+    } catch { /* leave the editor open so the tutor can retry */ } finally {
+      setBusy(false);
+    }
+  };
+
+  if (!editing) {
+    return (
+      <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border-1)' }}>
+        {assignment.feedback ? (
+          <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+            <Icon name="message-circle" size={14} style={{ color: 'var(--brand-blue)', marginTop: 2, flexShrink: 0 }} />
+            <div style={{ flex: 1, font: 'var(--role-body)', color: 'var(--text-body)', whiteSpace: 'pre-wrap' }}>{assignment.feedback}</div>
+            <button onClick={() => setEditing(true)} style={linkBtn}>Edit</button>
+          </div>
+        ) : (
+          <button onClick={() => setEditing(true)} style={linkBtn}>
+            <Icon name="message-circle" size={13} /> Add feedback
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border-1)' }}>
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        rows={3}
+        placeholder="Leave feedback for your student…"
+        style={{ width: '100%', font: 'var(--role-body)', color: 'var(--text-primary)', background: 'var(--sunken)', border: '1px solid var(--border-2)', borderRadius: 'var(--radius-md)', padding: '8px 10px', resize: 'vertical' }}
+      />
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 8 }}>
+        <Button variant="ghost" size="sm" onClick={() => { setText(assignment.feedback || ''); setEditing(false); }}>Cancel</Button>
+        <Button variant="primary" size="sm" loading={busy} disabled={busy} onClick={save}>Save feedback</Button>
+      </div>
     </div>
   );
 }
