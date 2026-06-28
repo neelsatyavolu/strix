@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { scaledSectionScore, routeModule2 } from '@/lib/scoring/curve';
-import { moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
+import { modulePretestIds, moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
 
 // Client-side practice session. Shapes:
 //  - drill / mock-m1: a single fixed set of real CB questions, scored on submit.
@@ -48,17 +48,6 @@ function responseCorrect(mode, question, response) {
   return mode === 'drill' ? drillResponseCorrect(question, response) : isResponseCorrect(question, response);
 }
 
-// Mark ~2 questions per module as unscored "pretest" items, like the real test.
-function pickPretest(questions, n = 2) {
-  if (!questions || questions.length <= n) return [];
-  const pool = questions.map((q) => q.id);
-  const chosen = [];
-  for (let i = 0; i < n && pool.length; i++) {
-    chosen.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
-  }
-  return chosen;
-}
-
 async function requestQuestions(params) {
   const res = await fetch(`/api/questions?${params.toString()}`);
   const json = await res.json();
@@ -89,7 +78,7 @@ function buildReview(questions, responses, pretestIds = [], mode = null) {
     // In drill mode, surface the FIRST answer (and its correctness) so the review
     // reflects what counted toward stats, not the eventually-correct retry.
     const response = mode === 'drill' && r ? { ...r, value: r.firstValue ?? r.value ?? null } : (r || null);
-    return { question: q, response, isCorrect: responseCorrect(mode, q, r), isPretest: pretest.has(q.id) };
+    return { question: q, response, isCorrect: responseCorrect(mode, q, r), isPretest: !!q.pretest || pretest.has(q.id) };
   });
   // Operational (scored) items only — unscored pretest items don't count.
   const scored = review.filter((x) => !x.isPretest);
@@ -152,7 +141,7 @@ async function persistSession(state, times = {}) {
         difficulty: q.difficulty,
         ordinal: i,
         module: moduleKey,
-        snapshot: { ...q, pretest: pretest.has(q.id) },
+        snapshot: { ...q, pretest: !!q.pretest || pretest.has(q.id) },
         value: storedValue(state.mode, r),
         is_correct: responseCorrect(state.mode, q, r),
         time_ms: times[q.id] != null ? Math.round(times[q.id]) : null,
@@ -256,7 +245,7 @@ export function PracticeSessionProvider({ children }) {
         status: 'active',
         phase: isFullSection(mode) ? 'm1' : 'drill',
         modules: [{ key: 'm1', label: mode === 'drill' ? 'Drill' : 'Module 1', variant: null, questions }],
-        pretestIds: isDrill ? [] : pickPretest(questions),
+        pretestIds: isDrill ? [] : modulePretestIds(questions),
         activeModuleIndex: 0,
         index: 0,
         responses: {},
@@ -369,7 +358,7 @@ export function PracticeSessionProvider({ children }) {
           status: 'active',
           phase: 'm2',
           modules: [...prev.modules.slice(0, 1), { key: 'm2', label: variant === 'hard' ? 'Module 2B' : 'Module 2A', variant, questions }],
-          pretestIds: [...prev.pretestIds, ...pickPretest(questions)],
+          pretestIds: [...prev.pretestIds, ...modulePretestIds(questions)],
           activeModuleIndex: 1,
           index: 0,
         }));
@@ -415,7 +404,7 @@ export function PracticeSessionProvider({ children }) {
         phase: 'm1',
         section,
         modules: [{ key: 'm1', label: 'Module 1', variant: null, questions }],
-        pretestIds: pickPretest(questions),
+        pretestIds: modulePretestIds(questions),
         activeModuleIndex: 0,
         index: 0,
         responses: {},

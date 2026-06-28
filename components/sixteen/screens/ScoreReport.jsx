@@ -38,11 +38,11 @@ function SectionReport({ go, session }) {
   return (
     <div style={{ padding: '36px 48px', maxWidth: 920, margin: '0 auto' }}>
       <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>
-        Section score · {sectionLabel}
+        Section estimate · {sectionLabel}
       </span>
       <h1 style={{ margin: '4px 0 0', font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>You finished the section.</h1>
       <p style={{ margin: '4px 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-        Estimated on a representative curve{routedLabel ? `. You were routed to ${routedLabel}.` : '.'} Real scores use College Board&rsquo;s per-form equating.
+        Practice estimate from a representative curve{routedLabel ? `. This app routed you to ${routedLabel}.` : '.'} Real SAT scores use College Board&rsquo;s private item-level scoring.
       </p>
 
       <Card padding="xl" style={{ marginBottom: 18 }}>
@@ -52,7 +52,7 @@ function SectionReport({ go, session }) {
               {r.scaled}
             </div>
             <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
-              {sectionLabel} · /800
+              Estimated {sectionLabel} · /800
             </div>
           </div>
           <div style={{ flex: 1, minWidth: 240 }}>

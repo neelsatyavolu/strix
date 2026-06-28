@@ -29,11 +29,11 @@ function ExamReport({ go }) {
   return (
     <div style={{ padding: '36px 48px', maxWidth: 920, margin: '0 auto' }}>
       <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>
-        Full SAT · Composite
+        Full SAT · Estimate
       </span>
       <h1 style={{ margin: '4px 0 0', font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>You finished the full test.</h1>
       <p style={{ margin: '4px 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-        Estimated on a representative curve. Real scores use College Board&rsquo;s per-form equating.
+        Practice estimate from a representative curve. Real SAT scores use College Board&rsquo;s private item-level scoring.
       </p>
 
       <Card padding="xl" style={{ marginBottom: 18 }}>
@@ -41,7 +41,7 @@ function ExamReport({ go }) {
           <div style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', fontSize: 72, fontWeight: 600, color: 'var(--ink-1)', lineHeight: 1 }}>
             {total}
           </div>
-          <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>/ 1600</div>
+        <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>Estimated / 1600</div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 18 }}>
           {[rw, math].filter(Boolean).map((s) => (

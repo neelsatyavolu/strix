@@ -50,14 +50,14 @@ function lastSessionLabel(ls, section) {
   return 'Drill';
 }
 
-// Format a section-score delta as a signed badge string ('+20' / '-10'),
-// suppressing it when there's no movement or no prior score to compare.
+// Format a section-estimate delta as a signed badge string ('+20' / '-10'),
+// suppressing it when there's no movement or no prior estimate to compare.
 function trendBadge(score, delta) {
   if (score == null || !delta) return undefined;
   return delta > 0 ? `+${delta}` : String(delta);
 }
 
-// Placeholder shown on first load so the score/section cards never flash
+  // Placeholder shown on first load so the estimate/section cards never flash
 // zero-valued data before the real stats arrive.
 function DashboardSkeleton() {
   const { Card } = SixteenNS;
@@ -147,7 +147,7 @@ function Dashboard({ go, studentId = null, readOnly = false }) {
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ font: 'var(--role-title-md)', color: 'var(--text-primary)' }}>No estimated score yet</div>
               <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginTop: 2 }}>
-                Finish a full scored section to get a 1600-scale estimate.
+                Finish a full section to get a 1600-scale estimate.
               </div>
             </div>
           )}

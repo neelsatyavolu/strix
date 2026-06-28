@@ -39,6 +39,8 @@ export interface Question {
   correctIds: string[];
   /** Sanitized rationale/explanation HTML. */
   rationaleHtml: string;
+  /** Unscored field-test item, indistinguishable during the module UI. */
+  pretest?: boolean;
 }
 
 /** A lightweight stub from the list endpoint. */

@@ -79,15 +79,15 @@ function OverallTab({ stats, sessions }) {
         <Card padding="md"><StatCard label="Total questions" value={totalDone} /></Card>
         <Card padding="md"><StatCard label="Accuracy" value={totalDone ? overallAcc : '—'} unit={totalDone ? '%' : undefined} /></Card>
         <Card padding="md"><StatCard label="Sessions" value={stats.sessionCount ?? 0} /></Card>
-        <Card padding="md"><StatCard label="Sections scored" value={overTime.length} /></Card>
+        <Card padding="md"><StatCard label="Section estimates" value={overTime.length} /></Card>
       </div>
 
       <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, marginBottom: 16}}>
         <Card padding="lg" style={{display:'flex', flexDirection:'column'}}>
-          <h2 style={{margin:'0 0 12px', font:'var(--role-title-sm)'}}>Score over time</h2>
+          <h2 style={{margin:'0 0 12px', font:'var(--role-title-sm)'}}>Estimate over time</h2>
           {overTime.length < 2 ? (
             <div style={{flex:1, display:'flex', alignItems:'center', justifyContent:'center', minHeight:160, font:'var(--role-body)', color:'var(--text-tertiary)', textAlign:'center'}}>
-              Not enough scored sections yet
+              Not enough section estimates yet
             </div>
           ) : (
             <ScoreLine points={overTime} />
@@ -214,7 +214,7 @@ function DomainBreakdown({ domain, stats, go, studentId = null }) {
 }
 
 function ScoreLine({ points }) {
-  // SVG line of section scaled-scores over time, built from real scored sessions.
+  // SVG line of section estimates over time, built from completed full sections.
   const scores = points.map((p) => p.score);
   const dataLo = Math.min(...scores);
   const dataHi = Math.max(...scores);

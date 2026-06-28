@@ -6,9 +6,10 @@ import renderMathInElement from 'katex/contrib/auto-render';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
 import Highlightable from '@/components/sixteen/test/Highlightable';
 import { ExitTest } from '@/components/sixteen/test/ExitTest';
+import ModuleReview from '@/components/sixteen/test/ModuleReview';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
-import { moduleSubmitDisabled, moduleTimerSeconds } from '@/lib/practice/sessionLogic.mjs';
+import { moduleReviewAction, moduleSubmitDisabled, moduleTimerIsRunning, moduleTimerSeconds } from '@/lib/practice/sessionLogic.mjs';
 
 // QuestionMath — Bluebook-faithful Math question (real CB items), with Desmos
 // calculator + reference sheet. Renders MathML natively and KaTeX for \(...\).
@@ -32,24 +33,30 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const [eliminator, setEliminator] = React.useState(false);
   const [elim, setElim] = React.useState({});
   const [annotate, setAnnotate] = React.useState(false);
+  const [reviewOpen, setReviewOpen] = React.useState(false);
   const [marks, setMarks] = React.useState({}); // questionId -> { stem } highlighted HTML
   const expiredRef = React.useRef(false);
+  const timerRunning = moduleTimerIsRunning({
+    status: session.status,
+    timing: session.config?.timing,
+    hasQuestion: !!q,
+  });
 
   React.useEffect(() => {
-    if (session.config?.timing === 'untimed') return;
+    if (!timerRunning) return;
     const id = setInterval(() => setSeconds((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(id);
-  }, [session.config]);
+  }, [timerRunning]);
 
   // Bluebook auto-advances when a module's time runs out (you can't return to it).
   React.useEffect(() => {
-    if (session.config?.timing === 'untimed') return;
+    if (!timerRunning) return;
     if (seconds === 0 && !expiredRef.current) {
       expiredRef.current = true;
       session.finishModule(go);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seconds]);
+  }, [seconds, timerRunning]);
 
   React.useEffect(() => {
     const el = document.getElementById('math-q-area');
@@ -111,11 +118,12 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
     } else session.next();
   };
 
-  // Palette "Go to Review Page": submit the active module.
+  // Palette "Go to Review Page": open the in-module review page.
   const onReviewAll = () => {
     setPaletteOpen(false);
-    if (submitDisabled) return;
-    session.finishModule(go);
+    const action = moduleReviewAction({ isDrill, blocked });
+    if (action === 'blocked') return;
+    setReviewOpen(true);
   };
 
   const answered = session.answeredCount;
@@ -140,62 +148,73 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
 
       <DirectionsBar onDirections={() => setDirectionsOpen((v) => !v)} />
 
-      <div id="math-q-area" style={{ flex: 1, overflow: 'auto', position: 'relative' }}>
-        <div style={{ maxWidth: 760, margin: '0 auto', padding: '32px 24px 48px' }}>
-          <QuestionNumberBadge
-            n={session.index + 1}
-            flag={<>
-              {q.type === 'mcq' && !isDrill && (
-                <button onClick={() => setEliminator((e) => !e)} title="Cross out answers" style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
-                  background: eliminator ? 'var(--test-fill)' : 'transparent', color: eliminator ? 'var(--test-fill-fg)' : 'var(--test-ink)',
-                  border: '1px solid var(--test-line)', borderRadius: 3, cursor: 'pointer',
-                  font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
-                  textDecoration: 'line-through', textDecorationThickness: '1.5px', marginRight: 8,
-                }}>ABC</button>
-              )}
-              <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
-            </>}
-          />
-          <Highlightable
-            className="cb-stem"
-            html={q.stemHtml}
-            active={annotate}
-            value={marks[q.id]?.stem}
-            onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], stem: h } }))}
-          />
+      {reviewOpen ? (
+        <ModuleReview
+          title={session.activeModule?.label === 'Drill' ? 'Math — Drill' : `Math — ${session.activeModule?.label || 'Module 1'}`}
+          items={items}
+          onSelect={(n) => { session.goTo(n - 1); setReviewOpen(false); }}
+          onBack={() => setReviewOpen(false)}
+          onSubmit={() => !submitDisabled && session.finishModule(go)}
+          submitDisabled={submitDisabled}
+        />
+      ) : (
+        <div id="math-q-area" style={{ flex: 1, overflow: 'auto', position: 'relative' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '32px 24px 48px' }}>
+            <QuestionNumberBadge
+              n={session.index + 1}
+              flag={<>
+                {q.type === 'mcq' && !isDrill && (
+                  <button onClick={() => setEliminator((e) => !e)} title="Cross out answers" style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
+                    background: eliminator ? 'var(--test-fill)' : 'transparent', color: eliminator ? 'var(--test-fill-fg)' : 'var(--test-ink)',
+                    border: '1px solid var(--test-line)', borderRadius: 3, cursor: 'pointer',
+                    font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
+                    textDecoration: 'line-through', textDecorationThickness: '1.5px', marginRight: 8,
+                  }}>ABC</button>
+                )}
+                <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
+              </>}
+            />
+            <Highlightable
+              className="cb-stem"
+              html={q.stemHtml}
+              active={annotate}
+              value={marks[q.id]?.stem}
+              onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], stem: h } }))}
+            />
 
-          {q.type === 'spr' ? (
-            <GridIn value={ans || ''} onChange={(v) => session.setValue(v)} />
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 22 }}>
-              {q.choices.map((o) => (
-                <OptionRow
-                  key={o.letter}
-                  letter={o.letter}
-                  selected={isDrill ? (solved && resp.value === o.letter) : ans === o.letter}
-                  feedback={isDrill ? (solved && resp.value === o.letter ? 'correct' : triedWrong.has(o.letter) ? 'wrong' : null) : null}
-                  locked={isDrill && solved}
-                  eliminated={!isDrill && elimSet.has(o.letter)}
-                  showEliminator={!isDrill && eliminator}
-                  onSelect={() => (isDrill ? session.answerDrillMCQ(o.letter) : session.setValue(o.letter))}
-                  onToggleEliminate={() => tog(o.letter)}
-                >
-                  <span className="cb-choice" dangerouslySetInnerHTML={{ __html: o.html }} />
-                </OptionRow>
-              ))}
-            </div>
+            {q.type === 'spr' ? (
+              <GridIn value={ans || ''} onChange={(v) => session.setValue(v)} />
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 22 }}>
+                {q.choices.map((o) => (
+                  <OptionRow
+                    key={o.letter}
+                    letter={o.letter}
+                    selected={isDrill ? (solved && resp.value === o.letter) : ans === o.letter}
+                    feedback={isDrill ? (solved && resp.value === o.letter ? 'correct' : triedWrong.has(o.letter) ? 'wrong' : null) : null}
+                    locked={isDrill && solved}
+                    eliminated={!isDrill && elimSet.has(o.letter)}
+                    showEliminator={!isDrill && eliminator}
+                    onSelect={() => (isDrill ? session.answerDrillMCQ(o.letter) : session.setValue(o.letter))}
+                    onToggleEliminate={() => tog(o.letter)}
+                  >
+                    <span className="cb-choice" dangerouslySetInnerHTML={{ __html: o.html }} />
+                  </OptionRow>
+                ))}
+              </div>
+            )}
+            {isDrill && q.type !== 'spr' && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} rationaleHtml={q.rationaleHtml} />}
+          </div>
+
+          {kind === 'drill' && statsOn && (
+            <SessionStats answered={answered} total={total} accuracy={liveAcc} median={median} correct={liveCorrect} incorrect={answered - liveCorrect} skipped={total - answered} hidden={false} onToggle={() => setStatsOn(false)} />
           )}
-          {isDrill && q.type !== 'spr' && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} rationaleHtml={q.rationaleHtml} />}
+          {kind === 'drill' && !statsOn && (
+            <SessionStats hidden={true} onToggle={() => setStatsOn(true)} />
+          )}
         </div>
-
-        {kind === 'drill' && statsOn && (
-          <SessionStats answered={answered} total={total} accuracy={liveAcc} median={median} correct={liveCorrect} incorrect={answered - liveCorrect} skipped={total - answered} hidden={false} onToggle={() => setStatsOn(false)} />
-        )}
-        {kind === 'drill' && !statsOn && (
-          <SessionStats hidden={true} onToggle={() => setStatsOn(true)} />
-        )}
-      </div>
+      )}
 
       {calcOpen && <DesmosPanel onClose={() => setCalcOpen(false)} />}
       {formulaOpen && <FormulaSheet onClose={() => setFormulaOpen(false)} />}
@@ -218,10 +237,10 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         total={total}
         onPalette={() => setPaletteOpen((o) => !o)}
         paletteOpen={paletteOpen}
-        onBack={() => session.prev()}
-        onNext={onNext}
-        nextDisabled={isLast ? submitDisabled : blocked}
-        nextLabel={isLast ? 'Submit' : 'Next'}
+        onBack={reviewOpen ? () => setReviewOpen(false) : () => session.prev()}
+        onNext={reviewOpen ? () => !submitDisabled && session.finishModule(go) : onNext}
+        nextDisabled={reviewOpen ? submitDisabled : isLast ? submitDisabled : blocked}
+        nextLabel={reviewOpen || isLast ? 'Submit' : 'Next'}
       />
     </div>
   );

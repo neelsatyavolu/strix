@@ -1,6 +1,7 @@
 import "server-only";
 import type { Difficulty, Question, QuestionStub, Section } from "./types";
 import { listStubs, getQuestion } from "./client";
+import { arrangeMathQuestions } from "../practice/sessionLogic.mjs";
 
 // Assembles a full SAT module the way College Board's published test
 // specification describes it, rather than a flat random shuffle:
@@ -9,8 +10,7 @@ import { listStubs, getQuestion } from "./client";
 //    (Craft and Structure -> Information and Ideas -> Standard English
 //    Conventions -> Expression of Ideas) and, within each domain, grouped by
 //    skill and arranged easiest -> hardest. SEC is ordered by difficulty only.
-//  - Math: a single easiest -> hardest ramp with the four domains interleaved;
-//    student-produced-response (grid-in) questions cluster at the end.
+//  - Math: a single easiest -> hardest ramp with the four domains interleaved.
 //  - Per-domain question counts vary test-to-test within CB's published ranges.
 //  - Module 1 draws a broad difficulty mix; Module 2A/2B shift the pool easier
 //    or harder to mirror the adaptive second module.
@@ -46,7 +46,8 @@ const MATH_RANGES: DomainRange[] = [
   { code: "S", min: 2, max: 4 }, // Geometry and Trigonometry (~15%)
 ];
 
-const MODULE_TOTAL: Record<Section, number> = { rw: 27, math: 22 };
+const OPERATIONAL_TOTAL: Record<Section, number> = { rw: 25, math: 20 };
+const PRETEST_PER_MODULE = 2;
 
 // Fixed test-order of R&W domains (per the CB specification).
 const RW_DOMAIN_ORDER = ["CAS", "INI", "SEC", "EOI"];
@@ -80,6 +81,10 @@ function shuffle<T>(arr: T[]): T[] {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function stubId(s: QuestionStub): string {
+  return s.externalId ?? s.ibn ?? s.questionId;
 }
 
 /** Randomly distribute `total` across domains, respecting each [min, max]. */
@@ -185,11 +190,9 @@ function arrangeRW(questions: Question[]): Question[] {
   return out;
 }
 
-/** Math: easiest -> hardest ramp, domains interleaved; grid-ins at the end. */
+/** Math: one easiest -> hardest ramp across MCQ and SPR. */
 function arrangeMath(questions: Question[]): Question[] {
-  const mcq = questions.filter((q) => q.type !== "spr").sort(byDifficultyAsc);
-  const spr = questions.filter((q) => q.type === "spr").sort(byDifficultyAsc);
-  return [...mcq, ...spr];
+  return arrangeMathQuestions(questions) as Question[];
 }
 
 /**
@@ -208,7 +211,7 @@ function selectMath(
   counts: Record<string, number>,
   seen?: Set<string>,
 ): Question[] {
-  const sprTarget = 5 + Math.round(Math.random()); // 5 or 6 per module
+  const sprTarget = 5; // 20 operational Math items: about 25% SPR.
   const seenRank = (q: Question): number => (seen && seen.has(q.id) ? 1 : 0);
   const tier = (q: Question): number => seenRank(q) * 2 + (q.type === "spr" ? 1 : 0);
 
@@ -255,6 +258,25 @@ function selectMath(
   return Object.values(kept).flat();
 }
 
+async function drawPretests(
+  stubs: QuestionStub[],
+  profile: DifficultyProfile,
+  usedIds: Set<string>,
+  seen?: Set<string>,
+): Promise<Question[]> {
+  const candidates = stubs.filter((s) => !usedIds.has(stubId(s)));
+  const picked = pickStubs(candidates, PRETEST_PER_MODULE + OVERDRAW, profile, seen);
+  const fetched = await Promise.all(picked.map((s) => getQuestion(s)));
+  const out: Question[] = [];
+  for (const q of fetched) {
+    if (!q?.stemHtml || usedIds.has(q.id)) continue;
+    usedIds.add(q.id);
+    out.push({ ...q, pretest: true });
+    if (out.length >= PRETEST_PER_MODULE) break;
+  }
+  return out;
+}
+
 export interface ModuleDrawOptions {
   section: Section;
   /** Module 1 = "mixed"; adaptive Module 2A = "easy", 2B = "hard". */
@@ -269,7 +291,7 @@ export interface ModuleDrawOptions {
 export async function drawModule(opts: ModuleDrawOptions): Promise<Question[]> {
   const { section, profile = "mixed", exclude, seen } = opts;
   const ranges = section === "rw" ? RW_RANGES : MATH_RANGES;
-  const total = MODULE_TOTAL[section];
+  const total = OPERATIONAL_TOTAL[section];
 
   let stubs = await listStubs(section);
   stubs = stubs.filter((s) => s.externalId); // qbank items render math inline
@@ -300,8 +322,13 @@ export async function drawModule(opts: ModuleDrawOptions): Promise<Question[]> {
     for (const r of ranges) {
       kept.push(...questions.filter((q) => q.domain === r.code).slice(0, counts[r.code]));
     }
-    return arrangeRW(kept);
+    const usedIds = new Set(kept.map((q) => q.id));
+    const pretests = await drawPretests(stubs, profile, usedIds, seen);
+    return arrangeRW([...kept, ...pretests]);
   }
-  // Math: per-domain counts + ~5–6 grid-ins, then ramp/cluster for display.
-  return arrangeMath(selectMath(questions, counts, seen));
+  // Math: per-domain counts + grid-ins, then one easiest-to-hardest ramp.
+  const kept = selectMath(questions, counts, seen);
+  const usedIds = new Set(kept.map((q) => q.id));
+  const pretests = await drawPretests(stubs, profile, usedIds, seen);
+  return arrangeMath([...kept, ...pretests]);
 }

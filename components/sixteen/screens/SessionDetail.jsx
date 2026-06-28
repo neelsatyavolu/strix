@@ -4,7 +4,7 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { ReviewItem } from './ScoreReport';
 
-// SessionDetail — read-only review of one persisted practice session (score +
+// SessionDetail — read-only review of one persisted practice session (result +
 // per-question right/wrong), loaded from /api/sessions/:id. Works for your own
 // history and, for a tutor, a watched student's sessions (RLS-scoped).
 
@@ -72,7 +72,7 @@ function SessionDetail({ go, id }) {
                   {isDrill || data.scaled == null ? `${data.accuracy}%` : data.scaled}
                 </div>
                 <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
-                  {isDrill || data.scaled == null ? 'Accuracy' : `${SECTION_LABEL[section]} · /800`}
+                  {isDrill || data.scaled == null ? 'Accuracy' : `Estimated ${SECTION_LABEL[section]} · /800`}
                 </div>
               </div>
               <div style={{ flex: 1, minWidth: 240 }}>

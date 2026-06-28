@@ -72,7 +72,7 @@ function Sessions({ go, studentId = null }) {
               <span>Session</span>
               <span>Kind</span>
               <span style={{textAlign:'right'}}>Qs</span>
-              <span style={{textAlign:'right'}}>Score</span>
+              <span style={{textAlign:'right'}}>Estimate</span>
               <span style={{textAlign:'right'}}>Accuracy</span>
               <span/>
             </div>

@@ -82,17 +82,17 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
               selected={mode === 'mock-full'}
               onClick={() => setMode('mock-full')}
               title="Full section"
-              sub="Module 1 + adaptive Module 2 · scored on the curve"
+              sub="Module 1 + adaptive Module 2 · estimated score"
               icon="layers"
-              badge={<Badge variant="brand" size="sm">SCORED</Badge>}
+              badge={<Badge variant="brand" size="sm">ESTIMATE</Badge>}
             />
             <ModeTile
               selected={mode === 'mock-exam'}
               onClick={() => setMode('mock-exam')}
               title="Full SAT"
-              sub="Both sections · 10-min break · scored 400–1600"
+              sub="Both sections · 10-min break · estimated 400–1600"
               icon="graduation-cap"
-              badge={<Badge variant="brand" size="sm">SCORED</Badge>}
+              badge={<Badge variant="brand" size="sm">ESTIMATE</Badge>}
             />
           </div>
         </Card>
@@ -164,7 +164,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
                 <span style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)'}}>Timing</span>
                 <p style={{margin:'4px 0 0', font:'var(--role-body)', color:'var(--text-body)'}}>
                   {mode === 'mock-exam'
-                    ? 'A full SAT: Reading & Writing (two 32-min modules), a 10-minute break, then Math (two 35-min modules). Each module auto-advances when time runs out. Scored 400–1600.'
+                    ? 'A full SAT: Reading & Writing (two 32-min modules), a 10-minute break, then Math (two 35-min modules). Each module auto-advances when time runs out. Estimated 400–1600.'
                     : mode === 'mock-m1'
                     ? (domain === 'rw'
                       ? 'Module 1 is timed at 32 minutes for 27 questions — the real SAT pace. The clock starts when you tap Start.'

@@ -12,8 +12,8 @@ import { SECTION_SHORT, relTime, StatCardLite, EmptyState } from '@/components/s
 // it suggests taking a diagnostic (a full SAT).
 
 const KIND = {
-  tests:    { title: 'Practice Tests',    subtitle: 'Your completed full SATs — scored 400–1600.',     scope: 'tests',    emptyTitle: 'No full SATs yet' },
-  sections: { title: 'Practice Sections', subtitle: 'Your completed full sections — Module 1 + adaptive Module 2.', scope: 'sections', emptyTitle: 'No full sections yet' },
+  tests:    { title: 'Practice Tests',    subtitle: 'Your completed full SATs — estimated 400–1600.',     scope: 'tests',    emptyTitle: 'No full SATs yet' },
+  sections: { title: 'Practice Sections', subtitle: 'Your completed full sections — Module 1 + adaptive Module 2, estimated /800.', scope: 'sections', emptyTitle: 'No full sections yet' },
   modules:  { title: 'Practice Modules',  subtitle: 'Your completed single timed modules.',             scope: 'modules',  emptyTitle: 'No modules yet' },
 };
 
@@ -80,7 +80,7 @@ function summaryFor(kind, attempts, tests) {
     const scaled = attempts.map((s) => s.scaled_score).filter((v) => v != null);
     return [
       { label: 'Sections', value: attempts.length },
-      { label: 'Best score', value: scaled.length ? Math.max(...scaled) : '—' },
+      { label: 'Best estimate', value: scaled.length ? Math.max(...scaled) : '—' },
       { label: 'Latest', value: attempts[0]?.scaled_score ?? '—' },
     ];
   }
@@ -194,7 +194,7 @@ function AttemptList({ attempts, kind, go }) {
         color:'var(--text-tertiary)', borderBottom:'1px solid var(--border-1)',
       }}>
         <span>When</span><span>Section</span>
-        <span style={{textAlign:'right'}}>{kind === 'sections' ? 'Score' : 'Accuracy'}</span>
+        <span style={{textAlign:'right'}}>{kind === 'sections' ? 'Estimate' : 'Accuracy'}</span>
         <span style={{textAlign:'right'}}>{kind === 'sections' ? 'Accuracy' : 'Correct'}</span>
         <span/>
       </div>
