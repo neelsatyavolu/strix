@@ -23,10 +23,11 @@ import Settings from './screens/Settings';
 import DevTab from './screens/DevTab';
 import TutorPanel from './panels/TutorPanel';
 import LiveStudentsBanner from './panels/LiveStudentsBanner';
-import LiveQuestionView from '@/components/tutor/LiveQuestionView';
+import LiveTestView from '@/components/tutor/LiveTestView';
 import SessionStats from './panels/SessionStats';
 import { useProfile } from './session/ProfileContext';
 import { usePracticeSession } from './session/SessionContext';
+import { LiveBroadcastProvider } from './session/LiveBroadcastContext';
 import { useStudentLive } from '@/lib/tutor/useStudentLive';
 import { useTutorWatch } from '@/lib/tutor/useTutorWatch';
 
@@ -48,6 +49,13 @@ function App() {
   const [students, setStudents] = React.useState([]);  // [{ id, name }] who added me as tutor
   const [watchedStudentId, setWatchedStudentId] = React.useState(null);
   const canTutor = students.length > 0;
+
+  // Latest UI snapshot reported by the active test screen (highlights, elim,
+  // timer, calculator). Folded into the live broadcast below.
+  const [liveUi, setLiveUi] = React.useState({});
+  const report = React.useCallback((partial) => {
+    setLiveUi((prev) => ({ ...prev, ...partial }));
+  }, []);
 
   // A fresh accept-invite redirect (/app?watch=<id>) lands straight in Tutor view
   // watching that student — read once on mount.
@@ -100,18 +108,45 @@ function App() {
       stimulusHtml: q.stimulusHtml,
       choices: q.choices,
       selected: sessionLive.responses[q.id]?.value || null,
+      // Rich mirror fields reported by the active screen (may be undefined until
+      // the screen reports; consumers must tolerate missing keys).
+      flagged: liveUi.flagged,
+      type: liveUi.type,
+      marks: liveUi.marks,
+      eliminated: liveUi.eliminated,
+      annotateActive: liveUi.annotateActive,
+      seconds: liveUi.seconds,
+      timerRunning: liveUi.timerRunning,
+      sectionLabel: liveUi.sectionLabel,
+      palette: liveUi.palette,
+      calc: liveUi.calc,
     };
     // `questions` is a fresh [] each render while idle — depend on its length
     // (a stable primitive) instead so we don't re-broadcast every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionLive.status, sessionLive.current, sessionLive.index, sessionLive.questions.length, sessionLive.responses]);
+  }, [sessionLive.status, sessionLive.current, sessionLive.index, sessionLive.questions.length, sessionLive.responses, liveUi]);
 
-  const studentLive = useStudentLive(user?.id, live);
+  const studentLive = useStudentLive(user?.id, live, role === 'student' && tutorOn);
   const tutorWatch = useTutorWatch(students, watchedStudentId, user?.id);
+
+  // Unread tutor message indicator (student only): dot on the Tutor tab + the
+  // top-bar chat toggle when a message lands while the chat is collapsed.
+  const tutorUnread = role === 'student' && studentLive.unread;
 
   const watchedName = students.find((s) => s.id === watchedStudentId)?.name || 'your student';
   const watchedLiveMeta = watchedStudentId ? tutorWatch.liveStudents[watchedStudentId] : null;
   const watchedIsLive = !!(watchedLiveMeta && watchedLiveMeta.active);
+
+  // Auto-open the Live Session tab the moment the watched student starts a
+  // module; drop back to the dashboard when they finish (only if we were on it).
+  const wasLive = React.useRef(false);
+  React.useEffect(() => {
+    if (watchedIsLive && !wasLive.current) { wasLive.current = true; setView('live-session'); }
+    if (!watchedIsLive && wasLive.current) {
+      wasLive.current = false;
+      setView((v) => (v === 'live-session' ? 'dashboard' : v));
+    }
+  }, [watchedIsLive]);
 
   // Entering tutor view auto-opens the chat with the student; with one student
   // we auto-select them, otherwise the header picker decides.
@@ -181,6 +216,7 @@ function App() {
     'practice-sections': 'practice-sections',
     'category-detail': 'stats',
     'session-detail': 'stats',
+    'live-session': 'live-session',
     'tutor-chat': 'tutor',
     'tutor-invite': 'tutor',
     'settings': 'settings',
@@ -216,17 +252,22 @@ function App() {
     { id:'practice-modules',  label:'Practice Modules',  icon: I('square'),          group:'You' },
     { id:'practice-sections', label:'Practice Sections', icon: I('layers'),          group:'You' },
     { id:'sessions',          label:'Sessions',          icon: I('list'),            group:'You' },
-    { id:'tutor',             label:'Tutor',             icon: I('message-circle'),  group:'You' },
+    { id:'tutor',             label:'Tutor',             icon: I('message-circle'),  group:'You', dot: tutorUnread },
     { id:'settings',          label:'Settings',          icon: I('settings'),        group:'You' },
   ];
   if (devEnabled) sidebarItems.push({ id:'dev', label:'Dev', icon: I('wrench'), group:'Dev' });
+  // While watching a live student, pin a "Live Session" tab to the very top.
+  if (isTutor && watchedIsLive) {
+    sidebarItems.unshift({ id:'live-session', label:'Live Session', icon: I('radio'), group:'Live', live: true });
+  }
 
   const sidebar = (
     <Sidebar
       items={sidebarItems}
       activeId={sidebarId}
       onSelect={(id) => {
-        if (id === 'home')     go('dashboard');
+        if (id === 'live-session') go('live-session');
+        else if (id === 'home')     go('dashboard');
         else if (id === 'rw')   go('practice-setup', { domain: 'rw' });
         else if (id === 'math') go('practice-setup', { domain: 'math' });
         else if (id === 'stats') go('stats');
@@ -296,14 +337,23 @@ function App() {
           </div>
         )}
         {!onboarding && (
-          <IconButton
-            size="sm"
-            variant={tutorOn ? 'solid' : 'ghost'}
-            label={tutorOn ? (isTutor ? 'Collapse chat' : 'Hide tutor') : (isTutor ? 'Show chat' : 'Show tutor')}
-            onClick={() => setTutorOn(!tutorOn)}
-          >
-            {I('message-circle')}
-          </IconButton>
+          <span style={{ position: 'relative', display: 'inline-flex' }}>
+            <IconButton
+              size="sm"
+              variant={tutorOn ? 'solid' : 'ghost'}
+              label={tutorOn ? (isTutor ? 'Collapse chat' : 'Hide tutor') : (isTutor ? 'Show chat' : 'Show tutor')}
+              onClick={() => setTutorOn(!tutorOn)}
+            >
+              {I('message-circle')}
+            </IconButton>
+            {tutorUnread && !tutorOn && (
+              <span style={{
+                position: 'absolute', top: 1, right: 1, width: 8, height: 8, borderRadius: '50%',
+                background: 'var(--brand-blue)', boxShadow: '0 0 0 2px var(--surface-titlebar)',
+                pointerEvents: 'none',
+              }} />
+            )}
+          </span>
         )}
         <IconButton size="sm" variant="ghost" label="Dark mode" onClick={() => setTheme(dark ? 'light' : 'dark')}>
           {dark ? I('sun') : I('moon')}
@@ -333,6 +383,7 @@ function App() {
     case 'practice-sections': screen = <PracticeSections go={go} {...watchProps} />; break;
     case 'category-detail': screen = <CategoryDetail go={go} section={viewProps.section} domain={viewProps.domain} label={viewProps.label} {...watchProps} />; break;
     case 'session-detail':  screen = <SessionDetail go={go} id={viewProps.id} {...watchProps} />; break;
+    case 'live-session':    screen = <LiveTestView live={tutorWatch.watchedLive} studentName={watchedName} />; break;
     case 'tutor-invite':    screen = <TutorInvite go={go} />; break;
     case 'tutor-chat':      screen = <TutorChat go={go} />; break;
     case 'settings':        screen = <Settings go={go} theme={theme} setTheme={setTheme} />; break;
@@ -348,12 +399,12 @@ function App() {
     );
   }
 
-  // Main content while tutoring: live question if the student is mid-section,
-  // a "pick a student" prompt if none is selected, else their read-only screens.
+  // While tutoring: prompt to pick a student if none is selected; otherwise the
+  // live mirror is a normal routed screen ('live-session'), so Stats/Dashboard
+  // stay freely browsable while the student practices.
   let mainContent = screen;
-  if (isTutor) {
-    if (!watchedStudentId) mainContent = <PickStudentPrompt students={students} onPick={setWatchedStudentId} />;
-    else if (watchedIsLive) mainContent = <LiveQuestionView live={tutorWatch.watchedLive} studentName={watchedName} />;
+  if (isTutor && !watchedStudentId && view !== 'tutor-invite' && view !== 'settings') {
+    mainContent = <PickStudentPrompt students={students} onPick={setWatchedStudentId} />;
   }
 
   // Chat for the tutor pane: tutor↔watched-student when tutoring, else our own
@@ -390,7 +441,9 @@ function App() {
         ) : null}
         variant={inModule ? 'test' : 'app'}
       >
-        {mainContent}
+        <LiveBroadcastProvider report={report}>
+          {mainContent}
+        </LiveBroadcastProvider>
       </AppShell>
     </>
   );

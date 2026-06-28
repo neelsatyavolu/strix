@@ -34,25 +34,30 @@ function SectionReport({ go, session }) {
   const sectionLabel = r.section === 'math' ? 'Math' : 'Reading & Writing';
   const sectionColor = r.section === 'math' ? 'var(--math-color)' : 'var(--rw-color)';
   const routedLabel = r.m2Variant === 'hard' ? 'Module 2B (harder)' : r.m2Variant === 'easy' ? 'Module 2A (easier)' : null;
+  const isEstimate = r.scaled != null;
 
   return (
     <div style={{ padding: '36px 48px', maxWidth: 920, margin: '0 auto' }}>
       <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>
-        Section estimate · {sectionLabel}
+        {isEstimate ? 'Section estimate' : 'Module results'} · {sectionLabel}
       </span>
-      <h1 style={{ margin: '4px 0 0', font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>You finished the section.</h1>
+      <h1 style={{ margin: '4px 0 0', font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>
+        {isEstimate ? 'You finished the section.' : 'You finished Module 1.'}
+      </h1>
       <p style={{ margin: '4px 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-        Practice estimate from a representative curve{routedLabel ? `. This app routed you to ${routedLabel}.` : '.'} Real SAT scores use College Board&rsquo;s private item-level scoring.
+        {isEstimate
+          ? `Practice estimate from a representative curve${routedLabel ? `. This app routed you to ${routedLabel}.` : '.'} Real SAT scores use College Board's private item-level scoring.`
+          : 'Module 1 practice shows raw operational accuracy only. Real SAT section scores use both modules and College Board\'s private item-level scoring.'}
       </p>
 
       <Card padding="xl" style={{ marginBottom: 18 }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 28, flexWrap: 'wrap' }}>
           <div>
             <div style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', fontSize: 64, fontWeight: 600, color: sectionColor, lineHeight: 1 }}>
-              {r.scaled}
+              {isEstimate ? r.scaled : `${r.correct}/${r.total}`}
             </div>
             <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
-              Estimated {sectionLabel} · /800
+              {isEstimate ? `Estimated ${sectionLabel} · /800` : 'Operational questions correct'}
             </div>
           </div>
           <div style={{ flex: 1, minWidth: 240 }}>
@@ -60,12 +65,12 @@ function SectionReport({ go, session }) {
               {r.correct} of {r.total} correct · {r.accuracy}% accuracy
             </div>
             {r.byDomain.map((b) => (
-              <div key={b.domain} style={{ display: 'grid', gridTemplateColumns: '1fr 90px 54px', gap: 10, padding: '7px 0', alignItems: 'center' }}>
+              <div key={b.domain} style={{ display: 'grid', gridTemplateColumns: '1fr 90px 64px', gap: 10, padding: '7px 0', alignItems: 'center' }}>
                 <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)' }}>{b.label}</span>
                 <div style={{ height: 6, background: 'var(--sunken)', borderRadius: 4, overflow: 'hidden' }}>
                   <div style={{ width: `${(b.correct / b.total) * 100}%`, height: '100%', background: b.correct === b.total ? 'var(--success)' : 'var(--brand-blue)' }} />
                 </div>
-                <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', textAlign: 'right' }}>{b.correct} / {b.total}</span>
+                <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', textAlign: 'right', whiteSpace: 'nowrap' }}>{b.correct} / {b.total}</span>
               </div>
             ))}
           </div>
@@ -114,12 +119,12 @@ function DrillReport({ go, session }) {
           </div>
           <div style={{ flex: 1, minWidth: 220 }}>
             {r.byDomain.map((b) => (
-              <div key={b.domain} style={{ display: 'grid', gridTemplateColumns: '1fr 90px 54px', gap: 10, padding: '7px 0', alignItems: 'center' }}>
+              <div key={b.domain} style={{ display: 'grid', gridTemplateColumns: '1fr 90px 64px', gap: 10, padding: '7px 0', alignItems: 'center' }}>
                 <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)' }}>{b.label}</span>
                 <div style={{ height: 6, background: 'var(--sunken)', borderRadius: 4, overflow: 'hidden' }}>
                   <div style={{ width: `${(b.correct / b.total) * 100}%`, height: '100%', background: b.correct === b.total ? 'var(--success)' : 'var(--brand-blue)' }} />
                 </div>
-                <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', textAlign: 'right' }}>{b.correct} / {b.total}</span>
+                <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', textAlign: 'right', whiteSpace: 'nowrap' }}>{b.correct} / {b.total}</span>
               </div>
             ))}
           </div>

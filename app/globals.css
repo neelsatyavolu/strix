@@ -72,6 +72,20 @@ body {
   max-width: 100%;
   height: auto;
 }
+/* CB ships figure long-descriptions in a class="sr-only" div for screen
+   readers (e.g. "Triangle upper A upper B upper C ... not drawn to scale").
+   Keep it in the DOM for accessibility but visually hidden, as on the real SAT. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 math {
   font-size: 1.05em;
 }

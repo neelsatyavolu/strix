@@ -170,8 +170,8 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
                       ? 'Module 1 is timed at 32 minutes for 27 questions — the real SAT pace. The clock starts when you tap Start.'
                       : 'Module 1 is timed at 35 minutes for 22 questions — the real SAT pace. The clock starts when you tap Start.')
                     : (domain === 'rw'
-                      ? '64 minutes total (32 + 32) across both modules. The break between modules is yours — the clock pauses.'
-                      : '70 minutes total (35 + 35) across both modules. The break between modules is yours — the clock pauses.')}
+                      ? '64 minutes total (32 + 32) across two separately timed modules. Module 2 starts after routing finishes.'
+                      : '70 minutes total (35 + 35) across two separately timed modules. Module 2 starts after routing finishes.')}
                 </p>
               </div>
               <div style={{

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Live Session — Tutor Mirror Preview</title>
+<style>
+  :root {
+    --test-canvas: #ffffff;
+    --paper: #ffffff;
+    --test-header: #2b3440;
+    --test-ink: #1a1f26;
+    --test-line: #cfd6df;
+    --test-divider: #e6e9ee;
+    --brand-blue: #2563eb;
+    --brand-blue-soft: #eef3ff;
+    --success: #16a34a;
+    --error: #dc2626;
+    --text-secondary: #5b6470;
+    --text-tertiary: #8a929d;
+    --hl: #ffe583;
+    --radius-md: 8px;
+    --footer-h: 56px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: var(--font);
+    background: #eceef2;
+    color: var(--test-ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 22px 16px 48px;
+  }
+
+  /* ---- preview chrome (not part of the app) ---- */
+  .preview-bar {
+    width: 100%; max-width: 1180px;
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .preview-bar h1 { font-size: 15px; margin: 0; font-weight: 650; }
+  .preview-bar .note { font-size: 12px; color: var(--text-secondary); }
+  .seg { margin-left: auto; display: inline-flex; background: #fff; border: 1px solid #d6dae1; border-radius: 9px; padding: 3px; gap: 3px; }
+  .seg button {
+    border: 0; background: transparent; font: inherit; font-size: 13px; font-weight: 550;
+    color: var(--text-secondary); padding: 6px 14px; border-radius: 6px; cursor: pointer;
+  }
+  .seg button.active { background: var(--brand-blue); color: #fff; }
+
+  /* ---- the mirrored test surface ---- */
+  .frame {
+    width: 100%; max-width: 1180px; height: 760px;
+    background: var(--test-canvas);
+    border: 1px solid #d6dae1;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 16px 40px rgba(20,30,48,0.14);
+  }
+
+  /* header */
+  .test-header {
+    height: 58px; flex: none;
+    background: var(--test-header); color: #fff;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    padding: 0 18px;
+  }
+  .section-label { font-size: 14px; font-weight: 600; }
+  .timer {
+    justify-self: center; display: inline-flex; align-items: center; gap: 8px;
+    font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 600;
+    background: rgba(255,255,255,0.10); padding: 5px 14px; border-radius: 18px;
+  }
+  .timer .clock { width: 14px; height: 14px; border: 2px solid #fff; border-radius: 50%; position: relative; }
+  .timer .clock::after { content:""; position:absolute; left:5px; top:2px; width:2px; height:5px; background:#fff; }
+  .watching {
+    justify-self: end; display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12px; color: #e8ecf2;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 0 rgba(22,163,74,0.6); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(22,163,74,0.55)} 70%{box-shadow:0 0 0 7px rgba(22,163,74,0)} 100%{box-shadow:0 0 0 0 rgba(22,163,74,0)} }
+
+  .directions-bar {
+    height: 30px; flex: none; background: #f4f6f9; border-bottom: 1px solid var(--test-divider);
+    display: flex; align-items: center; padding: 0 18px; font-size: 12px; color: var(--text-secondary);
+  }
+
+  /* body */
+  .body { flex: 1; min-height: 0; display: grid; overflow: hidden; }
+  .body.rw { grid-template-columns: 1fr 1px 1fr; }
+  .body.math { grid-template-columns: 1fr; }
+  .pane { overflow: auto; padding: 32px 48px 44px; }
+  .vrule { background: var(--test-divider); }
+
+  .cb-passage, .cb-stem { font-size: 16px; line-height: 1.62; color: var(--test-ink); }
+  .cb-passage p, .cb-stem p { margin: 0 0 15px; }
+  mark.hl { background: var(--hl); border-radius: 2px; padding: 0 1px; }
+
+  .qhead { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .qnum {
+    background: var(--test-ink); color: #fff; font-weight: 700; font-size: 13px;
+    border-radius: 4px; padding: 3px 9px;
+  }
+  .spacer { flex: 1; }
+  .abc {
+    border: 1px solid var(--test-line); border-radius: 3px; padding: 2px 8px;
+    font-size: 12px; font-weight: 700; text-decoration: line-through; text-decoration-thickness: 1.5px;
+    color: var(--test-ink); background: transparent;
+  }
+  .flag { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 5px; }
+  .flag.on { color: var(--error); }
+  .flag svg { width: 16px; height: 16px; }
+
+  .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .choice {
+    display: flex; align-items: flex-start; gap: 12px;
+    border: 1.5px solid var(--test-line); border-radius: var(--radius-md);
+    padding: 13px 15px; font-size: 15px; line-height: 1.5; background: #fff;
+    position: relative;
+  }
+  .choice .letter {
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    border: 1.5px solid var(--test-line); display: grid; place-items: center;
+    font-weight: 650; font-size: 13px; color: var(--test-ink);
+  }
+  .choice.selected { border-color: var(--brand-blue); background: var(--brand-blue-soft); }
+  .choice.selected .letter { border-color: var(--brand-blue); background: var(--brand-blue); color: #fff; }
+  .choice.eliminated { color: var(--text-tertiary); }
+  .choice.eliminated .letter { text-decoration: line-through; color: var(--text-tertiary); }
+  .choice.eliminated .ctext { text-decoration: line-through; }
+
+  /* math answer + desmos */
+  .answer-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-tertiary); margin-bottom: 8px; }
+  .answer-box {
+    max-width: 320px; padding: 12px 14px; font-family: var(--mono); font-size: 18px;
+    border: 2px solid var(--test-line); border-radius: var(--radius-md); color: var(--test-ink);
+  }
+  .desmos {
+    position: absolute; width: 430px; height: 330px; left: 32px; top: 150px;
+    background: #fff; border: 1px solid #cfd6df; border-radius: 8px; overflow: hidden;
+    box-shadow: 0 12px 30px rgba(20,30,48,0.22); display: flex; flex-direction: column;
+  }
+  .desmos .dh { background: #2E7D32; color: #fff; font-size: 12px; font-weight: 600; padding: 6px 10px; display:flex; justify-content: space-between; }
+  .desmos .dbody { flex: 1; position: relative; background:
+      linear-gradient(#eef2f0 1px, transparent 1px) 0 0 / 100% 28px,
+      linear-gradient(90deg, #eef2f0 1px, transparent 1px) 0 0 / 28px 100%,
+      #fbfdfb; }
+  .desmos .axis-x { position:absolute; left:0; right:0; top:50%; height:2px; background:#9aa6b2; }
+  .desmos .axis-y { position:absolute; top:0; bottom:0; left:36%; width:2px; background:#9aa6b2; }
+  .desmos .curve { position:absolute; inset:0; }
+  .desmos .exprs { position:absolute; left:0; top:0; bottom:0; width:150px; background:#fff; border-right:1px solid #e3e7ec; padding:8px; font-family:var(--mono); font-size:13px; }
+  .desmos .exprs .e { color:#c2410c; padding:4px 2px; border-bottom:1px solid #f0f2f5; }
+  .ro-badge { position:absolute; right:8px; bottom:8px; background:rgba(20,30,48,.75); color:#fff; font-size:11px; padding:3px 8px; border-radius:6px; }
+
+  /* footer */
+  .test-footer {
+    height: var(--footer-h); flex: none; background: var(--test-header); color: #fff;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 18px;
+  }
+  .footer-name { font-size: 13px; font-weight: 600; }
+  .pill { justify-self: center; background: #fff; color: var(--test-ink); font-size: 13px; font-weight: 600; border-radius: 20px; padding: 7px 16px; display:inline-flex; gap:8px; align-items:center; }
+  .nav { justify-self: end; display: inline-flex; gap: 8px; }
+  .nav button {
+    border: 0; border-radius: 18px; padding: 8px 18px; font: inherit; font-size: 13px; font-weight: 650;
+    background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.55); cursor: not-allowed;
+  }
+
+  .hidden { display: none !important; }
+  .legend { width:100%; max-width:1180px; margin-top:14px; font-size:12px; color:var(--text-secondary); display:flex; gap:18px; flex-wrap:wrap; }
+  .legend b { color: var(--test-ink); font-weight:600; }
+</style>
+</head>
+<body>
+  <div class="preview-bar">
+    <h1>Live Session — tutor's read-only mirror</h1>
+    <span class="note">Static preview. Everything is view-only; the tutor cannot answer or edit.</span>
+    <div class="seg">
+      <button id="btn-rw" class="active" onclick="show('rw')">Reading &amp; Writing</button>
+      <button id="btn-math" onclick="show('math')">Math (with Desmos)</button>
+    </div>
+  </div>
+
+  <!-- ============ READING & WRITING MIRROR ============ -->
+  <div class="frame" id="screen-rw">
+    <div class="test-header">
+      <span class="section-label">Reading &amp; Writing, Module 1</span>
+      <span class="timer"><span class="clock"></span>12:47</span>
+      <span class="watching"><span class="dot"></span>Watching Maya · read-only</span>
+    </div>
+    <div class="directions-bar">Directions</div>
+
+    <div class="body rw">
+      <div class="pane">
+        <div class="cb-passage">
+          <p>The following text is adapted from a 2019 study of urban tree canopies.</p>
+          <p>Researchers have long understood that city trees lower surface temperatures, but a recent analysis suggests the effect is <mark class="hl">far more uneven than previously assumed</mark>. Neighborhoods with dense canopy cover stayed up to 5°C cooler on summer afternoons, while sparsely planted blocks only a few hundred meters away saw <mark class="hl">almost no measurable benefit</mark>. The authors argue that targeted planting, rather than total tree count, should guide municipal policy.</p>
+        </div>
+      </div>
+      <div class="vrule"></div>
+      <div class="pane">
+        <div class="qhead">
+          <span class="qnum">2</span>
+          <span class="spacer"></span>
+          <span class="abc">ABC</span>
+          <span class="flag on" title="Flagged for review">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3a1 1 0 0 1 1-1h11l-2.5 4L18 10H7v11H5V3z"/></svg>
+          </span>
+        </div>
+        <div class="cb-stem">
+          <p>Which choice best states the <mark class="hl">main idea</mark> of the text?</p>
+        </div>
+        <div class="choices">
+          <div class="choice"><span class="letter">A</span><span class="ctext">City trees have little effect on summer surface temperatures.</span></div>
+          <div class="choice selected"><span class="letter">B</span><span class="ctext">The cooling benefit of urban trees depends heavily on where they are planted.</span></div>
+          <div class="choice eliminated"><span class="letter">C</span><span class="ctext">Municipal policy currently ignores the number of trees in a city.</span></div>
+          <div class="choice"><span class="letter">D</span><span class="ctext">Dense canopy cover is impossible to achieve in most neighborhoods.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-footer">
+      <span class="footer-name">Maya Chen</span>
+      <span class="pill">Question 2 of 27 <span style="opacity:.5">▾</span></span>
+      <span class="nav"><button>Back</button><button>—</button></span>
+    </div>
+  </div>
+
+  <!-- ============ MATH MIRROR ============ -->
+  <div class="frame hidden" id="screen-math">
+    <div class="test-header">
+      <span class="section-label">Math, Module 1</span>
+      <span class="timer"><span class="clock"></span>20:13</span>
+      <span class="watching"><span class="dot"></span>Watching Maya · read-only</span>
+    </div>
+    <div class="directions-bar">Directions</div>
+
+    <div class="body math">
+      <div class="pane" style="position:relative; max-width:780px; margin:0 auto;">
+        <div class="qhead">
+          <span class="qnum">7</span>
+          <span class="spacer"></span>
+          <span class="flag" title="Not flagged">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3a1 1 0 0 1 1-1h11l-2.5 4L18 10H7v11H5V3z"/></svg>
+          </span>
+        </div>
+        <div class="cb-stem">
+          <p>The line <em>y</em> = 2<em>x</em> + 1 is graphed in the <em>xy</em>-plane. Which of the following points lies on the line?</p>
+        </div>
+        <div class="choices" style="max-width:520px;">
+          <div class="choice"><span class="letter">A</span><span class="ctext">(0, 0)</span></div>
+          <div class="choice eliminated"><span class="letter">B</span><span class="ctext">(1, 2)</span></div>
+          <div class="choice selected"><span class="letter">C</span><span class="ctext">(2, 5)</span></div>
+          <div class="choice"><span class="letter">D</span><span class="ctext">(3, 4)</span></div>
+        </div>
+
+        <!-- read-only Desmos mirror -->
+        <div class="desmos">
+          <div class="dh"><span>Desmos Graphing Calculator (view only)</span><span></span></div>
+          <div class="dbody">
+            <div class="exprs">
+              <div class="e">1&nbsp;&nbsp;y = 2x + 1</div>
+              <div class="e" style="color:#1d4ed8">2&nbsp;&nbsp;(2, 5)</div>
+            </div>
+            <div style="position:absolute; left:150px; right:0; top:0; bottom:0;">
+              <div class="axis-x"></div>
+              <div class="axis-y"></div>
+              <svg class="curve" viewBox="0 0 280 330" preserveAspectRatio="none">
+                <line x1="20" y1="300" x2="260" y2="20" stroke="#2563eb" stroke-width="2.5"/>
+                <circle cx="185" cy="120" r="5" fill="#1d4ed8"/>
+              </svg>
+            </div>
+            <div class="ro-badge">view only — can't edit</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="test-footer">
+      <span class="footer-name">Maya Chen</span>
+      <span class="pill">Question 7 of 22 <span style="opacity:.5">▾</span></span>
+      <span class="nav"><button>Back</button><button>—</button></span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><b>Yellow</b> = student's live highlights</span>
+    <span><b>Struck-through choice</b> = student crossed it out</span>
+    <span><b>Blue choice</b> = student's current selection</span>
+    <span><b>Red flag</b> = marked for review</span>
+    <span><b>Timer / palette / Desmos</b> mirror the student in real time; the tutor can't interact</span>
+  </div>
+
+<script>
+  function show(which) {
+    document.getElementById('screen-rw').classList.toggle('hidden', which !== 'rw');
+    document.getElementById('screen-math').classList.toggle('hidden', which !== 'math');
+    document.getElementById('btn-rw').classList.toggle('active', which === 'rw');
+    document.getElementById('btn-math').classList.toggle('active', which === 'math');
+  }
+</script>
+</body>
+</html>

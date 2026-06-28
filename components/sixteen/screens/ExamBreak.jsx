@@ -3,6 +3,7 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
+import { examBreakCanBegin } from '@/lib/practice/sessionLogic.mjs';
 
 // ExamBreak — the 10-minute break between the R&W and Math sections of a full SAT.
 // The clock here is the real break timer; section time does not run during it.
@@ -34,7 +35,13 @@ function ExamBreak({ go }) {
   const justDone = exam.results[exam.results.length - 1];
   const mm = String(Math.floor(seconds / 60)).padStart(2, '0');
   const ss = String(seconds % 60).padStart(2, '0');
-  const begin = () => { setStarting(true); session.startExamNextSection(go); };
+  const canBegin = examBreakCanBegin({ seconds, status: session.status, starting });
+  const loadingNext = starting || session.status === 'loading';
+  const begin = () => {
+    if (!canBegin) return;
+    setStarting(true);
+    session.startExamNextSection(go);
+  };
 
   return (
     <div style={{ padding: '40px 48px', maxWidth: 720, margin: '0 auto' }}>
@@ -65,8 +72,8 @@ function ExamBreak({ go }) {
       )}
 
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        <Button variant="primary" size="lg" loading={starting || session.status === 'loading'} disabled={starting || session.status === 'loading'} onClick={begin}>
-          {starting || session.status === 'loading' ? `Loading ${SECTION_LABEL[nextSection]}…` : `Begin ${SECTION_LABEL[nextSection]}`}
+        <Button variant="primary" size="lg" loading={loadingNext} disabled={!canBegin} onClick={begin}>
+          {loadingNext ? `Loading ${SECTION_LABEL[nextSection]}…` : `Begin ${SECTION_LABEL[nextSection]}`}
         </Button>
         <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', padding: '10px 12px', background: 'var(--brand-blue-soft)', borderRadius: 'var(--radius-md)' }}>
           <Icon name="info" style={{ width: 14, height: 14, color: 'var(--brand-blue)', marginTop: 2 }} />

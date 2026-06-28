@@ -3,7 +3,7 @@ import React from 'react';
 
 /**
  * Sidebar — left nav for the Sixteen app. Pass `items` with optional groups.
- * Items: { id, label, icon, badge?, group? }
+ * Items: { id, label, icon, badge?, dot?, group? }
  */
 export function Sidebar({
   items,
@@ -98,8 +98,15 @@ function SidebarItem({ item, active, compact, onClick }) {
         width: '100%',
       }}
     >
-      <span style={{ display: 'inline-flex', width: 18, height: 18, alignItems: 'center', justifyContent: 'center' }}>
+      <span style={{ position: 'relative', display: 'inline-flex', width: 18, height: 18, alignItems: 'center', justifyContent: 'center' }}>
         {item.icon}
+        {item.dot && (
+          <span style={{
+            position: 'absolute', top: -1, right: -1, width: 7, height: 7, borderRadius: '50%',
+            background: active ? '#fff' : 'var(--brand-blue)',
+            boxShadow: '0 0 0 2px var(--surface-sidebar)',
+          }} />
+        )}
       </span>
       {!compact && (
         <>

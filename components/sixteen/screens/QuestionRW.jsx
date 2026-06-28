@@ -5,10 +5,12 @@ import { Icon } from '@/components/sixteen';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
 import Highlightable from '@/components/sixteen/test/Highlightable';
 import { ExitTest } from '@/components/sixteen/test/ExitTest';
+import ModuleCountdown from '@/components/sixteen/test/ModuleCountdown';
 import ModuleReview from '@/components/sixteen/test/ModuleReview';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
+import { useLiveBroadcast } from '@/components/sixteen/session/LiveBroadcastContext';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
-import { moduleReviewAction, moduleSubmitDisabled, moduleTimerIsRunning, moduleTimerSeconds } from '@/lib/practice/sessionLogic.mjs';
+import { moduleReviewAction, moduleSubmitDisabled, moduleTimerIsRunning, moduleTimerResetKey, moduleTimerSeconds } from '@/lib/practice/sessionLogic.mjs';
 
 // QuestionRW — Bluebook-faithful Reading & Writing question screen, driven by
 // real College Board questions from the practice session.
@@ -20,6 +22,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
     OptionRow, QuestionPalette, FlagButton, QuestionNumberBadge,
   } = NS;
   const session = usePracticeSession();
+  const report = useLiveBroadcast();
   const q = session.current;
   const isDrill = session.mode === 'drill';
 
@@ -32,28 +35,41 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
   const [annotate, setAnnotate] = React.useState(false);
   const [reviewOpen, setReviewOpen] = React.useState(false);
   const [marks, setMarks] = React.useState({}); // questionId -> { passage, stem } highlighted HTML
-  const expiredRef = React.useRef(false);
+  const timerResetKey = moduleTimerResetKey({ section: 'rw', moduleKey: session.activeModule?.key });
   const timerRunning = moduleTimerIsRunning({
     status: session.status,
     timing: session.config?.timing,
     hasQuestion: !!q,
   });
 
+  // Stream this screen's read-only-relevant UI state to a watching tutor.
   React.useEffect(() => {
-    if (!timerRunning) return;
-    const id = setInterval(() => setSeconds((s) => Math.max(0, s - 1)), 1000);
-    return () => clearInterval(id);
-  }, [timerRunning]);
-
-  // Bluebook auto-advances when a module's time runs out (you can't return to it).
-  React.useEffect(() => {
-    if (!timerRunning) return;
-    if (seconds === 0 && !expiredRef.current) {
-      expiredRef.current = true;
-      session.finishModule(go);
-    }
+    const qq = session.current;
+    if (session.status !== 'active' || !qq) return;
+    const r = session.responses[qq.id] || {};
+    const sectionLabel = session.activeModule?.label === 'Drill'
+      ? 'Reading & Writing — Drill'
+      : `Reading & Writing, ${session.activeModule?.label || 'Module 1'}`;
+    const palette = session.questions.map((x, i) => ({
+      answered: !!session.responses[x.id]?.value,
+      flagged: !!session.responses[x.id]?.flagged,
+      current: i === session.index,
+    }));
+    report({
+      type: 'mcq',
+      selected: r.value || null,
+      flagged: !!r.flagged,
+      marks: marks[qq.id] || null,
+      eliminated: [...(elim[qq.id] || new Set())],
+      annotateActive: annotate,
+      seconds,
+      timerRunning,
+      sectionLabel,
+      palette,
+    });
+    // Depending on the whole `session` object would re-broadcast every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seconds, timerRunning]);
+  }, [report, session.status, session.current, session.index, session.responses, session.questions, session.activeModule, marks, elim, annotate, seconds, timerRunning]);
 
   if (session.status === 'loading') return <TestLoading label="Loading Reading & Writing questions…" />;
   if (session.status === 'error') return <TestMessage title="Couldn't load questions" body={session.error} onHome={() => go('practice-setup', { domain: 'rw' })} />;
@@ -115,7 +131,18 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--test-canvas)' }}>
       <TestHeader
         sectionLabel={session.activeModule?.label === 'Drill' ? 'Reading & Writing — Drill' : `Reading & Writing, ${session.activeModule?.label || 'Module 1'}`}
-        timer={session.config?.timing === 'untimed' ? null : <Timer seconds={seconds} hidden={hidden} onToggleHide={() => setHidden(!hidden)} />}
+        timer={session.config?.timing === 'untimed' ? null : (
+          <ModuleCountdown
+            key={timerResetKey}
+            Timer={Timer}
+            section="rw"
+            timerRunning={timerRunning}
+            hidden={hidden}
+            onToggleHide={() => setHidden(!hidden)}
+            onSecondsChange={setSeconds}
+            onExpire={() => session.finishModule(go)}
+          />
+        )}
         tools={<>
           <ExitTest mode={session.mode} onConfirm={() => session.exitSession(go)} />
           <ToolBtn label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />

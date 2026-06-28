@@ -1,7 +1,12 @@
 import "server-only";
 import type { Difficulty, Question, QuestionStub, Section } from "./types";
 import { listStubs, getQuestion } from "./client";
-import { arrangeMathQuestions } from "../practice/sessionLogic.mjs";
+import {
+  allocateDomainCounts,
+  arrangeMathQuestions,
+  SAT_MODULE_DOMAIN_RANGES,
+  selectPretestQuestions,
+} from "../practice/sessionLogic.mjs";
 
 // Assembles a full SAT module the way College Board's published test
 // specification describes it, rather than a flat random shuffle:
@@ -30,21 +35,6 @@ interface DomainRange {
   min: number;
   max: number;
 }
-
-// Per-MODULE domain ranges (≈ half the per-section published weightings).
-const RW_RANGES: DomainRange[] = [
-  { code: "CAS", min: 6, max: 8 }, // Craft and Structure (~28%)
-  { code: "INI", min: 6, max: 7 }, // Information and Ideas (~26%)
-  { code: "SEC", min: 5, max: 8 }, // Standard English Conventions (~26%)
-  { code: "EOI", min: 4, max: 6 }, // Expression of Ideas (~20%)
-];
-
-const MATH_RANGES: DomainRange[] = [
-  { code: "H", min: 6, max: 8 }, // Algebra (~35%)
-  { code: "P", min: 6, max: 8 }, // Advanced Math (~35%)
-  { code: "Q", min: 2, max: 4 }, // Problem-Solving and Data Analysis (~15%)
-  { code: "S", min: 2, max: 4 }, // Geometry and Trigonometry (~15%)
-];
 
 const OPERATIONAL_TOTAL: Record<Section, number> = { rw: 25, math: 20 };
 const PRETEST_PER_MODULE = 2;
@@ -85,28 +75,6 @@ function shuffle<T>(arr: T[]): T[] {
 
 function stubId(s: QuestionStub): string {
   return s.externalId ?? s.ibn ?? s.questionId;
-}
-
-/** Randomly distribute `total` across domains, respecting each [min, max]. */
-function allocateCounts(ranges: DomainRange[], total: number): Record<string, number> {
-  const counts: Record<string, number> = {};
-  for (const r of ranges) counts[r.code] = r.min;
-  let rem = total - ranges.reduce((s, r) => s + r.min, 0);
-  while (rem > 0) {
-    const open = ranges.filter((r) => counts[r.code] < r.max);
-    if (!open.length) break;
-    const pick = open[Math.floor(Math.random() * open.length)];
-    counts[pick.code] += 1;
-    rem -= 1;
-  }
-  while (rem < 0) {
-    const open = ranges.filter((r) => counts[r.code] > r.min);
-    if (!open.length) break;
-    const pick = open[Math.floor(Math.random() * open.length)];
-    counts[pick.code] -= 1;
-    rem += 1;
-  }
-  return counts;
 }
 
 /** Split `n` across E/M/H by the profile weights (largest-remainder rounding). */
@@ -263,18 +231,22 @@ async function drawPretests(
   profile: DifficultyProfile,
   usedIds: Set<string>,
   seen?: Set<string>,
+  sprTarget: number | null = null,
+  overdraw = OVERDRAW,
 ): Promise<Question[]> {
   const candidates = stubs.filter((s) => !usedIds.has(stubId(s)));
-  const picked = pickStubs(candidates, PRETEST_PER_MODULE + OVERDRAW, profile, seen);
+  const picked = pickStubs(candidates, PRETEST_PER_MODULE + overdraw, profile, seen);
   const fetched = await Promise.all(picked.map((s) => getQuestion(s)));
-  const out: Question[] = [];
+  const available: Question[] = [];
+  const availableIds = new Set<string>();
   for (const q of fetched) {
-    if (!q?.stemHtml || usedIds.has(q.id)) continue;
-    usedIds.add(q.id);
-    out.push({ ...q, pretest: true });
-    if (out.length >= PRETEST_PER_MODULE) break;
+    if (!q?.stemHtml || usedIds.has(q.id) || availableIds.has(q.id)) continue;
+    available.push(q);
+    availableIds.add(q.id);
   }
-  return out;
+  const selected = selectPretestQuestions(available, { limit: PRETEST_PER_MODULE, sprTarget }) as Question[];
+  for (const q of selected) usedIds.add(q.id);
+  return selected.map((q) => ({ ...q, pretest: true }));
 }
 
 export interface ModuleDrawOptions {
@@ -290,7 +262,7 @@ export interface ModuleDrawOptions {
 /** Draw one blueprinted, test-ordered SAT module of real CB questions. */
 export async function drawModule(opts: ModuleDrawOptions): Promise<Question[]> {
   const { section, profile = "mixed", exclude, seen } = opts;
-  const ranges = section === "rw" ? RW_RANGES : MATH_RANGES;
+  const ranges = SAT_MODULE_DOMAIN_RANGES[section] as DomainRange[];
   const total = OPERATIONAL_TOTAL[section];
 
   let stubs = await listStubs(section);
@@ -304,7 +276,7 @@ export async function drawModule(opts: ModuleDrawOptions): Promise<Question[]> {
     byDomain.set(s.domain, g);
   }
 
-  const counts = allocateCounts(ranges, total);
+  const counts = allocateDomainCounts(ranges, total) as Record<string, number>;
 
   const buffer = section === "math" ? MATH_OVERDRAW : OVERDRAW;
   const picked: QuestionStub[] = [];
@@ -329,6 +301,6 @@ export async function drawModule(opts: ModuleDrawOptions): Promise<Question[]> {
   // Math: per-domain counts + grid-ins, then one easiest-to-hardest ramp.
   const kept = selectMath(questions, counts, seen);
   const usedIds = new Set(kept.map((q) => q.id));
-  const pretests = await drawPretests(stubs, profile, usedIds, seen);
+  const pretests = await drawPretests(stubs, profile, usedIds, seen, 1, MATH_OVERDRAW);
   return arrangeMath([...kept, ...pretests]);
 }

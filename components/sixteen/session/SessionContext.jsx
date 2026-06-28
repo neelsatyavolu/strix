@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { scaledSectionScore, routeModule2 } from '@/lib/scoring/curve';
-import { modulePretestIds, moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
+import { isSectionEstimateMode, modulePretestIds, moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
 
 // Client-side practice session. Shapes:
 //  - drill / mock-m1: a single fixed set of real CB questions, scored on submit.
@@ -123,7 +123,7 @@ async function persistSession(state, times = {}) {
     if (!all.length) return;
     // Whole section (skipped items count as wrong) — drives the scaled score.
     const full = buildReview(all.map((x) => x.q), state.responses, state.pretestIds, state.mode);
-    const scaled = state.mode && state.mode !== 'drill'
+    const scaled = isSectionEstimateMode(state.mode)
       ? scaledSectionScore(full.correct, full.total, state.m2Variant === 'easy', state.section)
       : null;
     // Answered questions only — drives score / accuracy and what we store.
@@ -449,7 +449,7 @@ export function PracticeSessionProvider({ children }) {
     if (!allQs.length) return null;
     const base = buildResult(allQs);
     const routedEasy = state.m2Variant === 'easy';
-    const scaled = state.mode && state.mode !== 'drill'
+    const scaled = isSectionEstimateMode(state.mode)
       ? scaledSectionScore(base.correct, base.total, routedEasy, state.section)
       : null;
     return {
