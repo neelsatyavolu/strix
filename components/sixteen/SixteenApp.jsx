@@ -54,7 +54,13 @@ function App() {
   // timer, calculator). Folded into the live broadcast below.
   const [liveUi, setLiveUi] = React.useState({});
   const report = React.useCallback((partial) => {
-    setLiveUi((prev) => ({ ...prev, ...partial }));
+    setLiveUi((prev) => ({
+      ...prev,
+      ...partial,
+      // `calc` arrives as separate partials (open / state / geometry) — deep-merge
+      // so a later update never clobbers fields an earlier one set.
+      ...(partial.calc ? { calc: { ...prev.calc, ...partial.calc } } : {}),
+    }));
   }, []);
 
   // A fresh accept-invite redirect (/app?watch=<id>) lands straight in Tutor view
@@ -98,6 +104,17 @@ function App() {
   const live = React.useMemo(() => {
     const q = sessionLive.current;
     if (sessionLive.status !== 'active' || !q) return { active: false };
+    const resp = sessionLive.responses[q.id] || {};
+    // Fields derivable from the session are computed here so they never depend on
+    // the active screen's report() timing.
+    const base = q.section === 'math' ? 'Math' : 'Reading & Writing';
+    const label = sessionLive.activeModule?.label;
+    const sectionLabel = label === 'Drill' ? `${base} — Drill` : `${base}, ${label || 'Module 1'}`;
+    const palette = sessionLive.questions.map((x, i) => ({
+      answered: !!sessionLive.responses[x.id]?.value,
+      flagged: !!sessionLive.responses[x.id]?.flagged,
+      current: i === sessionLive.index,
+    }));
     return {
       active: true,
       index: sessionLive.index,
@@ -107,24 +124,24 @@ function App() {
       stemHtml: q.stemHtml,
       stimulusHtml: q.stimulusHtml,
       choices: q.choices,
-      selected: sessionLive.responses[q.id]?.value || null,
-      // Rich mirror fields reported by the active screen (may be undefined until
-      // the screen reports; consumers must tolerate missing keys).
-      flagged: liveUi.flagged,
-      type: liveUi.type,
+      selected: resp.value || null,
+      flagged: !!resp.flagged,
+      type: q.type === 'spr' ? 'spr' : 'mcq',
+      sectionLabel,
+      palette,
+      // Genuinely screen-local UI (highlights, strikethroughs, timer, calculator)
+      // arrives via the active screen's report(); undefined until it reports.
       marks: liveUi.marks,
       eliminated: liveUi.eliminated,
       annotateActive: liveUi.annotateActive,
       seconds: liveUi.seconds,
       timerRunning: liveUi.timerRunning,
-      sectionLabel: liveUi.sectionLabel,
-      palette: liveUi.palette,
       calc: liveUi.calc,
     };
     // `questions` is a fresh [] each render while idle — depend on its length
     // (a stable primitive) instead so we don't re-broadcast every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionLive.status, sessionLive.current, sessionLive.index, sessionLive.questions.length, sessionLive.responses, liveUi]);
+  }, [sessionLive.status, sessionLive.current, sessionLive.index, sessionLive.questions.length, sessionLive.responses, sessionLive.activeModule, liveUi]);
 
   const studentLive = useStudentLive(user?.id, live, role === 'student' && tutorOn);
   const tutorWatch = useTutorWatch(students, watchedStudentId, user?.id);
@@ -141,11 +158,10 @@ function App() {
   // module; drop back to the dashboard when they finish (only if we were on it).
   const wasLive = React.useRef(false);
   React.useEffect(() => {
-    if (watchedIsLive && !wasLive.current) { wasLive.current = true; setView('live-session'); }
-    if (!watchedIsLive && wasLive.current) {
-      wasLive.current = false;
-      setView((v) => (v === 'live-session' ? 'dashboard' : v));
-    }
+    if (watchedIsLive === wasLive.current) return; // only act on a live↔idle transition
+    wasLive.current = watchedIsLive;
+    // Functional update (allowed in effects) syncs the view to the realtime transition.
+    setView((v) => (watchedIsLive ? 'live-session' : (v === 'live-session' ? 'dashboard' : v)));
   }, [watchedIsLive]);
 
   // Entering tutor view auto-opens the chat with the student; with one student

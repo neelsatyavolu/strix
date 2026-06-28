@@ -42,34 +42,22 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
     hasQuestion: !!q,
   });
 
-  // Stream this screen's read-only-relevant UI state to a watching tutor.
+  // Stream this screen's genuinely-local UI state (highlights, strikethroughs,
+  // annotate mode, timer) to a watching tutor. Selection/flag/palette/section
+  // label are derived from the session in SixteenApp, not reported here.
   React.useEffect(() => {
     const qq = session.current;
     if (session.status !== 'active' || !qq) return;
-    const r = session.responses[qq.id] || {};
-    const sectionLabel = session.activeModule?.label === 'Drill'
-      ? 'Reading & Writing — Drill'
-      : `Reading & Writing, ${session.activeModule?.label || 'Module 1'}`;
-    const palette = session.questions.map((x, i) => ({
-      answered: !!session.responses[x.id]?.value,
-      flagged: !!session.responses[x.id]?.flagged,
-      current: i === session.index,
-    }));
     report({
-      type: 'mcq',
-      selected: r.value || null,
-      flagged: !!r.flagged,
       marks: marks[qq.id] || null,
       eliminated: [...(elim[qq.id] || new Set())],
       annotateActive: annotate,
       seconds,
       timerRunning,
-      sectionLabel,
-      palette,
     });
     // Depending on the whole `session` object would re-broadcast every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [report, session.status, session.current, session.index, session.responses, session.questions, session.activeModule, marks, elim, annotate, seconds, timerRunning]);
+  }, [report, session.status, session.current, marks, elim, annotate, seconds, timerRunning]);
 
   if (session.status === 'loading') return <TestLoading label="Loading Reading & Writing questions…" />;
   if (session.status === 'error') return <TestMessage title="Couldn't load questions" body={session.error} onHome={() => go('practice-setup', { domain: 'rw' })} />;

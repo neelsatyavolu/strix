@@ -30,7 +30,11 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
   const isMath = live.section === 'math';
   const sectionLabel = live.sectionLabel || (isMath ? 'Math' : 'Reading & Writing');
   const elimSet = new Set(live.eliminated || []);
-  const palette = live.palette || [];
+  // Prefer the student's real per-question palette; fall back to a grid derived
+  // from the question count so the popover always renders something sensible.
+  const palette = (live.palette && live.palette.length)
+    ? live.palette
+    : Array.from({ length: live.total || 0 }, (_, i) => ({ current: i === (live.index ?? -1), answered: false, flagged: false }));
   const items = palette.map((p, i) => ({
     n: i + 1,
     status: p.current ? 'current' : p.answered ? 'answered' : 'unanswered',
@@ -38,6 +42,9 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
     onClick: NOOP,
   }));
   const calc = live.calc;
+  // Grid-in (student-produced response): the derived type, or any math question
+  // that has no multiple-choice options.
+  const isSpr = live.type === 'spr' || (isMath && !(live.choices && live.choices.length));
 
   return (
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--test-canvas)' }}>
@@ -68,7 +75,7 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
             />
             <Highlightable className="cb-stem" html={live.stemHtml} active={false} value={live.marks?.stem} onChange={NOOP} />
 
-            {live.type === 'spr' ? (
+            {isSpr ? (
               <div style={{ marginTop: 24, maxWidth: 320 }}>
                 <label style={{ display: 'block', font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginBottom: 8 }}>Student’s answer</label>
                 <div style={{ width: '100%', padding: '12px 14px', font: 'var(--role-title-sm)', fontFamily: 'var(--font-mono)', color: 'var(--test-ink)', background: 'var(--test-canvas)', border: '2px solid var(--border-2)', borderRadius: 'var(--radius-md)', minHeight: 22 }}>

@@ -22,6 +22,12 @@ interface CatAgg {
 // half-life of ~23 answers — recent practice drives the recommendation while
 // older attempts still count a little.
 const RECENCY_DECAY = 0.97;
+// Shrinkage pseudo-count for a category's recency-weighted accuracy. With little
+// recent practice the figure is pulled toward the category's all-time rate, so a
+// short cherry-picked drill (e.g. 10 easy algebra questions) can't alone flip a
+// domain to "mastered". As recent volume grows, the prior fades and the number
+// converges to the pure recency-weighted accuracy. ~8 ≈ eight recent answers.
+const RECENT_SHRINK_K = 8;
 // Don't recommend a category the student has barely touched.
 const FOCUS_MIN_ATTEMPTS = 3;
 // Don't recommend a category the student has already mastered — anything at
@@ -78,11 +84,12 @@ export async function GET(req: NextRequest) {
 
   const rwCats = emptyCats(RW_DOMAINS);
   const mathCats = emptyCats(MATH_DOMAINS);
-  // Per-section tallies. wDone/wCorrect carry the same recency weighting as the
-  // category aggregates so section + overall accuracy reflect recent practice.
-  const sectionTotals: Record<Section, { done: number; correct: number; wDone: number; wCorrect: number }> = {
-    rw: { done: 0, correct: 0, wDone: 0, wCorrect: 0 },
-    math: { done: 0, correct: 0, wDone: 0, wCorrect: 0 },
+  // Per-section raw counts (questions answered, correct/incorrect bars). The
+  // section's headline recency accuracy is NOT tallied here — it's a per-domain
+  // blend (see below) so one recently-drilled topic can't speak for the section.
+  const sectionTotals: Record<Section, { done: number; correct: number }> = {
+    rw: { done: 0, correct: 0 },
+    math: { done: 0, correct: 0 },
   };
 
   // `answers` is ordered newest-first, so `rank` counts how many more-recent
@@ -101,10 +108,8 @@ export async function GET(req: NextRequest) {
     const cats = meta.section === "math" ? mathCats : rwCats;
     const c = cats.get(meta.domain);
     sectionTotals[meta.section].done += 1;
-    sectionTotals[meta.section].wDone += w;
     if (row.is_correct) {
       sectionTotals[meta.section].correct += 1;
-      sectionTotals[meta.section].wCorrect += w;
     }
     if (c) {
       c.done += 1;
@@ -117,27 +122,50 @@ export async function GET(req: NextRequest) {
   }
 
   // Section/overall accuracy: keep done/correct for raw counts (questions
-  // answered, correct/incorrect bars) and add recentAccuracy as the headline
-  // figure — recency-weighted, null when nothing's been answered.
-  const sectionAccuracy = (t: { done: number; correct: number; wDone: number; wCorrect: number }) => ({
+  // answered, correct/incorrect bars) and take recentAccuracy as a separate
+  // headline figure — a per-domain blend, null when nothing's been answered.
+  const sectionAccuracy = (t: { done: number; correct: number }, recentAccuracy: number | null) => ({
     done: t.done,
     correct: t.correct,
     accuracy: t.done ? Math.round((t.correct / t.done) * 100) : 0,
-    recentAccuracy: t.wDone > 0 ? Math.round((t.wCorrect / t.wDone) * 100) : null,
+    recentAccuracy,
   });
 
+  // Headline recency accuracy for a section: blend its domains' (already
+  // recency-weighted, shrunk) accuracies, weighted by attempts per domain — so a
+  // burst in one topic moves only that topic's share, not the whole section.
+  const blendRecent = (cats: ReadonlyArray<{ recentAccuracy: number | null; done: number }>) => {
+    let num = 0;
+    let den = 0;
+    for (const c of cats) {
+      if (c.recentAccuracy == null) continue;
+      num += c.recentAccuracy * c.done;
+      den += c.done;
+    }
+    return den > 0 ? Math.round(num / den) : null;
+  };
+
   const toCatList = (m: Map<string, CatAgg>) =>
-    [...m.entries()].map(([code, c]) => ({
-      id: c.id,
-      code, // CB domain code (e.g. "INI", "H") — used for category drill-down
-      label: c.label,
-      done: c.done,
-      correct: c.correct,
-      accuracy: c.done ? Math.round((c.correct / c.done) * 100) : 0,
-      // Recency-weighted accuracy — recent attempts count for more. Null when
-      // the category has no answered questions.
-      recentAccuracy: c.wDone > 0 ? Math.round((c.wCorrect / c.wDone) * 100) : null,
-    }));
+    [...m.entries()].map(([code, c]) => {
+      // All-time rate is the shrinkage prior: with thin recent practice the
+      // recency figure is pulled toward it, so a small drill can't dominate.
+      const rawRate = c.done ? c.correct / c.done : 0;
+      return {
+        id: c.id,
+        code, // CB domain code (e.g. "INI", "H") — used for category drill-down
+        label: c.label,
+        done: c.done,
+        correct: c.correct,
+        accuracy: c.done ? Math.round((c.correct / c.done) * 100) : 0,
+        // Recency-weighted accuracy, shrunk toward the all-time rate by a
+        // pseudo-count. Recent attempts count for more, but a thin recent sample
+        // stays near the established level. Null when nothing's been answered.
+        recentAccuracy:
+          c.wDone > 0
+            ? Math.round(((c.wCorrect + RECENT_SHRINK_K * rawRate) / (c.wDone + RECENT_SHRINK_K)) * 100)
+            : null,
+      };
+    });
 
   const rwList = toCatList(rwCats);
   const mathList = toCatList(mathCats);
@@ -222,16 +250,17 @@ export async function GET(req: NextRequest) {
         total: rwScore != null && mathScore != null ? rwScore + mathScore : null,
       },
       sectionTotals: {
-        rw: sectionAccuracy(sectionTotals.rw),
-        math: sectionAccuracy(sectionTotals.math),
-        // Overall recency-weighted accuracy across both sections — weights are a
-        // single global ranking over all answers, so the tallies sum directly.
-        overall: sectionAccuracy({
-          done: sectionTotals.rw.done + sectionTotals.math.done,
-          correct: sectionTotals.rw.correct + sectionTotals.math.correct,
-          wDone: sectionTotals.rw.wDone + sectionTotals.math.wDone,
-          wCorrect: sectionTotals.rw.wCorrect + sectionTotals.math.wCorrect,
-        }),
+        rw: sectionAccuracy(sectionTotals.rw, blendRecent(rwList)),
+        math: sectionAccuracy(sectionTotals.math, blendRecent(mathList)),
+        // Overall recency accuracy across both sections — blend every domain's
+        // accuracy by attempts, so no single topic or section dominates.
+        overall: sectionAccuracy(
+          {
+            done: sectionTotals.rw.done + sectionTotals.math.done,
+            correct: sectionTotals.rw.correct + sectionTotals.math.correct,
+          },
+          blendRecent([...rwList, ...mathList]),
+        ),
       },
       lastSession: { rw: lastSession("rw"), math: lastSession("math") },
       trend: { rw: scoreTrend("rw"), math: scoreTrend("math") },

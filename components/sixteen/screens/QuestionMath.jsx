@@ -26,7 +26,10 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   } = NS;
   const session = usePracticeSession();
   const report = useLiveBroadcast();
-  const reportCalc = React.useMemo(() => throttle((state) => report({ calc: { open: true, state } }), 200), [report]);
+  // Mirror the calculator to a watching tutor. The separate updates (open toggle,
+  // Desmos change, drag/resize) each report a partial `calc`; report() deep-merges
+  // the calc key so they accumulate into {open,state,pos,size} without clobbering.
+  const reportCalc = React.useMemo(() => throttle((state) => report({ calc: { state } }), 200), [report]);
   const q = session.current;
   const isDrill = session.mode === 'drill';
 
@@ -63,34 +66,26 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
     }
   }, [q?.id, calcOpen, formulaOpen, marks]);
 
-  // Stream this screen's read-only-relevant UI state to a watching tutor.
+  // Stream this screen's genuinely-local UI state (highlights, strikethroughs,
+  // annotate mode, timer) to a watching tutor. Selection/flag/palette/section
+  // label are derived from the session in SixteenApp, not reported here.
   React.useEffect(() => {
     const qq = session.current;
     if (session.status !== 'active' || !qq) return;
-    const r = session.responses[qq.id] || {};
-    const sectionLabel = session.activeModule?.label === 'Drill'
-      ? 'Math — Drill'
-      : `Math, ${session.activeModule?.label || 'Module 1'}`;
-    const palette = session.questions.map((x, i) => ({
-      answered: !!session.responses[x.id]?.value,
-      flagged: !!session.responses[x.id]?.flagged,
-      current: i === session.index,
-    }));
     report({
-      type: qq.type === 'spr' ? 'spr' : 'mcq',
-      selected: r.value || null,
-      flagged: !!r.flagged,
       marks: marks[qq.id] || null,
       eliminated: [...(elim[qq.id] || new Set())],
       annotateActive: annotate,
       seconds,
       timerRunning,
-      sectionLabel,
-      palette,
     });
     // Depending on the whole `session` object would re-broadcast every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [report, session.status, session.current, session.index, session.responses, session.questions, session.activeModule, marks, elim, annotate, seconds, timerRunning]);
+  }, [report, session.status, session.current, marks, elim, annotate, seconds, timerRunning]);
+
+  // Report the calculator open/close the instant the student toggles it, so the
+  // tutor's mirror opens it without waiting for Desmos to finish loading.
+  React.useEffect(() => { report({ calc: { open: calcOpen } }); }, [calcOpen, report]);
 
   if (session.status === 'loading') return <TestLoading label="Loading Math questions…" />;
   if (session.status === 'error') return <TestMessage title="Couldn't load questions" body={session.error} onHome={() => go('practice-setup', { domain: 'math' })} />;
@@ -248,9 +243,9 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
 
       {calcOpen && (
         <DesmosPanel
-          onClose={() => { setCalcOpen(false); report({ calc: { open: false } }); }}
+          onClose={() => setCalcOpen(false)}
           onStateChange={reportCalc}
-          onGeometry={({ pos, size }) => report({ calc: { open: true, pos, size } })}
+          onGeometry={({ pos, size }) => report({ calc: { pos, size } })}
         />
       )}
       {formulaOpen && <FormulaSheet onClose={() => setFormulaOpen(false)} />}
