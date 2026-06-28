@@ -1,12 +1,12 @@
 // Leitner-box spaced repetition for missed questions.
 //
-// A missed question enters box 1 (due tomorrow). Each time it's answered
-// correctly on review it advances a box and the next-due interval grows; a miss
-// resets it to box 1. Once it clears the last box it has graduated (mastered)
-// and stops resurfacing. Intervals are capped so nothing is ever scheduled past
-// the test date.
+// A missed question enters box 1 (due immediately, so it surfaces right away and
+// keeps surfacing until answered correctly). Each time it's answered correctly on
+// review it advances a box and the next-due interval grows; a miss resets it to
+// box 1. Once it clears the last box it has graduated (mastered) and stops
+// resurfacing. Intervals are capped so nothing is ever scheduled past the test date.
 
-export const INTERVALS_DAYS = [1, 3, 7, 16, 35]; // box 1..5
+export const INTERVALS_DAYS = [0, 1, 3, 7, 16]; // box 1..5 (box 1 = due now)
 export const MAX_BOX = INTERVALS_DAYS.length;
 
 // The box a question moves to after an attempt. A correct answer advances one
