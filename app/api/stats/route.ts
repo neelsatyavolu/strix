@@ -25,6 +25,12 @@ interface CatAgg {
 // sessions), so the last few sittings drive the number while count still matters
 // (a big section outweighs a 2-question drill even one tier older).
 const RECENCY_DECAY = 0.8;
+// Difficulty weight: harder questions carry more signal about ability, so they
+// count more in BOTH directions — more credit when right, more cost when wrong.
+// This also corrects for adaptive routing: strong students get harder Module 2
+// content (see lib/cb/adaptive.ts), which would otherwise suppress their raw %.
+// Only recency-weighted accuracy is affected; raw done/correct stay literal.
+const DIFF_WEIGHT: Record<string, number> = { E: 1, M: 1.5, H: 2 };
 // Shrinkage pseudo-count for a category's recency-weighted accuracy. With little
 // recent practice the figure is pulled toward the category's all-time rate, so a
 // short cherry-picked drill (e.g. 10 easy algebra questions) can't alone flip a
@@ -78,7 +84,7 @@ export async function GET(req: NextRequest) {
   // down accuracy — only attempts where the student actually answered count.
   const { data: answers, error: aErr } = await supabase
     .from("answers")
-    .select("session_id, is_correct, value, created_at, session_questions!inner(section, domain), practice_sessions!inner(mode, config)")
+    .select("session_id, is_correct, value, created_at, session_questions!inner(section, domain, difficulty), practice_sessions!inner(mode, config)")
     .eq("user_id", targetId)
     .not("value", "is", null)
     .order("created_at", { ascending: false })
@@ -101,7 +107,7 @@ export async function GET(req: NextRequest) {
   const sessionTier = new Map<string, number>();
   for (const row of answers ?? []) {
     if (!String((row as { value: unknown }).value ?? "").trim()) continue; // skipped
-    const sq = (row as { session_questions: { section: Section; domain: string } | { section: Section; domain: string }[] }).session_questions;
+    const sq = (row as { session_questions: { section: Section; domain: string; difficulty?: string } | { section: Section; domain: string; difficulty?: string }[] }).session_questions;
     const meta = Array.isArray(sq) ? sq[0] : sq;
     if (!meta) continue;
     const psRaw = (row as { practice_sessions: { mode: string; config: Record<string, unknown> | null } | { mode: string; config: Record<string, unknown> | null }[] | null }).practice_sessions;
@@ -109,7 +115,9 @@ export async function GET(req: NextRequest) {
     if (!matchesScope(ps?.mode ?? null, ps?.config ?? null)) continue;
     const sid = String((row as { session_id: string | null }).session_id ?? "");
     if (!sessionTier.has(sid)) sessionTier.set(sid, sessionTier.size);
-    const w = Math.pow(RECENCY_DECAY, sessionTier.get(sid) ?? 0);
+    const w =
+      Math.pow(RECENCY_DECAY, sessionTier.get(sid) ?? 0) *
+      (DIFF_WEIGHT[meta.difficulty ?? "M"] ?? 1.5);
     const cats = meta.section === "math" ? mathCats : rwCats;
     const c = cats.get(meta.domain);
     sectionTotals[meta.section].done += 1;
