@@ -8,6 +8,12 @@ import { ReviewList } from '@/components/sixteen/screens/ScoreReport';
 
 const SECTION_LABEL = { rw: 'Reading & Writing', math: 'Math' };
 
+// A score range only renders if it's fully populated with finite numbers —
+// older exams (taken before ranges existed) have no valid range, so we hide it
+// rather than show "NaN–NaN".
+const finiteRange = (r) =>
+  !!r && Number.isFinite(r.estimate) && Number.isFinite(r.lower) && Number.isFinite(r.upper);
+
 function ExamReport({ go }) {
   const { Card, Button } = SixteenNS;
   const session = usePracticeSession();
@@ -25,7 +31,7 @@ function ExamReport({ go }) {
   const rw = exam.results.find((r) => r.section === 'rw');
   const math = exam.results.find((r) => r.section === 'math');
   const total = compositeScore(rw?.scaled, math?.scaled);
-  const totalRange = rw?.scaledRange && math?.scaledRange ? compositeRange(rw.scaledRange, math.scaledRange) : null;
+  const totalRange = finiteRange(rw?.scaledRange) && finiteRange(math?.scaledRange) ? compositeRange(rw.scaledRange, math.scaledRange) : null;
 
   return (
     <div style={{ padding: '36px 48px', maxWidth: 920, margin: '0 auto' }}>
@@ -85,7 +91,7 @@ function SectionTile({ s }) {
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginTop: 2 }}>
         <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', fontSize: 40, fontWeight: 600, color }}>{s.scaled}</span>
         <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>/800</span>
-        {s.scaledRange && (
+        {finiteRange(s.scaledRange) && (
           <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>· likely {s.scaledRange.lower}–{s.scaledRange.upper}</span>
         )}
       </div>

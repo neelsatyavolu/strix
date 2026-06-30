@@ -7,6 +7,11 @@ import { ExplainPanel } from '@/components/sixteen/stats/ExplainPanel';
 
 // ScoreReport — drill report or scaled section report, from the live session.
 
+// Only render a score range when it's fully populated with finite numbers
+// (older sessions predate ranges, so they have none — hide rather than show NaN).
+const finiteRange = (r) =>
+  !!r && Number.isFinite(r.lower) && Number.isFinite(r.upper);
+
 function ScoreReport({ go }) {
   const session = usePracticeSession();
   if (session.status === 'submitted' && session.result) {
@@ -61,7 +66,7 @@ function SectionReport({ go, session }) {
             <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
               {isEstimate ? `Estimated ${sectionLabel} · /800` : 'Operational questions correct'}
             </div>
-            {isEstimate && r.scaledRange && (
+            {isEstimate && finiteRange(r.scaledRange) && (
               <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginTop: 4, fontFamily: 'var(--font-mono)' }}>
                 Likely {r.scaledRange.lower}–{r.scaledRange.upper}
               </div>

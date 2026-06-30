@@ -11,6 +11,51 @@ export const SECTION_SHORT = { rw: 'R&W', math: 'Math' };
 export const MODE_LABEL = { drill: 'drill', 'mock-m1': 'Module 1', 'mock-full': 'Full section' };
 export const MODE_VARIANT = { drill: 'neutral', 'mock-m1': 'brand', 'mock-full': 'success' };
 
+const HOUR = 3600 * 1000;
+
+// A full SAT is stored as two `mock-full` sessions flagged with config.exam.
+export function isExam(s) { return !!s.config?.exam; }
+
+function buildTest(key, halves) {
+  const rw = halves.find((h) => h.section === 'rw') || null;
+  const math = halves.find((h) => h.section === 'math') || null;
+  const composite = rw?.scaled_score != null && math?.scaled_score != null ? rw.scaled_score + math.scaled_score : null;
+  const at = Math.max(...halves.map((h) => new Date(h.created_at).getTime()));
+  return { key, rw, math, composite, at };
+}
+
+// Pair a full SAT's two halves into one test. Prefer the shared config.examId
+// (written for tests taken after that change shipped); fall back to
+// opposite-section halves taken within a few hours of each other for older data.
+export function pairTests(rows) {
+  const byId = new Map();
+  const loose = [];
+  for (const s of rows) {
+    const id = s.config?.examId;
+    if (id) { if (!byId.has(id)) byId.set(id, []); byId.get(id).push(s); }
+    else loose.push(s);
+  }
+  const tests = [...byId.entries()].map(([id, halves]) => buildTest(id, halves));
+
+  loose.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  const used = new Set();
+  for (let i = 0; i < loose.length; i++) {
+    if (used.has(i)) continue;
+    const a = loose[i];
+    const halves = [a];
+    used.add(i);
+    for (let j = i + 1; j < loose.length; j++) {
+      if (used.has(j)) continue;
+      const b = loose[j];
+      if (b.section !== a.section && Math.abs(new Date(a.created_at).getTime() - new Date(b.created_at).getTime()) <= 3 * HOUR) {
+        halves.push(b); used.add(j); break;
+      }
+    }
+    tests.push(buildTest(`ts-${a.id}`, halves));
+  }
+  return tests.sort((a, b) => b.at - a.at);
+}
+
 // "Math · Algebra" for targeted drills; falls back to the section label.
 export function sessionTitle(s) {
   const sec = SECTION_LABEL[s.section] ?? s.section;

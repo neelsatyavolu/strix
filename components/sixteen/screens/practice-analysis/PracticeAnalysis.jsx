@@ -4,7 +4,7 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { useStats, useSessions } from '@/lib/data/hooks';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
-import { SECTION_SHORT, relTime, StatCardLite, EmptyState } from '@/components/sixteen/stats/shared';
+import { SECTION_SHORT, relTime, StatCardLite, EmptyState, isExam, pairTests } from '@/components/sixteen/stats/shared';
 
 // PracticeAnalysis — one shared screen behind the three "You" tabs. Each tab
 // scopes to one practice type and shows: a summary, where you're losing points
@@ -17,54 +17,10 @@ const KIND = {
   modules:  { title: 'Practice Modules',  subtitle: 'Your completed single timed modules.',             scope: 'modules',  emptyTitle: 'No modules yet' },
 };
 
-const HOUR = 3600 * 1000;
-
-function isExam(s) { return !!s.config?.exam; }
-
 function filterByKind(sessions, kind) {
   if (kind === 'modules') return sessions.filter((s) => s.mode === 'mock-m1');
   if (kind === 'sections') return sessions.filter((s) => s.mode === 'mock-full' && !isExam(s));
   return sessions.filter((s) => s.mode === 'mock-full' && isExam(s)); // tests
-}
-
-function buildTest(key, halves) {
-  const rw = halves.find((h) => h.section === 'rw') || null;
-  const math = halves.find((h) => h.section === 'math') || null;
-  const composite = rw?.scaled_score != null && math?.scaled_score != null ? rw.scaled_score + math.scaled_score : null;
-  const at = Math.max(...halves.map((h) => new Date(h.created_at).getTime()));
-  return { key, rw, math, composite, at };
-}
-
-// Pair a full SAT's two halves. Prefer the shared config.examId (written for
-// tests taken after that change shipped); fall back to opposite-section halves
-// taken within a few hours of each other for older data.
-function pairTests(rows) {
-  const byId = new Map();
-  const loose = [];
-  for (const s of rows) {
-    const id = s.config?.examId;
-    if (id) { if (!byId.has(id)) byId.set(id, []); byId.get(id).push(s); }
-    else loose.push(s);
-  }
-  const tests = [...byId.entries()].map(([id, halves]) => buildTest(id, halves));
-
-  loose.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-  const used = new Set();
-  for (let i = 0; i < loose.length; i++) {
-    if (used.has(i)) continue;
-    const a = loose[i];
-    const halves = [a];
-    used.add(i);
-    for (let j = i + 1; j < loose.length; j++) {
-      if (used.has(j)) continue;
-      const b = loose[j];
-      if (b.section !== a.section && Math.abs(new Date(a.created_at).getTime() - new Date(b.created_at).getTime()) <= 3 * HOUR) {
-        halves.push(b); used.add(j); break;
-      }
-    }
-    tests.push(buildTest(`ts-${a.id}`, halves));
-  }
-  return tests.sort((a, b) => b.at - a.at);
 }
 
 function summaryFor(kind, attempts, tests) {
