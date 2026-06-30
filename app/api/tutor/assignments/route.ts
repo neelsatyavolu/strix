@@ -38,8 +38,8 @@ const NewAssignment = z.object({
   category: z.string().max(40).nullable().optional(),
   difficulty: z.enum(["all", "easy", "med", "hard"]).default("all"),
   count: z.number().int().min(1).max(50).default(10),
-  // Official Bluebook test number (5–10); null = randomized Question Bank.
-  bluebookTest: z.number().int().min(5).max(10).nullable().optional(),
+  // Official Bluebook test number (5–11); null = randomized Question Bank.
+  bluebookTest: z.number().int().min(5).max(11).nullable().optional(),
   // For a single module: m1 = Module 1, easy = Module 2A, hard = Module 2B.
   moduleKey: z.enum(["m1", "easy", "hard"]).nullable().optional(),
   dueAt: z.string().nullable().optional(),

@@ -2,7 +2,7 @@
 -- 0008_assignment_full_tests.sql
 -- Extend assignments beyond drills: tutors can retract open assignments and
 -- assign a full-length SAT, a single full section, or a single module — with a
--- specific Bluebook official test (5–10) or the randomized Question Bank.
+-- specific Bluebook official test (5–11) or the randomized Question Bank.
 -- ---------------------------------------------------------------------------
 
 -- A full SAT covers both sections, so section is null for those.
@@ -26,7 +26,7 @@ alter table public.assignments
 
 -- New target/result columns (all null for legacy drill rows).
 alter table public.assignments
-  add column if not exists bluebook_test smallint check (bluebook_test between 5 and 10),
+  add column if not exists bluebook_test smallint check (bluebook_test between 5 and 11),
   add column if not exists module_key    text     check (module_key in ('m1', 'easy', 'hard')),
   add column if not exists scaled_score  smallint, -- section (mock-full) or composite (mock-exam) shown on completion
   add column if not exists session_id_2  uuid references public.practice_sessions (id) on delete set null; -- Math half of a full SAT

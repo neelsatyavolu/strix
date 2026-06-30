@@ -54,7 +54,7 @@ function BBChip({ active, muted, disabled, onClick, children }) {
 }
 
 // Pick the form an official assignment runs on: Question Bank (randomized) or a
-// specific Bluebook test 5–10 (taken tests are muted, never disabled).
+// specific Bluebook test 5–11 (taken tests are muted, never disabled).
 function BluebookPicker({ available, completed, value, onChange, allowQuestionBank }) {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
