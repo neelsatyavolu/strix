@@ -119,6 +119,8 @@ function PracticeAnalysis({ go, kind, studentId = null, readOnly = false }) {
         <DiagnosticEmpty cfg={cfg} go={go} readOnly={readOnly} />
       ) : (
         <>
+          {kind === 'tests' && <LastScoreHeader test={tests[0]} go={go} />}
+
           <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap: 12, marginBottom: 16}}>
             {summaryFor(kind, attempts, tests).map((c) => (
               <Card key={c.label} padding="md"><StatCardLite label={c.label} value={c.value} /></Card>
@@ -219,26 +221,59 @@ function AttemptList({ attempts, kind, go }) {
   );
 }
 
+function LastScoreHeader({ test, go }) {
+  const { Card, Button, ScoreBadge } = SixteenNS;
+  if (!test) return null;
+  const { rw, math, composite, at } = test;
+  const canView = !!(rw || math);
+  return (
+    <Card padding="lg" style={{ marginBottom: 16 }}>
+      <div style={{ display:'flex', gap: 24, alignItems:'center', flexWrap:'wrap' }}>
+        {composite != null ? (
+          <ScoreBadge value={composite} label="Last score" />
+        ) : (
+          <div>
+            <div style={{ font:'var(--role-title-md)', color:'var(--text-primary)' }}>Last test incomplete</div>
+            <div style={{ font:'var(--role-body)', color:'var(--text-secondary)', marginTop: 2 }}>Finish both sections for a 1600-scale score.</div>
+          </div>
+        )}
+        {composite != null && <div style={{ width: 1, height: 56, background:'var(--border-1)' }} />}
+        {rw?.scaled_score != null && <ScoreBadge value={rw.scaled_score} max={800} label="Reading & Writing" domain="rw" size="md" />}
+        {math?.scaled_score != null && <ScoreBadge value={math.scaled_score} max={800} label="Math" domain="math" size="md" />}
+        <div style={{ flex: 1, minWidth: 0 }} />
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap: 8 }}>
+          <span style={{ font:'var(--role-caption)', color:'var(--text-tertiary)' }}>{relTime(new Date(at).toISOString())}</span>
+          {canView && (
+            <Button variant="secondary" onClick={() => go('test-review', { rwId: rw?.id, mathId: math?.id })}>View full review</Button>
+          )}
+        </div>
+      </div>
+    </Card>
+  );
+}
+
 function TestList({ tests, go }) {
-  const { Card } = SixteenNS;
+  const { Card, Button } = SixteenNS;
+  const cols = '130px 90px 1fr 1fr auto';
   return (
     <Card padding="none">
       <div style={{
-        display:'grid', gridTemplateColumns:'130px 90px 1fr 1fr', gap: 12, alignItems:'center',
+        display:'grid', gridTemplateColumns: cols, gap: 12, alignItems:'center',
         padding:'10px 16px', font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)',
         color:'var(--text-tertiary)', borderBottom:'1px solid var(--border-1)',
       }}>
-        <span>When</span><span style={{textAlign:'right'}}>Total</span><span>Reading &amp; Writing</span><span>Math</span>
+        <span>When</span><span style={{textAlign:'right'}}>Total</span><span>Reading &amp; Writing</span><span>Math</span><span/>
       </div>
       {tests.map((t, i) => (
         <div key={t.key} style={{
-          display:'grid', gridTemplateColumns:'130px 90px 1fr 1fr', gap: 12, alignItems:'center',
+          display:'grid', gridTemplateColumns: cols, gap: 12, alignItems:'center',
           padding:'12px 16px', borderTop: i === 0 ? 0 : '1px solid var(--border-1)',
         }}>
           <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>{relTime(new Date(t.at).toISOString())}</span>
           <span style={{font:'var(--role-numeric)', fontWeight:600, color:'var(--text-primary)', textAlign:'right'}}>{t.composite ?? '—'}</span>
           <HalfCell half={t.rw} label="R&W" go={go} />
           <HalfCell half={t.math} label="Math" go={go} />
+          <Button variant="secondary" size="sm" disabled={!(t.rw || t.math)} onClick={() => go('test-review', { rwId: t.rw?.id, mathId: t.math?.id })}>View</Button>
         </div>
       ))}
     </Card>

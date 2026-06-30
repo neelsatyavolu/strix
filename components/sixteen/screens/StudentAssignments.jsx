@@ -8,6 +8,40 @@ import { useAssignments } from '@/lib/data/hooks';
 // overdue / upcoming / completed, with the tutor's feedback shown inline.
 
 const SECTION_LABEL = { rw: 'Reading & Writing', math: 'Math' };
+const MODULE_LABEL = { m1: 'Module 1', easy: 'Module 2A', hard: 'Module 2B' };
+
+function bbLabel(t) { return t ? `Bluebook ${t}` : 'Question Bank'; }
+
+// One-line description of an assignment, scaled to its type.
+function typeMeta(a) {
+  if (a.mode === 'mock-exam') return `Full SAT · ${bbLabel(a.bluebook_test)}`;
+  if (a.mode === 'mock-full') return `${SECTION_LABEL[a.section]} section · ${bbLabel(a.bluebook_test)}`;
+  if (a.mode === 'mock-m1') return `${SECTION_LABEL[a.section]} ${MODULE_LABEL[a.module_key] || 'Module 1'} · ${bbLabel(a.bluebook_test)}`;
+  return `${SECTION_LABEL[a.section]} · ${a.question_count} questions`;
+}
+
+// A full SAT has no single section, so it gets a 'SAT' chip.
+function TypeBadge({ assignment: a, Badge }) {
+  if (a.mode === 'mock-exam') return <Badge variant="neutral" dot>SAT</Badge>;
+  return <Badge variant={a.section} dot>{a.section === 'rw' ? 'R&W' : 'Math'}</Badge>;
+}
+
+// Completed-score cell — exam/section show the scaled estimate; drill/module raw.
+function ScoreCell({ assignment: a }) {
+  const numStyle = (color) => ({ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color });
+  if (a.mode === 'mock-exam' || a.mode === 'mock-full') {
+    return a.scaled_score != null ? <span style={numStyle('var(--text-primary)')}>{a.scaled_score}</span> : null;
+  }
+  const pct = a.score_total ? Math.round((a.score_correct / a.score_total) * 100) : 0;
+  return <span style={numStyle(pct >= 75 ? 'var(--success)' : 'var(--warning)')}>{a.score_correct}/{a.score_total}</span>;
+}
+
+// A full SAT opens the composite test-review; everything else the session detail.
+function reviewTarget(a) {
+  if (!a.session_id) return null;
+  if (a.mode === 'mock-exam') return ['test-review', { rwId: a.session_id, mathId: a.session_id_2 }];
+  return ['session-detail', { id: a.session_id }];
+}
 
 function dueText(iso) {
   if (!iso) return 'No due date';
@@ -43,6 +77,19 @@ function StudentAssignments({ go }) {
   const past = list.filter((a) => a.status === 'completed');
 
   const start = (a) => {
+    if (a.mode === 'mock-exam') {
+      session.start({ mode: 'mock-exam', bluebookTest: a.bluebook_test ?? null, assignmentId: a.id });
+      go('rw-question', { kind: 'module' }); // a full SAT always opens with R&W
+      return;
+    }
+    if (a.mode === 'mock-m1' || a.mode === 'mock-full') {
+      session.start({
+        mode: a.mode, section: a.section, bluebookTest: a.bluebook_test ?? null,
+        moduleKey: a.module_key ?? null, timing: 'total', assignmentId: a.id,
+      });
+      go(a.section === 'math' ? 'math-question' : 'rw-question', { kind: 'module' });
+      return;
+    }
     session.start({
       section: a.section, mode: 'drill', category: a.domain || undefined,
       difficulty: a.difficulty || 'all', count: a.question_count || 10, timing: 'untimed', assignmentId: a.id,
@@ -53,11 +100,11 @@ function StudentAssignments({ go }) {
   const openCard = (a, tone) => (
     <Card key={a.id} padding="lg">
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <Badge variant={a.section} dot>{a.section === 'rw' ? 'R&W' : 'Math'}</Badge>
+        <TypeBadge assignment={a} Badge={Badge} />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ font: 'var(--role-body-lg)', color: 'var(--text-primary)' }}>{a.title}</div>
           <div style={{ font: 'var(--role-caption)', color: tone === 'overdue' ? 'var(--error)' : 'var(--text-tertiary)' }}>
-            {SECTION_LABEL[a.section]} · {a.question_count} questions · {dueText(a.due_at)}
+            {typeMeta(a)} · {dueText(a.due_at)}
           </div>
         </div>
         <Button variant="primary" size="sm" icon={<Icon name="play" size={12} />} onClick={() => start(a)}>Start</Button>
@@ -98,22 +145,20 @@ function StudentAssignments({ go }) {
           {past.length > 0 && (
             <Section title="Completed" count={past.length}>
               {past.map((a) => {
-                const pct = a.score_total ? Math.round((a.score_correct / a.score_total) * 100) : 0;
+                const target = reviewTarget(a);
                 return (
                   <Card key={a.id} padding="lg">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <Badge variant={a.section} dot>{a.section === 'rw' ? 'R&W' : 'Math'}</Badge>
+                      <TypeBadge assignment={a} Badge={Badge} />
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ font: 'var(--role-body-lg)', color: 'var(--text-primary)' }}>{a.title}</div>
                         <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
                           {a.completed_at ? `Completed ${new Date(a.completed_at).toLocaleDateString()}` : 'Completed'}
                         </div>
                       </div>
-                      <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color: pct >= 75 ? 'var(--success)' : 'var(--warning)' }}>
-                        {a.score_correct}/{a.score_total}
-                      </span>
-                      {a.session_id && (
-                        <Button variant="outline" size="sm" onClick={() => go('session-detail', { id: a.session_id })}>Review</Button>
+                      <ScoreCell assignment={a} />
+                      {target && (
+                        <Button variant="outline" size="sm" onClick={() => go(target[0], target[1])}>Review</Button>
                       )}
                     </div>
                     <FeedbackNote text={a.feedback} />

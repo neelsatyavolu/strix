@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { scaledSectionScore, sectionScoreRange, routeModule2 } from '@/lib/scoring/curve';
+import { scaledSectionScore, sectionScoreRange, routeModule2, compositeScore } from '@/lib/scoring/curve';
 import { isSectionEstimateMode, modulePretestIds, moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
 
 // Client-side practice session. Shapes:
@@ -209,14 +209,20 @@ async function persistSession(state, times = {}) {
         flagged: !!r?.flagged,
       };
     });
-    await fetch('/api/sessions', {
+    const isExam = state.mode === 'mock-exam';
+    // A full SAT completes once, via PATCH /api/assignments after both halves are
+    // saved — so its halves must NOT carry assignmentId (which would auto-complete
+    // the assignment here, twice and without the composite). Single sessions keep
+    // it. assignmentId: undefined is dropped by JSON.stringify.
+    const persistConfig = { ...(state.config || {}), ...(isExam ? { exam: true, assignmentId: undefined } : {}) };
+    const res = await fetch('/api/sessions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         // 'mock-exam' isn't a DB mode; each section persists as a full section.
-        mode: state.mode === 'mock-exam' ? 'mock-full' : state.mode,
+        mode: isExam ? 'mock-full' : state.mode,
         section: state.section,
-        config: { ...(state.config || {}), exam: state.mode === 'mock-exam' },
+        config: persistConfig,
         score_correct: base.correct,
         score_total: base.total,
         accuracy: base.accuracy,
@@ -224,9 +230,35 @@ async function persistSession(state, times = {}) {
         questions,
       }),
     });
+    const json = await res.json().catch(() => null);
+    return json?.success ? json.data?.id ?? null : null;
   } catch {
     /* persistence is best-effort; never blocks the result UI */
+    return null;
   }
+}
+
+// A full SAT that fulfilled a tutor assignment completes once, after both halves
+// are saved — linking both half-sessions and the composite 400–1600. Best-effort:
+// a hiccup here never blocks the exam report.
+async function completeExamAssignment(state, results) {
+  const assignmentId = state.config?.assignmentId;
+  if (!assignmentId) return;
+  const rw = results.find((r) => r.section === 'rw');
+  const math = results.find((r) => r.section === 'math');
+  if (!rw?.sessionId || !math?.sessionId) return;
+  try {
+    await fetch('/api/assignments', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: assignmentId,
+        rwSessionId: rw.sessionId,
+        mathSessionId: math.sessionId,
+        scaled: compositeScore(rw.scaled, math.scaled),
+      }),
+    });
+  } catch { /* best-effort */ }
 }
 
 const EMPTY = {
@@ -304,10 +336,16 @@ export function PracticeSessionProvider({ children }) {
           difficulty: config.difficulty,
           limit: config.count ?? 10,
         });
+      } else if (mode === 'mock-m1' && (config.moduleKey === 'easy' || config.moduleKey === 'hard') && config.bluebookTest) {
+        // A single Module 2A/2B is only defined by an official Bluebook form.
+        questions = await fetchOfficialModule({ test: config.bluebookTest, section, moduleKey: config.moduleKey });
       } else {
         questions = await fetchModule1({ section, bluebookTest: config.bluebookTest });
       }
-      const moduleLabel = isDrill ? 'Drill' : isReview ? 'Review' : 'Module 1';
+      const moduleLabel = isDrill ? 'Drill' : isReview ? 'Review'
+        : mode === 'mock-m1' && config.moduleKey === 'easy' ? 'Module 2A'
+        : mode === 'mock-m1' && config.moduleKey === 'hard' ? 'Module 2B'
+        : 'Module 1';
       setState((s) => ({
         ...s,
         status: 'active',
@@ -510,8 +548,8 @@ export function PracticeSessionProvider({ children }) {
 
     // Section complete.
     if (s.exam) {
-      persistSession(s, finalizeTimes());
-      const snapshot = sectionSnapshot(s);
+      const sessionId = await persistSession(s, finalizeTimes());
+      const snapshot = { ...sectionSnapshot(s), sessionId };
       const nextIndex = s.exam.index + 1;
       const results = [...s.exam.results, snapshot];
       if (nextIndex < s.exam.sections.length) {
@@ -519,6 +557,7 @@ export function PracticeSessionProvider({ children }) {
         go('exam-break');
       } else {
         setState((prev) => ({ ...prev, status: 'submitted', phase: 'done', exam: { ...prev.exam, results } }));
+        completeExamAssignment(s, results); // best-effort; full SAT completes once, here
         go('exam-report');
       }
       return;

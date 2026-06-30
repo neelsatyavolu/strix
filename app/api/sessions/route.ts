@@ -108,7 +108,10 @@ export async function POST(req: NextRequest) {
       } catch { /* review scheduling is best-effort */ }
     }
 
-    // If this drill fulfilled a tutor assignment, mark it complete with the score.
+    // If this single session fulfilled a tutor assignment (drill / single module /
+    // single section), mark it complete with the score. A full SAT is two sessions
+    // and completes via PATCH /api/assignments instead, so its halves don't carry
+    // assignmentId here. Guarded to 'assigned' so a retracted assignment stays put.
     const assignmentId = typeof (p.config as { assignmentId?: unknown }).assignmentId === "string"
       ? (p.config as { assignmentId: string }).assignmentId
       : null;
@@ -121,10 +124,12 @@ export async function POST(req: NextRequest) {
             session_id: session.id,
             score_correct: p.score_correct,
             score_total: p.score_total,
+            scaled_score: p.scaled_score ?? null,
             completed_at: new Date().toISOString(),
           })
           .eq("id", assignmentId)
-          .eq("student_id", user.id);
+          .eq("student_id", user.id)
+          .eq("status", "assigned");
       } catch { /* assignment completion is best-effort */ }
     }
 

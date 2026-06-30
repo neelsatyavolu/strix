@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { resolveTargetUser } from "@/lib/tutor/scope";
 import { RW_DOMAINS, MATH_DOMAINS, DOMAIN_TO_CATEGORY } from "@/lib/cb/domains";
+import { rescoreSessions } from "@/lib/scoring/rescore";
 import type { Section } from "@/lib/cb/types";
 
 export const runtime = "nodejs";
@@ -209,11 +210,18 @@ export async function GET(req: NextRequest) {
   // 2. sessions for scores-over-time + latest section scores + last-session accuracy
   const { data: sessions, error: sErr } = await supabase
     .from("practice_sessions")
-    .select("section, mode, config, scaled_score, accuracy, created_at")
+    .select("id, section, mode, config, scaled_score, score_correct, score_total, accuracy, created_at")
     .eq("user_id", targetId)
     .order("created_at", { ascending: true })
     .limit(500);
   if (sErr) return NextResponse.json({ success: false, error: sErr.message }, { status: 500 });
+
+  // Recompute full-section scores with the current curve (matches the sessions
+  // API) so the dashboard estimate/trend reflect the latest scoring, not the
+  // value frozen at completion. Falls back to the stored score if not rescored.
+  const rescored = await rescoreSessions(supabase, sessions ?? []);
+  const scoreOf = (s: { id: string; scaled_score: number | null }) =>
+    rescored.get(s.id)?.estimate ?? s.scaled_score;
 
   // A "score" only comes from a full-length section. Full sections and full SATs
   // both persist as mode "mock-full"; Module-1-only practice ("mock-m1") is half a
@@ -224,7 +232,7 @@ export async function GET(req: NextRequest) {
   // independently — so a fresh Math section updates Math without touching R&W.
   const latestScore = (section: Section) => {
     const list = scored.filter((s) => s.section === section);
-    return list.length ? list[list.length - 1].scaled_score : null;
+    return list.length ? scoreOf(list[list.length - 1]) : null;
   };
   // The most recent session in a section, described by *what it was* — full SAT,
   // full section, single module, or a topic drill — so the dashboard can label
@@ -246,8 +254,8 @@ export async function GET(req: NextRequest) {
   const scoreTrend = (section: Section) => {
     const list = scored.filter((s) => s.section === section);
     if (list.length < 2) return null;
-    const latest = list[list.length - 1].scaled_score;
-    const prev = list[list.length - 2].scaled_score;
+    const latest = scoreOf(list[list.length - 1]);
+    const prev = scoreOf(list[list.length - 2]);
     return latest != null && prev != null ? latest - prev : null;
   };
 
@@ -279,7 +287,7 @@ export async function GET(req: NextRequest) {
       trend: { rw: scoreTrend("rw"), math: scoreTrend("math") },
       categories: { rw: rwList, math: mathList },
       focus,
-      overTime: scored.map((s) => ({ section: s.section, score: s.scaled_score, at: s.created_at })),
+      overTime: scored.map((s) => ({ section: s.section, score: scoreOf(s), at: s.created_at })),
       sessionCount: (sessions ?? []).length,
     },
   });

@@ -21,6 +21,7 @@ import PracticeModules from './screens/PracticeModules';
 import PracticeSections from './screens/PracticeSections';
 import CategoryDetail from './screens/CategoryDetail';
 import SessionDetail from './screens/SessionDetail';
+import TestReview from './screens/TestReview';
 import TutorInvite from './screens/TutorInvite';
 import TutorChat from './screens/TutorChat';
 import Settings from './screens/Settings';
@@ -267,13 +268,13 @@ function App() {
   // map view → sidebar id
   const sidebarId = {
     'dashboard': 'home',
-    'practice-setup': 'home',
+    'practice-setup': 'practice',
     'plan': 'plan',
     'review': 'review',
     'tutor-assignments': 'assignments',
     'student-assignments': 'assignments',
-    'rw-question': 'rw',
-    'math-question': 'math',
+    'rw-question': 'practice',
+    'math-question': 'practice',
     'score-report': 'home',
     'exam-break': 'home',
     'exam-report': 'home',
@@ -284,6 +285,7 @@ function App() {
     'practice-sections': 'practice-sections',
     'category-detail': 'stats',
     'session-detail': 'stats',
+    'test-review': 'practice-tests',
     'live-session': 'live-session',
     'tutor-chat': 'tutor',
     'tutor-invite': 'tutor',
@@ -321,14 +323,13 @@ function App() {
     { id:'stats',    label:'Stats',       icon: I('bar-chart-3'),  group:'Dashboard' },
     { id:'sessions', label:'Sessions',    icon: I('list'),         group:'Dashboard' },
     { id:'assignments', label:'Assignments', icon: I('clipboard-list'), group:'Dashboard' },
-    // Practice — targeted drills + the study loop (Study Plan + Review render the
+    // Studying — targeted drills + the study loop (Study Plan + Review render the
     // watched student's data read-only when tutoring)
-    { id:'rw',       label:'Reading & Writing', icon: I('book-open'),       group:'Practice' },
-    { id:'math',     label:'Math',              icon: I('square-function'), group:'Practice' },
-    { id:'plan',     label:'Study Plan',        icon: I('target'),          group:'Practice' },
-    { id:'review',   label:'Review',            icon: I('rotate-ccw'),      group:'Practice', badge: reviewDue || undefined },
+    { id:'practice', label:'Practice',          icon: I('book-open'),       group:'Studying' },
+    { id:'plan',     label:'Study Plan',        icon: I('target'),          group:'Studying' },
+    { id:'review',   label:'Review',            icon: I('rotate-ccw'),      group:'Studying', badge: reviewDue || undefined },
     // Full Practice — timed, exam-shaped surfaces
-    { id:'practice-modules',  label:'Practice Modules',  icon: I('square'),         group:'Full Practice' },
+    { id:'practice-modules',  label:'Practice Modules',  icon: I('package'),        group:'Full Practice' },
     { id:'practice-sections', label:'Practice Sections', icon: I('layers'),         group:'Full Practice' },
     { id:'practice-tests',    label:'Practice Exams',     icon: I('graduation-cap'), group:'Full Practice' },
     // You — people + config
@@ -351,8 +352,7 @@ function App() {
         else if (id === 'plan') go('plan');
         else if (id === 'review') go('review');
         else if (id === 'assignments') go(isTutor ? 'tutor-assignments' : 'student-assignments');
-        else if (id === 'rw')   go('practice-setup', { domain: 'rw' });
-        else if (id === 'math') go('practice-setup', { domain: 'math' });
+        else if (id === 'practice') go('practice-setup');
         else if (id === 'stats') go('stats');
         else if (id === 'practice-tests') go('practice-tests');
         else if (id === 'practice-modules') go('practice-modules');
@@ -480,6 +480,7 @@ function App() {
     case 'practice-sections': screen = <PracticeSections go={go} {...watchProps} />; break;
     case 'category-detail': screen = <CategoryDetail go={go} section={viewProps.section} domain={viewProps.domain} label={viewProps.label} {...watchProps} />; break;
     case 'session-detail':  screen = <SessionDetail go={go} id={viewProps.id} {...watchProps} />; break;
+    case 'test-review':     screen = <TestReview go={go} rwId={viewProps.rwId} mathId={viewProps.mathId} {...watchProps} />; break;
     case 'live-session':    screen = <LiveTestView live={tutorWatch.watchedLive} studentName={watchedName} />; break;
     case 'tutor-invite':    screen = <TutorInvite go={go} />; break;
     case 'tutor-chat':      screen = <TutorChat go={go} />; break;

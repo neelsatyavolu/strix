@@ -17,13 +17,25 @@ type FormManifest = Record<
 
 const FORMS = formsJson as FormManifest;
 
-/** Available Bluebook test numbers, highest first (the default play order). */
+// A form is playable only if every module (M1 / 2A / 2B) is populated for both
+// sections — a partially-captured test (e.g. one still missing its hard module)
+// stays out of the picker so a routed student can never hit an empty module.
+function isComplete(test: string): boolean {
+  const f = FORMS[test];
+  if (!f) return false;
+  return (["rw", "math"] as const).every((sec) =>
+    (["m1", "easy", "hard"] as const).every((m) => (f[sec]?.[m]?.length ?? 0) > 0),
+  );
+}
+
+/** Available (complete) Bluebook test numbers, highest first (default play order). */
 export const OFFICIAL_TESTS: number[] = Object.keys(FORMS)
+  .filter(isComplete)
   .map(Number)
   .sort((a, b) => b - a);
 
 export function isOfficialTest(test: number): boolean {
-  return Object.prototype.hasOwnProperty.call(FORMS, String(test));
+  return isComplete(String(test));
 }
 
 /**
