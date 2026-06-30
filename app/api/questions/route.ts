@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { drawQuestions } from "@/lib/cb/client";
 import { drawModule } from "@/lib/cb/blueprint";
+import { getOfficialModule } from "@/lib/cb/officialForms";
 import { CATEGORY_TO_DOMAIN } from "@/lib/cb/domains";
 import { createClient } from "@/lib/supabase/server";
 import { difficultyMix, recentAccuracy } from "@/lib/cb/adaptive";
@@ -87,10 +88,14 @@ const DIFF_MAP: Record<string, Difficulty | null> = {
 
 const QuerySchema = z.object({
   section: z.enum(["rw", "math"]),
-  // "drill" = filtered flat set; "module" = a blueprinted full SAT module.
-  mode: z.enum(["drill", "module"]).optional().default("drill"),
+  // "drill" = filtered flat set; "module" = a blueprinted full SAT module;
+  // "official" = a real Bluebook form module (exact questions, fixed order).
+  mode: z.enum(["drill", "module", "official"]).optional().default("drill"),
   // module-adaptive difficulty: Module 1 = "mixed"; Module 2A/2B = easy/hard.
   profile: z.enum(["mixed", "easy", "hard"]).optional().default("mixed"),
+  // official-form selectors: which Bluebook test and which module slot.
+  test: z.coerce.number().int().optional(),
+  moduleKey: z.enum(["m1", "easy", "hard"]).optional(),
   // comma-separated question ids to exclude (e.g. Module 1 items when drawing 2).
   exclude: z.string().optional(),
   // design category id (info/craft/.../alg/...) OR raw CB domain code
@@ -109,10 +114,32 @@ export async function GET(req: NextRequest) {
       { status: 400 },
     );
   }
-  const { section, mode, profile, exclude, category, domain, difficulty, limit } = parsed.data;
+  const { section, mode, profile, test, moduleKey, exclude, category, domain, difficulty, limit } = parsed.data;
 
   const domainCode = domain || (category ? CATEGORY_TO_DOMAIN[category] : undefined);
   const diff = DIFF_MAP[difficulty] ?? null;
+
+  // Official Bluebook form: serve the exact real-form module, in order. No
+  // dedup/exclude — the form's modules are already distinct by construction.
+  if (mode === "official") {
+    if (test == null || !moduleKey) {
+      return NextResponse.json(
+        { success: false, data: null, error: "official mode requires test and moduleKey" },
+        { status: 400 },
+      );
+    }
+    try {
+      const questions = await getOfficialModule(test, section, moduleKey);
+      return NextResponse.json({
+        success: true,
+        data: { questions, count: questions.length },
+        error: null,
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to load official form";
+      return NextResponse.json({ success: false, data: null, error: message }, { status: 502 });
+    }
+  }
 
   try {
     const seen = await loadSeen(section);

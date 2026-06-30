@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { resolveTargetUser } from "@/lib/tutor/scope";
 import { enrollReviews } from "@/lib/review/enroll";
+import { rescoreSessions } from "@/lib/scoring/rescore";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -151,5 +152,12 @@ export async function GET(req: NextRequest) {
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-  return NextResponse.json({ success: true, data: { sessions: data ?? [] } });
+  // Recompute full-section scores with the current curve so historical tests
+  // reflect the latest scoring, not the value frozen at completion.
+  const rescored = await rescoreSessions(supabase, data ?? []);
+  const sessions = (data ?? []).map((s) => {
+    const r = rescored.get(s.id);
+    return r ? { ...s, scaled_score: r.estimate, scaledRange: { lower: r.lower, upper: r.upper } } : s;
+  });
+  return NextResponse.json({ success: true, data: { sessions } });
 }

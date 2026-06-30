@@ -31,7 +31,7 @@ function NoResults({ go }) {
 }
 
 function SectionReport({ go, session }) {
-  const { Card, Button, Badge } = SixteenNS;
+  const { Card, Button } = SixteenNS;
   const r = session.result;
   const sectionLabel = r.section === 'math' ? 'Math' : 'Reading & Writing';
   const sectionColor = r.section === 'math' ? 'var(--math-color)' : 'var(--rw-color)';
@@ -48,7 +48,7 @@ function SectionReport({ go, session }) {
       </h1>
       <p style={{ margin: '4px 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
         {isEstimate
-          ? `Practice estimate from a representative curve${routedLabel ? `. This app routed you to ${routedLabel}.` : '.'} Real SAT scores use College Board's private item-level scoring.`
+          ? `Estimate from College Board's official per-test scoring tables, with a confidence range${routedLabel ? `. This app routed you to ${routedLabel}.` : '.'} Real SAT scores use College Board's private item-level scoring.`
           : 'Module 1 practice shows raw operational accuracy only. Real SAT section scores use both modules and College Board\'s private item-level scoring.'}
       </p>
 
@@ -61,6 +61,11 @@ function SectionReport({ go, session }) {
             <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
               {isEstimate ? `Estimated ${sectionLabel} · /800` : 'Operational questions correct'}
             </div>
+            {isEstimate && r.scaledRange && (
+              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginTop: 4, fontFamily: 'var(--font-mono)' }}>
+                Likely {r.scaledRange.lower}–{r.scaledRange.upper}
+              </div>
+            )}
           </div>
           <div style={{ flex: 1, minWidth: 240 }}>
             <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 8 }}>
@@ -80,11 +85,7 @@ function SectionReport({ go, session }) {
       </Card>
 
       <h2 style={{ margin: '0 0 12px', font: 'var(--role-title-md)' }}>Question review</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {r.review.map((item, i) => (
-          <ReviewItem key={item.question.id} item={item} n={i + 1} />
-        ))}
-      </div>
+      <ReviewList review={r.review} />
 
       <div style={{ marginTop: 22, display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
         <Button variant="ghost" onClick={() => { session.reset(); go('dashboard'); }}>Back to home</Button>
@@ -95,7 +96,7 @@ function SectionReport({ go, session }) {
 }
 
 function DrillReport({ go, session }) {
-  const { Card, Button, Badge } = SixteenNS;
+  const { Card, Button } = SixteenNS;
   const r = session.result;
   const isReview = session.config?.mode === 'review';
   const sectionColor = r.section === 'math' ? 'var(--math-color)' : 'var(--rw-color)';
@@ -135,16 +136,53 @@ function DrillReport({ go, session }) {
       </Card>
 
       <h2 style={{ margin: '0 0 12px', font: 'var(--role-title-md)' }}>Question review</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {r.review.map((item, i) => (
-          <ReviewItem key={item.question.id} item={item} n={i + 1} />
-        ))}
-      </div>
+      <ReviewList review={r.review} />
 
       <div style={{ marginTop: 22, display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
         <Button variant="ghost" onClick={() => { session.reset(); go('dashboard'); }}>Back to home</Button>
         <Button variant="primary" onClick={() => { session.reset(); go('practice-setup', { domain: r.section }); }}>Practice again</Button>
       </div>
+    </div>
+  );
+}
+
+const MODULE_FALLBACK_LABELS = { m1: 'Module 1', m2: 'Module 2' };
+
+// Renders the question review, grouped by module when a session spans more than
+// one (full sections / full SATs carry a `module`/`moduleLabel` per item).
+// Single-module sessions (drills) fall through to a flat, header-less list.
+export function ReviewList({ review }) {
+  const groups = [];
+  for (const item of review) {
+    const label = item.moduleLabel || MODULE_FALLBACK_LABELS[item.module] || null;
+    const last = groups[groups.length - 1];
+    if (last && last.label === label) last.items.push(item);
+    else groups.push({ label, items: [item] });
+  }
+  const showHeaders = groups.length > 1;
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      {groups.map((g, gi) => (
+        <React.Fragment key={gi}>
+          {showHeaders && g.label && <ModuleDivider label={g.label} items={g.items} first={gi === 0} />}
+          {g.items.map((item, i) => (
+            <ReviewItem key={item.question.id || `${gi}-${i}`} item={item} n={i + 1} />
+          ))}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+function ModuleDivider({ label, items, first }) {
+  const scored = items.filter((it) => !it.isPretest);
+  const correct = scored.filter((it) => it.isCorrect).length;
+  return (
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginTop: first ? 0 : 14, marginBottom: 2 }}>
+      <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>{label}</span>
+      <span style={{ flex: 1, height: 1, background: 'var(--border-1)' }} />
+      <span style={{ font: 'var(--role-caption)', fontFamily: 'var(--font-mono)', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>{correct} / {scored.length} correct</span>
     </div>
   );
 }
@@ -169,6 +207,10 @@ export function ReviewItem({ item, n }) {
         {item.isPretest && <Badge variant="neutral" size="sm">Unscored</Badge>}
         <span style={{ marginLeft: 'auto', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>Difficulty {q.difficulty}</span>
       </div>
+
+      {q.stimulusHtml && (
+        <div className="cb-passage" style={{ fontSize: 15, marginBottom: 12, paddingBottom: 12, borderBottom: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.stimulusHtml }} />
+      )}
 
       <div className="cb-stem" style={{ fontSize: 15 }} dangerouslySetInnerHTML={{ __html: q.stemHtml }} />
 

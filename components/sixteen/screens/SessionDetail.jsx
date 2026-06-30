@@ -2,7 +2,7 @@
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
-import { ReviewItem } from './ScoreReport';
+import { ReviewList } from './ScoreReport';
 
 // SessionDetail — read-only review of one persisted practice session (result +
 // per-question right/wrong), loaded from /api/sessions/:id. Works for your own
@@ -90,17 +90,24 @@ function SessionDetail({ go, id }) {
                 ))}
               </div>
             </div>
+
+            {(data.byModule || []).length > 1 && (
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 18, paddingTop: 18, borderTop: '1px solid var(--border-1)' }}>
+                {data.byModule.map((m) => (
+                  <div key={m.module} style={{ display: 'flex', alignItems: 'baseline', gap: 8, padding: '8px 14px', borderRadius: 8, background: 'var(--sunken)' }}>
+                    <span style={{ font: 'var(--role-label)', color: 'var(--text-secondary)' }}>{m.label}</span>
+                    <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>{m.correct} / {m.total}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </Card>
 
           <h2 style={{ margin: '0 0 12px', font: 'var(--role-title-md)' }}>Question review</h2>
           {data.review.length === 0 ? (
             <Card padding="lg" style={{ textAlign: 'center', color: 'var(--text-tertiary)' }}>No questions recorded for this session.</Card>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {data.review.map((item, i) => (
-                <ReviewItem key={item.question.id || i} item={item} n={i + 1} />
-              ))}
-            </div>
+            <ReviewList review={data.review} />
           )}
 
           <div style={{ marginTop: 22, display: 'flex', justifyContent: 'flex-end' }}>

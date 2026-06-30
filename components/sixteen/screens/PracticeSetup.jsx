@@ -23,6 +23,31 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
   const [diff, setDiff] = React.useState('all');
   const [count, setCount] = React.useState(10);
   const [timed, setTimed] = React.useState('untimed'); // 'untimed' | 'per-q' | 'total'
+  // Full-SAT test source: undefined = not yet defaulted, null = question bank
+  // (synthetic), a number = that Bluebook practice test.
+  const [bluebook, setBluebook] = React.useState(undefined);
+  const [forms, setForms] = React.useState({ available: [], completed: [] });
+
+  // Load available Bluebook forms (+ which this student already took) when the
+  // full-SAT mode is in view, and default to the highest not-yet-taken test.
+  React.useEffect(() => {
+    if (mode !== 'mock-exam') return;
+    let active = true;
+    fetch('/api/official-forms')
+      .then((r) => r.json())
+      .then((j) => {
+        if (!active || !j?.success) return;
+        const { available = [], completed = [] } = j.data || {};
+        setForms({ available, completed });
+        setBluebook((prev) => {
+          if (prev !== undefined) return prev;
+          const untaken = available.filter((t) => !completed.includes(t));
+          return untaken[0] ?? available[0] ?? null;
+        });
+      })
+      .catch(() => {});
+    return () => { active = false; };
+  }, [mode]);
 
   const cats = (stats?.categories?.[domain]?.length ? stats.categories[domain] : BASE_CATS[domain]);
   if (!cats.find(c => c.id === cat)) setCat(cats[0].id);
@@ -30,7 +55,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
   const startLabel =
     mode === 'drill'      ? `Start drill · ${count} questions` :
     mode === 'mock-m1'    ? 'Start Module 1' :
-    mode === 'mock-exam'  ? 'Start full SAT' :
+    mode === 'mock-exam'  ? (bluebook ? `Start Bluebook ${bluebook}` : 'Start full SAT') :
                             'Start Module 1 → Module 2';
 
   return (
@@ -96,6 +121,30 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
             />
           </div>
         </Card>
+
+        {mode === 'mock-exam' && (
+          <Card padding="lg">
+            <label style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)', display:'block', marginBottom: 4}}>
+              Test source
+            </label>
+            <p style={{margin:'0 0 12px', font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
+              Take a real Bluebook practice test (exact official questions &amp; order), or let us assemble a fresh test from the College Board question bank. Bluebook tests run highest-first.
+            </p>
+            <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(150px, 1fr))', gap: 8}}>
+              <SourceTile selected={bluebook === null} onClick={() => setBluebook(null)} title="Question Bank" sub="Fresh adaptive test" />
+              {forms.available.map((t) => (
+                <SourceTile
+                  key={t}
+                  selected={bluebook === t}
+                  onClick={() => setBluebook(t)}
+                  title={`Bluebook ${t}`}
+                  sub={forms.completed.includes(t) ? 'Already taken' : 'Official form'}
+                  muted={forms.completed.includes(t)}
+                />
+              ))}
+            </div>
+          </Card>
+        )}
 
         {mode === 'drill' && (
           <Card padding="lg">
@@ -195,7 +244,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
           <Button variant="primary" size="lg" disabled={readOnly} onClick={() => {
             if (readOnly) return;
             if (mode === 'mock-exam') {
-              session.start({ mode: 'mock-exam' });
+              session.start({ mode: 'mock-exam', bluebookTest: bluebook ?? null });
               go('rw-question', { kind: 'module' }); // a full SAT always opens with R&W
             } else {
               session.start({ section: domain, mode, category: cat, difficulty: diff, count, timing: mode === 'drill' ? timed : 'total' });
@@ -224,6 +273,21 @@ function ModeTile({ selected, onClick, title, sub, icon, badge }) {
       </div>
       <span style={{font:'var(--role-title-sm)', color:'var(--text-primary)', marginTop: 6}}>{title}</span>
       <span style={{font:'var(--role-caption)', color:'var(--text-secondary)', lineHeight: 1.4}}>{sub}</span>
+    </button>
+  );
+}
+
+function SourceTile({ selected, onClick, title, sub, muted = false }) {
+  return (
+    <button onClick={onClick} style={{
+      display:'flex', flexDirection:'column', gap: 3, padding: '12px 14px', textAlign:'left',
+      background: selected ? 'var(--brand-blue-soft)' : 'var(--paper)',
+      border: `1px solid ${selected ? 'var(--brand-blue)' : 'var(--border-2)'}`,
+      borderRadius: 'var(--radius-md)', cursor:'pointer', transition: 'var(--xn-color)',
+      opacity: muted && !selected ? 0.62 : 1,
+    }}>
+      <span style={{font:'var(--role-title-sm)', color:'var(--text-primary)'}}>{title}</span>
+      <span style={{font:'var(--role-caption)', color:'var(--text-secondary)'}}>{sub}</span>
     </button>
   );
 }

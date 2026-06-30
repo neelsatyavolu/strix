@@ -1,5 +1,24 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { sectionScoreRange, routeModule2 } from "@/lib/scoring/curve";
+
+// DELETE /api/sessions/:id — permanently remove one of the caller's own
+// sessions. Scoped to user_id so a tutor can't delete a student's history;
+// session_questions and answers cascade away with the parent row.
+export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ success: false, error: "Not signed in" }, { status: 401 });
+
+  const { error } = await supabase
+    .from("practice_sessions")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
+  if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  return NextResponse.json({ success: true });
+}
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,7 +34,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   const { data: sess, error: sErr } = await supabase
     .from("practice_sessions")
-    .select("id, mode, section, scaled_score, score_correct, score_total, accuracy, created_at")
+    .select("id, mode, section, config, scaled_score, score_correct, score_total, accuracy, created_at")
     .eq("id", id)
     .maybeSingle();
   if (sErr) return NextResponse.json({ success: false, error: sErr.message }, { status: 500 });
@@ -46,6 +65,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       const q = (sq.snapshot ?? {}) as Record<string, unknown>;
       return {
         question: q,
+        module: sq.module,
         response: a ? { value: a.value, flagged: a.flagged } : null,
         isCorrect: !!a?.is_correct,
         isPretest: !!q.pretest,
@@ -64,18 +84,47 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     byDomain.set(domain, e);
   }
 
+  // Per-module tally (Module 1 / Module 2). Useful for full sections and full
+  // exams, where a single session spans both modules; ordinal order keeps m1
+  // ahead of m2. Pretest items are excluded to match the scored totals.
+  const MODULE_LABEL: Record<string, string> = { m1: "Module 1", m2: "Module 2" };
+  const byModule = new Map<string, { module: string; label: string; correct: number; total: number }>();
+  for (const item of review) {
+    if (item.isPretest) continue;
+    const mod = item.module ?? "";
+    const e = byModule.get(mod) ?? { module: mod, label: MODULE_LABEL[mod] ?? mod, correct: 0, total: 0 };
+    e.total += 1;
+    if (item.isCorrect) e.correct += 1;
+    byModule.set(mod, e);
+  }
+
+  // Recompute the section score with the current curve so historical full SATs
+  // reflect the latest scoring. Route (easy/hard) comes from Module-1 performance.
+  const m1 = byModule.get("m1");
+  const bluebookTest = (sess.config as { bluebookTest?: unknown })?.bluebookTest;
+  const range =
+    sess.scaled_score != null
+      ? sectionScoreRange(sess.score_correct ?? 0, sess.score_total ?? 0, {
+          section: sess.section === "math" ? "math" : "rw",
+          routedEasy: m1 ? routeModule2(m1.correct, m1.total) === "easy" : false,
+          test: typeof bluebookTest === "number" ? bluebookTest : null,
+        })
+      : null;
+
   return NextResponse.json({
     success: true,
     data: {
       id: sess.id,
       section: sess.section,
       mode: sess.mode,
-      scaled: sess.scaled_score,
+      scaled: range ? range.estimate : sess.scaled_score,
+      scaledRange: range ? { lower: range.lower, upper: range.upper } : null,
       correct: sess.score_correct,
       total: sess.score_total,
       accuracy: sess.accuracy,
       createdAt: sess.created_at,
       byDomain: [...byDomain.values()],
+      byModule: [...byModule.values()],
       review,
     },
   });

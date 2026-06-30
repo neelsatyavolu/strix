@@ -58,6 +58,27 @@ Administered in College Board's **Bluebook** app. Two sections, each section is
 - Per-domain **counts vary test-to-test** within the published % ranges; the percentage is
   the stable target, the exact count is not fixed. ✅ (per-module split below is ⚠️ derived)
 
+#### Module difficulty mix — ✅ measured from 7 real Bluebook forms per section (no official % published)
+CB never publishes an E/M/H *percentage* for any module — only "broad mix of easy, medium, and
+hard." We measured it directly from the per-question difficulty tags of **7 official Bluebook
+forms (Tests 4–10)**, both sections: R&W 27×3×7 = 567 items, Math 22×3×7 = 462 items. The pattern
+is **consistent across all 7 forms** (Module 1 is medium-heavy on every one).
+
+| Module | Reading & Writing (E/M/H) | Math (E/M/H) |
+|---|---|---|
+| **1 — baseline (`mixed`)** | 24.3 / **58.2** / 17.5 | 27.3 / **44.8** / 27.9 |
+| **2A — easy (`easy`)** | **64.0** / 28.6 / 7.4 | **64.9** / 27.9 / 7.1 |
+| **2B — hard (`hard`)** | 4.8 / 21.2 / **74.1** | 10.4 / 24.7 / **64.9** |
+
+Key correction: the **raw question bank** is near-uniform (R&W 35/33/32 by `listStubs.difficulty`),
+but **real operational forms are NOT** — Module 1 is deliberately built medium-heavy and the
+adaptive modules skew sharply. The bank distribution is a red herring for module assembly; trust
+the form-measured numbers. R&W and Math differ enough (Math M1 carries ~10pts more Hard; Math's
+hard module is less extreme than R&W's) that `PROFILE_WEIGHTS` is **keyed by section**, rounded to:
+`rw` 24/58/18 · 64/29/7 · 5/21/74 and `math` 27/45/28 · 65/28/7 · 10/25/65. To re-measure: parse a
+Bluebook "test questions with difficulty" export (cols: Domain, Skill, Difficulty 1=E/2=M/3=H,
+`SAT{n} {RW|M} {module}.{q}`) and pool by the module index.
+
 ### Math content & ordering — ✅ CB-stated
 - Four domains, each appears in every module: **Algebra (≈35%)**, **Advanced Math (≈35%)**,
   **Problem-Solving & Data Analysis (≈15%)**, **Geometry & Trigonometry (≈15%)**.
@@ -152,9 +173,21 @@ Math (M1→M2), snapshots each section, and `ExamReport` sums the two section sc
 - **Per-module domain counts:** ranges are ≈half the published *section* weightings (CB
   publishes section-level %, not per-module). Reasonable derivation, not official.
 - **Score scaling:** there is **no official adaptive raw→scaled table** (CB scores the
-  adaptive forms by per-item IRT). `lib/scoring/curve.ts` interpolates a percent-correct
-  curve anchored to CB's published *linear* practice-test tables — closer than linear, still
-  an estimate (labeled as such in the UI).
+  adaptive forms by per-item IRT). We use CB's **official per-test raw→score RANGE tables**
+  (the "Scoring Your SAT Practice Test #N" PDFs), extracted into `lib/scoring/official-curves.json`
+  — the **midpoint** of CB's lower/upper band is the point estimate. Those tables are for the
+  *linear* forms (R&W raw out of 66, Math out of 54) while our adaptive reconstruction has 54/44,
+  so `curve.ts` maps by **percent-correct** onto the published axis. A Bluebook session scores on
+  **its own test's** table; a synthetic (question-bank) session uses the **average** of tests 5–10.
+  The per-test tables genuinely differ (e.g. R&W 40/54 → 610 on Test 8 vs 600 on Test 10). The
+  easy-module cap still applies. `sectionScoreRange()` returns the estimate **± College Board's
+  official per-route measurement error** (Technical Manual scale-score RMSE: R&W 2A 21.1 / 2B 17.7,
+  Math 2A 21.8 / 2B 19.6) as an honest confidence range, shown in the score reports; `compositeRange()`
+  combines the two sections' margins in quadrature for the 400–1600 band. This is the most defensible
+  *point estimate* available without CB's private item parameters; the only real way to tighten the
+  *number* further is a calibration dataset (student response pattern + route + their actual official
+  score) — not yet collected. ⚠️ a pseudo-IRT model with invented item params would not provably beat
+  this; deferred until calibration data exists.
 - **Easy-module cap (≈600):** prep-reported high-500s/low-600s; no CB number.
 - **Routing threshold** `MODULE2_HARD_THRESHOLD = 2/3`: prep estimate, not CB-published.
 - **Grid-in count** lands at 5–6 ≈99% of the time; the rare ±1 mirrors real form variation.

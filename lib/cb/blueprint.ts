@@ -52,11 +52,24 @@ const RW_SKILL_ORDER: Record<string, number> = {
 
 export type DifficultyProfile = "mixed" | "easy" | "hard";
 
-// Fraction of a module's questions targeted at each difficulty, per profile.
-const PROFILE_WEIGHTS: Record<DifficultyProfile, Record<Difficulty, number>> = {
-  mixed: { E: 0.3, M: 0.4, H: 0.3 },
-  easy: { E: 0.45, M: 0.4, H: 0.15 },
-  hard: { E: 0.15, M: 0.4, H: 0.45 },
+// Fraction of a module's questions targeted at each difficulty, per SECTION and
+// profile. Calibrated to the *actual* difficulty tags of 7 official Bluebook forms
+// (Tests 4–10; see docs/sat-realism.md §1). Real Module 1 is deliberately
+// MEDIUM-HEAVY (not the ~uniform shape of the raw question bank), the adaptive
+// modules skew sharply, and R&W vs Math differ enough to warrant separate tables:
+//        R&W:  M1 24/58/18   2A 64/29/07   2B 05/21/74
+//        Math: M1 27/45/28   2A 65/28/07   2B 10/25/65
+const PROFILE_WEIGHTS: Record<Section, Record<DifficultyProfile, Record<Difficulty, number>>> = {
+  rw: {
+    mixed: { E: 0.24, M: 0.58, H: 0.18 },
+    easy: { E: 0.64, M: 0.29, H: 0.07 },
+    hard: { E: 0.05, M: 0.21, H: 0.74 },
+  },
+  math: {
+    mixed: { E: 0.27, M: 0.45, H: 0.28 },
+    easy: { E: 0.65, M: 0.28, H: 0.07 },
+    hard: { E: 0.1, M: 0.25, H: 0.65 },
+  },
 };
 
 const OVERDRAW = 3; // R&W per-domain buffer to tolerate the odd failed detail fetch
@@ -77,9 +90,13 @@ function stubId(s: QuestionStub): string {
   return s.externalId ?? s.ibn ?? s.questionId;
 }
 
-/** Split `n` across E/M/H by the profile weights (largest-remainder rounding). */
-function allocateByDifficulty(n: number, profile: DifficultyProfile): Record<Difficulty, number> {
-  const w = PROFILE_WEIGHTS[profile];
+/** Split `n` across E/M/H by the section+profile weights (largest-remainder rounding). */
+function allocateByDifficulty(
+  n: number,
+  section: Section,
+  profile: DifficultyProfile,
+): Record<Difficulty, number> {
+  const w = PROFILE_WEIGHTS[section][profile];
   const raw: Record<Difficulty, number> = { E: n * w.E, M: n * w.M, H: n * w.H };
   const out: Record<Difficulty, number> = {
     E: Math.floor(raw.E),
@@ -95,11 +112,16 @@ function allocateByDifficulty(n: number, profile: DifficultyProfile): Record<Dif
 }
 
 /** Select `n` stubs from a (homogeneous) pool, biased to the profile's difficulty mix. */
-function takeByProfile(stubs: QuestionStub[], n: number, profile: DifficultyProfile): QuestionStub[] {
+function takeByProfile(
+  stubs: QuestionStub[],
+  n: number,
+  section: Section,
+  profile: DifficultyProfile,
+): QuestionStub[] {
   if (n <= 0) return [];
   const buckets: Record<Difficulty, QuestionStub[]> = { E: [], M: [], H: [] };
   for (const s of shuffle(stubs)) buckets[s.difficulty].push(s);
-  const want = allocateByDifficulty(n, profile);
+  const want = allocateByDifficulty(n, section, profile);
   const result: QuestionStub[] = [];
   const leftover: QuestionStub[] = [];
   for (const d of ["E", "M", "H"] as Difficulty[]) {
@@ -121,16 +143,17 @@ function takeByProfile(stubs: QuestionStub[], n: number, profile: DifficultyProf
 function pickStubs(
   stubs: QuestionStub[],
   total: number,
+  section: Section,
   profile: DifficultyProfile,
   seen?: Set<string>,
 ): QuestionStub[] {
-  if (!seen?.size) return takeByProfile(stubs, total, profile);
+  if (!seen?.size) return takeByProfile(stubs, total, section, profile);
   const id = (s: QuestionStub) => s.externalId ?? s.ibn ?? s.questionId;
   const unseen = stubs.filter((s) => !seen.has(id(s)));
-  const fromUnseen = takeByProfile(unseen, Math.min(total, unseen.length), profile);
+  const fromUnseen = takeByProfile(unseen, Math.min(total, unseen.length), section, profile);
   if (fromUnseen.length >= total) return fromUnseen;
   const seenStubs = stubs.filter((s) => seen.has(id(s)));
-  return [...fromUnseen, ...takeByProfile(seenStubs, total - fromUnseen.length, profile)];
+  return [...fromUnseen, ...takeByProfile(seenStubs, total - fromUnseen.length, section, profile)];
 }
 
 function byDifficultyAsc(a: Question, b: Question): number {
@@ -228,6 +251,7 @@ function selectMath(
 
 async function drawPretests(
   stubs: QuestionStub[],
+  section: Section,
   profile: DifficultyProfile,
   usedIds: Set<string>,
   seen?: Set<string>,
@@ -235,7 +259,7 @@ async function drawPretests(
   overdraw = OVERDRAW,
 ): Promise<Question[]> {
   const candidates = stubs.filter((s) => !usedIds.has(stubId(s)));
-  const picked = pickStubs(candidates, PRETEST_PER_MODULE + overdraw, profile, seen);
+  const picked = pickStubs(candidates, PRETEST_PER_MODULE + overdraw, section, profile, seen);
   const fetched = await Promise.all(picked.map((s) => getQuestion(s)));
   const available: Question[] = [];
   const availableIds = new Set<string>();
@@ -281,7 +305,7 @@ export async function drawModule(opts: ModuleDrawOptions): Promise<Question[]> {
   const buffer = section === "math" ? MATH_OVERDRAW : OVERDRAW;
   const picked: QuestionStub[] = [];
   for (const r of ranges) {
-    picked.push(...pickStubs(byDomain.get(r.code) ?? [], counts[r.code] + buffer, profile, seen));
+    picked.push(...pickStubs(byDomain.get(r.code) ?? [], counts[r.code] + buffer, section, profile, seen));
   }
 
   const fetched = await Promise.all(picked.map((s) => getQuestion(s)));
@@ -295,12 +319,12 @@ export async function drawModule(opts: ModuleDrawOptions): Promise<Question[]> {
       kept.push(...questions.filter((q) => q.domain === r.code).slice(0, counts[r.code]));
     }
     const usedIds = new Set(kept.map((q) => q.id));
-    const pretests = await drawPretests(stubs, profile, usedIds, seen);
+    const pretests = await drawPretests(stubs, section, profile, usedIds, seen);
     return arrangeRW([...kept, ...pretests]);
   }
   // Math: per-domain counts + grid-ins, then one easiest-to-hardest ramp.
   const kept = selectMath(questions, counts, seen);
   const usedIds = new Set(kept.map((q) => q.id));
-  const pretests = await drawPretests(stubs, profile, usedIds, seen, 1, MATH_OVERDRAW);
+  const pretests = await drawPretests(stubs, section, profile, usedIds, seen, 1, MATH_OVERDRAW);
   return arrangeMath([...kept, ...pretests]);
 }

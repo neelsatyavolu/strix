@@ -32,7 +32,6 @@ function ExamBreak({ go }) {
   }
 
   const nextSection = exam.sections[exam.index];
-  const justDone = exam.results[exam.results.length - 1];
   const mm = String(Math.floor(seconds / 60)).padStart(2, '0');
   const ss = String(seconds % 60).padStart(2, '0');
   const canBegin = examBreakCanBegin({ seconds, status: session.status, starting });
@@ -59,17 +58,6 @@ function ExamBreak({ go }) {
           Break remaining
         </div>
       </Card>
-
-      {justDone && (
-        <Card padding="lg" style={{ marginBottom: 18 }}>
-          <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>
-            {SECTION_LABEL[justDone.section]} · done
-          </span>
-          <div style={{ font: 'var(--role-body-lg)', color: 'var(--text-body)', marginTop: 4 }}>
-            {justDone.correct} of {justDone.total} correct · estimated {justDone.scaled}/800
-          </div>
-        </Card>
-      )}
 
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <Button variant="primary" size="lg" loading={loadingNext} disabled={!canBegin} onClick={begin}>

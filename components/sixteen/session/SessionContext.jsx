@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { scaledSectionScore, routeModule2 } from '@/lib/scoring/curve';
+import { scaledSectionScore, sectionScoreRange, routeModule2 } from '@/lib/scoring/curve';
 import { isSectionEstimateMode, modulePretestIds, moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
 
 // Client-side practice session. Shapes:
@@ -105,6 +105,20 @@ async function fetchModule({ section, profile = 'mixed', exclude }) {
   return requestQuestions(params);
 }
 
+// Official Bluebook form: the exact real-form module in published order.
+async function fetchOfficialModule({ test, section, moduleKey }) {
+  const params = new URLSearchParams({ section, mode: 'official', test: String(test), moduleKey });
+  return requestQuestions(params);
+}
+
+// Module 1 for a full section/exam: a real Bluebook form when one was picked,
+// otherwise the calibrated synthetic blueprint drawn from the question bank.
+async function fetchModule1({ section, bluebookTest }) {
+  return bluebookTest
+    ? fetchOfficialModule({ test: bluebookTest, section, moduleKey: 'm1' })
+    : fetchModule({ section, profile: 'mixed' });
+}
+
 function buildReview(questions, responses, pretestIds = [], mode = null) {
   const pretest = new Set(pretestIds);
   const review = questions.map((q) => {
@@ -128,12 +142,25 @@ function buildReview(questions, responses, pretestIds = [], mode = null) {
   return { correct, total, accuracy: total ? Math.round((correct / total) * 100) : 0, byDomain: [...byDomainMap.values()], review };
 }
 
+// Tag each review item with its source module (key + display label) so reports
+// can group the question list by module. Single-module sessions (drills) stay
+// one group and render without headers.
+function withModuleLabels(review, modules) {
+  const byQid = new Map();
+  for (const m of modules) for (const q of m.questions) byQid.set(q.id, { module: m.key, moduleLabel: m.label });
+  return review.map((item) => ({ ...item, ...(byQid.get(item.question.id) || {}) }));
+}
+
 // Snapshot a finished section (used for the full-exam composite report).
 function sectionSnapshot(state) {
   const allQs = state.modules.flatMap((m) => m.questions);
   const base = buildReview(allQs, state.responses, state.pretestIds, state.mode);
-  const scaled = scaledSectionScore(base.correct, base.total, state.m2Variant === 'easy', state.section);
-  return { ...base, section: state.section, scaled, m2Variant: state.m2Variant };
+  const scaledRange = sectionScoreRange(base.correct, base.total, {
+    section: state.section,
+    routedEasy: state.m2Variant === 'easy',
+    test: state.config?.bluebookTest ?? null,
+  });
+  return { ...base, review: withModuleLabels(base.review, state.modules), section: state.section, scaled: scaledRange.estimate, scaledRange, m2Variant: state.m2Variant };
 }
 
 // Effective stored value for a question (drill records the first attempt).
@@ -158,7 +185,7 @@ async function persistSession(state, times = {}) {
     // Whole section (skipped items count as wrong) — drives the scaled score.
     const full = buildReview(all.map((x) => x.q), state.responses, state.pretestIds, state.mode);
     const scaled = isSectionEstimateMode(state.mode)
-      ? scaledSectionScore(full.correct, full.total, state.m2Variant === 'easy', state.section)
+      ? scaledSectionScore(full.correct, full.total, state.m2Variant === 'easy', state.section, state.config?.bluebookTest ?? null)
       : null;
     // Answered questions only — drives score / accuracy and what we store.
     const answered = all.filter(({ q }) => hasAnswer(state.mode, state.responses[q.id]));
@@ -278,7 +305,7 @@ export function PracticeSessionProvider({ children }) {
           limit: config.count ?? 10,
         });
       } else {
-        questions = await fetchModule({ section, profile: 'mixed' });
+        questions = await fetchModule1({ section, bluebookTest: config.bluebookTest });
       }
       const moduleLabel = isDrill ? 'Drill' : isReview ? 'Review' : 'Module 1';
       setState((s) => ({
@@ -454,11 +481,14 @@ export function PracticeSessionProvider({ children }) {
       const variant = routeModule2(routing.correct, routing.total);
       setState((prev) => ({ ...prev, status: 'loading', phase: 'm2', m2Variant: variant }));
       try {
-        const all = await fetchModule({
-          section: s.section,
-          profile: variant === 'hard' ? 'hard' : 'easy',
-          exclude: m1.questions.map((q) => q.id),
-        });
+        const bluebookTest = s.config?.bluebookTest;
+        const all = bluebookTest
+          ? await fetchOfficialModule({ test: bluebookTest, section: s.section, moduleKey: variant === 'hard' ? 'hard' : 'easy' })
+          : await fetchModule({
+              section: s.section,
+              profile: variant === 'hard' ? 'hard' : 'easy',
+              exclude: m1.questions.map((q) => q.id),
+            });
         // Belt-and-suspenders: drop any id already in Module 1 (server already excludes).
         const m1Ids = new Set(m1.questions.map((q) => q.id));
         const questions = (all || []).filter((q) => !m1Ids.has(q.id));
@@ -508,7 +538,7 @@ export function PracticeSessionProvider({ children }) {
     const section = s.exam.sections[s.exam.index];
     setState((prev) => ({ ...prev, status: 'loading', section }));
     try {
-      const questions = await fetchModule({ section, profile: 'mixed' });
+      const questions = await fetchModule1({ section, bluebookTest: s.config?.bluebookTest });
       setState((prev) => ({
         ...prev,
         status: 'active',
@@ -560,14 +590,16 @@ export function PracticeSessionProvider({ children }) {
     if (!allQs.length) return null;
     const base = buildResult(allQs);
     const routedEasy = state.m2Variant === 'easy';
-    const scaled = isSectionEstimateMode(state.mode)
-      ? scaledSectionScore(base.correct, base.total, routedEasy, state.section)
+    const scaledRange = isSectionEstimateMode(state.mode)
+      ? sectionScoreRange(base.correct, base.total, { section: state.section, routedEasy, test: state.config?.bluebookTest ?? null })
       : null;
     return {
       ...base,
+      review: withModuleLabels(base.review, state.modules),
       section: state.section,
       mode: state.mode,
-      scaled,
+      scaled: scaledRange?.estimate ?? null,
+      scaledRange,
       routedEasy,
       m2Variant: state.m2Variant,
       elapsedMs: state.startedAt ? Date.now() - state.startedAt : 0,

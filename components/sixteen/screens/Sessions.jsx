@@ -13,8 +13,25 @@ import {
 
 function Sessions({ go, studentId = null }) {
   const { Card, Badge, SegmentedControl } = SixteenNS;
-  const { sessions, loading } = useSessions(50, studentId);
+  const { sessions: allSessions, loading } = useSessions(50, studentId);
   const [filter, setFilter] = React.useState('all');
+  // Optimistically hide rows the user deletes; the server delete runs in the
+  // background and a rollback re-shows the row if it fails.
+  const [deleted, setDeleted] = React.useState(() => new Set());
+  const sessions = allSessions.filter((s) => !deleted.has(s.id));
+
+  async function deleteSession(id) {
+    if (!window.confirm('Delete this session? This permanently removes it and its questions.')) return;
+    setDeleted((prev) => new Set(prev).add(id));
+    try {
+      const r = await fetch(`/api/sessions/${id}`, { method: 'DELETE' });
+      const j = await r.json();
+      if (!j?.success) throw new Error(j?.error || 'Delete failed');
+    } catch {
+      setDeleted((prev) => { const next = new Set(prev); next.delete(id); return next; });
+      window.alert('Could not delete the session. Please try again.');
+    }
+  }
 
   const filtered = sessions.filter((s) => {
     if (filter === 'all') return true;
@@ -77,23 +94,40 @@ function Sessions({ go, studentId = null }) {
               <span/>
             </div>
             {filtered.map((s, i) => (
-              <button key={s.id} onClick={() => go('session-detail', { id: s.id })} style={{
-                display:'grid', gridTemplateColumns:'120px minmax(220px, 1fr) 110px 60px 70px 80px 24px',
-                gap: 12, alignItems:'center', padding:'12px 16px',
-                background:'transparent', border:0, borderTop: i === 0 ? 0 : '1px solid var(--border-1)',
-                cursor:'pointer', textAlign:'left', width:'100%',
-              }}>
-                <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{relTime(s.created_at)}</span>
-                <span style={{display:'flex', alignItems:'center', gap: 8, font:'var(--role-body)', color:'var(--text-primary)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>
-                  <Badge variant={s.section} dot size="sm">{SECTION_SHORT[s.section] ?? s.section}</Badge>
-                  <span style={{overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{sessionTitle(s)}</span>
-                </span>
-                <Badge variant={MODE_VARIANT[s.mode] ?? 'neutral'} size="sm">{MODE_LABEL[s.mode] ?? s.mode}</Badge>
-                <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)', textAlign:'right'}}>{s.score_total}</span>
-                <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)', textAlign:'right'}}>{s.scaled_score ?? '—'}</span>
-                <span style={{font:'var(--role-numeric)', textAlign:'right', color: s.accuracy >= 75 ? 'var(--success)' : s.accuracy >= 65 ? 'var(--warning)' : 'var(--error)'}}>{s.accuracy}%</span>
-                <Icon name="chevron-right" style={{width:14, height:14, color:'var(--text-tertiary)'}}/>
-              </button>
+              <div key={s.id} style={{position:'relative', borderTop: i === 0 ? 0 : '1px solid var(--border-1)'}}>
+                <button onClick={() => go('session-detail', { id: s.id })} style={{
+                  display:'grid', gridTemplateColumns:'120px minmax(220px, 1fr) 110px 60px 70px 80px 24px',
+                  gap: 12, alignItems:'center', padding:'12px 16px',
+                  background:'transparent', border:0,
+                  cursor:'pointer', textAlign:'left', width:'100%',
+                }}>
+                  <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>{relTime(s.created_at)}</span>
+                  <span style={{display:'flex', alignItems:'center', gap: 8, font:'var(--role-body)', color:'var(--text-primary)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}}>
+                    <Badge variant={s.section} dot size="sm">{SECTION_SHORT[s.section] ?? s.section}</Badge>
+                    <span style={{overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{sessionTitle(s)}</span>
+                  </span>
+                  <Badge variant={MODE_VARIANT[s.mode] ?? 'neutral'} size="sm">{MODE_LABEL[s.mode] ?? s.mode}</Badge>
+                  <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)', textAlign:'right'}}>{s.score_total}</span>
+                  <span style={{font:'var(--role-numeric)', color:'var(--text-secondary)', textAlign:'right'}}>{s.scaled_score ?? '—'}</span>
+                  <span style={{font:'var(--role-numeric)', textAlign:'right', color: s.accuracy >= 75 ? 'var(--success)' : s.accuracy >= 65 ? 'var(--warning)' : 'var(--error)'}}>{s.accuracy}%</span>
+                  {studentId
+                    ? <Icon name="chevron-right" style={{width:14, height:14, color:'var(--text-tertiary)'}}/>
+                    : <span/>}
+                </button>
+                {!studentId && (
+                  <button
+                    onClick={() => deleteSession(s.id)}
+                    title="Delete session" aria-label="Delete session"
+                    style={{
+                      position:'absolute', right: 12, top:'50%', transform:'translateY(-50%)',
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      width: 28, height: 28, padding: 0, borderRadius: 6,
+                      background:'transparent', border:0, cursor:'pointer', color:'var(--error)',
+                    }}>
+                    <Icon name="trash-2" style={{width:15, height:15}}/>
+                  </button>
+                )}
+              </div>
             ))}
             </div>
           </Card>
