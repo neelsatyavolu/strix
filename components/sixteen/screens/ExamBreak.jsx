@@ -32,6 +32,8 @@ function ExamBreak({ go }) {
   }
 
   const nextSection = exam.sections[exam.index];
+  const results = exam.results || [];
+  const previousSection = results[results.length - 1]?.section;
   const mm = String(Math.floor(seconds / 60)).padStart(2, '0');
   const ss = String(seconds % 60).padStart(2, '0');
   const canBegin = examBreakCanBegin({ seconds, status: session.status, starting });
@@ -66,7 +68,7 @@ function ExamBreak({ go }) {
         <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', padding: '10px 12px', background: 'var(--brand-blue-soft)', borderRadius: 'var(--radius-md)' }}>
           <Icon name="info" style={{ width: 14, height: 14, color: 'var(--brand-blue)', marginTop: 2 }} />
           <span style={{ font: 'var(--role-caption)', color: 'var(--brand-ink)' }}>
-            Once you begin the next section you can&rsquo;t return to {SECTION_LABEL[justDone?.section] || 'the previous section'}.
+            Once you begin the next section you can&rsquo;t return to {SECTION_LABEL[previousSection] || 'the previous section'}.
           </span>
         </div>
       </div>
