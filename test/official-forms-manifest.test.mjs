@@ -99,11 +99,46 @@ test('SAT6 R&W modules are fully captured from Bluebook result external ids', ()
   }
 });
 
-test('only fully captured Bluebook forms are complete', () => {
-  assert.deepEqual(completeTests(), [5, 6, 7, 9, 11]);
+test('SAT8 R&W hard module is fully captured from Bluebook result external ids', () => {
+  assert.deepEqual(moduleCounts(8, 'rw'), { m1: 27, easy: 27, hard: 27 });
+
+  const refs = directRefs(8, 'rw');
+  assert.deepEqual(
+    refs.map(({ moduleKey, index }) => `${moduleKey}:${index}`),
+    ['hard:13'],
+  );
+  assert.deepEqual(
+    refs.map(({ ref }) => ref.externalId),
+    ['a49cde05-7596-471d-a5db-7a7c882a7fd3'],
+  );
+  for (const { ref } of refs) {
+    assert.match(ref.externalId, /^[0-9a-f-]{36}$/);
+    assert.equal(ref.domain, 'INI');
+    assert.equal(ref.skill, 'INF');
+    assert.equal(ref.difficulty, 'H');
+  }
 });
 
-test('known unresolved R&W gaps stay visible', () => {
-  assert.deepEqual(moduleCounts(8, 'rw'), { m1: 27, easy: 27, hard: 26 });
-  assert.deepEqual(moduleCounts(10, 'rw'), { m1: 27, easy: 27, hard: 26 });
+test('SAT10 R&W hard module is fully captured from Bluebook result external ids', () => {
+  assert.deepEqual(moduleCounts(10, 'rw'), { m1: 27, easy: 27, hard: 27 });
+
+  const refs = directRefs(10, 'rw');
+  assert.deepEqual(
+    refs.map(({ moduleKey, index }) => `${moduleKey}:${index}`),
+    ['hard:24'],
+  );
+  assert.deepEqual(
+    refs.map(({ ref }) => ref.externalId),
+    ['5519da78-975a-4211-a2db-4a25f7f1fd8f'],
+  );
+  for (const { ref } of refs) {
+    assert.match(ref.externalId, /^[0-9a-f-]{36}$/);
+    assert.equal(ref.domain, 'EOI');
+    assert.equal(ref.skill, 'SYN');
+    assert.equal(ref.difficulty, 'H');
+  }
+});
+
+test('only fully captured Bluebook forms are complete', () => {
+  assert.deepEqual(completeTests(), [5, 6, 7, 8, 9, 10, 11]);
 });
