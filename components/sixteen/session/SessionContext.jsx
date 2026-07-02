@@ -151,14 +151,23 @@ function withModuleLabels(review, modules) {
   return review.map((item) => ({ ...item, ...(byQid.get(item.question.id) || {}) }));
 }
 
+function moduleScoreStats(state) {
+  return state.modules.map((m) => {
+    const result = buildReview(m.questions, state.responses, state.pretestIds, state.mode);
+    return { correct: result.correct, total: result.total };
+  });
+}
+
 // Snapshot a finished section (used for the full-exam composite report).
 function sectionSnapshot(state) {
   const allQs = state.modules.flatMap((m) => m.questions);
   const base = buildReview(allQs, state.responses, state.pretestIds, state.mode);
+  const modules = moduleScoreStats(state);
   const scaledRange = sectionScoreRange(base.correct, base.total, {
     section: state.section,
     routedEasy: state.m2Variant === 'easy',
     test: state.config?.bluebookTest ?? null,
+    modules,
   });
   return { ...base, review: withModuleLabels(base.review, state.modules), section: state.section, scaled: scaledRange.estimate, scaledRange, m2Variant: state.m2Variant };
 }
@@ -184,8 +193,9 @@ async function persistSession(state, times = {}) {
     if (!all.length) return;
     // Whole section (skipped items count as wrong) — drives the scaled score.
     const full = buildReview(all.map((x) => x.q), state.responses, state.pretestIds, state.mode);
+    const moduleScores = moduleScoreStats(state);
     const scaled = isSectionEstimateMode(state.mode)
-      ? scaledSectionScore(full.correct, full.total, state.m2Variant === 'easy', state.section, state.config?.bluebookTest ?? null)
+      ? scaledSectionScore(full.correct, full.total, state.m2Variant === 'easy', state.section, state.config?.bluebookTest ?? null, moduleScores)
       : null;
     // Answered questions only — drives score / accuracy and what we store.
     const answered = all.filter(({ q }) => hasAnswer(state.mode, state.responses[q.id]));
@@ -613,7 +623,6 @@ export function PracticeSessionProvider({ children }) {
       t.currentId = id;
       t.shownAt = id ? Date.now() : null;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current?.id]);
 
   const buildResult = (qs) => buildReview(qs, state.responses, state.pretestIds, state.mode);
@@ -629,8 +638,9 @@ export function PracticeSessionProvider({ children }) {
     if (!allQs.length) return null;
     const base = buildResult(allQs);
     const routedEasy = state.m2Variant === 'easy';
+    const modules = moduleScoreStats(state);
     const scaledRange = isSectionEstimateMode(state.mode)
-      ? sectionScoreRange(base.correct, base.total, { section: state.section, routedEasy, test: state.config?.bluebookTest ?? null })
+      ? sectionScoreRange(base.correct, base.total, { section: state.section, routedEasy, test: state.config?.bluebookTest ?? null, modules })
       : null;
     return {
       ...base,

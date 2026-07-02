@@ -101,6 +101,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   // Recompute the section score with the current curve so historical full SATs
   // reflect the latest scoring. Route (easy/hard) comes from Module-1 performance.
   const m1 = byModule.get("m1");
+  const moduleScores = ["m1", "m2"].map((key) => {
+    const stats = byModule.get(key);
+    return { correct: stats?.correct ?? 0, total: stats?.total ?? 0 };
+  });
   const bluebookTest = (sess.config as { bluebookTest?: unknown })?.bluebookTest;
   const range =
     sess.scaled_score != null
@@ -108,6 +112,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
           section: sess.section === "math" ? "math" : "rw",
           routedEasy: m1 ? routeModule2(m1.correct, m1.total) === "easy" : false,
           test: typeof bluebookTest === "number" ? bluebookTest : null,
+          modules: moduleScores,
         })
       : null;
 

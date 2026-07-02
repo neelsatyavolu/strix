@@ -165,30 +165,29 @@ Math (M1→M2), snapshots each section, and `ExamReport` sums the two section sc
 - **Pretest carve-out:** 2 unscored items per module, excluded from the score and tagged
   "Unscored" in review (⚠️ the 2/module count is convention, not CB-published).
 - One-passage-per-question R&W model (matches digital SAT; no shared long passages).
-- Scoring 200–800/section on a piecewise curve anchored to CB linear-form tables, with the
-  easy-module cap; Desmos + formula sheet (Math); **working highlighter** (R&W + Math).
+- Scoring 200–800/section on a calibrated public-data estimate; Desmos + formula
+  sheet (Math); **working highlighter** (R&W + Math).
 - Tools: timer (hideable), Mark for Review, answer eliminator, **Annotate/highlighter**.
 
 ### ⚠️ Approximated (inherent — CB does not publish the exact data)
 - **Per-module domain counts:** ranges are ≈half the published *section* weightings (CB
   publishes section-level %, not per-module). Reasonable derivation, not official.
 - **Score scaling:** there is **no official adaptive raw→scaled table** (CB scores the
-  adaptive forms by per-item IRT). We use CB's **official per-test raw→score RANGE tables**
-  (the "Scoring Your SAT Practice Test #N" PDFs), extracted into `lib/scoring/official-curves.json`
-  — the **midpoint** of CB's lower/upper band is the point estimate. Those tables are for the
-  *linear* forms (R&W raw out of 66, Math out of 54) while our adaptive reconstruction has 54/44,
-  so `curve.ts` maps by **percent-correct** onto the published axis. A Bluebook session scores on
-  **its own test's** table; a synthetic (question-bank) session uses the **average** of tests 5–10.
-  The per-test tables genuinely differ (e.g. R&W 40/54 → 610 on Test 8 vs 600 on Test 10). The
-  easy-module cap still applies. `sectionScoreRange()` returns the estimate **± College Board's
-  official per-route measurement error** (Technical Manual scale-score RMSE: R&W 2A 21.1 / 2B 17.7,
-  Math 2A 21.8 / 2B 19.6) as an honest confidence range, shown in the score reports; `compositeRange()`
-  combines the two sections' margins in quadrature for the 400–1600 band. This is the most defensible
-  *point estimate* available without CB's private item parameters; the only real way to tighten the
-  *number* further is a calibration dataset (student response pattern + route + their actual official
-  score) — not yet collected. ⚠️ a pseudo-IRT model with invented item params would not provably beat
-  this; deferred until calibration data exists.
-- **Easy-module cap (≈600):** prep-reported high-500s/low-600s; no CB number.
+  adaptive forms by per-item IRT). We blend Albert.io's public module-aware SAT
+  calculator curve with the previous CB-derived aggregate practice-test scaling.
+  The blend is calibrated to the user's real SAT anchor (27/27 + 0/27 R&W → 510;
+  22/22 + 0/22 Math → 530), while preserving 200/800 section endpoints. Synthetic
+  question-bank modules may have fewer scored items after local pretest exclusion,
+  so `curve.ts` maps each module by percent-correct onto Albert's 27-question R&W
+  or 22-question Math raw axis. `sectionScoreRange()` returns the calibrated
+  estimate **± College Board's official per-route measurement error** (Technical
+  Manual scale-score RMSE: R&W 2A 21.1 / 2B 17.7, Math 2A 21.8 / 2B 19.6) as an
+  honest confidence range, shown in the score reports; `compositeRange()` combines
+  the two sections' margins in quadrature for the 400–1600 band. The only real way
+  to tighten the *number* further is more calibration data (student response
+  pattern + route + their actual official score). ⚠️ a pseudo-IRT model with
+  invented item params would not provably beat this; deferred until calibration
+  data exists.
 - **Routing threshold** `MODULE2_HARD_THRESHOLD = 2/3`: prep estimate, not CB-published.
 - **Grid-in count** lands at 5–6 ≈99% of the time; the rare ±1 mirrors real form variation.
 

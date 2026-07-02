@@ -53,7 +53,7 @@ function SectionReport({ go, session }) {
       </h1>
       <p style={{ margin: '4px 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
         {isEstimate
-          ? `Estimate from College Board's official per-test scoring tables, with a confidence range${routedLabel ? `. This app routed you to ${routedLabel}.` : '.'} Real SAT scores use College Board's private item-level scoring.`
+          ? `Calibrated SAT estimate, with a confidence range${routedLabel ? `. This app routed you to ${routedLabel}.` : '.'} Real SAT scores use College Board's private item-level scoring.`
           : 'Module 1 practice shows raw operational accuracy only. Real SAT section scores use both modules and College Board\'s private item-level scoring.'}
       </p>
 

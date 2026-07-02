@@ -61,7 +61,7 @@ function TestReview({ go, rwId, mathId }) {
           </span>
           <h1 style={{ margin: '4px 0 0', font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Test review</h1>
           <p style={{ margin: '4px 0 24px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-            Estimate from College Board&rsquo;s official per-test scoring tables, with a confidence range based on CB&rsquo;s published measurement error.
+            Calibrated SAT estimate, with a confidence range based on College Board&rsquo;s published measurement error.
           </p>
 
           <Card padding="xl" style={{ marginBottom: 18 }}>

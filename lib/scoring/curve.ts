@@ -1,26 +1,11 @@
-// Digital-SAT score conversion, anchored to College Board's OFFICIAL per-test
-// raw->score range tables (the "Scoring Your SAT Practice Test #N" guides).
+// Digital-SAT score conversion, using a calibrated public-data estimate.
 //
 // IMPORTANT: CB does NOT publish a raw->scaled table for the adaptive (Bluebook)
-// SAT — those forms are scored by per-item IRT. The only official tables are the
-// linear/paper practice forms, which give a lower/upper section-score RANGE per
-// raw score. Their raw axis (R&W out of 66, Math out of 54) differs from our
-// adaptive reconstruction (R&W 54, Math 44), so we map by PERCENT-correct onto
-// the published axis, read the band, and take its MIDPOINT as the point estimate.
-// Per-test tables differ, so a Bluebook session uses its own test's table; a
-// synthetic (question-bank) session uses the average across tests 5–10. The
-// easier Module 2 caps the section (CB publishes no cap; prep-reported ~600).
-// Tables live in official-curves.json (extracted from the CB scoring PDFs).
-// See docs/sat-realism.md §3.
+// SAT — those forms are scored by per-item IRT. We blend Albert's module-aware
+// public curve with CB-derived aggregate practice-test scaling and calibrate that
+// blend to the user's real SAT anchor.
 
-import curvesJson from "./official-curves.json";
-
-type RangeTable = { rw: [number, number][]; math: [number, number][] };
-const CURVES = curvesJson as unknown as Record<string, RangeTable>;
-
-// Section ceiling when routed to the easier Module 2. College Board publishes no
-// cap; prep sources consistently report a high-500s-to-low-600s limit. Estimate.
-const EASY_MODULE_CAP = 600;
+import { scoreCalibratedSection } from "./albert.mjs";
 
 // Official measurement error (scale-score RMSE) from CB's Digital SAT Suite
 // Technical Manual adaptive simulation, by section and Module-2 route. This is
@@ -36,14 +21,8 @@ function round10(n: number): number {
   return Math.round(n / 10) * 10;
 }
 
-/** The CB table for a given test (falls back to the 5–10 average). */
-function tableFor(test: number | null | undefined, section: "rw" | "math"): [number, number][] {
-  const key = test != null && CURVES[String(test)] ? String(test) : "avg";
-  return CURVES[key][section];
-}
-
 export interface ScoreRange {
-  /** Point estimate (midpoint of CB's official raw→score band). */
+  /** Point estimate from the calibrated SAT scoring model. */
   estimate: number;
   /** estimate − 1 RMSE, floored at the scale/route minimum. */
   lower: number;
@@ -51,31 +30,42 @@ export interface ScoreRange {
   upper: number;
 }
 
+export interface ModuleScore {
+  correct: number;
+  total: number;
+}
+
+function fallbackModuleScores(correct: number, total: number): ModuleScore[] {
+  const pct = total > 0 ? Math.max(0, Math.min(1, correct / total)) : 0;
+  return [
+    { correct: pct, total: 1 },
+    { correct: pct, total: 1 },
+  ];
+}
+
 /**
- * Official-table section-score estimate + confidence range. The POINT ESTIMATE
- * is the midpoint of CB's published per-test raw→score band at the student's
- * percent-correct (mapped onto the linear paper axis). The RANGE is the point
- * estimate ± CB's official per-route measurement error (Technical Manual RMSE) —
- * the honest uncertainty floor, not the narrower paper-table band.
+ * Calibrated section-score estimate + confidence range. The POINT ESTIMATE blends
+ * Albert's module-aware lookup with CB-derived aggregate practice-test scaling.
+ * The RANGE remains the point estimate ± CB's official per-route measurement
+ * error (Technical Manual RMSE), since all public SAT scoring is approximate.
  */
 export function sectionScoreRange(
   correct: number,
   total: number,
-  opts: { section?: "rw" | "math"; routedEasy?: boolean; test?: number | null } = {},
+  opts: {
+    section?: "rw" | "math";
+    routedEasy?: boolean;
+    test?: number | null;
+    modules?: ModuleScore[];
+  } = {},
 ): ScoreRange {
-  const { section = "rw", routedEasy = false, test = null } = opts;
-  const table = tableFor(test, section);
-  const maxRaw = table.length - 1;
-  const pct = total > 0 ? Math.max(0, Math.min(1, correct / total)) : 0;
-  const [lo, hi] = table[Math.round(pct * maxRaw)];
-  const ceiling = routedEasy ? EASY_MODULE_CAP : 800;
-  const clamp = (n: number): number => Math.max(200, Math.min(ceiling, n));
-  const estimate = round10(clamp((lo + hi) / 2));
+  const { section = "rw", routedEasy = false, modules } = opts;
+  const estimate = round10(scoreCalibratedSection(section, modules?.length ? modules : fallbackModuleScores(correct, total)));
   const rmse = SECTION_RMSE[section][routedEasy ? "easy" : "hard"];
   return {
     estimate,
     lower: round10(Math.max(200, estimate - rmse)),
-    upper: round10(Math.min(ceiling, estimate + rmse)),
+    upper: round10(Math.min(800, estimate + rmse)),
   };
 }
 
@@ -85,8 +75,9 @@ export function scaledSectionScore(
   routedEasy = false,
   section: "rw" | "math" = "rw",
   test: number | null = null,
+  modules?: ModuleScore[],
 ): number {
-  return sectionScoreRange(correct, total, { section, routedEasy, test }).estimate;
+  return sectionScoreRange(correct, total, { section, routedEasy, test, modules }).estimate;
 }
 
 /**

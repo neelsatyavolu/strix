@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { rescoreAssignments } from "@/lib/scoring/rescore";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,7 +25,8 @@ export async function GET(req: NextRequest) {
 
   const { data, error } = await query;
   if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-  return NextResponse.json({ success: true, data: { assignments: data ?? [] } });
+  const assignments = await rescoreAssignments(supabase, data ?? []);
+  return NextResponse.json({ success: true, data: { assignments } });
 }
 
 const NewAssignment = z.object({
