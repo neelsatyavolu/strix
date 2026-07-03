@@ -84,6 +84,40 @@ function stubFromRef(
   };
 }
 
+function stubIndexes(stubs: QuestionStub[]): {
+  byQuestionId: Map<string, QuestionStub>;
+  byExternalId: Map<string, QuestionStub>;
+} {
+  const byQuestionId = new Map<string, QuestionStub>();
+  const byExternalId = new Map<string, QuestionStub>();
+  for (const s of stubs) {
+    byQuestionId.set(s.questionId, s);
+    if (s.externalId) byExternalId.set(s.externalId, s);
+  }
+  return { byQuestionId, byExternalId };
+}
+
+function findOfficialExternalRef(
+  externalId: string,
+  section?: Section,
+): { ref: OfficialExternalQuestionRef; section: Section } | null {
+  const sections: Section[] = section ? [section] : ["rw", "math"];
+  for (const form of Object.values(FORMS)) {
+    for (const sec of sections) {
+      for (const moduleKey of ["m1", "easy", "hard"] as const) {
+        const ref = form[sec]?.[moduleKey]?.find(
+          (item): item is OfficialExternalQuestionRef =>
+            typeof item === "object" &&
+            item !== null &&
+            item.externalId === externalId,
+        );
+        if (ref) return { ref, section: sec };
+      }
+    }
+  }
+  return null;
+}
+
 /** Available (complete) Bluebook test numbers, highest first (default play order). */
 export const OFFICIAL_TESTS: number[] = Object.keys(FORMS)
   .filter(isComplete)
@@ -112,15 +146,22 @@ export async function getOfficialModule(
     throw new Error(`No official form for test ${test} ${section} ${moduleKey}`);
   }
   const stubs = await listStubs(section);
-  const byQid = new Map<string, QuestionStub>();
-  const byExternalId = new Map<string, QuestionStub>();
-  for (const s of stubs) {
-    byQid.set(s.questionId, s);
-    if (s.externalId) byExternalId.set(s.externalId, s);
-  }
+  const { byQuestionId, byExternalId } = stubIndexes(stubs);
   const picked = ids
-    .map((ref) => stubFromRef(ref, section, byQid, byExternalId))
+    .map((ref) => stubFromRef(ref, section, byQuestionId, byExternalId))
     .filter((s): s is QuestionStub => !!s);
   const fetched = await Promise.all(picked.map((s) => getQuestion(s)));
   return fetched.filter((q): q is Question => !!q && !!q.stemHtml);
+}
+
+/** Fetch a direct external_id captured from Bluebook results but absent from the live qbank list. */
+export async function getOfficialQuestionByExternalId(
+  externalId: string,
+  section?: Section,
+): Promise<Question | null> {
+  const match = findOfficialExternalRef(externalId.trim(), section);
+  if (!match) return null;
+
+  const stub = stubFromRef(match.ref, match.section, new Map(), new Map());
+  return stub ? getQuestion(stub) : null;
 }

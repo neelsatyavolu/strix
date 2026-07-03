@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { drawQuestions } from "@/lib/cb/client";
+import { drawQuestions, getQuestion, getQuestionByExternalId, listStubs, stubId } from "@/lib/cb/client";
 import { drawModule } from "@/lib/cb/blueprint";
-import { getOfficialModule } from "@/lib/cb/officialForms";
+import { getOfficialModule, getOfficialQuestionByExternalId } from "@/lib/cb/officialForms";
 import { CATEGORY_TO_DOMAIN } from "@/lib/cb/domains";
 import { createClient } from "@/lib/supabase/server";
 import { difficultyMix, recentAccuracy } from "@/lib/cb/adaptive";
@@ -86,8 +86,31 @@ const DIFF_MAP: Record<string, Difficulty | null> = {
   H: "H",
 };
 
+async function findQuestionById(id: string, section?: Section) {
+  const needle = id.trim();
+  if (!needle) return null;
+
+  const officialQuestion = await getOfficialQuestionByExternalId(needle, section);
+  if (officialQuestion) return officialQuestion;
+
+  const sections: Section[] = section ? [section] : ["rw", "math"];
+  for (const candidate of sections) {
+    const stubs = await listStubs(candidate);
+    const stub = stubs.find((s) =>
+      s.questionId === needle ||
+      s.externalId === needle ||
+      s.ibn === needle ||
+      stubId(s) === needle,
+    );
+    if (stub) return getQuestion(stub);
+  }
+
+  return section ? getQuestionByExternalId(needle, section) : null;
+}
+
 const QuerySchema = z.object({
-  section: z.enum(["rw", "math"]),
+  id: z.string().optional(),
+  section: z.enum(["rw", "math"]).optional(),
   // "drill" = filtered flat set; "module" = a blueprinted full SAT module;
   // "official" = a real Bluebook form module (exact questions, fixed order).
   mode: z.enum(["drill", "module", "official"]).optional().default("drill"),
@@ -114,7 +137,35 @@ export async function GET(req: NextRequest) {
       { status: 400 },
     );
   }
-  const { section, mode, profile, test, moduleKey, exclude, category, domain, difficulty, limit } = parsed.data;
+  const { id, section, mode, profile, test, moduleKey, exclude, category, domain, difficulty, limit } = parsed.data;
+
+  const lookupId = id?.trim();
+  if (lookupId) {
+    try {
+      const question = await findQuestionById(lookupId, section);
+      if (!question) {
+        return NextResponse.json(
+          { success: false, data: null, error: "Question not found" },
+          { status: 404 },
+        );
+      }
+      return NextResponse.json({
+        success: true,
+        data: { question },
+        error: null,
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to load question";
+      return NextResponse.json({ success: false, data: null, error: message }, { status: 502 });
+    }
+  }
+
+  if (!section) {
+    return NextResponse.json(
+      { success: false, data: null, error: "section is required" },
+      { status: 400 },
+    );
+  }
 
   const domainCode = domain || (category ? CATEGORY_TO_DOMAIN[category] : undefined);
   const diff = DIFF_MAP[difficulty] ?? null;

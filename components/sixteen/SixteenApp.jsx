@@ -19,6 +19,7 @@ import Sessions from './screens/Sessions';
 import PracticeTests from './screens/PracticeTests';
 import PracticeModules from './screens/PracticeModules';
 import PracticeSections from './screens/PracticeSections';
+import QuestionBank from './screens/QuestionBank';
 import CategoryDetail from './screens/CategoryDetail';
 import SessionDetail from './screens/SessionDetail';
 import TestReview from './screens/TestReview';
@@ -283,6 +284,7 @@ function App() {
     'practice-tests': 'practice-tests',
     'practice-modules': 'practice-modules',
     'practice-sections': 'practice-sections',
+    'question-bank': 'question-bank',
     'category-detail': 'stats',
     'session-detail': 'stats',
     'test-review': 'practice-tests',
@@ -326,6 +328,7 @@ function App() {
     // Studying — targeted drills + the study loop (Study Plan + Review render the
     // watched student's data read-only when tutoring)
     { id:'practice', label:'Practice',          icon: I('book-open'),       group:'Studying' },
+    { id:'question-bank', label:'Question Bank', icon: I('database'),        group:'Studying' },
     { id:'plan',     label:'Study Plan',        icon: I('target'),          group:'Studying' },
     { id:'review',   label:'Review',            icon: I('rotate-ccw'),      group:'Studying', badge: reviewDue || undefined },
     // Full Practice — timed, exam-shaped surfaces
@@ -353,6 +356,7 @@ function App() {
         else if (id === 'review') go('review');
         else if (id === 'assignments') go(isTutor ? 'tutor-assignments' : 'student-assignments');
         else if (id === 'practice') go('practice-setup');
+        else if (id === 'question-bank') go('question-bank');
         else if (id === 'stats') go('stats');
         else if (id === 'practice-tests') go('practice-tests');
         else if (id === 'practice-modules') go('practice-modules');
@@ -478,6 +482,7 @@ function App() {
     case 'practice-tests':  screen = <PracticeTests go={go} {...watchProps} />; break;
     case 'practice-modules': screen = <PracticeModules go={go} {...watchProps} />; break;
     case 'practice-sections': screen = <PracticeSections go={go} {...watchProps} />; break;
+    case 'question-bank':    screen = <QuestionBank go={go} />; break;
     case 'category-detail': screen = <CategoryDetail go={go} section={viewProps.section} domain={viewProps.domain} label={viewProps.label} {...watchProps} />; break;
     case 'session-detail':  screen = <SessionDetail go={go} id={viewProps.id} {...watchProps} />; break;
     case 'test-review':     screen = <TestReview go={go} rwId={viewProps.rwId} mathId={viewProps.mathId} {...watchProps} />; break;
@@ -588,6 +593,7 @@ function titleFor(view, isTutor) {
     'practice-tests': 'Strix — Practice Exams',
     'practice-modules': 'Strix — Practice Modules',
     'practice-sections': 'Strix — Practice Sections',
+    'question-bank': 'Strix — Question Bank',
     'category-detail': 'Strix — Stats',
     'tutor-chat': 'Strix — Tutor',
     'tutor-invite': 'Strix — Tutor',
