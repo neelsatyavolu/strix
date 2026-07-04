@@ -111,12 +111,18 @@ async function fetchOfficialModule({ test, section, moduleKey }) {
   return requestQuestions(params);
 }
 
-// Module 1 for a full section/exam: a real Bluebook form when one was picked,
-// otherwise the calibrated synthetic blueprint drawn from the question bank.
-async function fetchModule1({ section, bluebookTest }) {
-  return bluebookTest
-    ? fetchOfficialModule({ test: bluebookTest, section, moduleKey: 'm1' })
-    : fetchModule({ section, profile: 'mixed' });
+// Strix Test: a fixed alternative full-SAT module, in Bluebook-like order.
+async function fetchStrixModule({ test, section, moduleKey }) {
+  const params = new URLSearchParams({ section, mode: 'strix', strixTest: String(test), moduleKey });
+  return requestQuestions(params);
+}
+
+// Module 1 for a full section/exam: a fixed Strix test or real Bluebook form
+// when one was picked, otherwise the calibrated synthetic question-bank module.
+async function fetchModule1({ section, bluebookTest, strixTest }) {
+  if (strixTest) return fetchStrixModule({ test: strixTest, section, moduleKey: 'm1' });
+  if (bluebookTest) return fetchOfficialModule({ test: bluebookTest, section, moduleKey: 'm1' });
+  return fetchModule({ section, profile: 'mixed' });
 }
 
 function buildReview(questions, responses, pretestIds = [], mode = null) {
@@ -350,7 +356,7 @@ export function PracticeSessionProvider({ children }) {
         // A single Module 2A/2B is only defined by an official Bluebook form.
         questions = await fetchOfficialModule({ test: config.bluebookTest, section, moduleKey: config.moduleKey });
       } else {
-        questions = await fetchModule1({ section, bluebookTest: config.bluebookTest });
+        questions = await fetchModule1({ section, bluebookTest: config.bluebookTest, strixTest: config.strixTest });
       }
       const moduleLabel = isDrill ? 'Drill' : isReview ? 'Review'
         : mode === 'mock-m1' && config.moduleKey === 'easy' ? 'Module 2A'
@@ -530,13 +536,20 @@ export function PracticeSessionProvider({ children }) {
       setState((prev) => ({ ...prev, status: 'loading', phase: 'm2', m2Variant: variant }));
       try {
         const bluebookTest = s.config?.bluebookTest;
-        const all = bluebookTest
-          ? await fetchOfficialModule({ test: bluebookTest, section: s.section, moduleKey: variant === 'hard' ? 'hard' : 'easy' })
-          : await fetchModule({
-              section: s.section,
-              profile: variant === 'hard' ? 'hard' : 'easy',
-              exclude: m1.questions.map((q) => q.id),
-            });
+        const strixTest = s.config?.strixTest;
+        const moduleKey = variant === 'hard' ? 'hard' : 'easy';
+        let all;
+        if (strixTest) {
+          all = await fetchStrixModule({ test: strixTest, section: s.section, moduleKey });
+        } else if (bluebookTest) {
+          all = await fetchOfficialModule({ test: bluebookTest, section: s.section, moduleKey });
+        } else {
+          all = await fetchModule({
+            section: s.section,
+            profile: variant === 'hard' ? 'hard' : 'easy',
+            exclude: m1.questions.map((q) => q.id),
+          });
+        }
         // Belt-and-suspenders: drop any id already in Module 1 (server already excludes).
         const m1Ids = new Set(m1.questions.map((q) => q.id));
         const questions = (all || []).filter((q) => !m1Ids.has(q.id));
@@ -587,7 +600,11 @@ export function PracticeSessionProvider({ children }) {
     const section = s.exam.sections[s.exam.index];
     setState((prev) => ({ ...prev, status: 'loading', section }));
     try {
-      const questions = await fetchModule1({ section, bluebookTest: s.config?.bluebookTest });
+      const questions = await fetchModule1({
+        section,
+        bluebookTest: s.config?.bluebookTest,
+        strixTest: s.config?.strixTest,
+      });
       setState((prev) => ({
         ...prev,
         status: 'active',

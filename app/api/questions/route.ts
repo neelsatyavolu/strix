@@ -3,6 +3,7 @@ import { z } from "zod";
 import { drawQuestions, getQuestion, getQuestionByExternalId, listStubs, stubId } from "@/lib/cb/client";
 import { drawModule } from "@/lib/cb/blueprint";
 import { getOfficialModule, getOfficialQuestionByExternalId } from "@/lib/cb/officialForms";
+import { getStrixModule } from "@/lib/cb/strixForms";
 import { CATEGORY_TO_DOMAIN } from "@/lib/cb/domains";
 import { createClient } from "@/lib/supabase/server";
 import { difficultyMix, recentAccuracy } from "@/lib/cb/adaptive";
@@ -113,11 +114,13 @@ const QuerySchema = z.object({
   section: z.enum(["rw", "math"]).optional(),
   // "drill" = filtered flat set; "module" = a blueprinted full SAT module;
   // "official" = a real Bluebook form module (exact questions, fixed order).
-  mode: z.enum(["drill", "module", "official"]).optional().default("drill"),
+  // "strix" = a fixed Strix-owned full-SAT module built from alternative qbank ids.
+  mode: z.enum(["drill", "module", "official", "strix"]).optional().default("drill"),
   // module-adaptive difficulty: Module 1 = "mixed"; Module 2A/2B = easy/hard.
   profile: z.enum(["mixed", "easy", "hard"]).optional().default("mixed"),
   // official-form selectors: which Bluebook test and which module slot.
   test: z.coerce.number().int().optional(),
+  strixTest: z.coerce.number().int().optional(),
   moduleKey: z.enum(["m1", "easy", "hard"]).optional(),
   // comma-separated question ids to exclude (e.g. Module 1 items when drawing 2).
   exclude: z.string().optional(),
@@ -137,7 +140,7 @@ export async function GET(req: NextRequest) {
       { status: 400 },
     );
   }
-  const { id, section, mode, profile, test, moduleKey, exclude, category, domain, difficulty, limit } = parsed.data;
+  const { id, section, mode, profile, test, strixTest, moduleKey, exclude, category, domain, difficulty, limit } = parsed.data;
 
   const lookupId = id?.trim();
   if (lookupId) {
@@ -188,6 +191,26 @@ export async function GET(req: NextRequest) {
       });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to load official form";
+      return NextResponse.json({ success: false, data: null, error: message }, { status: 502 });
+    }
+  }
+
+  if (mode === "strix") {
+    if (strixTest == null || !moduleKey) {
+      return NextResponse.json(
+        { success: false, data: null, error: "strix mode requires strixTest and moduleKey" },
+        { status: 400 },
+      );
+    }
+    try {
+      const questions = await getStrixModule(strixTest, section, moduleKey);
+      return NextResponse.json({
+        success: true,
+        data: { questions, count: questions.length },
+        error: null,
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to load Strix test";
       return NextResponse.json({ success: false, data: null, error: message }, { status: 502 });
     }
   }
