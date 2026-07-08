@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { drawQuestions, getQuestion, getQuestionByExternalId, listStubs, stubId } from "@/lib/cb/client";
+import { drawQuestions } from "@/lib/cb/client";
 import { drawModule } from "@/lib/cb/blueprint";
-import { getOfficialModule, getOfficialQuestionByExternalId } from "@/lib/cb/officialForms";
+import { getOfficialModule } from "@/lib/cb/officialForms";
 import { getStrixModule } from "@/lib/cb/strixForms";
+import { findQuestionById } from "@/lib/cb/lookup";
+import { sanitizeQuestion, sanitizeQuestions } from "@/lib/cb/sanitize";
 import { CATEGORY_TO_DOMAIN } from "@/lib/cb/domains";
 import { createClient } from "@/lib/supabase/server";
 import { difficultyMix, recentAccuracy } from "@/lib/cb/adaptive";
@@ -87,28 +89,6 @@ const DIFF_MAP: Record<string, Difficulty | null> = {
   H: "H",
 };
 
-async function findQuestionById(id: string, section?: Section) {
-  const needle = id.trim();
-  if (!needle) return null;
-
-  const officialQuestion = await getOfficialQuestionByExternalId(needle, section);
-  if (officialQuestion) return officialQuestion;
-
-  const sections: Section[] = section ? [section] : ["rw", "math"];
-  for (const candidate of sections) {
-    const stubs = await listStubs(candidate);
-    const stub = stubs.find((s) =>
-      s.questionId === needle ||
-      s.externalId === needle ||
-      s.ibn === needle ||
-      stubId(s) === needle,
-    );
-    if (stub) return getQuestion(stub);
-  }
-
-  return section ? getQuestionByExternalId(needle, section) : null;
-}
-
 const QuerySchema = z.object({
   id: z.string().optional(),
   section: z.enum(["rw", "math"]).optional(),
@@ -132,6 +112,17 @@ const QuerySchema = z.object({
 });
 
 export async function GET(req: NextRequest) {
+  // Question payloads are for signed-in test-takers only. They're sanitized
+  // below (no key / rationale), but even question content stays behind auth.
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json(
+      { success: false, data: null, error: "Not signed in" },
+      { status: 401 },
+    );
+  }
+
   const params = Object.fromEntries(req.nextUrl.searchParams);
   const parsed = QuerySchema.safeParse(params);
   if (!parsed.success) {
@@ -154,7 +145,7 @@ export async function GET(req: NextRequest) {
       }
       return NextResponse.json({
         success: true,
-        data: { question },
+        data: { question: sanitizeQuestion(question) },
         error: null,
       });
     } catch (err) {
@@ -186,7 +177,7 @@ export async function GET(req: NextRequest) {
       const questions = await getOfficialModule(test, section, moduleKey);
       return NextResponse.json({
         success: true,
-        data: { questions, count: questions.length },
+        data: { questions: sanitizeQuestions(questions), count: questions.length },
         error: null,
       });
     } catch (err) {
@@ -206,7 +197,7 @@ export async function GET(req: NextRequest) {
       const questions = await getStrixModule(strixTest, section, moduleKey);
       return NextResponse.json({
         success: true,
-        data: { questions, count: questions.length },
+        data: { questions: sanitizeQuestions(questions), count: questions.length },
         error: null,
       });
     } catch (err) {
@@ -245,7 +236,7 @@ export async function GET(req: NextRequest) {
           });
     return NextResponse.json({
       success: true,
-      data: { questions, count: questions.length },
+      data: { questions: sanitizeQuestions(questions), count: questions.length },
       error: null,
     });
   } catch (err) {

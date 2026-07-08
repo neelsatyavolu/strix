@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
@@ -70,7 +71,9 @@ function StudentAssignments({ go }) {
   const session = usePracticeSession();
   const { assignments, loading } = useAssignments();
 
-  const now = Date.now();
+  // Overdue boundary, read once per mount — render must stay pure (no Date.now
+  // during render), and the list refetches on navigation anyway.
+  const [now] = React.useState(() => Date.now());
   const list = assignments || [];
   const overdue = list.filter((a) => a.status === 'assigned' && a.due_at && new Date(a.due_at).getTime() < now);
   const upcoming = list.filter((a) => a.status === 'assigned' && !(a.due_at && new Date(a.due_at).getTime() < now));

@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { resolveTargetUser } from "@/lib/tutor/scope";
 import { enrollReviews } from "@/lib/review/enroll";
 import { rescoreSessions } from "@/lib/scoring/rescore";
+import { getQuestionIfCached } from "@/lib/cb/client";
+import { isValueCorrect } from "@/lib/practice/grading.mjs";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -46,6 +48,22 @@ export async function POST(req: NextRequest) {
   }
   const p = parsed.data;
 
+  // Server-side re-grade: where the served question is still cached (memory or
+  // question_cache), recompute correctness from the real key rather than trust
+  // the client's verdict. Cache misses keep the client value (best-effort).
+  const questions = await Promise.all(p.questions.map(async (q) => {
+    if (!q.external_id) return q;
+    try {
+      const known = await getQuestionIfCached(q.external_id);
+      if (!known?.correct?.length) return q;
+      return { ...q, is_correct: isValueCorrect(known, q.value ?? null) };
+    } catch {
+      return q;
+    }
+  }));
+  const scoreCorrect = questions.filter((q) => q.is_correct).length;
+  const accuracy = questions.length ? Math.round((scoreCorrect / questions.length) * 100) : p.accuracy;
+
   try {
     const { data: session, error: sErr } = await supabase
       .from("practice_sessions")
@@ -55,9 +73,9 @@ export async function POST(req: NextRequest) {
         section: p.section,
         config: p.config,
         status: "submitted",
-        score_correct: p.score_correct,
+        score_correct: scoreCorrect,
         score_total: p.score_total,
-        accuracy: p.accuracy,
+        accuracy,
         scaled_score: p.scaled_score ?? null,
         submitted_at: new Date().toISOString(),
       })
@@ -65,7 +83,7 @@ export async function POST(req: NextRequest) {
       .single();
     if (sErr || !session) throw new Error(sErr?.message || "session insert failed");
 
-    const sqRows = p.questions.map((q) => ({
+    const sqRows = questions.map((q) => ({
       session_id: session.id,
       user_id: user.id,
       ordinal: q.ordinal,
@@ -84,7 +102,7 @@ export async function POST(req: NextRequest) {
     if (sqErr || !sqs) throw new Error(sqErr?.message || "session_questions insert failed");
 
     const byOrdinal = new Map(sqs.map((r) => [r.ordinal, r.id]));
-    const answerRows = p.questions.map((q) => ({
+    const answerRows = questions.map((q) => ({
       session_question_id: byOrdinal.get(q.ordinal),
       session_id: session.id,
       user_id: user.id,
@@ -104,7 +122,7 @@ export async function POST(req: NextRequest) {
       try {
         const { data: profile } = await supabase
           .from("profiles").select("test_date").eq("id", user.id).single();
-        await enrollReviews(supabase, user.id, p.questions, profile?.test_date ?? null);
+        await enrollReviews(supabase, user.id, questions, profile?.test_date ?? null);
       } catch { /* review scheduling is best-effort */ }
     }
 
@@ -122,7 +140,7 @@ export async function POST(req: NextRequest) {
           .update({
             status: "completed",
             session_id: session.id,
-            score_correct: p.score_correct,
+            score_correct: scoreCorrect,
             score_total: p.score_total,
             scaled_score: p.scaled_score ?? null,
             completed_at: new Date().toISOString(),

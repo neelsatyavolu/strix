@@ -43,7 +43,20 @@ export default function QuestionBank({ initialId = '' }) {
       const res = await fetch(`/api/questions?${params.toString()}`);
       const json = await res.json();
       if (!json?.success) throw new Error(json?.error || 'Question lookup failed');
-      setQuestion(json.data.question);
+      const q = json.data.question;
+      setQuestion(q);
+      // Question payloads no longer carry the key; this browse view fetches it
+      // explicitly via the grading endpoint. Failure just shows "Unavailable".
+      try {
+        const revealRes = await fetch('/api/questions/grade', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ attempts: [{ id: q.id, section: q.section }], reveal: true }),
+        });
+        const revealJson = await revealRes.json();
+        const key = revealJson?.data?.results?.[0]?.key;
+        if (key) setQuestion({ ...q, ...key });
+      } catch { /* answer stays hidden; the question itself still renders */ }
     } catch (err) {
       setQuestion(null);
       setError(err instanceof Error ? err.message : 'Question lookup failed');

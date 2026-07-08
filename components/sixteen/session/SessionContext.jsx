@@ -3,6 +3,8 @@
 import React from 'react';
 import { scaledSectionScore, sectionScoreRange, routeModule2, compositeScore } from '@/lib/scoring/curve';
 import { isSectionEstimateMode, modulePretestIds, moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
+import { isValueCorrect, questionHasKey } from '@/lib/practice/grading.mjs';
+import { enqueuePendingSession, flushPendingSessions } from '@/lib/practice/persistQueue.mjs';
 
 // Client-side practice session. Shapes:
 //  - drill / mock-m1: a single fixed set of real CB questions, scored on submit.
@@ -46,17 +48,8 @@ function loadSnapshot() {
   }
 }
 
-function normalizeSpr(s) {
-  return String(s ?? '').trim().replace(/\s+/g, '').toLowerCase();
-}
-
 function isResponseCorrect(question, response) {
-  if (!response?.value) return false;
-  if (question.type === 'spr') {
-    const given = normalizeSpr(response.value);
-    return !!given && (question.correct || []).some((k) => normalizeSpr(k) === given);
-  }
-  return (question.correct || []).includes(response.value);
+  return isValueCorrect(question, response?.value);
 }
 
 // General practice ('drill') lets students retry MCQs until correct, but only the
@@ -64,6 +57,9 @@ function isResponseCorrect(question, response) {
 // and unanswered items there is a single attempt, so fall back to the final value.
 function drillResponseCorrect(question, response) {
   if (response?.firstValue != null) return !!response.firstCorrect;
+  // Sanitized questions carry no answer key; fall back to the server-graded
+  // verdict (drill SPR items are checked in the background between questions).
+  if (!questionHasKey(question)) return !!response?.checkedCorrect;
   return isResponseCorrect(question, response);
 }
 
@@ -78,6 +74,60 @@ async function requestQuestions(params) {
     throw new Error(json.error || 'No questions were returned. Try a different filter.');
   }
   return json.data.questions;
+}
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Server-side grading: question payloads carry no answer key, so committed
+// answers are checked (and, once committed for good, revealed) via
+// POST /api/questions/grade. Retries transient failures before giving up.
+async function gradeAttempts(attempts, reveal) {
+  let lastErr = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await fetch('/api/questions/grade', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ attempts, reveal }),
+      });
+      const json = await res.json();
+      if (!json?.success) throw new Error(json?.error || 'Grading failed');
+      return new Map((json.data?.results || []).map((r) => [r.id, r]));
+    } catch (err) {
+      lastErr = err;
+      if (attempt < 2) await sleep(700 * (attempt + 1));
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error('Grading failed');
+}
+
+function mergeKeyIntoModules(modules, qid, key) {
+  return modules.map((m) => ({
+    ...m,
+    questions: m.questions.map((q) => (q.id === qid ? { ...q, ...key } : q)),
+  }));
+}
+
+// Grade + reveal every question that still lacks its key (used when a module /
+// section is committed), returning modules whose questions carry correct /
+// correctIds / rationaleHtml again — so the existing synchronous scoring,
+// routing and report logic works unchanged downstream.
+async function withAnswerKeys(modules, responses, mode, section) {
+  const missing = modules.flatMap((m) => m.questions.filter((q) => !questionHasKey(q)));
+  if (!missing.length) return modules;
+  const attempts = missing.map((q) => ({
+    id: q.id,
+    section: q.section || section,
+    value: storedValue(mode, responses[q.id]),
+  }));
+  const graded = await gradeAttempts(attempts, true);
+  return modules.map((m) => ({
+    ...m,
+    questions: m.questions.map((q) => {
+      const r = graded.get(q.id);
+      return r?.key ? { ...q, ...r.key } : q;
+    }),
+  }));
 }
 
 // Drill: a flat, filtered set (category + difficulty).
@@ -231,25 +281,38 @@ async function persistSession(state, times = {}) {
     // the assignment here, twice and without the composite). Single sessions keep
     // it. assignmentId: undefined is dropped by JSON.stringify.
     const persistConfig = { ...(state.config || {}), ...(isExam ? { exam: true, assignmentId: undefined } : {}) };
-    const res = await fetch('/api/sessions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        // 'mock-exam' isn't a DB mode; each section persists as a full section.
-        mode: isExam ? 'mock-full' : state.mode,
-        section: state.section,
-        config: persistConfig,
-        score_correct: base.correct,
-        score_total: base.total,
-        accuracy: base.accuracy,
-        scaled_score: scaled,
-        questions,
-      }),
-    });
-    const json = await res.json().catch(() => null);
-    return json?.success ? json.data?.id ?? null : null;
+    const payload = {
+      // 'mock-exam' isn't a DB mode; each section persists as a full section.
+      mode: isExam ? 'mock-full' : state.mode,
+      section: state.section,
+      config: persistConfig,
+      score_correct: base.correct,
+      score_total: base.total,
+      accuracy: base.accuracy,
+      scaled_score: scaled,
+      questions,
+    };
+    // Durable submit: retry transient failures here, then queue the payload for
+    // a later flush — a finished test must never be lost to a network drop.
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const res = await fetch('/api/sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json().catch(() => null);
+        if (json?.success) return json.data?.id ?? null;
+        if (res.status === 400) return null; // invalid payload — retrying can't help
+      } catch {
+        /* network error — retry below */
+      }
+      if (attempt < 2) await sleep(1200 * (attempt + 1));
+    }
+    enqueuePendingSession(payload);
+    return null;
   } catch {
-    /* persistence is best-effort; never blocks the result UI */
+    /* building the payload failed; nothing recoverable to queue */
     return null;
   }
 }
@@ -386,23 +449,20 @@ export function PracticeSessionProvider({ children }) {
       return { ...s, responses: { ...s.responses, [q.id]: { ...prev, ...patch } } };
     });
 
-  const setValue = React.useCallback((value) => updateResponse({ value }), []);
+  // Changing the answer invalidates any server-graded verdict for it.
+  const setValue = React.useCallback((value) => updateResponse({ value, checkedCorrect: undefined }), []);
 
   // Drill MCQ: immediate-check, retry-until-correct. Records the first attempt's
   // correctness (stats), tracks wrong picks so they lock out, and only sets
-  // `solved` (which ungates Next) when the correct option is chosen.
-  const answerDrillMCQ = React.useCallback((letter) => {
-    // Freeze time-to-first-answer on the first click (reads fresh state via ref).
-    const cur = stateRef.current;
-    const cq = cur.modules[cur.activeModuleIndex]?.questions[cur.index];
-    const cr = cq ? cur.responses[cq.id] : null;
-    if (cq && cr?.firstValue == null && !cr?.solved) freezeTiming(cq.id);
+  // `solved` (which ungates Next) when the correct option is chosen. Served
+  // questions carry no answer key, so correctness comes from the grading API;
+  // review snapshots still carry their key and check locally.
+  const checkingRef = React.useRef(new Set());
+
+  const applyDrillPick = React.useCallback((qid, letter, isCorrect, key) => {
     setState((s) => {
-      const q = s.modules[s.activeModuleIndex]?.questions[s.index];
-      if (!q) return s;
-      const prev = s.responses[q.id] || {};
+      const prev = s.responses[qid] || {};
       if (prev.solved) return s; // locked once correct
-      const isCorrect = (q.correct || []).includes(letter);
       const firstAttempt = prev.firstValue == null;
       const next = {
         ...prev,
@@ -415,9 +475,37 @@ export function PracticeSessionProvider({ children }) {
       } else {
         next.tried = [...new Set([...(prev.tried || []), letter])];
       }
-      return { ...s, responses: { ...s.responses, [q.id]: next } };
+      // Solving reveals the key (rationale) — fold it into the question.
+      const modules = key ? mergeKeyIntoModules(s.modules, qid, key) : s.modules;
+      return { ...s, modules, responses: { ...s.responses, [qid]: next } };
     });
   }, []);
+
+  const answerDrillMCQ = React.useCallback(async (letter) => {
+    const cur = stateRef.current;
+    const q = cur.modules[cur.activeModuleIndex]?.questions[cur.index];
+    if (!q) return;
+    const r = cur.responses[q.id] || {};
+    if (r.solved || checkingRef.current.has(q.id)) return;
+    // Freeze time-to-first-answer on the first click.
+    if (r.firstValue == null) freezeTiming(q.id);
+    if (questionHasKey(q)) {
+      applyDrillPick(q.id, letter, (q.correct || []).includes(letter), null);
+      return;
+    }
+    checkingRef.current.add(q.id);
+    try {
+      const graded = await gradeAttempts([{ id: q.id, section: q.section || cur.section, value: letter }], false);
+      const res = graded.get(q.id);
+      // correct=null means the server couldn't grade — clicking again retries.
+      if (res?.correct == null) return;
+      applyDrillPick(q.id, letter, !!res.correct, res.key || null);
+    } catch {
+      /* transient failure — the next click retries the check */
+    } finally {
+      checkingRef.current.delete(q.id);
+    }
+  }, [applyDrillPick]);
 
   const toggleFlag = React.useCallback(() =>
     setState((s) => {
@@ -474,6 +562,15 @@ export function PracticeSessionProvider({ children }) {
     setResumable(null);
   }, []);
 
+  // Deliver any sessions whose submit failed earlier (offline finish, crash):
+  // flush the pending queue on load and whenever connectivity returns.
+  React.useEffect(() => {
+    const flush = () => { flushPendingSessions().catch(() => {}); };
+    flush();
+    window.addEventListener('online', flush);
+    return () => window.removeEventListener('online', flush);
+  }, []);
+
   // Surface any snapshot left over from a previous visit (tab close / reload) so
   // the dashboard can offer to resume it.
   React.useEffect(() => {
@@ -523,17 +620,34 @@ export function PracticeSessionProvider({ children }) {
     if (go) go('dashboard');
   }, [reset, writeSnapshot]);
 
-  // End the active module. Full-section M1 -> route + load M2 immediately.
-  // Otherwise the section is done: advance the exam, or finalize the report.
+  // End the active module. Committed answers are graded server-side first and
+  // the answer key hydrated into state (served questions carry none), so the
+  // synchronous scoring/routing below works unchanged. Full-section M1 ->
+  // route + load M2 immediately. Otherwise the section is done: advance the
+  // exam, or finalize the report.
   const finishModule = React.useCallback(async (go) => {
     const s = stateRef.current;
+    // Grading failed after retries: keep the student's work answerable — never
+    // abandon a module to a transient network failure. Submitting retries.
+    const revertToActive = () => {
+      setState((prev) => ({ ...prev, status: 'active', phase: s.phase }));
+      window.alert("We couldn't submit right now — check your connection and try again.");
+    };
 
     if (isFullSection(s.mode) && s.phase === 'm1') {
       flushTiming(Date.now()); // stop counting M1's last question while Module 2 loads
-      const m1 = s.modules[0];
+      setState((prev) => ({ ...prev, status: 'loading', phase: 'm2' }));
+      let hydratedModules;
+      try {
+        hydratedModules = await withAnswerKeys(s.modules, s.responses, s.mode, s.section);
+      } catch {
+        revertToActive();
+        return;
+      }
+      const m1 = hydratedModules[0];
       const routing = moduleRoutingStats(m1.questions, s.responses, s.pretestIds, isResponseCorrect);
       const variant = routeModule2(routing.correct, routing.total);
-      setState((prev) => ({ ...prev, status: 'loading', phase: 'm2', m2Variant: variant }));
+      setState((prev) => ({ ...prev, status: 'loading', phase: 'm2', modules: hydratedModules, m2Variant: variant }));
       try {
         const bluebookTest = s.config?.bluebookTest;
         const strixTest = s.config?.strixTest;
@@ -569,26 +683,36 @@ export function PracticeSessionProvider({ children }) {
       return;
     }
 
-    // Section complete.
+    // Section complete: reveal the key for everything, then score locally.
+    setState((prev) => ({ ...prev, status: 'loading' }));
+    let modules;
+    try {
+      modules = await withAnswerKeys(s.modules, s.responses, s.mode, s.section);
+    } catch {
+      revertToActive();
+      return;
+    }
+    const hydrated = { ...s, modules };
+
     if (s.exam) {
-      const sessionId = await persistSession(s, finalizeTimes());
-      const snapshot = { ...sectionSnapshot(s), sessionId };
+      const sessionId = await persistSession(hydrated, finalizeTimes());
+      const snapshot = { ...sectionSnapshot(hydrated), sessionId };
       const nextIndex = s.exam.index + 1;
       const results = [...s.exam.results, snapshot];
       if (nextIndex < s.exam.sections.length) {
-        setState((prev) => ({ ...prev, status: 'submitted', phase: 'done', exam: { ...prev.exam, index: nextIndex, results } }));
+        setState((prev) => ({ ...prev, status: 'submitted', phase: 'done', modules, exam: { ...prev.exam, index: nextIndex, results } }));
         go('exam-break');
       } else {
-        setState((prev) => ({ ...prev, status: 'submitted', phase: 'done', exam: { ...prev.exam, results } }));
+        setState((prev) => ({ ...prev, status: 'submitted', phase: 'done', modules, exam: { ...prev.exam, results } }));
         completeExamAssignment(s, results); // best-effort; full SAT completes once, here
         go('exam-report');
       }
       return;
     }
 
-    persistSession(s, finalizeTimes());
+    persistSession(hydrated, finalizeTimes());
     if (usesDrillSemantics(s.mode)) clearSnapshot();
-    setState((prev) => ({ ...prev, status: 'submitted', phase: 'done' }));
+    setState((prev) => ({ ...prev, status: 'submitted', phase: 'done', modules }));
     go('score-report');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -640,6 +764,35 @@ export function PracticeSessionProvider({ children }) {
       t.currentId = id;
       t.shownAt = id ? Date.now() : null;
     }
+  }, [current?.id]);
+
+  // Drill SPR (grid-in) answers are single-attempt and the client holds no
+  // answer key, so once the student moves off one, ask the server for its
+  // correctness — keeps the live stats panel honest before submit.
+  // Best-effort: submit re-grades everything anyway.
+  const prevQidRef = React.useRef(null);
+  React.useEffect(() => {
+    const prevId = prevQidRef.current;
+    prevQidRef.current = current?.id ?? null;
+    const s = stateRef.current;
+    if (!prevId || prevId === current?.id) return;
+    if (!usesDrillSemantics(s.mode) || s.status !== 'active') return;
+    const q = s.modules[s.activeModuleIndex]?.questions.find((x) => x.id === prevId);
+    const r = s.responses[prevId];
+    if (!q || q.type !== 'spr' || questionHasKey(q)) return;
+    if (!r?.value || !String(r.value).trim() || r.checkedCorrect != null) return;
+    gradeAttempts([{ id: q.id, section: q.section || s.section, value: r.value }], false)
+      .then((graded) => {
+        const res = graded.get(q.id);
+        if (res?.correct == null) return;
+        setState((prev) => {
+          const pr = prev.responses[q.id];
+          if (!pr || pr.value !== r.value) return prev; // edited since the check
+          const modules = res.key ? mergeKeyIntoModules(prev.modules, q.id, res.key) : prev.modules;
+          return { ...prev, modules, responses: { ...prev.responses, [q.id]: { ...pr, checkedCorrect: !!res.correct } } };
+        });
+      })
+      .catch(() => { /* best-effort */ });
   }, [current?.id]);
 
   const buildResult = (qs) => buildReview(qs, state.responses, state.pretestIds, state.mode);

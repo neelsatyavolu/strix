@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "node --test 'test/*.test.mjs'",
     "electron": "electron .",
     "build:icon": "node scripts/build-icon.mjs && iconutil -c icns build/icon.iconset -o build/icon.icns",
     "app": "concurrently -k -n next,electron \"next dev\" \"wait-on tcp:3000 && electron .\"",

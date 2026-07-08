@@ -6,6 +6,7 @@ import {
   allDomainCodes,
 } from "./domains";
 import { normalizeQbank, normalizeDisclosed, stubFrom } from "./normalize";
+import { readCachedQuestion, writeCachedQuestion } from "./questionCache";
 
 const BASE =
   "https://qbank-api.collegeboard.org/msreportingquestionbank-prod/questionbank/digital";
@@ -83,6 +84,14 @@ export async function getQuestion(stub: QuestionStub): Promise<Question | null> 
   const cached = fresh(qCache.get(id), Q_TTL);
   if (cached) return cached;
 
+  // Durable cache next, so serving and grading survive CB rate-limits/outages.
+  // A stale row is still used below if the live fetch fails.
+  const db = await readCachedQuestion(id);
+  if (db?.fresh) {
+    qCache.set(id, { at: Date.now(), data: db.question });
+    return db.question;
+  }
+
   try {
     let q: Question;
     if (stub.externalId) {
@@ -97,10 +106,23 @@ export async function getQuestion(stub: QuestionStub): Promise<Question | null> 
       return null;
     }
     qCache.set(id, { at: Date.now(), data: q });
+    await writeCachedQuestion(q);
     return q;
   } catch {
+    if (db) {
+      qCache.set(id, { at: Date.now(), data: db.question });
+      return db.question;
+    }
     return null;
   }
+}
+
+/** Cache-only lookup (memory, then DB) — never calls College Board. */
+export async function getQuestionIfCached(id: string): Promise<Question | null> {
+  const mem = fresh(qCache.get(id), Q_TTL);
+  if (mem) return mem;
+  const db = await readCachedQuestion(id);
+  return db?.question ?? null;
 }
 
 function shuffle<T>(arr: T[]): T[] {

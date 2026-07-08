@@ -14,6 +14,10 @@ const officialFormsSource = fs.readFileSync(
   new URL('../lib/cb/officialForms.ts', import.meta.url),
   'utf8',
 );
+const lookupSource = fs.readFileSync(
+  new URL('../lib/cb/lookup.ts', import.meta.url),
+  'utf8',
+);
 const officialForms = JSON.parse(
   fs.readFileSync(new URL('../lib/cb/official-forms.json', import.meta.url), 'utf8'),
 );
@@ -29,7 +33,8 @@ test('Question Bank is wired into Strix navigation and routing', () => {
 });
 
 test('questions API supports direct lookup by question ID', () => {
-  assert.match(routeSource, /getQuestionByExternalId/);
+  assert.match(routeSource, /findQuestionById/);
+  assert.match(lookupSource, /getQuestionByExternalId/);
   assert.match(routeSource, /id:\s*z\.string\(\)\.optional\(\)/);
   assert.match(routeSource, /Question not found/);
 });
@@ -49,7 +54,7 @@ test('direct lookup includes official Bluebook result external IDs', () => {
 
   assert.equal(hasResultOnlyId, true);
   assert.match(officialFormsSource, /getOfficialQuestionByExternalId/);
-  assert.match(routeSource, /getOfficialQuestionByExternalId/);
+  assert.match(lookupSource, /getOfficialQuestionByExternalId/);
 });
 
 test('Question Bank screen searches by ID and keeps answers hidden until requested', () => {
