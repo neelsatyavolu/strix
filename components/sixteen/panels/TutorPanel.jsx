@@ -72,7 +72,10 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
       { value: 'gpt-5.5', label: 'GPT-5.5' },
       { value: 'gpt-5.4-mini', label: 'GPT-5.4 mini' },
     ],
-    grok: [{ value: 'grok-4.3', label: 'Grok 4.3' }],
+    grok: [
+      { value: 'grok-4.5', label: 'Grok 4.5' },
+      { value: 'grok-4.3', label: 'Grok 4.3 (deprecated)' },
+    ],
   };
   React.useEffect(() => { setAiModel(MODELS[aiProvider][0].value); /* eslint-disable-next-line */ }, [aiProvider]);
   React.useEffect(() => { if (mode === 'ai') aiStatus().then(setConnected); }, [mode, aiProvider]);

@@ -57,7 +57,8 @@ function TutorPanel({ onClose, allowAI = true, role = 'student' }) {
       { value: 'gpt-5.4-mini',  label: 'GPT-5.4 mini' },
     ],
     grok: [
-      { value: 'grok-4.3',      label: 'Grok 4.3' },
+      { value: 'grok-4.5',      label: 'Grok 4.5' },
+      { value: 'grok-4.3',      label: 'Grok 4.3 (deprecated)' },
     ],
   };
   // when provider flips, snap to that provider's first model

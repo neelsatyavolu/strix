@@ -87,7 +87,7 @@ own practice; we do not redistribute a bulk dataset publicly. Surfaced to the us
 ## AI tutor (`lib/ai`, `api/tutor/ai`)
 
 - Vercel AI SDK + AI Gateway. Request: `{provider:'openai'|'xai', model, messages, questionContext}`.
-  Model strings: `openai/gpt-5.4-mini`, `xai/grok-4.3` (configurable). Streaming (SSE).
+  Model strings: `openai/gpt-5.4-mini`, `xai/grok-4.5` (configurable; `grok-4.3` deprecated). Streaming (SSE).
 - System prompt encodes Proctorly's tutor persona (calm, Socratic, never just gives the
   answer during a scored module). `questionContext` grounds the model in the current item.
 - Availability rules from the design: AI allowed in drills and outside modules; during a
