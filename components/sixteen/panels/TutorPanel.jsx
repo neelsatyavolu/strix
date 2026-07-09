@@ -33,7 +33,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
 
   const [mode, setMode] = React.useState('ai'); // 'human' | 'ai'
   const [aiProvider, setAiProvider] = React.useState('chatgpt'); // 'chatgpt' | 'grok'
-  const [aiModel, setAiModel] = React.useState('gpt-5.5');
+  const [aiModel, setAiModel] = React.useState('gpt-5.6-sol');
   const [showModelPicker, setShowModelPicker] = React.useState(false);
   const [connected, setConnected] = React.useState({ codex: false, grok: false });
   const [thinking, setThinking] = React.useState(false);
@@ -69,8 +69,10 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
 
   const MODELS = {
     chatgpt: [
+      { value: 'gpt-5.6-sol', label: 'GPT-5.6 Sol' },
+      { value: 'gpt-5.6-terra', label: 'GPT-5.6 Terra' },
+      { value: 'gpt-5.6-luna', label: 'GPT-5.6 Luna' },
       { value: 'gpt-5.5', label: 'GPT-5.5' },
-      { value: 'gpt-5.4-mini', label: 'GPT-5.4 mini' },
     ],
     grok: [
       { value: 'grok-4.5', label: 'Grok 4.5' },

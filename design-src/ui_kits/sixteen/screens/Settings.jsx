@@ -69,7 +69,7 @@ function Settings({ go, dark, setDark }) {
             <ProviderMark kind="chatgpt" />
             <div style={{display:'flex', flexDirection:'column'}}>
               <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>ChatGPT</span>
-              <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>Connected as maya@example.com · GPT-5.5, GPT-5.4 mini</span>
+              <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>Connected as maya@example.com · GPT-5.6 Sol, Terra, Luna</span>
             </div>
           </div>
           <div style={{display:'flex', alignItems:'center', gap: 8}}>

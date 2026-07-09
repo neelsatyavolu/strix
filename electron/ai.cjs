@@ -23,7 +23,7 @@ const GROK_TOKEN_URL = "https://auth.x.ai/oauth2/token";
 const GROK_CHAT_COMPLETIONS_URL = "https://api.x.ai/v1/chat/completions";
 const GROK_SCOPE = "openid profile email offline_access grok-cli:access api:access";
 
-const DEFAULT_CODEX_MODEL = "gpt-5.5";
+const DEFAULT_CODEX_MODEL = "gpt-5.6-sol";
 const DEFAULT_GROK_MODEL = "grok-4.5";
 
 const KEYCHAIN_SERVICE = "Strix";

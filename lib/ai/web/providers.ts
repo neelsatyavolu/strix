@@ -28,7 +28,7 @@ export const PROVIDERS: Record<Provider, ProviderConfig> = {
     authorizeUrl: "https://auth.openai.com/oauth/authorize",
     tokenUrl: "https://auth.openai.com/oauth/token",
     scope: "openid profile email offline_access",
-    defaultModel: process.env.CODEX_MODEL ?? "gpt-5.5",
+    defaultModel: process.env.CODEX_MODEL ?? "gpt-5.6-sol",
     expiryBufferSec: 60,
     extraAuthorizeParams: {
       id_token_add_organizations: "true",
