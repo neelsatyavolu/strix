@@ -1,13 +1,23 @@
-/* electron-builder configuration (moved out of package.json so it can read the
- * Apple signing/notarization creds from .env and toggle behaviour on them).
+/* electron-builder configuration.
  *
- * Build + publish flow:
- *   pnpm dist            # builds, signs+notarizes (if creds present), outputs dist-app/
- *   then upload dist-app/{Strix-Prep.dmg, *.zip, *.blockmap, latest-mac.yml}
- *        to https://strixprep.com/downloads/   (Vercel Blob or public/downloads)
+ * Builds (default unsigned for local iteration):
+ *   pnpm dist                 # unsigned .app / .dmg / .zip → dist-app/
+ *   pnpm dist:signed          # Developer ID sign (1Password), no notarize
+ *   pnpm dist:release         # Developer ID + notarize + staple (public download)
+ *   ./update.sh               # official ship: version bump + dist:release + Blob upload
  *
- * The Mac auto-updater reads latest-mac.yml + the .zip from that same URL.
- * The marketing "Download for Mac" button points at Strix-Prep.dmg there.
+ * Credentials (prefer 1Password via scripts/load-apple-creds.sh — see APPLE_SIGNING.md):
+ *   Signing:  CSC_LINK (base64 p12 or path) + CSC_KEY_PASSWORD
+ *             or APPLE_CERTIFICATE + APPLE_CERTIFICATE_PASSWORD (shared / Tauri names)
+ *   Identity: CSC_NAME or APPLE_SIGNING_IDENTITY
+ *             (default: Developer ID Application: Ramakrishna Satyavolu (VTQW687WBQ))
+ *   Notary:   APPLE_API_KEY (path to .p8) + APPLE_API_KEY_ID + APPLE_API_ISSUER
+ *             Shared loader uses APPLE_API_KEY=id + APPLE_API_KEY_PATH=path; we remap below.
+ *   Legacy .env: APPLE_PRIVATE_KEY (pem contents) + APPLE_KEY_ID + APPLE_API_ISSUER + APPLE_TEAM_ID
+ *
+ * Opt-in flags:
+ *   STRIX_SIGN=1|0            force sign / force unsigned
+ *   STRIX_NOTARIZE=1|0        force notarize on / off (default: on when notary env is complete)
  */
 const fs = require("node:fs");
 const os = require("node:os");
@@ -29,41 +39,129 @@ function loadDotEnv(file) {
   }
 }
 loadDotEnv(path.join(__dirname, ".env"));
+loadDotEnv(path.join(__dirname, ".env.local"));
 
-// --- Notarization (App Store Connect API key). The .env holds the key contents
-// in APPLE_PRIVATE_KEY; notarytool needs it as a .p8 file, so materialize it and
-// expose the standard env vars electron-builder/notarytool look for.
-const TEAM_ID = process.env.APPLE_TEAM_ID;
-const KEY_ID = process.env.APPLE_KEY_ID;
-const ISSUER = process.env.APPLE_API_ISSUER; // required for API-key notarization
-let privateKey = process.env.APPLE_PRIVATE_KEY;
+// electron-builder rejects the "Developer ID Application:" prefix — it picks
+// the cert type itself. Full CN is fine for codesign(1); strip for CSC_NAME.
+const DEFAULT_IDENTITY = "Ramakrishna Satyavolu (VTQW687WBQ)";
+const DEFAULT_IDENTITY_FULL =
+  "Developer ID Application: Ramakrishna Satyavolu (VTQW687WBQ)";
 
-// Signing is opt-in: `STRIX_SIGN=1 pnpm dist` to sign + notarize. Default builds
-// unsigned (download works; the in-app updater uses its open-download fallback).
-const sign = process.env.STRIX_SIGN === "1";
-let notarize = false;
+function stripAppleIdentityPrefix(name) {
+  if (!name) return name;
+  return name
+    .replace(/^Developer ID Application:\s*/i, "")
+    .replace(/^Developer ID Installer:\s*/i, "")
+    .replace(/^Apple Development:\s*/i, "")
+    .replace(/^Apple Distribution:\s*/i, "")
+    .trim();
+}
 
-if (sign && TEAM_ID && KEY_ID && privateKey && ISSUER) {
-  privateKey = privateKey.replace(/\\n/g, "\n"); // un-escape single-line .env form
-  const keyPath = path.join(os.tmpdir(), `AuthKey_${KEY_ID}.p8`);
-  fs.writeFileSync(keyPath, privateKey, { mode: 0o600 });
-  process.env.APPLE_API_KEY = keyPath;
-  process.env.APPLE_API_KEY_ID = KEY_ID;
-  process.env.APPLE_API_ISSUER = ISSUER;
-  notarize = { teamId: TEAM_ID };
-} else if (sign) {
-  const missing = [
-    !TEAM_ID && "APPLE_TEAM_ID",
-    !KEY_ID && "APPLE_KEY_ID",
-    !privateKey && "APPLE_PRIVATE_KEY",
-    !ISSUER && "APPLE_API_ISSUER",
-  ].filter(Boolean);
-  console.warn(
-    `[electron-builder] STRIX_SIGN set but notarization OFF — missing ${missing.join(", ")} in .env. ` +
-      "(Signing also needs a 'Developer ID Application' cert in your keychain.)",
+// --- Map shared / Tauri env names → electron-builder (CSC_* + notarytool).
+// Prefer CSC_KEYCHAIN (our loader imports the p12 correctly). Do NOT set CSC_LINK
+// from APPLE_CERTIFICATE when a keychain is already prepared — EB's CSC_LINK
+// import hits a set-key-partition-list password bug on recent macOS.
+if (
+  !process.env.CSC_LINK &&
+  process.env.APPLE_CERTIFICATE &&
+  !process.env.CSC_KEYCHAIN
+) {
+  process.env.CSC_LINK = process.env.APPLE_CERTIFICATE;
+}
+if (
+  !process.env.CSC_KEY_PASSWORD &&
+  process.env.APPLE_CERTIFICATE_PASSWORD &&
+  !process.env.CSC_KEYCHAIN
+) {
+  process.env.CSC_KEY_PASSWORD = process.env.APPLE_CERTIFICATE_PASSWORD;
+}
+{
+  const rawName =
+    process.env.CSC_NAME ||
+    process.env.APPLE_SIGNING_IDENTITY ||
+    (process.env.CSC_LINK || process.env.CSC_KEYCHAIN ? DEFAULT_IDENTITY_FULL : undefined);
+  if (rawName) {
+    process.env.CSC_NAME = stripAppleIdentityPrefix(rawName);
+  }
+}
+
+// Shared loader: APPLE_API_KEY = key id, APPLE_API_KEY_PATH = path to .p8
+// electron-builder: APPLE_API_KEY = path (or contents), APPLE_API_KEY_ID = id
+if (process.env.APPLE_API_KEY_PATH && fs.existsSync(process.env.APPLE_API_KEY_PATH)) {
+  const looksLikePath =
+    process.env.APPLE_API_KEY &&
+    (process.env.APPLE_API_KEY.includes(path.sep) || process.env.APPLE_API_KEY.endsWith(".p8"));
+  if (!looksLikePath) {
+    if (!process.env.APPLE_API_KEY_ID && process.env.APPLE_API_KEY) {
+      process.env.APPLE_API_KEY_ID = process.env.APPLE_API_KEY;
+    }
+    process.env.APPLE_API_KEY = process.env.APPLE_API_KEY_PATH;
+  } else if (!process.env.APPLE_API_KEY) {
+    process.env.APPLE_API_KEY = process.env.APPLE_API_KEY_PATH;
+  }
+}
+
+// Legacy .env: materialize APPLE_PRIVATE_KEY → temp AuthKey_*.p8
+const legacyKeyId = process.env.APPLE_KEY_ID || process.env.APPLE_API_KEY_ID;
+let legacyPrivateKey = process.env.APPLE_PRIVATE_KEY;
+if (legacyPrivateKey && legacyKeyId && process.env.APPLE_API_ISSUER) {
+  if (!process.env.APPLE_API_KEY || !String(process.env.APPLE_API_KEY).includes(path.sep)) {
+    legacyPrivateKey = legacyPrivateKey.replace(/\\n/g, "\n");
+    const keyPath = path.join(os.tmpdir(), `AuthKey_${legacyKeyId}.p8`);
+    fs.writeFileSync(keyPath, legacyPrivateKey, { mode: 0o600 });
+    process.env.APPLE_API_KEY = keyPath;
+    process.env.APPLE_API_KEY_ID = legacyKeyId;
+  }
+}
+
+// CSC_LINK (imported p12) OR keychain identity (CSC_NAME / CSC_KEYCHAIN from our loader).
+const hasCsc = Boolean(process.env.CSC_LINK || process.env.CSC_KEYCHAIN || process.env.CSC_NAME);
+const forceUnsigned =
+  process.env.STRIX_SIGN === "0" || process.env.CSC_IDENTITY_AUTO_DISCOVERY === "false";
+const forceSign = process.env.STRIX_SIGN === "1";
+// Sign when explicitly requested, or when signing material is in the env.
+const sign = !forceUnsigned && (forceSign || hasCsc);
+
+const hasNotaryEnv = Boolean(
+  process.env.APPLE_API_KEY &&
+    process.env.APPLE_API_KEY_ID &&
+    process.env.APPLE_API_ISSUER,
+);
+// Notarize only on signed builds when notary env is present, unless STRIX_NOTARIZE=0.
+const notarize =
+  sign && hasNotaryEnv && process.env.STRIX_NOTARIZE !== "0"
+    ? true
+    : false;
+
+if (sign) {
+  const identity = process.env.CSC_NAME || DEFAULT_IDENTITY;
+  // ensure prefix-stripped for EB
+  process.env.CSC_NAME = stripAppleIdentityPrefix(identity);
+  console.log(
+    `[electron-builder] Signing with identity: ${identity}` +
+      (process.env.CSC_LINK
+        ? " (CSC_LINK)"
+        : process.env.CSC_KEYCHAIN
+          ? " (CSC_KEYCHAIN)"
+          : " (login keychain)"),
   );
+  if (notarize) {
+    console.log(
+      `[electron-builder] Notarization ON (API key ${process.env.APPLE_API_KEY_ID}, team ${process.env.APPLE_TEAM_ID || "?"})`,
+    );
+  } else if (process.env.STRIX_NOTARIZE === "0") {
+    console.log("[electron-builder] Notarization OFF (STRIX_NOTARIZE=0).");
+  } else {
+    console.warn(
+      "[electron-builder] Notarization OFF — need APPLE_API_KEY (path) + APPLE_API_KEY_ID + APPLE_API_ISSUER " +
+        "(load via scripts/load-apple-creds.sh or set in env).",
+    );
+  }
 } else {
-  console.log("[electron-builder] Building UNSIGNED — set STRIX_SIGN=1 (+ Apple creds) to sign & notarize.");
+  console.log(
+    "[electron-builder] Building UNSIGNED — run `pnpm dist:signed` / `pnpm dist:release`, " +
+      "or set STRIX_SIGN=1 after loading Apple creds.",
+  );
 }
 
 /** @type {import('electron-builder').Configuration} */
@@ -97,7 +195,7 @@ module.exports = {
     icon: "build/icon.icns",
     gatekeeperAssess: false,
     // null identity => ad-hoc/unsigned (download works, auto-install does not).
-    identity: sign ? undefined : null,
+    identity: sign ? stripAppleIdentityPrefix(process.env.CSC_NAME || DEFAULT_IDENTITY) : null,
     // Hardened runtime + entitlements only matter for a real signed/notarized build.
     hardenedRuntime: sign,
     ...(sign
@@ -106,6 +204,7 @@ module.exports = {
           entitlementsInherit: "build/entitlements.mac.plist",
         }
       : {}),
+    // false skips; true + complete APPLE_API_* env runs notarytool + staple on the .app
     notarize,
   },
   dmg: { artifactName: "Strix-Prep.dmg" }, // stable URL for the download button

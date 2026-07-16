@@ -43,13 +43,49 @@ desktop app (Tutor panel → Connect). Handled by the Electron main process.
 pnpm install
 pnpm dev      # web only, http://localhost:3000
 pnpm app      # desktop app (Electron + dev server)
-pnpm dist     # build the self-contained Mac .app/.dmg → dist-app/
+pnpm dist     # unsigned Mac .app/.dmg → dist-app/ (local only)
 ```
 
-## Deploy
+## macOS code signing & notarization
+
+Public downloads must be **Developer ID–signed and notarized**. Credentials live in
+**1Password** (never in git). Shared how-to:
+
+- `~/Documents/GitHub/APPLE_SIGNING.md` — items, env vars, troubleshooting
+- Loader: `scripts/load-apple-creds.sh` → sources `agmux/scripts/load-apple-creds.sh`
+
+| Command | Result |
+|---------|--------|
+| `pnpm dist` | Unsigned (fast local package) |
+| `pnpm dist:signed` | Developer ID sign only (1Password) |
+| `pnpm dist:release` | Developer ID + **notarize + staple** |
+| `./update.sh` | Official ship: version bump + `dist:release` + Vercel Blob upload |
+
+Prerequisites for signed builds:
+
+1. `brew install 1password-cli` and `op signin`
+2. Access to vault **Personal** items: **Apple Developer ID Certificate** (`.p12`) and **Xanom Apple Dev Creds** (notary API key)
+3. Xcode CLT (`xcode-select --install`) for `codesign` / `notarytool`
+
+Verify a build:
+
+```bash
+codesign -dv --verbose=2 dist-app/mac-arm64/Strix.app
+spctl --assess --type execute --verbose dist-app/mac-arm64/Strix.app
+```
+
+## Deploy (web)
 
 ```bash
 vercel deploy --prod   # env already set in Vercel
 ```
 To make tutor invite links openable by anyone, set Vercel **Deployment Protection**
 to *Only Preview Deployments* (Settings → Deployment Protection) so production is public.
+
+## Release desktop app (production DMG)
+
+```bash
+./update.sh              # patch bump + signed/notarized build + Blob upload
+./update.sh 0.3.0        # explicit version
+./update.sh --unsigned   # emergency only — do not ship to users
+```

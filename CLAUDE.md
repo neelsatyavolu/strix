@@ -14,7 +14,12 @@ Use **pnpm** (there is a `pnpm-lock.yaml`). Don't use npm/yarn.
 
 - `pnpm dev` — **web only**, http://localhost:3000. Use this for almost all work.
 - `pnpm app` — Next dev **+ Electron desktop** together (via concurrently). Only needed when working on Electron/desktop behavior.
-- `pnpm dist` — build the signed macOS `.app`/`.dmg` (macOS only, electron-builder).
+- `pnpm dist` — unsigned macOS `.app`/`.dmg` (local packaging only).
+- `pnpm dist:signed` — Developer ID sign via 1Password (no notarize).
+- `pnpm dist:release` — Developer ID **+ notarize + staple** (public download).
+- `./update.sh` — official release: version bump + `dist:release` + Vercel Blob upload.
+
+Apple signing/notarization uses 1Password (see `~/Documents/GitHub/APPLE_SIGNING.md` and `scripts/load-apple-creds.sh`). Never commit `.p12`/`.p8`/passwords.
 
 ## Verify before declaring work complete
 
@@ -50,4 +55,5 @@ Small project — commit directly to `main` (no required feature branch). Use co
 
 ## macOS build gotchas
 
-`pnpm build:icon` requires the macOS `iconutil` tool. Electron build config is in `electron-builder.config.cjs`; packaged output lands in `dist-app/mac-arm64/`.
+`pnpm build:icon` requires the macOS `iconutil` tool. Electron build config is in `electron-builder.config.cjs`; packaged output lands in `dist-app/mac-arm64/`. Official releases use `./update.sh` (Developer ID + notarize via 1Password — see SETUP.md).
+

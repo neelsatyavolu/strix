@@ -1,6 +1,6 @@
 {
   "name": "strix",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": true,
   "main": "electron/main.cjs",
   "scripts": {
@@ -12,7 +12,9 @@
     "electron": "electron .",
     "build:icon": "node scripts/build-icon.mjs && iconutil -c icns build/icon.iconset -o build/icon.icns",
     "app": "concurrently -k -n next,electron \"next dev\" \"wait-on tcp:3000 && electron .\"",
-    "dist": "pnpm build:icon && electron-builder --mac --config electron-builder.config.cjs"
+    "dist": "pnpm build:icon && electron-builder --mac --config electron-builder.config.cjs",
+    "dist:signed": "bash scripts/dist.sh --sign",
+    "dist:release": "bash scripts/dist.sh --apple"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
