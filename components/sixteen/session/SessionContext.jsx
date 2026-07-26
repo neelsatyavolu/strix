@@ -515,6 +515,75 @@ export function PracticeSessionProvider({ children }) {
       return { ...s, responses: { ...s.responses, [q.id]: { ...prev, flagged: !prev.flagged } } };
     }), []);
 
+  // "I've done this already": permanently ban the current question and swap in a
+  // fitting replacement at the same index. Review sessions are not eligible
+  // (those items are deliberately re-shown for spaced repetition).
+  const dismissAndReplace = React.useCallback(async () => {
+    const s = stateRef.current;
+    if (s.status !== 'active' || s.mode === 'review') {
+      return { ok: false, error: 'This question can’t be replaced right now.' };
+    }
+    const mod = s.modules[s.activeModuleIndex];
+    const q = mod?.questions[s.index];
+    if (!q) return { ok: false, error: 'No active question.' };
+
+    const sessionIds = s.modules.flatMap((m) => m.questions.map((x) => x.id));
+    const wasPretest = !!q.pretest || (s.pretestIds || []).includes(q.id);
+
+    try {
+      const res = await fetch('/api/questions/dismiss', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: q.id,
+          section: q.section || s.section,
+          domain: q.domain || undefined,
+          difficulty: q.difficulty || undefined,
+          type: q.type || undefined,
+          exclude: sessionIds,
+          pretest: wasPretest,
+        }),
+      });
+      const json = await res.json().catch(() => null);
+      if (!json?.success || !json.data?.question) {
+        return { ok: false, error: json?.error || 'No similar question left to swap in.' };
+      }
+      const nextQ = json.data.question;
+
+      setState((prev) => {
+        const m = prev.modules[prev.activeModuleIndex];
+        if (!m || m.questions[prev.index]?.id !== q.id) return prev;
+        const questions = m.questions.map((qq, i) => (i === prev.index ? nextQ : qq));
+        const modules = prev.modules.map((mm, mi) =>
+          mi === prev.activeModuleIndex ? { ...mm, questions } : mm,
+        );
+        const responses = { ...prev.responses };
+        delete responses[q.id];
+        let pretestIds = prev.pretestIds || [];
+        if (pretestIds.includes(q.id)) {
+          pretestIds = pretestIds.map((id) => (id === q.id ? nextQ.id : id));
+        } else if (nextQ.pretest) {
+          pretestIds = [...pretestIds, nextQ.id];
+        }
+        return { ...prev, modules, responses, pretestIds };
+      });
+
+      // Reset dwell timing for the new question in this slot.
+      const t = timingRef.current;
+      t.frozen.delete(q.id);
+      delete t.byId[q.id];
+      if (t.currentId === q.id) {
+        t.currentId = nextQ.id;
+        t.shownAt = Date.now();
+      }
+      checkingRef.current.delete(q.id);
+
+      return { ok: true };
+    } catch (err) {
+      return { ok: false, error: err instanceof Error ? err.message : 'Failed to replace question' };
+    }
+  }, []);
+
   const goTo = React.useCallback((i) =>
     setState((s) => {
       const len = s.modules[s.activeModuleIndex]?.questions.length ?? 0;
@@ -847,6 +916,7 @@ export function PracticeSessionProvider({ children }) {
     setValue,
     answerDrillMCQ,
     toggleFlag,
+    dismissAndReplace,
     goTo,
     next,
     prev,

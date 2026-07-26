@@ -35,12 +35,14 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
   const [annotate, setAnnotate] = React.useState(false);
   const [reviewOpen, setReviewOpen] = React.useState(false);
   const [marks, setMarks] = React.useState({}); // questionId -> { passage, stem } highlighted HTML
+  const [dismissing, setDismissing] = React.useState(false);
   const timerResetKey = moduleTimerResetKey({ section: 'rw', moduleKey: session.activeModule?.key });
   const timerRunning = moduleTimerIsRunning({
     status: session.status,
     timing: session.config?.timing,
     hasQuestion: !!q,
   });
+  const canDismiss = session.mode !== 'review' && session.status === 'active';
 
   // Stream this screen's genuinely-local UI state (highlights, strikethroughs,
   // annotate mode, timer) to a watching tutor. Selection/flag/palette/section
@@ -208,6 +210,21 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
               ))}
             </div>
             {isDrill && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} rationaleHtml={q.rationaleHtml} />}
+            {canDismiss && (
+              <DoneAlreadyButton
+                busy={dismissing}
+                onClick={async () => {
+                  if (dismissing) return;
+                  setDismissing(true);
+                  try {
+                    const result = await session.dismissAndReplace();
+                    if (!result?.ok) window.alert(result?.error || "Couldn't replace this question.");
+                  } finally {
+                    setDismissing(false);
+                  }
+                }}
+              />
+            )}
           </div>
 
           {kind === 'drill' && statsOn && (
@@ -260,6 +277,32 @@ function DrillFeedback({ solved, triedAny, rationaleHtml }) {
       {solved && rationaleHtml && (
         <div className="cb-stem" style={{ fontSize: 14, marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: rationaleHtml }} />
       )}
+    </div>
+  );
+}
+
+function DoneAlreadyButton({ busy, onClick }) {
+  return (
+    <div style={{ marginTop: 18 }}>
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={busy}
+        title="Hide this question permanently and get a similar one"
+        style={{
+          background: 'transparent',
+          border: 0,
+          padding: 0,
+          cursor: busy ? 'wait' : 'pointer',
+          font: 'var(--role-caption)',
+          color: 'var(--text-tertiary)',
+          textDecoration: 'underline',
+          textUnderlineOffset: 3,
+          opacity: busy ? 0.6 : 1,
+        }}
+      >
+        {busy ? 'Finding another question…' : "I've done this already"}
+      </button>
     </div>
   );
 }

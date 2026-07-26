@@ -9,6 +9,7 @@ import { sanitizeQuestion, sanitizeQuestions } from "@/lib/cb/sanitize";
 import { CATEGORY_TO_DOMAIN } from "@/lib/cb/domains";
 import { createClient } from "@/lib/supabase/server";
 import { difficultyMix, recentAccuracy } from "@/lib/cb/adaptive";
+import { loadDismissed } from "@/lib/cb/dismissed";
 import type { Difficulty, Section } from "@/lib/cb/types";
 
 // Cap on how many historical ids we load — large enough to cover a full bank,
@@ -207,7 +208,12 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const seen = await loadSeen(section);
+    const [seen, dismissed] = await Promise.all([loadSeen(section), loadDismissed(section)]);
+    // Hard-exclude permanently dismissed ids + any caller exclude (e.g. Module 1).
+    const hardExclude = new Set<string>([
+      ...dismissed,
+      ...(exclude ? exclude.split(",").filter(Boolean) : []),
+    ]);
     // When the student hasn't pinned a difficulty, serve an adaptive mix based on
     // their recent accuracy in this domain (balanced mix if there's no history).
     const mix =
@@ -221,9 +227,7 @@ export async function GET(req: NextRequest) {
         ? await drawModule({
             section,
             profile,
-            exclude: exclude
-              ? new Set(exclude.split(",").filter(Boolean))
-              : undefined,
+            exclude: hardExclude.size ? hardExclude : undefined,
             seen,
           })
         : await drawQuestions({
@@ -232,6 +236,7 @@ export async function GET(req: NextRequest) {
             difficulty: diff,
             mix,
             limit,
+            exclude: hardExclude.size ? hardExclude : undefined,
             seen,
           });
     return NextResponse.json({
