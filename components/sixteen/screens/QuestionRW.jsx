@@ -9,6 +9,8 @@ import ModuleCountdown from '@/components/sixteen/test/ModuleCountdown';
 import ModuleReview from '@/components/sixteen/test/ModuleReview';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useLiveBroadcast } from '@/components/sixteen/session/LiveBroadcastContext';
+import TeachRegion from '@/components/tutor/TeachRegion';
+import { regionId } from '@/lib/tutor/anchors';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
 import { moduleReviewAction, moduleSubmitDisabled, moduleTimerIsRunning, moduleTimerResetKey, moduleTimerSeconds } from '@/lib/practice/sessionLogic.mjs';
 
@@ -157,13 +159,15 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
           {q.stimulusHtml && (
             <>
               <div style={{ overflow: 'auto', padding: '36px 56px 48px' }}>
-                <Highlightable
-                  className="cb-passage"
-                  html={q.stimulusHtml}
-                  active={annotate}
-                  value={marks[q.id]?.passage}
-                  onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], passage: h } }))}
-                />
+                <TeachRegion id={regionId(q.id, 'passage')}>
+                  <Highlightable
+                    className="cb-passage"
+                    html={q.stimulusHtml}
+                    active={annotate}
+                    value={marks[q.id]?.passage}
+                    onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], passage: h } }))}
+                  />
+                </TeachRegion>
               </div>
               <div style={{ background: 'var(--test-divider)' }} />
             </>
@@ -185,17 +189,19 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
                 <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
               </>}
             />
-            <Highlightable
-              className="cb-stem"
-              html={q.stemHtml}
-              active={annotate}
-              value={marks[q.id]?.stem}
-              onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], stem: h } }))}
-            />
+            <TeachRegion id={regionId(q.id, 'stem')}>
+              <Highlightable
+                className="cb-stem"
+                html={q.stemHtml}
+                active={annotate}
+                value={marks[q.id]?.stem}
+                onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], stem: h } }))}
+              />
+            </TeachRegion>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 22 }}>
               {q.choices.map((o) => (
+                <TeachRegion key={o.letter} id={regionId(q.id, `choice-${o.letter}`)}>
                 <OptionRow
-                  key={o.letter}
                   letter={o.letter}
                   selected={isDrill ? (solved && resp.value === o.letter) : ans === o.letter}
                   feedback={isDrill ? (solved && resp.value === o.letter ? 'correct' : triedWrong.has(o.letter) ? 'wrong' : null) : null}
@@ -207,6 +213,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
                 >
                   <span className="cb-choice" dangerouslySetInnerHTML={{ __html: o.html }} />
                 </OptionRow>
+                </TeachRegion>
               ))}
             </div>
             {isDrill && <DrillFeedback solved={solved} triedAny={triedWrong.size > 0} rationaleHtml={q.rationaleHtml} />}

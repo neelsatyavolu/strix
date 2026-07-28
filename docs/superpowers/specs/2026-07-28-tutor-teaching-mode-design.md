@@ -132,8 +132,11 @@ not touch `live.marks`.
 
 ### 5. Lifecycle
 
-- Ink is held in memory on both sides, keyed by `qid`.
-- Question change wipes ink. Navigating back does **not** restore it.
+- Ink is held in memory on both sides, keyed by a `scope`: the live question id
+  while practicing, `session:<id>` while reviewing. (A single `scope` replaced
+  the draft's per-payload `qid` gate — in review, one page holds many questions,
+  and clearing on every focus change would be unusable.)
+- Scope change wipes ink. Navigating back does **not** restore it.
 - Turning teaching mode off clears ink and the laser on both sides.
 - Session end / channel close clears everything. Nothing is written to Postgres.
 
@@ -160,25 +163,30 @@ not touch `live.marks`.
 
 ### 8. Completed-section review
 
-Today the student broadcasts only active practice (`sessionLive.status ===
-'active'`). Review screens broadcast nothing, so the tutor has no way to know
-which reviewed question the student is on.
+**Correction from the original draft.** `Review.jsx` is the spaced-repetition
+*queue* dashboard, not a per-question review, so it plays no part here. The
+surface where a tutor and student go through completed work is `SessionDetail`,
+which renders `ReviewList` → `ReviewItem` — a scrolling list of question cards,
+each holding its own stimulus, stem and choices. There is no "current question"
+to synchronise, only a scroll position.
 
-Change: the student's live payload gains a `mode` discriminator.
+That makes co-navigation simpler than specced. The student broadcasts *which
+session* is open; both sides render the same cards from the database.
 
 ```js
-{ active: true, mode: 'practice', … }               // existing shape, unchanged
-{ active: true, mode: 'review', sessionId, qid, index, total }  // new
+{ active: true, mode: 'practice', … }        // existing shape, unchanged
+{ active: true, mode: 'review', sessionId }  // new
 ```
 
-- `Review` and `SessionDetail` report the currently open question through the same
-  `liveUi` reporting path the question screens already use.
-- The tutor mirrors it by opening the same session/question through the existing
-  `studentId` / `readOnly` props those screens already accept — both sides render
-  from the database, so no question HTML rides the broadcast in review mode.
-- With teaching mode on, the tutor may push `{ goto: { sessionId, qid, index } }`;
-  the student's review screen navigates to it. Outside teaching mode the tutor
-  cannot move the student.
+- `SixteenApp` derives the review payload from its own `view` / `viewProps`, so
+  no review screen has to report anything.
+- The tutor auto-follows into `session-detail` for that session, once per session
+  change, and stays free to browse away afterwards.
+- Because every card is region-anchored per question id, ink on a page of 27
+  questions is unambiguous without any extra addressing.
+- With teaching mode on, each card shows a **Show student** button that pushes
+  `{ kind: 'goto', qid }`; the student's `SessionDetail` scrolls that card into
+  view. Outside teaching mode the tutor cannot move the student.
 - `mode: 'review'` must **not** trip the live-practice banner or the auto-open of
   `live-session`. `watchedIsLive` stays gated on `mode === 'practice'`.
 
@@ -196,24 +204,35 @@ touch `liveStudents`, `watchedLive`, or the idle debounce.
 
 **New**
 
-- `lib/tutor/anchors.js` — region registry, point encode/decode, rect measurement.
-- `lib/tutor/useTeachMode.js` — tutor-side state (on/off, tool, color, strokes) and
-  student-side receiver state.
+- `lib/tutor/anchors.js` — region registry, point encode/decode, placement checks.
+- `lib/tutor/useTeachMode.js` — `useTeachTutor` (tools, capture, broadcast) and
+  `useTeachStudent` (receiver state).
+- `components/tutor/TeachContext.jsx` — provider so any question surface can read it.
 - `components/tutor/TeachRegion.jsx` — wrapper that registers a region id.
-- `components/tutor/TeachLayer.jsx` — SVG overlay renderer (laser + strokes + labels).
-- `components/tutor/TeachToolbar.jsx` — tutor tool/color/undo/clear controls.
+- `components/tutor/TeachLayer.jsx` — canvas overlay, tutor capture surface, text
+  input, off-screen hint.
+- `components/tutor/TeachToolbar.jsx` — tutor toggle + tool/color/undo/clear.
 
 **Modified**
 
 - `lib/tutor/realtime.js` — `teach` / `point` / `ink` events and senders.
-- `lib/tutor/useStudentLive.js` — receive teaching events; add `mode` to payloads.
-- `lib/tutor/useTutorWatch.js` — send teaching events; handle `mode: 'review'`.
-- `components/tutor/LiveTestView.jsx` — regions, overlay, toggle, toolbar.
-- `components/sixteen/screens/QuestionRW.jsx`, `QuestionMath.jsx` — regions + overlay.
-- `components/sixteen/screens/Review.jsx`, `SessionDetail.jsx` — report review
-  position, accept `goto`, regions + overlay.
-- `components/sixteen/SixteenApp.jsx` — wire teaching state; gate `watchedIsLive`
-  on `mode === 'practice'`.
+- `lib/tutor/useStudentLive.js` — receive teaching events; `mode` on payloads.
+- `lib/tutor/useTutorWatch.js` — teaching senders; handle `mode: 'review'`.
+- `components/tutor/LiveTestView.jsx` — regions; header reads "teaching" when on.
+- `components/sixteen/screens/QuestionRW.jsx`, `QuestionMath.jsx` — regions.
+- `components/sixteen/screens/ScoreReport.jsx` — regions on `ReviewItem` plus the
+  tutor's "Show student" button (this is what `SessionDetail` renders).
+- `components/sixteen/screens/SessionDetail.jsx` — scroll on `goto`.
+- `components/sixteen/SixteenApp.jsx` — teach hooks, provider, layer, toolbar,
+  student chip, review broadcast, `watchedIsLive` gated on `mode === 'practice'`.
+
+The draft also listed `Review.jsx`; it turned out to be the wrong screen (see §8)
+and is untouched.
+
+**Note on the canvas.** The draft said one SVG per region with scroll listeners.
+The build uses a single fixed canvas that resolves every point through its region
+on each animation frame — same result, no per-region observers, and scrolling and
+resizing are handled for free.
 
 ## Failure handling
 

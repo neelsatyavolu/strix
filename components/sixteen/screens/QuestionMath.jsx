@@ -12,6 +12,8 @@ import DesmosPanel from '@/components/sixteen/test/DesmosPanel';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useLiveBroadcast } from '@/components/sixteen/session/LiveBroadcastContext';
 import { throttle } from '@/lib/tutor/throttle';
+import TeachRegion from '@/components/tutor/TeachRegion';
+import { regionId } from '@/lib/tutor/anchors';
 import { TestLoading, TestMessage } from '@/components/sixteen/screens/TestStates';
 import { moduleReviewAction, moduleSubmitDisabled, moduleTimerIsRunning, moduleTimerResetKey, moduleTimerSeconds } from '@/lib/practice/sessionLogic.mjs';
 
@@ -204,21 +206,25 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
                 <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
               </>}
             />
-            <Highlightable
-              className="cb-stem"
-              html={q.stemHtml}
-              active={annotate}
-              value={marks[q.id]?.stem}
-              onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], stem: h } }))}
-            />
+            <TeachRegion id={regionId(q.id, 'stem')}>
+              <Highlightable
+                className="cb-stem"
+                html={q.stemHtml}
+                active={annotate}
+                value={marks[q.id]?.stem}
+                onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], stem: h } }))}
+              />
+            </TeachRegion>
 
             {q.type === 'spr' ? (
-              <GridIn value={ans || ''} onChange={(v) => session.setValue(v)} />
+              <TeachRegion id={regionId(q.id, 'spr')}>
+                <GridIn value={ans || ''} onChange={(v) => session.setValue(v)} />
+              </TeachRegion>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 22 }}>
                 {q.choices.map((o) => (
+                  <TeachRegion key={o.letter} id={regionId(q.id, `choice-${o.letter}`)}>
                   <OptionRow
-                    key={o.letter}
                     letter={o.letter}
                     selected={isDrill ? (solved && resp.value === o.letter) : ans === o.letter}
                     feedback={isDrill ? (solved && resp.value === o.letter ? 'correct' : triedWrong.has(o.letter) ? 'wrong' : null) : null}
@@ -230,6 +236,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
                   >
                     <span className="cb-choice" dangerouslySetInnerHTML={{ __html: o.html }} />
                   </OptionRow>
+                  </TeachRegion>
                 ))}
               </div>
             )}
@@ -261,11 +268,13 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
       )}
 
       {calcOpen && (
-        <DesmosPanel
-          onClose={() => setCalcOpen(false)}
-          onStateChange={reportCalc}
-          onGeometry={({ pos, size }) => report({ calc: { pos, size } })}
-        />
+        <TeachRegion id={regionId(q.id, 'calc')}>
+          <DesmosPanel
+            onClose={() => setCalcOpen(false)}
+            onStateChange={reportCalc}
+            onGeometry={({ pos, size }) => report({ calc: { pos, size } })}
+          />
+        </TeachRegion>
       )}
       {formulaOpen && <FormulaSheet onClose={() => setFormulaOpen(false)} />}
 

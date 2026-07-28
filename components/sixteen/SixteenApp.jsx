@@ -27,6 +27,7 @@ import TutorInvite from './screens/TutorInvite';
 import TutorChat from './screens/TutorChat';
 import Settings from './screens/Settings';
 import DevTab from './screens/DevTab';
+import Vocabulary from './screens/Vocabulary';
 import TutorPanel from './panels/TutorPanel';
 import LiveStudentsBanner from './panels/LiveStudentsBanner';
 import LiveTestView from '@/components/tutor/LiveTestView';
@@ -37,6 +38,10 @@ import { useReviewQueue } from '@/lib/data/hooks';
 import { LiveBroadcastProvider } from './session/LiveBroadcastContext';
 import { useStudentLive } from '@/lib/tutor/useStudentLive';
 import { useTutorWatch } from '@/lib/tutor/useTutorWatch';
+import { useTeachTutor } from '@/lib/tutor/useTeachMode';
+import { TeachProvider } from '@/components/tutor/TeachContext';
+import TeachLayer from '@/components/tutor/TeachLayer';
+import TeachToolbar from '@/components/tutor/TeachToolbar';
 
 // App — top-level Sixteen UI kit shell. Sidebar + screen router + tutor pane.
 
@@ -162,7 +167,14 @@ function App() {
   // (if we're a tutor) subscribe to our students' channels for the live banner.
   const live = React.useMemo(() => {
     const q = sessionLive.current;
-    if (sessionLive.status !== 'active' || !q) return { active: false };
+    if (sessionLive.status !== 'active' || !q) {
+      // Not practicing, but reviewing a completed session — tell a watching
+      // tutor which one so they can open it alongside and teach on it.
+      if (role !== 'tutor' && view === 'session-detail' && viewProps.id) {
+        return { active: true, mode: 'review', sessionId: viewProps.id };
+      }
+      return { active: false };
+    }
     const resp = sessionLive.responses[q.id] || {};
     // Fields derivable from the session are computed here so they never depend on
     // the active screen's report() timing.
@@ -176,6 +188,7 @@ function App() {
     }));
     return {
       active: true,
+      mode: 'practice',
       // Question id so a watching tutor can fetch the answer key (students
       // never receive keys in the sanitized practice payload).
       id: q.id,
@@ -203,7 +216,7 @@ function App() {
     // `questions` is a fresh [] each render while idle — depend on its length
     // (a stable primitive) instead so we don't re-broadcast every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionLive.status, sessionLive.current, sessionLive.index, sessionLive.questions.length, sessionLive.responses, sessionLive.activeModule, liveUi]);
+  }, [sessionLive.status, sessionLive.current, sessionLive.index, sessionLive.questions.length, sessionLive.responses, sessionLive.activeModule, liveUi, role, view, viewProps.id]);
 
   const studentLive = useStudentLive(user?.id, live, role === 'student' && tutorOn);
   const tutorWatch = useTutorWatch(students, watchedStudentId, user?.id);
@@ -214,12 +227,16 @@ function App() {
 
   const watchedName = students.find((s) => s.id === watchedStudentId)?.name || 'your student';
   const watchedLiveMeta = watchedStudentId ? tutorWatch.liveStudents[watchedStudentId] : null;
-  const watchedIsLive = !!(watchedLiveMeta && watchedLiveMeta.active);
+  // Only an actual practice module opens the live mirror. A student reviewing a
+  // completed session is "present", not "in a section".
+  const watchedIsLive = !!(watchedLiveMeta && watchedLiveMeta.active && (watchedLiveMeta.mode || 'practice') === 'practice');
+  const watchedReviewSessionId = watchedLiveMeta?.active && watchedLiveMeta.mode === 'review'
+    ? watchedLiveMeta.sessionId
+    : null;
 
-  // Auto-open Live Session as soon as the watched student goes live. Leaving is
-  // deferred to a timeout (useTutorWatch also sticky-idles ~2.5s) so brief
-  // Realtime flaps — common on math when Desmos floods the channel — don't
-  // bounce the tutor off the live view and back again.
+  // Auto-open Live Session as soon as the watched student goes live. Leaving
+  // waits a beat after useTutorWatch's session-idle debounce so we never bounce
+  // off the view on presence/channel flaps.
   const wasLive = React.useRef(false);
   React.useEffect(() => {
     if (watchedIsLive === wasLive.current) return undefined;
@@ -232,9 +249,25 @@ function App() {
     const t = setTimeout(() => {
       wasLive.current = false;
       setView((v) => (v === 'live-session' ? 'dashboard' : v));
-    }, 400);
+    }, 600);
     return () => clearTimeout(t);
   }, [watchedIsLive]);
+
+  // Follow the student into a completed session they open, so teaching mode has
+  // the same questions on both screens. Only moves the tutor when the student
+  // switches sessions — the tutor can still browse away freely afterwards.
+  const lastReviewRef = React.useRef(null);
+  const tutorWatching = role === 'tutor' && !!watchedStudentId;
+  React.useEffect(() => {
+    if (!tutorWatching || !watchedReviewSessionId) { lastReviewRef.current = null; return undefined; }
+    if (lastReviewRef.current === watchedReviewSessionId) return undefined;
+    lastReviewRef.current = watchedReviewSessionId;
+    const t = setTimeout(() => {
+      setView('session-detail');
+      setViewProps({ id: watchedReviewSessionId });
+    }, 0);
+    return () => clearTimeout(t);
+  }, [tutorWatching, watchedReviewSessionId]);
 
   // Entering tutor view auto-opens the chat with the student; with one student
   // we auto-select them, otherwise the header picker decides.
@@ -283,6 +316,7 @@ function App() {
   const sidebarId = {
     'dashboard': 'home',
     'practice-setup': 'practice',
+    'vocabulary': 'vocabulary',
     'plan': 'plan',
     'review': 'review',
     'tutor-assignments': 'assignments',
@@ -310,6 +344,26 @@ function App() {
 
   const isTutor = role === 'tutor';
   const watching = isTutor && !!watchedStudentId;
+
+  // Teaching mode. Ink is scoped to the live question while practicing and to
+  // the open session while reviewing; a scope change wipes the board.
+  const teachScope = view === 'live-session'
+    ? (tutorWatch.watchedLive?.id || null)
+    : (view === 'session-detail' && viewProps.id ? `session:${viewProps.id}` : null);
+  const teachTutor = useTeachTutor({
+    send: watching && teachScope ? tutorWatch.teachSend : null,
+    scope: teachScope,
+  });
+  const teach = isTutor ? teachTutor : studentLive.teach;
+
+  // Replay the current lesson to a student who just came back online.
+  const studentOnline = !!tutorWatch.onlineStudents[watchedStudentId];
+  const wasOnlineRef = React.useRef(false);
+  const resync = teachTutor.resync;
+  React.useEffect(() => {
+    if (studentOnline && !wasOnlineRef.current) resync();
+    wasOnlineRef.current = studentOnline;
+  }, [studentOnline, resync]);
   // Review due-count for the sidebar badge — the watched student's when tutoring,
   // otherwise the signed-in student's own.
   const { queue: reviewQueue } = useReviewQueue(watching ? watchedStudentId : null);
@@ -341,6 +395,7 @@ function App() {
     // Studying — targeted drills + the study loop (Study Plan + Review render the
     // watched student's data read-only when tutoring)
     { id:'practice', label:'Practice',          icon: I('book-open'),       group:'Studying' },
+    { id:'vocabulary', label:'Vocabulary',      icon: I('library'),         group:'Studying' },
     { id:'question-bank', label:'Question Bank', icon: I('database'),        group:'Studying' },
     { id:'plan',     label:'Study Plan',        icon: I('target'),          group:'Studying' },
     { id:'review',   label:'Review',            icon: I('rotate-ccw'),      group:'Studying', badge: reviewDue || undefined },
@@ -369,6 +424,7 @@ function App() {
         else if (id === 'review') go('review');
         else if (id === 'assignments') go(isTutor ? 'tutor-assignments' : 'student-assignments');
         else if (id === 'practice') go('practice-setup');
+        else if (id === 'vocabulary') go('vocabulary');
         else if (id === 'question-bank') go('question-bank');
         else if (id === 'stats') go('stats');
         else if (id === 'practice-tests') go('practice-tests');
@@ -481,6 +537,7 @@ function App() {
     case 'onboarding':      screen = <Onboarding go={go} />; break;
     case 'dashboard':       screen = <Dashboard go={go} {...watchProps} />; break;
     case 'practice-setup':  screen = <PracticeSetup go={go} initial={viewProps} {...watchProps} />; break;
+    case 'vocabulary':      screen = <Vocabulary />; break;
     case 'rw-question':     screen = <QuestionRW key={sessionLive.activeModule?.key || 'rw'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'math-question':   screen = <QuestionMath key={sessionLive.activeModule?.key || 'math'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'score-report':    screen = <ScoreReport go={go} />; break;
@@ -558,11 +615,32 @@ function App() {
         ) : null}
         variant={inModule ? 'test' : 'app'}
       >
-        <LiveBroadcastProvider report={report}>
-          {mainContent}
-        </LiveBroadcastProvider>
+        <TeachProvider value={teach}>
+          <LiveBroadcastProvider report={report}>
+            {mainContent}
+          </LiveBroadcastProvider>
+          <TeachLayer />
+          {isTutor ? <TeachToolbar /> : <TeachingChip active={!!teach?.on} />}
+        </TeachProvider>
       </AppShell>
     </>
+  );
+}
+
+// Quiet marker so the student knows the pointer on their screen is their tutor's.
+function TeachingChip({ active }) {
+  if (!active) return null;
+  return (
+    <div style={{
+      position: 'fixed', left: '50%', bottom: 18, transform: 'translateX(-50%)', zIndex: 70,
+      display: 'inline-flex', alignItems: 'center', gap: 7, padding: '7px 14px',
+      background: 'var(--paper)', border: '1px solid var(--border-1)', borderRadius: 999,
+      boxShadow: 'var(--shadow-md)', font: 'var(--role-label)', color: 'var(--text-secondary)',
+      pointerEvents: 'none',
+    }}>
+      <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff3b30' }} />
+      Your tutor is pointing at your screen
+    </div>
   );
 }
 
@@ -596,6 +674,7 @@ function titleFor(view, isTutor) {
     'tutor-assignments': 'Strix — Assignments',
     'student-assignments': 'Strix — Assignments',
     'practice-setup': 'Strix — New session',
+    'vocabulary': 'Strix — Vocabulary',
     'rw-question': 'Strix — Reading & Writing',
     'math-question': 'Strix — Math',
     'score-report': 'Strix — Score report',

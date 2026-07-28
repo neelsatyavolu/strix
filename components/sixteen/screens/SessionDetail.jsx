@@ -3,6 +3,7 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { ReviewList } from './ScoreReport';
+import { useTeach } from '@/components/tutor/TeachContext';
 
 // SessionDetail — read-only review of one persisted practice session (result +
 // per-question right/wrong), loaded from /api/sessions/:id. Works for your own
@@ -30,6 +31,16 @@ function SessionDetail({ go, id }) {
       .catch(() => { if (on) { setError('Could not load this session.'); setLoading(false); } });
     return () => { on = false; };
   }, [id]);
+
+  // Teaching mode: the tutor can pull the student to a question ("Show student").
+  const teach = useTeach();
+  const gotoQid = teach?.role === 'student' ? teach.goto?.qid : null;
+  const gotoSeq = teach?.role === 'student' ? teach.goto?.n : null;
+  React.useEffect(() => {
+    if (!gotoQid) return;
+    const el = document.querySelector(`[data-teach-question="${CSS.escape(gotoQid)}"]`);
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [gotoQid, gotoSeq]);
 
   const section = data?.section || 'rw';
   const sectionColor = section === 'math' ? 'var(--math-color)' : 'var(--rw-color)';

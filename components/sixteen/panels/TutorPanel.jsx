@@ -50,8 +50,14 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
 
   // The live (human↔student) thread is owned by the parent; map raw rows to
   // bubble shape, with "mine" relative to whoever is signed in here.
+  // Prefer clientKey for React keys so optimistic→saved id swaps don't remount.
   const liveDisplay = React.useMemo(
-    () => (liveMessages || []).map((m) => ({ id: m.id, side: m.sender_id === selfId ? 'mine' : 'theirs', text: m.body, time: '' })),
+    () => (liveMessages || []).map((m) => ({
+      id: m.clientKey || m.id,
+      side: m.sender_id === selfId ? 'mine' : 'theirs',
+      text: m.body,
+      time: '',
+    })),
     [liveMessages, selfId],
   );
   const liveMode = isTutor || mode === 'human';
@@ -59,6 +65,9 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
 
   const [draft, setDraft] = React.useState('');
   const streamRef = React.useRef(null);
+  // Only auto-scroll when the user is already pinned near the bottom — avoids
+  // yanking the stream when a send/typing update lands mid-history.
+  const pinToBottomRef = React.useRef(true);
 
   // Typing indicator only flows on the live (human↔student) thread, not the AI.
   const typing = useTypingEmitter(onTyping);
@@ -83,8 +92,10 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
   React.useEffect(() => { if (mode === 'ai') aiStatus().then(setConnected); }, [mode, aiProvider]);
   // Reset any in-flight connect UI when the target provider or mode changes.
   React.useEffect(() => { setPasteOpen(false); setAiConnecting(false); setConnectError(''); }, [aiProvider, mode]);
-  React.useEffect(() => {
-    if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
+  React.useLayoutEffect(() => {
+    const el = streamRef.current;
+    if (!el || !pinToBottomRef.current) return;
+    el.scrollTop = el.scrollHeight;
   }, [messages, mode, thinking, peerTyping]);
 
   const providerLabel = aiProvider === 'chatgpt' ? 'ChatGPT' : 'Grok';
@@ -142,6 +153,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
 
   const send = async (text) => {
     const id = Date.now();
+    pinToBottomRef.current = true;
     setDraft('');
     // Live thread (human tutor ↔ student): the parent owns send + optimistic UI.
     if (liveMode) { typing.stop(); onLiveSend?.(text); return; }
@@ -266,7 +278,15 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
         )}
       </div>
 
-      <div ref={streamRef} style={{ flex: 1, overflow: 'auto', padding: 14, display: 'flex', flexDirection: 'column', gap: 8, background: 'var(--paper)' }}>
+      <div
+        ref={streamRef}
+        onScroll={() => {
+          const el = streamRef.current;
+          if (!el) return;
+          pinToBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 72;
+        }}
+        style={{ flex: 1, overflow: 'auto', padding: 14, display: 'flex', flexDirection: 'column', gap: 8, background: 'var(--paper)' }}
+      >
         {messages.map((m) => <MessageBubble key={m.id} side={m.side} text={m.text} time={m.time} />)}
         {thinking && <ThinkingBubble />}
         {liveMode && peerTyping && <TypingBubble />}

@@ -3,6 +3,9 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import Highlightable from '@/components/sixteen/test/Highlightable';
 import DesmosPanel from '@/components/sixteen/test/DesmosPanel';
+import TeachRegion from '@/components/tutor/TeachRegion';
+import { useTeach } from '@/components/tutor/TeachContext';
+import { regionId } from '@/lib/tutor/anchors';
 
 const NOOP = () => {};
 
@@ -16,6 +19,7 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
     OptionRow, QuestionPalette, FlagButton, QuestionNumberBadge,
   } = SixteenNS;
   const first = String(studentName).split(' ')[0];
+  const teach = useTeach();
   const [paletteOpen, setPaletteOpen] = React.useState(false);
   // { correct: string[] } once loaded for the current live.id; null while idle
   // or still fetching. Keyed only by question id so timer ticks don't re-fetch.
@@ -92,8 +96,8 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
         sectionLabel={sectionLabel}
         timer={live.timerRunning === false || live.seconds == null ? null : <Timer seconds={live.seconds} hidden={false} onToggleHide={NOOP} />}
         tools={<span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#fff', font: 'var(--role-caption)', paddingRight: 8 }}>
-          <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--success)' }} />
-          Watching {first} · read-only
+          <span style={{ width: 7, height: 7, borderRadius: '50%', background: teach?.on ? '#ff3b30' : 'var(--success)' }} />
+          Watching {first} · {teach?.on ? 'teaching' : 'read-only'}
         </span>}
       />
       <DirectionsBar onDirections={NOOP} />
@@ -102,7 +106,9 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
         {!isMath && live.stimulusHtml && (
           <>
             <div style={{ overflow: 'auto', padding: '36px 56px 48px' }}>
-              <Highlightable className="cb-passage" html={live.stimulusHtml} active={false} value={live.marks?.passage} onChange={NOOP} />
+              <TeachRegion id={regionId(live.id, 'passage')}>
+                <Highlightable className="cb-passage" html={live.stimulusHtml} active={false} value={live.marks?.passage} onChange={NOOP} />
+              </TeachRegion>
             </div>
             <div style={{ background: 'var(--test-divider)' }} />
           </>
@@ -113,10 +119,12 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
               n={(live.index ?? 0) + 1}
               flag={<FlagButton marked={!!live.flagged} onClick={NOOP} />}
             />
-            <Highlightable className="cb-stem" html={live.stemHtml} active={false} value={live.marks?.stem} onChange={NOOP} />
+            <TeachRegion id={regionId(live.id, 'stem')}>
+              <Highlightable className="cb-stem" html={live.stemHtml} active={false} value={live.marks?.stem} onChange={NOOP} />
+            </TeachRegion>
 
             {isSpr ? (
-              <div style={{ marginTop: 24, maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <TeachRegion id={regionId(live.id, 'spr')} style={{ marginTop: 24, maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 14 }}>
                 <div>
                   <label style={{ display: 'block', font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginBottom: 8 }}>Student’s answer</label>
                   <div style={{ width: '100%', padding: '12px 14px', font: 'var(--role-title-sm)', fontFamily: 'var(--font-mono)', color: 'var(--test-ink)', background: 'var(--test-canvas)', border: '2px solid var(--border-2)', borderRadius: 'var(--radius-md)', minHeight: 22 }}>
@@ -129,7 +137,7 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
                     {correctLabel || <span style={{ color: 'var(--text-tertiary)' }}>{questionId ? '…' : '—'}</span>}
                   </div>
                 </div>
-              </div>
+              </TeachRegion>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 22 }}>
                 {(live.choices || []).map((o) => {
@@ -140,20 +148,29 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
                   const feedback = isCorrectChoice
                     ? 'correct'
                     : (isStudentPick && correctSet.size > 0 ? 'wrong' : null);
+                  // Explicit captions — green-on-green "selected correct" alone
+                  // is hard to read; labels make student pick vs key unambiguous.
+                  let endLabel = null;
+                  if (isCorrectChoice && isStudentPick) endLabel = 'Student · Correct';
+                  else if (isCorrectChoice) endLabel = 'Correct';
+                  else if (isStudentPick && correctSet.size > 0) endLabel = 'Student';
+                  else if (isStudentPick) endLabel = 'Student';
                   return (
+                    <TeachRegion key={o.letter} id={regionId(live.id, `choice-${o.letter}`)}>
                     <OptionRow
-                      key={o.letter}
                       letter={o.letter}
-                      selected={isStudentPick}
+                      selected={isStudentPick && !isCorrectChoice}
                       feedback={feedback}
                       locked
+                      endLabel={endLabel}
                       eliminated={elimSet.has(o.letter) && !isCorrectChoice}
-                      showEliminator={elimSet.size > 0}
+                      showEliminator={false}
                       onSelect={NOOP}
                       onToggleEliminate={NOOP}
                     >
                       <span className="cb-choice" dangerouslySetInnerHTML={{ __html: o.html }} />
                     </OptionRow>
+                    </TeachRegion>
                   );
                 })}
               </div>
@@ -162,7 +179,11 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
         </div>
       </div>
 
-      {isMath && calc?.open && <DesmosPanel readOnly state={calc.state} pos={calc.pos} size={calc.size} onClose={NOOP} />}
+      {isMath && calc?.open && (
+        <TeachRegion id={regionId(live.id, 'calc')}>
+          <DesmosPanel readOnly state={calc.state} pos={calc.pos} size={calc.size} onClose={NOOP} />
+        </TeachRegion>
+      )}
 
       {paletteOpen && (
         <div style={{ position: 'absolute', bottom: 'calc(var(--test-footer-height) + 12px)', left: '50%', transform: 'translateX(-50%)', zIndex: 20 }}>

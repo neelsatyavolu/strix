@@ -4,6 +4,9 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { ExplainPanel } from '@/components/sixteen/stats/ExplainPanel';
+import TeachRegion from '@/components/tutor/TeachRegion';
+import { useTeach } from '@/components/tutor/TeachContext';
+import { regionId } from '@/lib/tutor/anchors';
 
 // ScoreReport — drill report or scaled section report, from the live session.
 
@@ -195,6 +198,7 @@ function ModuleDivider({ label, items, first }) {
 export function ReviewItem({ item, n }) {
   const { Card, Badge } = SixteenNS;
   const [open, setOpen] = React.useState(false);
+  const teach = useTeach();
   const { question: q, response, isCorrect } = item;
   const answered = !!response?.value;
   const yourLetter = response?.value;
@@ -202,7 +206,7 @@ export function ReviewItem({ item, n }) {
   const correct = Array.isArray(q.correct) ? q.correct : [];
 
   return (
-    <Card padding="lg">
+    <Card padding="lg" data-teach-question={q.id}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
         <span style={{ font: 'var(--role-numeric)', fontFamily: 'var(--font-mono)', color: 'var(--text-tertiary)' }}>{String(n).padStart(2, '0')}</span>
         <Badge variant={isCorrect ? 'success' : answered ? 'error' : 'neutral'} dot>
@@ -211,13 +215,27 @@ export function ReviewItem({ item, n }) {
         <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>{q.domainLabel}{q.skillLabel ? ` · ${q.skillLabel}` : ''}</span>
         {item.isPretest && <Badge variant="neutral" size="sm">Unscored</Badge>}
         <span style={{ marginLeft: 'auto', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>Difficulty {q.difficulty}</span>
+        {teach?.role === 'tutor' && teach.on && (
+          <button
+            type="button"
+            onClick={() => teach.gotoQuestion(q.id)}
+            title="Scroll your student to this question"
+            style={{ background: 'transparent', border: '1px solid var(--border-1)', borderRadius: 6, padding: '2px 8px', cursor: 'pointer', font: 'var(--role-caption)', color: 'var(--brand-blue)' }}
+          >
+            Show student
+          </button>
+        )}
       </div>
 
       {q.stimulusHtml && (
-        <div className="cb-passage" style={{ fontSize: 15, marginBottom: 12, paddingBottom: 12, borderBottom: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.stimulusHtml }} />
+        <TeachRegion id={regionId(q.id, 'passage')}>
+          <div className="cb-passage" style={{ fontSize: 15, marginBottom: 12, paddingBottom: 12, borderBottom: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.stimulusHtml }} />
+        </TeachRegion>
       )}
 
-      <div className="cb-stem" style={{ fontSize: 15 }} dangerouslySetInnerHTML={{ __html: q.stemHtml }} />
+      <TeachRegion id={regionId(q.id, 'stem')}>
+        <div className="cb-stem" style={{ fontSize: 15 }} dangerouslySetInnerHTML={{ __html: q.stemHtml }} />
+      </TeachRegion>
 
       {isMcq ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, margin: '12px 0 4px' }}>
@@ -226,7 +244,8 @@ export function ReviewItem({ item, n }) {
             const isYours = yourLetter === o.letter;
             const tone = isCorrectChoice ? 'var(--success)' : isYours ? 'var(--error)' : null;
             return (
-              <div key={o.letter} style={{
+              <TeachRegion key={o.letter} id={regionId(q.id, `choice-${o.letter}`)}>
+              <div style={{
                 display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 10, alignItems: 'center',
                 padding: '9px 12px', borderRadius: 8,
                 border: `1px solid ${tone || 'var(--border-1)'}`,
@@ -241,11 +260,12 @@ export function ReviewItem({ item, n }) {
                 {isCorrectChoice ? <span style={{ font: 'var(--role-caption)', color: 'var(--success)', fontWeight: 600 }}>Correct</span>
                   : isYours ? <span style={{ font: 'var(--role-caption)', color: 'var(--error)', fontWeight: 600 }}>Your answer</span> : null}
               </div>
+              </TeachRegion>
             );
           })}
         </div>
       ) : (
-        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', margin: '12px 0 4px', font: 'var(--role-body)' }}>
+        <TeachRegion id={regionId(q.id, 'spr')} style={{ display: 'flex', gap: 24, flexWrap: 'wrap', margin: '12px 0 4px', font: 'var(--role-body)' }}>
           <div>
             <span style={{ color: 'var(--text-tertiary)' }}>Your answer: </span>
             <span style={{ fontFamily: 'var(--font-mono)', color: isCorrect ? 'var(--success)' : 'var(--error)' }}>{yourLetter || '—'}</span>
@@ -254,7 +274,7 @@ export function ReviewItem({ item, n }) {
             <span style={{ color: 'var(--text-tertiary)' }}>Correct: </span>
             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--success)' }}>{correct.join(' or ') || '—'}</span>
           </div>
-        </div>
+        </TeachRegion>
       )}
 
       {q.rationaleHtml && (

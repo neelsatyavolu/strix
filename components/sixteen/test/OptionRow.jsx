@@ -18,6 +18,8 @@ export function OptionRow({
   showEliminator = true,
   feedback = null, // null | 'correct' | 'wrong'
   locked = false,
+  // Optional trailing caption (e.g. tutor mirror: "Correct", "Student · Correct").
+  endLabel = null,
   onSelect,
   onToggleEliminate,
   children,
@@ -32,6 +34,12 @@ export function OptionRow({
   const circleBg = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : selected ? 'var(--test-fill)' : 'transparent';
   const circleBorder = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : 'var(--test-line)';
   const struck = eliminated || isWrong;
+  const fill = isCorrect
+    ? 'color-mix(in srgb, var(--success) 10%, transparent)'
+    : isWrong
+      ? 'color-mix(in srgb, var(--error) 8%, transparent)'
+      : (hover && clickable && !selected ? 'var(--test-option-hover)' : 'transparent');
+  const labelColor = isCorrect ? 'var(--success)' : isWrong ? 'var(--error)' : 'var(--text-secondary)';
   return (
     <div
       onMouseEnter={() => setHover(true)}
@@ -43,7 +51,7 @@ export function OptionRow({
         alignItems: 'center',
         gap: 14,
         padding: '14px 16px',
-        background: hover && clickable && !selected ? 'var(--test-option-hover)' : 'transparent',
+        background: fill,
         border: `${ringW}px solid ${ring}`,
         borderRadius: 'var(--radius-md)',
         cursor: clickable ? 'pointer' : 'default',
@@ -71,6 +79,16 @@ export function OptionRow({
         textDecorationThickness: '1.5px',
         opacity: struck ? 0.55 : 1,
       }}>{children}</span>
+      {endLabel ? (
+        <span style={{
+          flexShrink: 0,
+          font: 'var(--role-caption)',
+          fontWeight: 700,
+          letterSpacing: '0.01em',
+          color: labelColor,
+          whiteSpace: 'nowrap',
+        }}>{endLabel}</span>
+      ) : null}
       {showEliminator && (
         <button
           type="button"

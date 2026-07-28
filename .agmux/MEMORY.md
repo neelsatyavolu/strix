@@ -6,20 +6,47 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-28T01:59:41.822Z
-- **Active entries**: 4
+- **Updated**: 2026-07-28T18:07:34.852Z
+- **Active entries**: 5
+- **Important**: 1
 
-## Decisions
+## Important (must remember)
 
-### Tutor live session sticky idle
+> Agents must treat these as binding constraints unless the user overrides them.
+
+### ⚠ IMPORTANT: Tutor live session sticky idle
 
 - **id**: `460b5ec6-79cb-4c81-9b70-ba1246e05ad8`
 - **kind**: decision
+- **important**: true (must remember)
 - **source**: agent
 - **created**: 2026-07-28T01:59:41.822Z
-- **updated**: 2026-07-28T01:59:41.822Z
+- **updated**: 2026-07-28T02:12:20.274Z
 
-Tutor Live Session must not drop on brief Realtime flaps. useTutorWatch debounces idle ~2.5s; missing presence must not immediately set liveStudents inactive. Math Desmos calc.state can oversize session broadcasts — sanitize in useStudentLive (MAX ~48k). reportCalc throttle 800ms.
+Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
+
+## Decisions
+
+### ⚠ IMPORTANT: Tutor live session sticky idle
+
+- **id**: `460b5ec6-79cb-4c81-9b70-ba1246e05ad8`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-07-28T01:59:41.822Z
+- **updated**: 2026-07-28T02:12:20.274Z
+
+Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
+
+### Vocabulary feature v1
+
+- **id**: `f086d1da-99ca-4926-a761-cfa866ebd2c7`
+- **kind**: decision
+- **source**: agent
+- **created**: 2026-07-28T18:07:34.852Z
+- **updated**: 2026-07-28T18:07:34.852Z
+
+Vocabulary tab under Studying: static bank lib/vocab/bank.ts (~130 words by function), progress in public.vocab_progress (Leitner boxes), practice mix context MCQ + sentence production. Student-only. Future: optional cb_question_id for official WIC stems. Migration 0012_vocab_progress.sql.
 
 ### electron-builder signing workaround
 

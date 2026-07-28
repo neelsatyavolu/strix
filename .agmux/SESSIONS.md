@@ -5,28 +5,66 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-28T02:00:07.000Z
-- **Sessions**: 4
+- **Updated**: 2026-07-28T18:07:52.000Z
+- **Sessions**: 6
+
+## Vocabulary tab
+
+- **id**: `9178c54b-ebb7-413a-bc60-45bda3e2457a`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-07-28T18:07:52.000Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fa9bf-cfb1-7473-90ea-f688f5a5c8fa/chat_history.jsonl`
+
+Added student Vocabulary tab (Approach 1): curated ~130 DSAT high-utility word bank in lib/vocab/bank.ts with context MCQs + produce mode; Supabase vocab_progress (migration 0012 applied); APIs GET/POST /api/vocab and GET /api/vocab/session; UI screen with hub/practice/done; sidebar Studying → Vocabulary. Research notes in docs/vocab/digital-sat-vocabulary.md. Student-only, Leitner SRS mirrored from review schedule.
+
+## Tutor teaching mode — implemented
+
+- **id**: `87fef06d-be4d-4042-ab5e-7ddf68f5dcb2`
+- **provider**: unknown
+- **status**: idle
+- **updated**: 2026-07-28T18:03:59.751Z
+- **transcript**: _(none resolved)_
+
+Implemented tutor "teaching mode" (laser pointer + annotation overlay on the student's screen) per docs/superpowers/specs/2026-07-28-tutor-teaching-mode-design.md. NOT COMMITTED — left in the working tree.
+
+New files:
+- lib/tutor/anchors.js — region registry. Points stored as { region, x, y } where BOTH x and y are divided by the region's WIDTH (preserves aspect, so circles stay circles across the tutor's narrow mirror and the student's wide screen). Region ids are `${questionId}::${part}` (passage, stem, choice-A..D, spr, calc). encodePoint uses document.elementsFromPoint (topmost-first = innermost region wins). Unknown region on receive => stroke dropped, never misplaced. Also regionPlacement/scrollRegionIntoView for the off-screen hint.
+- lib/tutor/useTeachMode.js — useTeachTutor (tools/capture/broadcast) + useTeachStudent (receiver).
+- components/tutor/TeachContext.jsx, TeachRegion.jsx, TeachLayer.jsx, TeachToolbar.jsx.
+
+Modified: realtime.js (teach/point/ink broadcast events + senders), useStudentLive.js (receive + mode on payloads), useTutorWatch.js (teach senders, mode:'review'), LiveTestView.jsx, QuestionRW.jsx, QuestionMath.jsx, ScoreReport.jsx (ReviewItem regions + "Show student"), SessionDetail.jsx (goto scroll), SixteenApp.jsx (hooks/provider/layer/toolbar/chip/review broadcast/watchedIsLive gating).
+
+Key implementation decisions that DIVERGED from the written spec (spec has been updated to match):
+1. Review.jsx is the spaced-repetition QUEUE dashboard, not a per-question review. The real completed-work surface is SessionDetail -> ReviewList -> ReviewItem (scrolling list of question cards, in ScoreReport.jsx). Review.jsx untouched.
+2. Review co-nav = student broadcasts { active:true, mode:'review', sessionId } only; both sides render the same cards from the DB. SixteenApp derives this from view/viewProps — no review screen reports anything. Tutor auto-follows into session-detail once per session change.
+3. Ink is keyed to a single `scope` (live question id while practicing, `session:<id>` while reviewing) instead of a per-payload qid gate — a review page holds many questions and clearing on focus change would be unusable.
+4. Rendering is ONE fixed canvas redrawn on rAF (not per-region SVG + scroll listeners). Scroll/resize handled for free.
+5. Tutor capture surface only mounts for pen/highlighter/text; the laser tool uses a window pointermove listener so the tutor stays fully interactive. The capture surface forwards wheel to the scrollable element under the cursor so RW passages stay scrollable while drawing.
+
+Verification: pnpm lint (0 errors, 26 pre-existing warnings), pnpm exec tsc --noEmit (clean), pnpm build (compiled successfully). No manual two-window runtime test was performed.
+
+CAUTION for the next agent: SixteenApp.jsx, useStudentLive.js, useTutorWatch.js, LiveTestView.jsx also carry UNCOMMITTED changes from an earlier session (chat multi-line, OptionRow, TutorPanel, TutorChat, ChatComposer). Do not assume the whole diff on those files is teaching-mode work.
 
 ## Chat multi-line + live session flap
 
 - **id**: `fb10500d-62e3-4564-8d1b-bd18bac11131`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-07-28T02:00:07.000Z
+- **updated**: 2026-07-28T02:12:25.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fa66d-e83b-7750-924a-c480963e9f24/chat_history.jsonl`
 
-ChatComposer multi-line auto-grow. Tutor live-session math flicker: debounce idle 2.5s in useTutorWatch (presence gaps no longer clear live immediately), strip oversized Desmos calc from session broadcast, reportCalc 800ms, soft-debounce live-session nav leave.
+Hardened live session: presence never clears watchedLive; only session active:false idles after 4s. Student sends full snapshot on question change / tutor join / resubscribe, patches for timer ticks. Sticky last frame kept while waiting. Oversized full payloads trimmed. Idle announce debounced 900ms on student side.
 
-## Tutor view correct answer
+## Tutor MCQ correct clarity
 
 - **id**: `04ad5e75-8f07-4896-93fd-78d9190fa150`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-07-26T21:13:01.000Z
+- **updated**: 2026-07-28T02:08:06.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fa043-96a9-76f3-abbd-52691d38373a/chat_history.jsonl`
 
-Tutor live view shows correct answer during practice: broadcast includes question id; LiveTestView fetches key via grade reveal API and highlights MCQ correct/wrong + SPR correct answer.
+MCQ tutor live clarity: OptionRow endLabel + tinted correct/wrong fill; LiveTestView labels Student · Correct / Correct / Student so right picks are obvious.
 
 ## Added "I've done this already" on practice questions
 

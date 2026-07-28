@@ -19,6 +19,7 @@ function TutorChat({ go }) {
   const [peerTyping, setPeerTyping] = usePeerTyping();
   const streamRef = React.useRef(null);
   const channelRef = React.useRef(null);
+  const pinToBottomRef = React.useRef(true);
 
   const notifyTyping = React.useCallback((on) => {
     channelRef.current?.sendTyping({ role: 'student', typing: !!on });
@@ -26,10 +27,12 @@ function TutorChat({ go }) {
   const typing = useTypingEmitter(notifyTyping);
   const onDraftChange = (v) => { setDraft(v); v.trim() ? typing.bump() : typing.stop(); };
 
-  const append = (m) => setMessages((prev) => [...prev, m]);
+  const append = (m) => setMessages((prev) => (prev.some((x) => x.id === m.id) ? prev : [...prev, m]));
 
-  React.useEffect(() => {
-    if (streamRef.current) streamRef.current.scrollTop = streamRef.current.scrollHeight;
+  React.useLayoutEffect(() => {
+    const el = streamRef.current;
+    if (!el || !pinToBottomRef.current) return;
+    el.scrollTop = el.scrollHeight;
   }, [messages, peerTyping]);
 
   // Open the realtime channel, load chat history, and relay incoming messages.
@@ -69,12 +72,17 @@ function TutorChat({ go }) {
 
   const send = async (text) => {
     if (!text || !user?.id) return;
-    const id = Date.now();
-    append({ id, side: 'mine', text });
+    const clientKey = `tmp-${Date.now()}`;
+    pinToBottomRef.current = true;
+    append({ id: clientKey, side: 'mine', text });
     setDraft('');
     typing.stop();
     const saved = await saveMessage({ studentId: user.id, senderId: user.id, role: 'student', body: text });
-    channelRef.current?.sendChat(saved || { id: String(id), sender_id: user.id, role: 'student', body: text });
+    // Keep React key stable (clientKey) so the bubble doesn't remount on save.
+    if (saved) {
+      setMessages((prev) => prev.map((m) => (m.id === clientKey ? { ...m, id: clientKey, serverId: saved.id, text: saved.body } : m)));
+    }
+    channelRef.current?.sendChat(saved || { id: clientKey, sender_id: user.id, role: 'student', body: text });
   };
 
   return (
@@ -95,7 +103,15 @@ function TutorChat({ go }) {
         <button onClick={() => go('tutor-invite')} style={{font:'var(--role-label)', background:'transparent', border:0, color:'var(--text-link)', cursor:'pointer'}}>Tutor settings →</button>
       </div>
 
-      <div ref={streamRef} style={{ flex:1, overflow:'auto', padding: '20px 24px', display:'flex', flexDirection:'column', gap: 10, background:'var(--paper)' }}>
+      <div
+        ref={streamRef}
+        onScroll={() => {
+          const el = streamRef.current;
+          if (!el) return;
+          pinToBottomRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 72;
+        }}
+        style={{ flex:1, overflow:'auto', padding: '20px 24px', display:'flex', flexDirection:'column', gap: 10, background:'var(--paper)' }}
+      >
         {messages.length === 0 && !peerTyping ? (
           <div style={{flex:1, display:'flex', alignItems:'center', justifyContent:'center', font:'var(--role-body)', color:'var(--text-tertiary)'}}>
             No messages yet — say hi to your tutor.

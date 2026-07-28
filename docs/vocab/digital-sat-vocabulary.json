@@ -1,0 +1,313 @@
+{
+  "run_id": "trun_e71ee922922549a4aa0ef4068cb1b020",
+  "interaction_id": "trun_e71ee922922549a4aa0ef4068cb1b020",
+  "result_url": "https://platform.parallel.ai/play/deep-research/trun_e71ee922922549a4aa0ef4068cb1b020",
+  "status": "completed",
+  "output": {
+    "basis": [
+      {
+        "field": "answer",
+        "reasoning": "Step 1 reasoning: The field_answer presents a structured report that matches the user\u2019s requested content: executive summary, a DSAT vocabulary shift section, frequency themes, a curated word bank (described as ~170 words), practice-format recommendations, and a sources section. It covers the targeted topics (DSAT vs old SAT vocab, high-frequency categories, patterns such as tone and transitions, usage notes, and formats for retention). Therefore completeness should be true. Step 2 reasoning: The excerpts provided include items about DSAT structure (Words in Context, Craft and Structure), DSAT format, and vocabulary usage in context, which support the general claims in the field_answer (DSAT testing approach, context-driven vocab, transitions). While the field_answer cites a large curated bank and specific frequencies, the excerpts do not exactly confirm every detail of the curated list, but they do support the overall claims and categories. Thus the field_answer is reasonably supported by excerpts. Overall: completeness = true; supported = true.",
+        "citations": [
+          {
+            "url": "https://www.bestsatscore.com/guides/lessons/reading-writing/craft-and-structure/text-structure-and-purpose",
+            "excerpts": [
+              "Text Structure And Purpose - SAT READING-WRITING Lesson Guide\nRelevance in the Digital SAT \"Text Structure and Purpose\" is a critical skill within the \"Craft and Structure\" domain of the Digital SAT. Here's what you need to know: It typically appears as the second question type immediately after \"Words in Context\" in each module. Each module contains 1-3 \"Text Structure and Purpose\" questions. There are 2-5 questions total on the test, ~7% of the Reading"
+            ],
+            "title": "Text Structure And Purpose - SAT READING-WRITING Lesson Guide"
+          },
+          {
+            "url": "https://www.satmock.org/blog/digital-sat-format-2026-complete-guide",
+            "excerpts": [
+              "Digital SAT Format 2026: Everything You Need to Know\nComplete guide to the 2026 Digital SAT format \u2014 modules, timing, question types, adaptive testing, scoring, and what's different from previous years."
+            ],
+            "title": "Digital SAT Format 2026: Everything You Need to Know"
+          },
+          {
+            "url": "http://piqosity.com/digital-sat-english-test-content",
+            "excerpts": [
+              "Questions on the [SAT Reading and Writing Test](https://satsuite.collegeboard.org/sat/whats-on-the-test/reading-writing) fall into four broad categories: 1) Craft and Structure, 2) Information and Ideas, 3) Standard English Conventions, and 4) Expression of Ideas.\nSAT\nThe first type of question students will encounter on the test are Craft and Structure questions."
+            ],
+            "title": "What is Tested on the Digital SAT English Test? | Piqosity SAT Prep"
+          },
+          {
+            "url": "http://facebook.com/thecollegeboard",
+            "excerpts": [
+              "College Board is a non-profit organization that clears a path for all students to own their future through the Advanced Placement Program, the SAT, BigFuture,"
+            ],
+            "title": "College Board (@thecollegeboard)"
+          },
+          {
+            "url": "https://www.careerlauncher.com/sat/exam-pattern",
+            "excerpts": [
+              "SAT Exam Pattern 2026: Format, Structure & Question\nThe new SAT exam pattern has undergone several changes, from being administered digitally to an adaptive exam format and reduced test duration. The SAT exam now includes only two sections: \u2018Reading & Writing\u2019 (RW) and \u2018Math\u2019. Each section contains two modules of equal time duration. When it comes to the SAT scoring pattern, the overall exam scores are within the range of 400 to 1600"
+            ],
+            "title": "SAT Exam Pattern 2026: Format, Structure & Question"
+          },
+          {
+            "url": "https://test-ninjas.com/sat-vocabulary-practice",
+            "excerpts": [
+              "SAT Vocabulary Practice - Free Digital SAT Words in Context ...\nMaster SAT vocabulary with our free practice questions targeting essential vocabulary skills for the Digital SAT Reading and Writing section. Each question helps you understand not just word definitions, but how to interpret and use sophisticated vocabulary effectively in different contexts."
+            ],
+            "title": "SAT Vocabulary Practice - Free Digital SAT Words in Context ..."
+          },
+          {
+            "url": "https://acely.com/sat-prep/sat-vocabulary-guide",
+            "excerpts": [
+              "SAT Vocabulary Guide 2026 \u2014 Acely\nMaster SAT vocab with 92+ high-frequency words, context strategies, word roots, and long-term retention tips for the 2026 digital SAT. Try Acely for free."
+            ],
+            "title": "SAT Vocabulary Guide 2026 \u2014 Acely"
+          },
+          {
+            "url": "https://thetestadvantage.com/blog/digital-sat-vocabulary-list-20-high-frequency-words",
+            "excerpts": [
+              "Digital SAT Vocabulary List 20 High Frequency Words\nThis list includes high-frequency words like multifaceted, unattainable, discipline, terrestrial, and forecast, each with definitions and SAT-style usage examples to improve Reading and Writing scores."
+            ],
+            "title": "Digital SAT Vocabulary List 20 High Frequency Words"
+          },
+          {
+            "url": "https://www.fullpracticetests.com/sat/vocabulary",
+            "excerpts": [
+              "SAT Vocabulary List 2025 \u2014 300+ High-Frequency Words by ...\n300+ high-frequency SAT vocabulary words organized into 12 categories with clear definitions and academic example sentences. Covers analysis, transitions, literary terms, science vocabulary, historical words, author's tone, precision, and common SAT trap words with multiple meanings."
+            ],
+            "title": "SAT Vocabulary List 2025 \u2014 300+ High-Frequency Words by ..."
+          },
+          {
+            "url": "https://www.straymondhighschool.org/apps/pages/index.jsp?pREC_ID=157006&termREC_ID&type=u&uREC_ID=136515",
+            "excerpts": [
+              "SAT Vocab Worksheets and Definitions - Mr. John Sudol\nFiles: 2014 2015 SAT Vocubulary Words.doc \u00b7 SAT Word List 01.doc \u00b7 SAT Word List 02.doc \u00b7 SAT Word List 03.doc \u00b7 SAT Word List 04.doc \u00b7 SAT Word List 05.doc"
+            ],
+            "title": "SAT Vocab Worksheets and Definitions - Mr. John Sudol"
+          },
+          {
+            "url": "https://www.stuvia.com/en-us/doc/10495315/sat-vocabulary-2026-digital-sat-high-frequency-word-list-en-practice-guide-pdf",
+            "excerpts": [
+              "SAT Vocabulary 2026 | Digital SAT High-Frequency Word List ...\nThis detailed PDF includes high-frequency academic words, contextual usage examples, definitions, and targeted practice exercises to strengthen reading comprehension and verbal precision."
+            ],
+            "title": "SAT Vocabulary 2026 | Digital SAT High-Frequency Word List ..."
+          },
+          {
+            "url": "https://www.oneprep.co/blog/sat-vocabulary-words-2026-digital-sat",
+            "excerpts": [
+              "SAT\u00ae Vocabulary Words 2026: What to Study (Digital)\nJune 30, 2026 SAT\u00ae Vocabulary Words 2026: What to Study (Digital) sat vocabulary words 2026: study high-frequency words the Digital SAT\u00ae tests in context, plus strategies, examples, and a simple plan to improve fast."
+            ],
+            "title": "SAT\u00ae Vocabulary Words 2026: What to Study (Digital)"
+          },
+          {
+            "url": "https://www.khanacademy.org/sat",
+            "excerpts": [],
+            "title": "Khan Academy"
+          },
+          {
+            "url": "https://quizlet.com/5923876/sat-high-frequency-word-list-barrons-flash-cards",
+            "excerpts": [
+              "SAT High-Frequency Word List (Barron's) Flashcards\nMatch ; abridge. condense or shorten ; abstemious. sparing in eating and drinking; temperate ; abstract. theoretical; not concrete; nonrepresentational ; abstruse."
+            ],
+            "title": "SAT High-Frequency Word List (Barron's) Flashcards"
+          },
+          {
+            "url": "https://www.oneprep.co/blog/sat-vocabulary-words-2026",
+            "excerpts": [
+              "SAT\u00ae Vocabulary Words 2026: High-Impact List + Strategy\nSAT\u00ae vocabulary words 2026 list with meanings, plus a clear strategy for how the Digital SAT\u00ae tests vocab in context and how to practice fast."
+            ],
+            "title": "SAT\u00ae Vocabulary Words 2026: High-Impact List + Strategy"
+          },
+          {
+            "url": "https://www.larrylearns.com/blog/sat-prep-vocabulary",
+            "excerpts": [
+              "SAT Prep Vocabulary: 100 High-Frequency Words You Need to ...\nInstead, you need to know 100 to 200 high-frequency words deeply: their multiple meanings, their connotations, and how they function in different contexts. This guide gives you the 100 most important words for the digital SAT, organized by category, with definitions and example sentences that mirror how the SAT uses them."
+            ],
+            "title": "SAT Prep Vocabulary: 100 High-Frequency Words You Need to ..."
+          },
+          {
+            "url": "https://crackd.it/sat/vocab",
+            "excerpts": [
+              "SAT Vocabulary & Word Parts\nMaster SAT vocabulary, word parts, and transitions with interactive practice and quizzes."
+            ],
+            "title": "SAT Vocabulary & Word Parts"
+          },
+          {
+            "url": "https://collegeprep.uworld.com/blog/verb-tenses-and-forms-on-sat-reading-writing",
+            "excerpts": [
+              "Understanding Verb Tenses and Forms on the Digital SAT\u00ae\nVerb tense and verb form questions show whether you can read closely and maintain a clear, precise meaning. The SAT often tests your ability to keep actions in"
+            ],
+            "title": "Understanding Verb Tenses and Forms on the Digital SAT\u00ae"
+          },
+          {
+            "url": "https://img.sparknotes.com/content/testprep/pdf/sat.vocab.pdf",
+            "excerpts": [
+              "The 1000 Most Common SAT Words\nadvocate 1. (v.) to argue in favor of something (Arnold advocated turning left at the stop sign, even though everyone else thought we should turn right.) 2."
+            ],
+            "title": "The 1000 Most Common SAT Words"
+          },
+          {
+            "url": "https://www.wordhippo.com/what-is/the-verb-for/evidence.html",
+            "excerpts": [
+              "What is the verb for evidence?\nWhat is the verb for evidence? \u00b7 Third-person singular simple present indicative form of evidence \u00b7 Synonyms: shows, confirms, demonstrates, establishes,"
+            ],
+            "title": "What is the verb for evidence?"
+          },
+          {
+            "url": "https://www.tyrannosaurusprep.com/sat.html",
+            "excerpts": [
+              "SAT Vocab Game\nTyrannosaurus Prep is a game that quizzes you over SAT vocab and GRE vocab words."
+            ],
+            "title": "SAT Vocab Game"
+          },
+          {
+            "url": "https://www.nngroup.com/articles/tone-voice-words",
+            "excerpts": [
+              "Tone-of-Voice Words\nJul 17, 2016 \u2014 List of Tone Words \u00b7 Authoritative \u00b7 Caring \u00b7 Cheerful \u00b7 Coarse \u00b7 Conservative \u00b7 Conversational \u00b7 Casual \u00b7 Dry"
+            ],
+            "title": "Tone-of-Voice Words"
+          },
+          {
+            "url": "https://www.thetestadvantage.com/blog/digital-sat-vocabulary-complete-guide",
+            "excerpts": [
+              "Digital SAT Vocabulary 2026: Guide, Plan, and Resources\nThe Complete this Digital SAT example: 160+ High-Frequency Words (2025-2026 Edition) \u2013 Covers the most tested words from recent exams. this question 2025: 25 High-Frequency Words \u2013 Quick-start list for 2025 test takers."
+            ],
+            "title": "Digital SAT Vocabulary 2026: Guide, Plan, and Resources"
+          },
+          {
+            "url": "https://www.varsitytutors.com/practice/subjects/isee-middle-level-reading-comprehension/lessons/authors-tone-and-attitude",
+            "excerpts": [
+              "Authors Tone And Attitude - ISEE Middle Level Reading"
+            ],
+            "title": "Authors Tone And Attitude - ISEE Middle Level Reading... Varsity Tutors https://www.varsitytutors.com \u203a subjects \u203a lessons \u203a aut..."
+          },
+          {
+            "url": "https://www.scribd.com/document/68667723/Sat-Vocabulary-Less-2-Doc",
+            "excerpts": [
+              "SAT Vocabulary Lesson 2 Answer Key | PDF"
+            ],
+            "title": "SAT Vocabulary Lesson 2 Answer Key | PDF Scribd https://www.scribd.com \u203a document \u203a Sat-Vocabulary-..."
+          },
+          {
+            "url": "https://wordwall.net/resource/59737818/sat-vocab-game",
+            "excerpts": [
+              "SAT Vocab Game - Gameshow quiz"
+            ],
+            "title": "SAT Vocab Game - Gameshow quiz Wordwall https://wordwall.net \u203a ... \u203a English Language Arts"
+          },
+          {
+            "url": "https://www.khanacademy.org/test-prep/sat-reading-and-writing/x0d47bcec73eb6c4b%3Afoundations-craft-and-structure/x0d47bcec73eb6c4b%3Awords-in-context/a/words-in-context-lesson",
+            "excerpts": [
+              "Words in context | Lesson (article) | Khan Academy\nWhat are \"words in context\" questions? On the Reading and Writing section of your SAT, some questions will ask you to select the most logical and precise word or phrase in a given context."
+            ],
+            "title": "Words in context | Lesson (article) | Khan Academy"
+          },
+          {
+            "url": "https://www.khanacademy.org/test-prep/get-ready-for-sat-prep-reading-and-writing/x07a01ed1f1ffc4bd%3Aget-ready-craft-and-structure/x07a01ed1f1ffc4bd%3Awords-in-context/a/words-in-context-lesson",
+            "excerpts": [
+              "Words in context | Lesson (article)\nOn the Reading and Writing section of your SAT, some questions will ask you to select the most logical and precise word or phrase in a given context."
+            ],
+            "title": "Words in context | Lesson (article)"
+          },
+          {
+            "url": "https://www.khanacademy.org/test-prep/sat-reading-and-writing/x0d47bcec73eb6c4b%3Aadvanced-craft-and-structure/x0d47bcec73eb6c4b%3Awords-in-context-3/e/words-in-context-advanced",
+            "excerpts": [
+              "Words in context: advanced (practice) | Khan Academy\nWelcome to Khan Academy! So we can give you the right tools, let us know if you're a"
+            ],
+            "title": "Words in context: advanced (practice) | Khan Academy"
+          },
+          {
+            "url": "http://linkedin.com/company/the-college-board",
+            "excerpts": [
+              "College Board is a not-for-profit organization that clears a path for all students to own their future through the Advanced Placement Program, the SAT, Official SAT Practice on Khan Academy, BigFuture, and more. For more information, go to collegeboard.org. website: http://www.collegeboard.org\nname: The College Board description College Board is a not-for-profit organization that clears a path for all students to own their future through the Advanced Placement Program, the SAT, Official SAT Practice on Khan Academy, BigFuture, and more. For more information, go to collegeboard.org. website: http://www.collegeboard.org\nwebsite: http://www.collegeboard.org"
+            ],
+            "title": "The College Board"
+          },
+          {
+            "url": "http://about.collegeboard.org/",
+            "excerpts": [
+              "College Board is a mission-driven, not-for-profit organization that connects students to college success."
+            ],
+            "title": "College Board"
+          },
+          {
+            "url": "https://bwseducationconsulting.com/digital-sat-practice-questions-word-in-context",
+            "excerpts": [
+              "Digital SAT Words in Context Practice Questions\nNov 9, 2023 \u2014 Digital SAT Words in Context Practice Questions \u00b7 1. B. The character is studying germs and parasites. \u00b7 2. A. The first sentence of the passage"
+            ],
+            "title": "Digital SAT Words in Context Practice Questions"
+          },
+          {
+            "url": "https://collegeprep.uworld.com/blog/words-in-context-sat-reading-and-writing-strategies",
+            "excerpts": [
+              "SAT\u00ae Words in Context: Meaning, Tips & Practice ...\nJan 7, 2026 \u2014 Word in Context questions appear throughout the Reading and Writing section of the Digital SAT and ask you to determine what a word or a phrase"
+            ],
+            "title": "SAT\u00ae Words in Context: Meaning, Tips & Practice ..."
+          },
+          {
+            "url": "https://spedsupport.tea.texas.gov/sites/default/files/2023-08/high-frequency-word-list.pdf",
+            "excerpts": [
+              "High-Frequency Word List\nHigh-frequency words are the most common words in the English language. The high-frequency word list used here is based on an analysis of four databases"
+            ],
+            "title": "High-Frequency Word List"
+          },
+          {
+            "url": "https://jghsenglish.edublogs.org/files/2014/02/satvocabularyless4doc-19b2a1i.pdf",
+            "excerpts": [
+              "SAT Vocabulary Lesson and Practice: Lesson 4\nLesson 4 Answer Key Synonyms 1. alcove 2. luminous 3. diaphanous 4. peerless 5. contrite 6. hustle 7. stupendous 8. indigent 9. aboveboard 10. decipher Antonyms"
+            ],
+            "title": "SAT Vocabulary Lesson and Practice: Lesson 4"
+          },
+          {
+            "url": "https://slidetoanki.com/blog/anki-for-sat-act-prep",
+            "excerpts": [
+              "Anki for the SAT and ACT: How to Use Spaced Repetition to ...\nA complete guide to using Anki for SAT and ACT prep. Learn how to build flashcards for vocabulary, math formulas, grammar rules, and science reasoning."
+            ],
+            "title": "Anki for the SAT and ACT: How to Use Spaced Repetition to ..."
+          },
+          {
+            "url": "https://witprep.com/blog/sat-vocabulary-100-most-important-words-you-must-know-for-2026",
+            "excerpts": [
+              "SAT Vocabulary: 100 Must-Know Words 2026 | WitPrep Blog\n100 most important SAT vocabulary words for 2026 with definitions, example sentences, and study tips for the Digital SAT Reading and Writing section."
+            ],
+            "title": "SAT Vocabulary: 100 Must-Know Words 2026 | WitPrep Blog"
+          },
+          {
+            "url": "https://thetestadvantage.com/public/skill-drill-test-details/308",
+            "excerpts": [
+              "DSAT Practice Questions: Real Questions, Inferences, Central ...\nPrepare for the DSAT with confidence! Our comprehensive practice questions cover real DSAT questions, helping you master comprehension, analysis, and reasoning skills."
+            ],
+            "title": "DSAT Practice Questions: Real Questions, Inferences, Central ..."
+          },
+          {
+            "url": "https://ankiweb.net/shared/info/573652040",
+            "excerpts": [
+              "SAT vocabulary - AnkiWeb\nAt this time, it is not possible to add shared decks directly to your AnkiWeb account - they need to be added from the desktop then synchronized to AnkiWeb. I love this deck : D It is way easier to memorize with funny images."
+            ],
+            "title": "SAT vocabulary - AnkiWeb"
+          },
+          {
+            "url": "https://global-uploads.webflow.com/5f1f2aaf4e896beaed4d15f7/60c97ba271327281c7b8aef4_SAT%20W_L%20-%20Transitions%20Words%20Cheat%20Sheet.pdf",
+            "excerpts": [
+              "Transition Words Cheat Sheet\nSheet Strategies and Tips for Transition Questions 1. Identify the relationship type between the two sentences. 2. Pick the word that matches the correct type"
+            ],
+            "title": "Transition Words Cheat Sheet"
+          },
+          {
+            "url": "https://www.reddit.com/r/Sat/comments/93w10d/however_vs_nevertheless",
+            "excerpts": [
+              "However vs nevertheless : r/Sat\nNevertheless is usually used when the opposite of the expected cause-effect relationship occurs, while however can be used whenever there's a"
+            ],
+            "title": "However vs nevertheless : r/Sat"
+          },
+          {
+            "url": "https://thetestadvantage.com/blog/bluebook-practice-test-7-answers-explanations-2026",
+            "excerpts": [
+              "Bluebook Practice Test 7 Answers and Explanations\nMar 6, 2026 \u2014 Quick Answer. Bluebook Practice Test 7 is an official SAT practice test with 98 questions (54 Reading/Writing + 44 Math) across adaptive modules"
+            ],
+            "title": "Bluebook Practice Test 7 Answers and Explanations"
+          }
+        ],
+        "confidence": "high"
+      }
+    ],
+    "type": "text",
+    "beta_fields": null,
+    "mcp_tool_calls": null,
+    "content_file": "digital-sat-vocabulary.md"
+  }
+}
