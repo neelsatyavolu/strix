@@ -3,6 +3,7 @@ import React from 'react';
 
 /**
  * ChatComposer — iMessage-style text input at the bottom of the tutor sidebar.
+ * Multi-line: Enter sends, Shift+Enter inserts a newline; height grows with content.
  */
 export function ChatComposer({
   value,
@@ -12,6 +13,19 @@ export function ChatComposer({
   disabled = false,
   style: styleProp,
 }) {
+  const taRef = React.useRef(null);
+
+  const resize = React.useCallback(() => {
+    const el = taRef.current;
+    if (!el) return;
+    el.style.height = '0px';
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+  }, []);
+
+  React.useLayoutEffect(() => {
+    resize();
+  }, [value, resize]);
+
   const submit = () => {
     if (!value || !value.trim() || disabled) return;
     onSend?.(value.trim());
@@ -32,6 +46,7 @@ export function ChatComposer({
       }}
     >
       <textarea
+        ref={taRef}
         rows={1}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
@@ -52,7 +67,10 @@ export function ChatComposer({
           color: 'var(--text-primary)',
           outline: 'none',
           resize: 'none',
+          overflowY: 'auto',
+          lineHeight: '18px',
           fontFamily: 'var(--font-sans)',
+          boxSizing: 'border-box',
         }}
       />
       <button

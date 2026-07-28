@@ -176,6 +176,9 @@ function App() {
     }));
     return {
       active: true,
+      // Question id so a watching tutor can fetch the answer key (students
+      // never receive keys in the sanitized practice payload).
+      id: q.id,
       index: sessionLive.index,
       total: sessionLive.questions.length,
       section: q.section,
@@ -213,14 +216,24 @@ function App() {
   const watchedLiveMeta = watchedStudentId ? tutorWatch.liveStudents[watchedStudentId] : null;
   const watchedIsLive = !!(watchedLiveMeta && watchedLiveMeta.active);
 
-  // Auto-open the Live Session tab the moment the watched student starts a
-  // module; drop back to the dashboard when they finish (only if we were on it).
+  // Auto-open Live Session as soon as the watched student goes live. Leaving is
+  // deferred to a timeout (useTutorWatch also sticky-idles ~2.5s) so brief
+  // Realtime flaps — common on math when Desmos floods the channel — don't
+  // bounce the tutor off the live view and back again.
   const wasLive = React.useRef(false);
   React.useEffect(() => {
-    if (watchedIsLive === wasLive.current) return; // only act on a live↔idle transition
-    wasLive.current = watchedIsLive;
-    // Functional update (allowed in effects) syncs the view to the realtime transition.
-    setView((v) => (watchedIsLive ? 'live-session' : (v === 'live-session' ? 'dashboard' : v)));
+    if (watchedIsLive === wasLive.current) return undefined;
+    if (watchedIsLive) {
+      wasLive.current = true;
+      // Async so we don't sync-setState inside the effect body (React 19 lint).
+      const t = setTimeout(() => setView('live-session'), 0);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => {
+      wasLive.current = false;
+      setView((v) => (v === 'live-session' ? 'dashboard' : v));
+    }, 400);
+    return () => clearTimeout(t);
   }, [watchedIsLive]);
 
   // Entering tutor view auto-opens the chat with the student; with one student

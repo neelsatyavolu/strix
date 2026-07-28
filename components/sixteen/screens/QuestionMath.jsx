@@ -29,7 +29,9 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   // Mirror the calculator to a watching tutor. The separate updates (open toggle,
   // Desmos change, drag/resize) each report a partial `calc`; report() deep-merges
   // the calc key so they accumulate into {open,state,pos,size} without clobbering.
-  const reportCalc = React.useMemo(() => throttle((state) => report({ calc: { state } }), 200), [report]);
+  // 800ms: Desmos change events fire very often; each one rebuilds the full
+  // live session broadcast. Faster rates thrash Realtime under math practice.
+  const reportCalc = React.useMemo(() => throttle((state) => report({ calc: { state } }), 800), [report]);
   const q = session.current;
   const isDrill = session.mode === 'drill';
 
