@@ -6,8 +6,8 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-29T03:03:33.324Z
-- **Active entries**: 5
+- **Updated**: 2026-07-29T03:09:56.958Z
+- **Active entries**: 6
 - **Important**: 2
 
 ## Important (must remember)
@@ -59,6 +59,16 @@ Vocabulary is flashcard flow: word face → know it / flip definition → usage 
 - **updated**: 2026-07-28T02:12:20.274Z
 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
+
+### Vocab known checklist
+
+- **id**: `a08066e1-a823-4de7-846d-e5f087cf30d3`
+- **kind**: decision
+- **source**: agent
+- **created**: 2026-07-29T03:09:56.958Z
+- **updated**: 2026-07-29T03:09:56.958Z
+
+Vocabulary hub has a checklist of all 400 words. known = isMastered(box>5). Toggle via POST /api/vocab {mode:'mark', known:bool} → manual last_mode. Practice flash uses last_mode flash. Uncheck resets box=1 due now. Filters: all/todo/known/due/learning + search. Migration 0013_vocab_progress_modes.sql required for last_mode.
 
 ### electron-builder signing workaround
 

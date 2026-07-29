@@ -33,6 +33,7 @@ export function summarize(rows: VocabProgressRow[], now = new Date()) {
     due: due + newCount,
     learning,
     mastered,
+    known: mastered, // checklist "known" === Leitner graduated
     seen: seen.size,
     categories: listCategories(),
     dueNow: due + Math.min(newCount, NEW_PER_SESSION > 0 ? newCount : 0),

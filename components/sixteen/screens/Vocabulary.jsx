@@ -8,11 +8,36 @@ import { Icon } from '@/components/sixteen';
 
 const FILTERS = [
   { id: 'all', label: 'All' },
+  { id: 'todo', label: 'To learn' },
+  { id: 'known', label: 'Known' },
   { id: 'due', label: 'Due' },
-  { id: 'new', label: 'New' },
   { id: 'learning', label: 'Learning' },
-  { id: 'mastered', label: 'Mastered' },
 ];
+
+/** Full main-pane shell: flex-fills AppShell, centers content, responsive padding. */
+const shellStyle = {
+  flex: 1,
+  alignSelf: 'stretch',
+  width: '100%',
+  minHeight: 0,
+  boxSizing: 'border-box',
+  padding: 'clamp(16px, 3.5vh, 36px) clamp(16px, 4vw, 48px)',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  overflow: 'auto',
+};
+
+function shellInner(maxWidth) {
+  return {
+    width: '100%',
+    maxWidth,
+    flex: 1,
+    minHeight: 0,
+    display: 'flex',
+    flexDirection: 'column',
+  };
+}
 
 function Vocabulary() {
   const { Card, Button } = SixteenNS;
@@ -26,6 +51,8 @@ function Vocabulary() {
   const [sessionLoading, setSessionLoading] = React.useState(false);
   const [results, setResults] = React.useState([]);
   const [hubTick, setHubTick] = React.useState(0);
+  const [marking, setMarking] = React.useState({}); // wordId → true while saving
+  const [query, setQuery] = React.useState('');
 
   const loadHub = React.useCallback(() => { setHubTick((t) => t + 1); }, []);
 
@@ -47,6 +74,61 @@ function Vocabulary() {
       });
     return () => { on = false; };
   }, [hubTick]);
+
+  /** Toggle known checklist; optimistic UI + persist. */
+  const toggleKnown = async (word) => {
+    if (marking[word.id]) return;
+    const next = !word.known;
+    setMarking((m) => ({ ...m, [word.id]: true }));
+    // Optimistic
+    setHub((prev) => {
+      if (!prev) return prev;
+      const words = (prev.words || []).map((w) => {
+        if (w.id !== word.id) return w;
+        return {
+          ...w,
+          known: next,
+          mastered: next,
+          box: next ? 6 : 1,
+        };
+      });
+      const knownCount = words.filter((w) => w.known).length;
+      const learning = words.filter((w) => !w.known && w.box >= 1 && w.timesSeen > 0).length;
+      const summary = {
+        ...(prev.summary || {}),
+        mastered: knownCount,
+        known: knownCount,
+        learning,
+      };
+      return { ...prev, words, summary };
+    });
+    try {
+      const r = await fetch('/api/vocab', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ wordId: word.id, mode: 'mark', known: next }),
+      });
+      const j = await r.json();
+      if (!j?.success) throw new Error(j?.error || 'Could not save');
+    } catch (e) {
+      // Revert on failure
+      setHub((prev) => {
+        if (!prev) return prev;
+        const words = (prev.words || []).map((w) => {
+          if (w.id !== word.id) return w;
+          return { ...w, known: word.known, mastered: word.known, box: word.box };
+        });
+        return { ...prev, words };
+      });
+      setError(e.message || 'Could not save');
+    } finally {
+      setMarking((m) => {
+        const n = { ...m };
+        delete n[word.id];
+        return n;
+      });
+    }
+  };
 
   const startPractice = async () => {
     setSessionLoading(true);
@@ -80,15 +162,28 @@ function Vocabulary() {
   };
 
   const summary = hub?.summary;
+  const knownCount = React.useMemo(
+    () => (hub?.words || []).filter((w) => w.known).length,
+    [hub],
+  );
+  const bankSize = summary?.total ?? hub?.bankSize ?? 0;
 
   const words = React.useMemo(() => {
     let list = hub?.words || [];
-    if (filter === 'due') list = list.filter((w) => w.box === 0 || (w.dueAt && new Date(w.dueAt) <= new Date() && !w.mastered));
-    if (filter === 'new') list = list.filter((w) => w.box === 0);
-    if (filter === 'learning') list = list.filter((w) => w.box >= 1 && !w.mastered);
-    if (filter === 'mastered') list = list.filter((w) => w.mastered);
+    if (filter === 'todo') list = list.filter((w) => !w.known);
+    if (filter === 'known') list = list.filter((w) => w.known);
+    if (filter === 'due') {
+      list = list.filter((w) => !w.known && (w.box === 0 || (w.dueAt && new Date(w.dueAt) <= new Date())));
+    }
+    if (filter === 'learning') list = list.filter((w) => !w.known && w.box >= 1 && (w.timesSeen || 0) > 0);
+    const q = query.trim().toLowerCase();
+    if (q) {
+      list = list.filter((w) =>
+        w.word.toLowerCase().includes(q) || (w.definition || '').toLowerCase().includes(q),
+      );
+    }
     return list;
-  }, [hub, filter]);
+  }, [hub, filter, query]);
 
   if (phase === 'practice' && items[idx]) {
     return (
@@ -106,109 +201,191 @@ function Vocabulary() {
   if (phase === 'done') {
     const correct = results.filter((r) => r.correct).length;
     return (
-      <div style={{ padding: '28px 36px', maxWidth: 560 }}>
-        <Card padding="xl" style={{ textAlign: 'center' }}>
-          <Icon name="check-circle-2" size={32} style={{ color: 'var(--success)' }} />
-          <h1 style={{ margin: '12px 0 4px', font: 'var(--role-title-lg)' }}>Session complete</h1>
-          <p style={{ margin: '0 0 8px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-            {correct} of {results.length} correct
-          </p>
-          <p style={{ margin: '0 0 20px', font: 'var(--role-body)', color: 'var(--text-tertiary)' }}>
-            Due words will resurface on a schedule so they stick.
-          </p>
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Button variant="primary" icon={<Icon name="play" size={13} />} onClick={() => startPractice()}>
-              Practice again
-            </Button>
-            <Button variant="secondary" onClick={() => { setPhase('hub'); loadHub(); }}>
-              Back to Vocabulary
-            </Button>
-          </div>
-        </Card>
+      <div style={shellStyle}>
+        <div style={{
+          ...shellInner(520),
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <Card padding="xl" style={{ textAlign: 'center', width: '100%' }}>
+            <Icon name="check-circle-2" size={32} style={{ color: 'var(--success)' }} />
+            <h1 style={{ margin: '12px 0 4px', font: 'var(--role-title-lg)' }}>Session complete</h1>
+            <p style={{ margin: '0 0 8px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
+              {correct} of {results.length} correct
+            </p>
+            <p style={{ margin: '0 0 20px', font: 'var(--role-body)', color: 'var(--text-tertiary)' }}>
+              Due words will resurface on a schedule so they stick.
+            </p>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button variant="primary" icon={<Icon name="play" size={13} />} onClick={() => startPractice()}>
+                Practice again
+              </Button>
+              <Button variant="secondary" onClick={() => { setPhase('hub'); loadHub(); }}>
+                Back to Vocabulary
+              </Button>
+            </div>
+          </Card>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 920 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-        <Icon name="library" size={22} style={{ color: 'var(--brand-blue)' }} />
-        <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Vocabulary</h1>
-      </div>
-      <p style={{ margin: '4px 0 22px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-        Flashcards from a 400-word Digital SAT list — know it or flip for the definition, then pick which passage uses the word correctly.
-      </p>
+    <div style={shellStyle}>
+      <div style={shellInner(960)}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4, flexShrink: 0 }}>
+          <Icon name="library" size={22} style={{ color: 'var(--brand-blue)' }} />
+          <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Vocabulary</h1>
+        </div>
+        <p style={{ margin: '4px 0 18px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)', flexShrink: 0 }}>
+          Flashcards from a 400-word Digital SAT list — know it or flip for the definition, then pick which passage uses the word correctly.
+        </p>
 
-      {error && (
-        <Card padding="md" style={{ marginBottom: 16, borderColor: 'var(--error)', color: 'var(--error)' }}>
-          {error}
-        </Card>
-      )}
-
-      {loading && !hub ? (
-        <Card padding="lg" style={{ color: 'var(--text-tertiary)' }}>Loading your vocabulary…</Card>
-      ) : (
-        <>
-          <Card padding="lg" style={{ marginBottom: 18 }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'flex-end', marginBottom: 16 }}>
-              <Stat n={summary?.due ?? 0} label="Due / new" />
-              <Stat n={summary?.learning ?? 0} label="Learning" />
-              <Stat n={summary?.mastered ?? 0} label="Mastered" />
-              <Stat n={summary?.total ?? hub?.bankSize ?? 0} label="In bank" />
-              <div style={{ flex: 1 }} />
-              <Button
-                variant="primary"
-                size="md"
-                disabled={sessionLoading}
-                icon={<Icon name="play" size={14} />}
-                onClick={() => startPractice()}
-              >
-                {sessionLoading ? 'Starting…' : 'Start practice'}
-              </Button>
-            </div>
-            <p style={{ margin: 0, font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-              Each card: see the word → “I know it” or flip for the definition → choose which passage uses it correctly.
-            </p>
+        {error && (
+          <Card padding="md" style={{ marginBottom: 16, borderColor: 'var(--error)', color: 'var(--error)', flexShrink: 0 }}>
+            {error}
           </Card>
+        )}
 
-          <Card padding="lg">
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14, alignItems: 'center' }}>
-              <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginRight: 4 }}>
-                Browse
-              </span>
-              {FILTERS.map((f) => (
-                <Chip key={f.id} active={filter === f.id} onClick={() => setFilter(f.id)}>{f.label}</Chip>
-              ))}
-              <span style={{ marginLeft: 'auto', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-                {words.length} word{words.length === 1 ? '' : 's'}
-              </span>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0, maxHeight: 420, overflow: 'auto' }}>
-              {words.length === 0 ? (
-                <div style={{ font: 'var(--role-body)', color: 'var(--text-tertiary)', padding: '12px 0' }}>
-                  Nothing in this filter yet.
-                </div>
-              ) : words.map((w) => (
-                <div
-                  key={w.id}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'minmax(100px, 160px) 1fr auto',
-                    gap: 12,
-                    padding: '10px 4px',
-                    borderBottom: '1px solid var(--border-1)',
-                    alignItems: 'baseline',
-                  }}
+        {loading && !hub ? (
+          <Card padding="lg" style={{ color: 'var(--text-tertiary)' }}>Loading your vocabulary…</Card>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, flex: 1, minHeight: 0 }}>
+            <Card padding="lg" style={{ flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, alignItems: 'flex-end', marginBottom: 16 }}>
+                <Stat n={knownCount} label="Known" />
+                <Stat n={Math.max(0, bankSize - knownCount)} label="To learn" />
+                <Stat n={summary?.due ?? 0} label="Due" />
+                <Stat n={summary?.learning ?? 0} label="Learning" />
+                <div style={{ flex: 1, minWidth: 12 }} />
+                <Button
+                  variant="primary"
+                  size="md"
+                  disabled={sessionLoading}
+                  icon={<Icon name="play" size={14} />}
+                  onClick={() => startPractice()}
                 >
-                  <span style={{ font: 'var(--role-label)', fontWeight: 600, color: 'var(--text-primary)' }}>{w.word}</span>
-                  <span style={{ font: 'var(--role-body)', color: 'var(--text-secondary)' }}>{w.definition}</span>
-                  <StatusPill word={w} />
-                </div>
-              ))}
-            </div>
-          </Card>
-        </>
-      )}
+                  {sessionLoading ? 'Starting…' : 'Start practice'}
+                </Button>
+              </div>
+              <div style={{
+                height: 6,
+                borderRadius: 3,
+                background: 'var(--sunken)',
+                overflow: 'hidden',
+                marginBottom: 10,
+              }}>
+                <div style={{
+                  width: bankSize ? `${(knownCount / bankSize) * 100}%` : '0%',
+                  height: '100%',
+                  background: 'var(--success)',
+                  transition: 'width 0.2s ease',
+                }} />
+              </div>
+              <p style={{ margin: 0, font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
+                {knownCount} of {bankSize} known — check words you already know, or uncheck to practice them again.
+                Practice: word → flip or “I know it” → which passage uses it correctly.
+              </p>
+            </Card>
+
+            <Card padding="lg" style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12, alignItems: 'center', flexShrink: 0 }}>
+                <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginRight: 4 }}>
+                  Checklist
+                </span>
+                {FILTERS.map((f) => (
+                  <Chip key={f.id} active={filter === f.id} onClick={() => setFilter(f.id)}>{f.label}</Chip>
+                ))}
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search words…"
+                  style={{
+                    marginLeft: 'auto',
+                    minWidth: 140,
+                    maxWidth: 220,
+                    flex: '1 1 140px',
+                    padding: '6px 10px',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-2)',
+                    background: 'var(--sunken)',
+                    font: 'var(--role-caption)',
+                    color: 'var(--text-primary)',
+                    outline: 'none',
+                  }}
+                />
+                <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>
+                  {words.length}
+                </span>
+              </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '28px minmax(100px, 150px) 1fr',
+                gap: 10,
+                padding: '0 4px 8px',
+                font: 'var(--role-caption)',
+                color: 'var(--text-tertiary)',
+                textTransform: 'uppercase',
+                letterSpacing: 'var(--tracking-caps)',
+                borderBottom: '1px solid var(--border-1)',
+                flexShrink: 0,
+              }}>
+                <span title="Known">✓</span>
+                <span>Word</span>
+                <span>Definition</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 0, flex: 1, minHeight: 0, overflow: 'auto' }}>
+                {words.length === 0 ? (
+                  <div style={{ font: 'var(--role-body)', color: 'var(--text-tertiary)', padding: '12px 0' }}>
+                    Nothing in this filter yet.
+                  </div>
+                ) : words.map((w) => (
+                  <label
+                    key={w.id}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '28px minmax(100px, 150px) 1fr',
+                      gap: 10,
+                      padding: '10px 4px',
+                      borderBottom: '1px solid var(--border-1)',
+                      alignItems: 'center',
+                      cursor: marking[w.id] ? 'wait' : 'pointer',
+                      opacity: marking[w.id] ? 0.65 : 1,
+                      background: w.known ? 'rgba(34, 160, 90, 0.04)' : 'transparent',
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={!!w.known}
+                      disabled={!!marking[w.id]}
+                      onChange={() => toggleKnown(w)}
+                      aria-label={w.known ? `Unmark ${w.word} as known` : `Mark ${w.word} as known`}
+                      style={{
+                        width: 16,
+                        height: 16,
+                        accentColor: 'var(--success)',
+                        cursor: marking[w.id] ? 'wait' : 'pointer',
+                      }}
+                    />
+                    <span style={{
+                      font: 'var(--role-label)',
+                      fontWeight: 600,
+                      color: w.known ? 'var(--success)' : 'var(--text-primary)',
+                      textDecoration: w.known ? 'none' : 'none',
+                    }}>
+                      {w.word}
+                    </span>
+                    <span style={{ font: 'var(--role-body)', color: 'var(--text-secondary)' }}>
+                      {w.definition}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </Card>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -260,144 +437,192 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
 
   if (step === 'card') {
     return (
-      <div style={{ padding: '28px 36px', maxWidth: 560 }}>
-        <SessionHeader index={index} total={total} mode="Flashcard" onExit={onExit} />
-        <Card
-          padding="xl"
-          style={{
-            minHeight: 280,
+      <div style={shellStyle}>
+        <div style={shellInner(640)}>
+          <SessionHeader index={index} total={total} mode="Flashcard" onExit={onExit} />
+          <div style={{
+            flex: 1,
+            minHeight: 0,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'stretch',
             justifyContent: 'center',
-            textAlign: 'center',
-            cursor: flipped ? 'default' : 'pointer',
-            userSelect: 'none',
-            transition: 'background 0.15s ease',
-          }}
-          onClick={() => { if (!flipped) setFlipped(true); }}
-        >
-          {!flipped ? (
-            <>
-              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 16, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
-                Do you know this word?
-              </div>
-              <div style={{ font: 'var(--role-title-lg)', fontSize: 36, fontWeight: 700, color: 'var(--ink-1)', marginBottom: 12 }}>
-                {item.word}
-              </div>
-              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-                Tap the card to flip for the definition
-              </div>
-            </>
-          ) : (
-            <>
-              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
-                Definition
-              </div>
-              <div style={{ font: 'var(--role-title-sm)', color: 'var(--ink-1)', marginBottom: 10 }}>
-                {item.word}
-              </div>
-              <div style={{ font: 'var(--role-body-lg)', color: 'var(--text-secondary)', lineHeight: 1.5, maxWidth: 400 }}>
-                {item.definition}
-              </div>
-            </>
-          )}
-        </Card>
+            gap: 16,
+            padding: 'clamp(8px, 2vh, 24px) 0',
+          }}>
+            <Card
+              padding="xl"
+              style={{
+                flex: '1 1 auto',
+                minHeight: 'min(420px, 52vh)',
+                maxHeight: 'min(560px, 68vh)',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                cursor: flipped ? 'default' : 'pointer',
+                userSelect: 'none',
+                transition: 'background 0.15s ease',
+                boxSizing: 'border-box',
+              }}
+              onClick={() => { if (!flipped) setFlipped(true); }}
+            >
+              {!flipped ? (
+                <>
+                  <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 20, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
+                    Do you know this word?
+                  </div>
+                  <div style={{
+                    font: 'var(--role-title-lg)',
+                    fontSize: 'clamp(28px, 5vw, 42px)',
+                    fontWeight: 700,
+                    color: 'var(--ink-1)',
+                    marginBottom: 16,
+                    lineHeight: 1.15,
+                  }}>
+                    {item.word}
+                  </div>
+                  <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
+                    Tap the card to flip for the definition
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
+                    Definition
+                  </div>
+                  <div style={{ font: 'var(--role-title-sm)', fontSize: 'clamp(18px, 2.5vw, 22px)', color: 'var(--ink-1)', marginBottom: 14 }}>
+                    {item.word}
+                  </div>
+                  <div style={{
+                    font: 'var(--role-body-lg)',
+                    color: 'var(--text-secondary)',
+                    lineHeight: 1.55,
+                    maxWidth: 440,
+                    padding: '0 12px',
+                  }}>
+                    {item.definition}
+                  </div>
+                </>
+              )}
+            </Card>
 
-        <div style={{ display: 'flex', gap: 10, marginTop: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-          {!flipped ? (
-            <>
-              <Button variant="primary" size="md" onClick={goUsage}>
-                I know it
-              </Button>
-              <Button variant="secondary" size="md" icon={<Icon name="refresh-cw" size={13} />} onClick={() => setFlipped(true)}>
-                Flip card
-              </Button>
-            </>
-          ) : (
-            <Button variant="primary" size="md" onClick={goUsage}>
-              Check usage
-            </Button>
-          )}
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', flexShrink: 0 }}>
+              {!flipped ? (
+                <>
+                  <Button variant="primary" size="md" onClick={goUsage}>
+                    I know it
+                  </Button>
+                  <Button variant="secondary" size="md" icon={<Icon name="refresh-cw" size={13} />} onClick={() => setFlipped(true)}>
+                    Flip card
+                  </Button>
+                </>
+              ) : (
+                <Button variant="primary" size="md" onClick={goUsage}>
+                  Check usage
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '28px 36px', maxWidth: 640 }}>
-      <SessionHeader index={index} total={total} mode="Usage" onExit={onExit} />
-      <Card padding="lg">
-        <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 6 }}>
-          In which passage is the word used correctly?
-        </div>
-        <div style={{ font: 'var(--role-title-sm)', color: 'var(--ink-1)', marginBottom: 4 }}>
-          {item.word}
-        </div>
-        {(flipped || feedback) && (
-          <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 16 }}>
-            {item.definition}
-          </div>
-        )}
-        {!flipped && !feedback && (
-          <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 16 }}>
-            Choose the passage where “{item.word}” is used with the right meaning.
-          </div>
-        )}
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {(item.passages || []).map((passage, i) => {
-            const isPick = picked === i;
-            const isCorrect = feedback && (feedback.correctPassage ? passage === feedback.correctPassage : i === item.correctIndex);
-            const isWrong = feedback && isPick && !feedback.correct;
-            let bg = 'var(--sunken)';
-            let border = '1px solid var(--border-2)';
-            if (isCorrect) { bg = 'rgba(34, 160, 90, 0.12)'; border = '1px solid var(--success)'; }
-            if (isWrong) { bg = 'rgba(220, 50, 50, 0.1)'; border = '1px solid var(--error)'; }
-            return (
-              <button
-                key={i}
-                type="button"
-                disabled={!!feedback || submitting}
-                onClick={() => submit(i)}
-                style={{
-                  display: 'flex', alignItems: 'flex-start', gap: 12, textAlign: 'left',
-                  padding: '12px 14px', borderRadius: 'var(--radius-md)',
-                  background: bg, border, cursor: feedback ? 'default' : 'pointer',
-                  font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45,
-                }}
-              >
-                <span style={{
-                  fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-tertiary)', minWidth: 18,
-                }}>{letters[i]}</span>
-                <span style={{ flex: 1 }}>{passage}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {feedback && (
-          <div style={{ marginTop: 18, paddingTop: 16, borderTop: '1px solid var(--border-1)' }}>
-            <div style={{ font: 'var(--role-label)', color: feedback.correct ? 'var(--success)' : 'var(--error)', marginBottom: 6 }}>
-              {feedback.correct ? 'Correct' : 'Not quite'}
+    <div style={shellStyle}>
+      <div style={shellInner(720)}>
+        <SessionHeader index={index} total={total} mode="Usage" onExit={onExit} />
+        <div style={{
+          flex: 1,
+          minHeight: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: 'clamp(4px, 1.5vh, 16px) 0',
+        }}>
+          <Card padding="lg" style={{
+            width: '100%',
+            maxHeight: '100%',
+            overflow: 'auto',
+            boxSizing: 'border-box',
+          }}>
+            <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 6, textAlign: 'center' }}>
+              In which passage is the word used correctly?
             </div>
-            <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 8 }}>
-              <strong style={{ color: 'var(--text-primary)' }}>{feedback.word || item.word}</strong>
-              {' — '}
-              {feedback.definition || item.definition}
+            <div style={{ font: 'var(--role-title-sm)', color: 'var(--ink-1)', marginBottom: 4, textAlign: 'center' }}>
+              {item.word}
             </div>
-            {!feedback.correct && feedback.correctPassage && (
-              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 12, padding: '10px 12px', background: 'rgba(34, 160, 90, 0.08)', borderRadius: 'var(--radius-md)' }}>
-                <span style={{ font: 'var(--role-caption)', color: 'var(--success)', display: 'block', marginBottom: 4 }}>Correct usage</span>
-                {feedback.correctPassage}
+            {(flipped || feedback) && (
+              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 16, textAlign: 'center' }}>
+                {item.definition}
               </div>
             )}
-            <Button variant="primary" onClick={() => onDone({ correct: !!feedback.correct, word: item.word })}>
-              {index + 1 >= total ? 'Finish' : 'Next'}
-            </Button>
-          </div>
-        )}
-      </Card>
+            {!flipped && !feedback && (
+              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 16, textAlign: 'center' }}>
+                Choose the passage where “{item.word}” is used with the right meaning.
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {(item.passages || []).map((passage, i) => {
+                const isPick = picked === i;
+                const isCorrect = feedback && (feedback.correctPassage ? passage === feedback.correctPassage : i === item.correctIndex);
+                const isWrong = feedback && isPick && !feedback.correct;
+                let bg = 'var(--sunken)';
+                let border = '1px solid var(--border-2)';
+                if (isCorrect) { bg = 'rgba(34, 160, 90, 0.12)'; border = '1px solid var(--success)'; }
+                if (isWrong) { bg = 'rgba(220, 50, 50, 0.1)'; border = '1px solid var(--error)'; }
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    disabled={!!feedback || submitting}
+                    onClick={() => submit(i)}
+                    style={{
+                      display: 'flex', alignItems: 'flex-start', gap: 12, textAlign: 'left',
+                      padding: 'clamp(12px, 1.6vh, 16px) 14px', borderRadius: 'var(--radius-md)',
+                      background: bg, border, cursor: feedback ? 'default' : 'pointer',
+                      font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45,
+                    }}
+                  >
+                    <span style={{
+                      fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-tertiary)', minWidth: 18,
+                    }}>{letters[i]}</span>
+                    <span style={{ flex: 1 }}>{passage}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {feedback && (
+              <div style={{ marginTop: 18, paddingTop: 16, borderTop: '1px solid var(--border-1)' }}>
+                <div style={{ font: 'var(--role-label)', color: feedback.correct ? 'var(--success)' : 'var(--error)', marginBottom: 6 }}>
+                  {feedback.correct ? 'Correct' : 'Not quite'}
+                </div>
+                <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 8 }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>{feedback.word || item.word}</strong>
+                  {' — '}
+                  {feedback.definition || item.definition}
+                </div>
+                {!feedback.correct && feedback.correctPassage && (
+                  <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 12, padding: '10px 12px', background: 'rgba(34, 160, 90, 0.08)', borderRadius: 'var(--radius-md)' }}>
+                    <span style={{ font: 'var(--role-caption)', color: 'var(--success)', display: 'block', marginBottom: 4 }}>Correct usage</span>
+                    {feedback.correctPassage}
+                  </div>
+                )}
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button variant="primary" onClick={() => onDone({ correct: !!feedback.correct, word: item.word })}>
+                    {index + 1 >= total ? 'Finish' : 'Next'}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
@@ -405,14 +630,22 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
 function SessionHeader({ index, total, mode, onExit }) {
   const { Button, Badge } = SixteenNS;
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10,
+      marginBottom: 12,
+      flexWrap: 'wrap',
+      flexShrink: 0,
+      width: '100%',
+    }}>
       <Button variant="ghost" size="sm" onClick={onExit} icon={<Icon name="x" size={14} />}>Exit</Button>
       <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
         {index + 1} / {total}
       </span>
       <Badge>{mode}</Badge>
-      <div style={{ flex: 1 }} />
-      <div style={{ width: 120, height: 4, background: 'var(--sunken)', borderRadius: 2, overflow: 'hidden' }}>
+      <div style={{ flex: 1, minWidth: 8 }} />
+      <div style={{ width: 'min(140px, 28vw)', height: 4, background: 'var(--sunken)', borderRadius: 2, overflow: 'hidden' }}>
         <div style={{ width: `${((index + 1) / total) * 100}%`, height: '100%', background: 'var(--brand-blue)' }} />
       </div>
     </div>
@@ -450,18 +683,6 @@ function Chip({ active, onClick, children }) {
     >
       {children}
     </button>
-  );
-}
-
-function StatusPill({ word }) {
-  let label = 'New';
-  let color = 'var(--text-tertiary)';
-  if (word.mastered) { label = 'Mastered'; color = 'var(--success)'; }
-  else if (word.box >= 1) { label = 'Learning'; color = 'var(--brand-blue)'; }
-  return (
-    <span style={{ font: 'var(--role-caption)', color, fontFamily: 'var(--font-mono)', whiteSpace: 'nowrap' }}>
-      {label}
-    </span>
   );
 }
 

@@ -5,7 +5,7 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-29T03:03:40.000Z
+- **Updated**: 2026-07-29T03:10:03.000Z
 - **Sessions**: 7
 
 ## Vocab flashcards + AODEFEN 400
@@ -13,10 +13,10 @@
 - **id**: `02f384cf-d226-4d5b-933c-8c5883f1e142`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-07-29T03:03:40.000Z
+- **updated**: 2026-07-29T03:10:03.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fabc4-c6a0-7bf3-bd03-67abd20f6a2e/chat_history.jsonl`
 
-Redid Vocabulary as flashcards: see word → I know it or flip for definition → MCQ 'which passage uses the word correctly?'. Replaced ~130 curated bank with AODEFEN SAT 400 words from Downloads/400.pdf TOC; bank in lib/vocab/bank.ts with correctPassage + wrongPassages. Removed produce mode. types/session/API/Vocabulary.jsx updated. Verify: lint warnings only, tsc+build pass.
+Vocab checklist: known/to-learn on hub with toggleable checkboxes; persists via vocab_progress (box>5=known). POST mode=mark. Migration 0013 expands last_mode to flash+manual. Search + filters. Practice still advances Leitner to known.
 
 ## Vocabulary tab
 
