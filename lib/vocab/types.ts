@@ -1,26 +1,7 @@
-export type VocabCategory =
-  | "argument"
-  | "analysis"
-  | "tone"
-  | "change"
-  | "importance"
-  | "description"
-  | "precision"
-  | "transitions"
-  | "multi-meaning"
-  | "domain";
+export type VocabCategory = "core";
 
 export const CATEGORY_LABELS: Record<VocabCategory, string> = {
-  argument: "Argument & evidence",
-  analysis: "Analysis & evaluation",
-  tone: "Tone & attitude",
-  change: "Change & development",
-  importance: "Importance & value",
-  description: "Description",
-  precision: "Precision & rigor",
-  transitions: "Transitions",
-  "multi-meaning": "Multiple meanings",
-  domain: "Domain (science / social)",
+  core: "SAT 400",
 };
 
 export type VocabEntry = {
@@ -28,12 +9,10 @@ export type VocabEntry = {
   word: string;
   definition: string;
   category: VocabCategory;
-  /** Short passage with _____ where the answer fits (DSAT-style context). */
-  passage: string;
-  /** Four options; may be single words or short phrases. */
-  choices: string[];
-  correctIndex: number;
-  /** Optional tip shown after answer. */
+  /** Passage that uses the word correctly. */
+  correctPassage: string;
+  /** Three passages that misuse the word. */
+  wrongPassages: [string, string, string];
   tip?: string;
 };
 
@@ -47,7 +26,8 @@ export type VocabProgressRow = {
   last_mode: string | null;
 };
 
-export type PracticeMode = "context" | "produce";
+/** Flashcard session item: word first, then usage check. */
+export type PracticeMode = "flash";
 
 export type PracticeItem = {
   wordId: string;
@@ -56,8 +36,7 @@ export type PracticeItem = {
   category: VocabCategory;
   categoryLabel: string;
   mode: PracticeMode;
-  // context
-  passage?: string;
-  choices?: string[];
-  // produce — no choices; client validates usage
+  /** Four passages (shuffled); student picks which uses the word correctly. */
+  passages: string[];
+  correctIndex: number;
 };

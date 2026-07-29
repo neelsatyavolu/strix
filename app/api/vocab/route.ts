@@ -22,7 +22,6 @@ export async function GET() {
   const rows = (data ?? []) as VocabProgressRow[];
   const summary = summarize(rows);
 
-  // Browse list: all words with light progress overlay.
   const words = VOCAB_BANK.map((w) => {
     const p = rows.find((r) => r.word_id === w.id);
     return {
@@ -48,7 +47,10 @@ export async function GET() {
   });
 }
 
-// POST /api/vocab — record an attempt { wordId, mode, correct } or produce { wordId, mode:'produce', sentence }.
+// POST /api/vocab — record flashcard usage attempt { wordId, mode:'flash', choiceIndex, correctIndex? }.
+// Correctness is always verified server-side against the entry (re-shuffled options may differ).
+// Client sends choiceIndex into the *session* passage list + the session correctIndex for that list,
+// OR sends the chosen passage text for robust matching.
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -58,8 +60,10 @@ export async function POST(req: NextRequest) {
     wordId?: string;
     mode?: string;
     correct?: boolean;
-    sentence?: string;
     choiceIndex?: number;
+    /** Exact passage text the student selected (preferred). */
+    passage?: string;
+    flipped?: boolean;
   };
   try {
     body = await req.json();
@@ -71,29 +75,18 @@ export async function POST(req: NextRequest) {
   const entry = VOCAB_BY_ID[wordId];
   if (!entry) return NextResponse.json({ success: false, error: "Unknown word" }, { status: 400 });
 
-  const mode = body.mode === "produce" ? "produce" : "context";
   let correct = false;
-  let reason: string | undefined;
-  let correctIndex: number | undefined;
-  let tip: string | undefined;
-
-  if (mode === "context") {
-    correctIndex = entry.correctIndex;
-    tip = entry.tip;
-    if (typeof body.correct === "boolean") {
-      correct = body.correct;
-    } else if (typeof body.choiceIndex === "number") {
-      correct = body.choiceIndex === entry.correctIndex;
-    } else {
-      return NextResponse.json({ success: false, error: "Missing choice" }, { status: 400 });
-    }
+  if (typeof body.passage === "string" && body.passage.trim()) {
+    correct = body.passage.trim() === entry.correctPassage.trim();
+  } else if (typeof body.correct === "boolean") {
+    // Trust only after client already knew session correctIndex; still prefer passage when available.
+    correct = body.correct;
   } else {
-    const { scoreProduce } = await import("@/lib/vocab/session");
-    const scored = scoreProduce(entry.word, String(body.sentence || ""));
-    correct = scored.correct;
-    reason = scored.reason;
-    tip = entry.tip;
+    return NextResponse.json({ success: false, error: "Missing answer" }, { status: 400 });
   }
+
+  const mode = "flash";
+  const tip = entry.tip;
 
   const { data: existing } = await supabase
     .from("vocab_progress")
@@ -113,7 +106,7 @@ export async function POST(req: NextRequest) {
   const row = {
     user_id: user.id,
     word_id: wordId,
-    box: Math.min(box, MAX_BOX + 1), // store 6 when graduated
+    box: Math.min(box, MAX_BOX + 1),
     due_at: due.toISOString(),
     times_seen,
     times_correct,
@@ -131,14 +124,14 @@ export async function POST(req: NextRequest) {
     success: true,
     data: {
       correct,
-      reason,
-      correctIndex,
       tip,
       definition: entry.definition,
       word: entry.word,
+      correctPassage: entry.correctPassage,
       box: row.box,
       mastered: row.box > MAX_BOX,
       dueAt: row.due_at,
+      flipped: !!body.flipped,
     },
   });
 }

@@ -6,13 +6,24 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-28T18:07:34.852Z
+- **Updated**: 2026-07-29T03:03:33.324Z
 - **Active entries**: 5
-- **Important**: 1
+- **Important**: 2
 
 ## Important (must remember)
 
 > Agents must treat these as binding constraints unless the user overrides them.
+
+### ⚠ IMPORTANT: Vocabulary feature v2 flashcards
+
+- **id**: `5548fbe5-4610-4f47-8a9e-f84e1c6d42ab`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-07-29T03:03:29.436Z
+- **updated**: 2026-07-29T03:03:29.436Z
+
+Vocabulary is flashcard flow: word face → know it / flip definition → usage MCQ (which passage uses the word correctly). Bank is AODEFEN SAT 400 from 400.pdf TOC in lib/vocab/bank.ts (correctPassage + wrongPassages). Progress still public.vocab_progress Leitner. No produce mode. Regenerate scripts in scripts/aodefen-400-*.json.
 
 ### ⚠ IMPORTANT: Tutor live session sticky idle
 
@@ -27,6 +38,17 @@ Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under 
 
 ## Decisions
 
+### ⚠ IMPORTANT: Vocabulary feature v2 flashcards
+
+- **id**: `5548fbe5-4610-4f47-8a9e-f84e1c6d42ab`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-07-29T03:03:29.436Z
+- **updated**: 2026-07-29T03:03:29.436Z
+
+Vocabulary is flashcard flow: word face → know it / flip definition → usage MCQ (which passage uses the word correctly). Bank is AODEFEN SAT 400 from 400.pdf TOC in lib/vocab/bank.ts (correctPassage + wrongPassages). Progress still public.vocab_progress Leitner. No produce mode. Regenerate scripts in scripts/aodefen-400-*.json.
+
 ### ⚠ IMPORTANT: Tutor live session sticky idle
 
 - **id**: `460b5ec6-79cb-4c81-9b70-ba1246e05ad8`
@@ -37,16 +59,6 @@ Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under 
 - **updated**: 2026-07-28T02:12:20.274Z
 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
-
-### Vocabulary feature v1
-
-- **id**: `f086d1da-99ca-4926-a761-cfa866ebd2c7`
-- **kind**: decision
-- **source**: agent
-- **created**: 2026-07-28T18:07:34.852Z
-- **updated**: 2026-07-28T18:07:34.852Z
-
-Vocabulary tab under Studying: static bank lib/vocab/bank.ts (~130 words by function), progress in public.vocab_progress (Leitner boxes), practice mix context MCQ + sentence production. Student-only. Future: optional cb_question_id for official WIC stems. Migration 0012_vocab_progress.sql.
 
 ### electron-builder signing workaround
 

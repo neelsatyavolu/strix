@@ -3,8 +3,8 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 
-// Vocabulary — DSAT-style practice: context fit (~70%) + active production (~30%).
-// Progress is per-user in Supabase (Leitner boxes). Bank lives in lib/vocab/bank.ts.
+// Vocabulary — flashcard (know / flip) + “which passage uses the word correctly?”
+// Bank: AODEFEN SAT 400. Progress in Supabase (Leitner boxes).
 
 const FILTERS = [
   { id: 'all', label: 'All' },
@@ -19,13 +19,12 @@ function Vocabulary() {
   const [hub, setHub] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
-  const [category, setCategory] = React.useState(null);
   const [filter, setFilter] = React.useState('all');
   const [phase, setPhase] = React.useState('hub'); // hub | practice | done
   const [items, setItems] = React.useState([]);
   const [idx, setIdx] = React.useState(0);
   const [sessionLoading, setSessionLoading] = React.useState(false);
-  const [results, setResults] = React.useState([]); // { correct, word }
+  const [results, setResults] = React.useState([]);
   const [hubTick, setHubTick] = React.useState(0);
 
   const loadHub = React.useCallback(() => { setHubTick((t) => t + 1); }, []);
@@ -49,17 +48,16 @@ function Vocabulary() {
     return () => { on = false; };
   }, [hubTick]);
 
-  const startPractice = async (cat = category) => {
+  const startPractice = async () => {
     setSessionLoading(true);
     setError(null);
     try {
       const q = new URLSearchParams({ count: '12' });
-      if (cat) q.set('category', cat);
       const r = await fetch(`/api/vocab/session?${q}`);
       const j = await r.json();
       if (!j?.success) throw new Error(j?.error || 'Could not start');
       const list = j.data.items || [];
-      if (!list.length) throw new Error('No words available for this filter.');
+      if (!list.length) throw new Error('No words available.');
       setItems(list);
       setIdx(0);
       setResults([]);
@@ -82,21 +80,19 @@ function Vocabulary() {
   };
 
   const summary = hub?.summary;
-  const categories = hub?.categories || [];
 
   const words = React.useMemo(() => {
     let list = hub?.words || [];
-    if (category) list = list.filter((w) => w.category === category);
     if (filter === 'due') list = list.filter((w) => w.box === 0 || (w.dueAt && new Date(w.dueAt) <= new Date() && !w.mastered));
     if (filter === 'new') list = list.filter((w) => w.box === 0);
     if (filter === 'learning') list = list.filter((w) => w.box >= 1 && !w.mastered);
     if (filter === 'mastered') list = list.filter((w) => w.mastered);
     return list;
-  }, [hub, category, filter]);
+  }, [hub, filter]);
 
   if (phase === 'practice' && items[idx]) {
     return (
-      <PracticeCard
+      <FlashPractice
         key={items[idx].wordId + idx}
         item={items[idx]}
         index={idx}
@@ -140,7 +136,7 @@ function Vocabulary() {
         <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Vocabulary</h1>
       </div>
       <p style={{ margin: '4px 0 22px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-        Practice high-utility academic words the way the Digital SAT tests them — in context and in use.
+        Flashcards from a 400-word Digital SAT list — know it or flip for the definition, then pick which passage uses the word correctly.
       </p>
 
       {error && (
@@ -171,31 +167,9 @@ function Vocabulary() {
               </Button>
             </div>
             <p style={{ margin: 0, font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-              Each session mixes short-passage context questions with “use it in a sentence” prompts — closer to Words in Context than flashcard lists.
+              Each card: see the word → “I know it” or flip for the definition → choose which passage uses it correctly.
             </p>
           </Card>
-
-          <div style={{ marginBottom: 14 }}>
-            <div style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginBottom: 8 }}>
-              Categories
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              <Chip active={!category} onClick={() => setCategory(null)}>All</Chip>
-              {categories.map((c) => (
-                <Chip key={c.id} active={category === c.id} onClick={() => setCategory(c.id)}>
-                  {c.label} · {c.count}
-                </Chip>
-              ))}
-            </div>
-          </div>
-
-          {category && (
-            <div style={{ marginBottom: 16 }}>
-              <Button variant="secondary" size="sm" icon={<Icon name="play" size={12} />} onClick={() => startPractice(category)} disabled={sessionLoading}>
-                Practice this category
-              </Button>
-            </div>
-          )}
 
           <Card padding="lg">
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14, alignItems: 'center' }}>
@@ -219,7 +193,7 @@ function Vocabulary() {
                   key={w.id}
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: 'minmax(100px, 140px) 1fr auto',
+                    gridTemplateColumns: 'minmax(100px, 160px) 1fr auto',
                     gap: 12,
                     padding: '10px 4px',
                     borderBottom: '1px solid var(--border-1)',
@@ -239,34 +213,44 @@ function Vocabulary() {
   );
 }
 
-function PracticeCard({ item, index, total, onDone, onExit }) {
-  if (item.mode === 'produce') {
-    return <ProduceStep item={item} index={index} total={total} onDone={onDone} onExit={onExit} />;
-  }
-  return <ContextStep item={item} index={index} total={total} onDone={onDone} onExit={onExit} />;
-}
-
-function ContextStep({ item, index, total, onDone, onExit }) {
+/** Two-step card: flash face → usage MCQ. */
+function FlashPractice({ item, index, total, onDone, onExit }) {
   const { Card, Button } = SixteenNS;
+  const [step, setStep] = React.useState('card'); // card | usage
+  const [flipped, setFlipped] = React.useState(false);
   const [picked, setPicked] = React.useState(null);
   const [feedback, setFeedback] = React.useState(null);
   const [submitting, setSubmitting] = React.useState(false);
+
+  const goUsage = () => setStep('usage');
 
   const submit = async (choiceIndex) => {
     if (feedback || submitting) return;
     setPicked(choiceIndex);
     setSubmitting(true);
+    const passage = (item.passages || [])[choiceIndex] || '';
     try {
       const r = await fetch('/api/vocab', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wordId: item.wordId, mode: 'context', choiceIndex }),
+        body: JSON.stringify({
+          wordId: item.wordId,
+          mode: 'flash',
+          passage,
+          flipped,
+        }),
       });
       const j = await r.json();
       if (!j?.success) throw new Error(j?.error || 'Submit failed');
       setFeedback(j.data);
     } catch (e) {
-      setFeedback({ correct: false, reason: e.message, definition: item.definition, word: item.word });
+      setFeedback({
+        correct: false,
+        reason: e.message,
+        definition: item.definition,
+        word: item.word,
+        correctPassage: item.passages?.[item.correctIndex],
+      });
     } finally {
       setSubmitting(false);
     }
@@ -274,20 +258,97 @@ function ContextStep({ item, index, total, onDone, onExit }) {
 
   const letters = ['A', 'B', 'C', 'D'];
 
+  if (step === 'card') {
+    return (
+      <div style={{ padding: '28px 36px', maxWidth: 560 }}>
+        <SessionHeader index={index} total={total} mode="Flashcard" onExit={onExit} />
+        <Card
+          padding="xl"
+          style={{
+            minHeight: 280,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            cursor: flipped ? 'default' : 'pointer',
+            userSelect: 'none',
+            transition: 'background 0.15s ease',
+          }}
+          onClick={() => { if (!flipped) setFlipped(true); }}
+        >
+          {!flipped ? (
+            <>
+              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 16, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
+                Do you know this word?
+              </div>
+              <div style={{ font: 'var(--role-title-lg)', fontSize: 36, fontWeight: 700, color: 'var(--ink-1)', marginBottom: 12 }}>
+                {item.word}
+              </div>
+              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
+                Tap the card to flip for the definition
+              </div>
+            </>
+          ) : (
+            <>
+              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
+                Definition
+              </div>
+              <div style={{ font: 'var(--role-title-sm)', color: 'var(--ink-1)', marginBottom: 10 }}>
+                {item.word}
+              </div>
+              <div style={{ font: 'var(--role-body-lg)', color: 'var(--text-secondary)', lineHeight: 1.5, maxWidth: 400 }}>
+                {item.definition}
+              </div>
+            </>
+          )}
+        </Card>
+
+        <div style={{ display: 'flex', gap: 10, marginTop: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          {!flipped ? (
+            <>
+              <Button variant="primary" size="md" onClick={goUsage}>
+                I know it
+              </Button>
+              <Button variant="secondary" size="md" icon={<Icon name="refresh-cw" size={13} />} onClick={() => setFlipped(true)}>
+                Flip card
+              </Button>
+            </>
+          ) : (
+            <Button variant="primary" size="md" onClick={goUsage}>
+              Check usage
+            </Button>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ padding: '28px 36px', maxWidth: 640 }}>
-      <SessionHeader index={index} total={total} mode="Context" category={item.categoryLabel} onExit={onExit} />
+      <SessionHeader index={index} total={total} mode="Usage" onExit={onExit} />
       <Card padding="lg">
-        <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 8 }}>
-          Choose the word or phrase that best completes the passage.
+        <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 6 }}>
+          In which passage is the word used correctly?
         </div>
-        <p style={{ margin: '0 0 20px', font: 'var(--role-body-lg)', color: 'var(--text-primary)', lineHeight: 1.55 }}>
-          {item.passage}
-        </p>
+        <div style={{ font: 'var(--role-title-sm)', color: 'var(--ink-1)', marginBottom: 4 }}>
+          {item.word}
+        </div>
+        {(flipped || feedback) && (
+          <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 16 }}>
+            {item.definition}
+          </div>
+        )}
+        {!flipped && !feedback && (
+          <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 16 }}>
+            Choose the passage where “{item.word}” is used with the right meaning.
+          </div>
+        )}
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {(item.choices || []).map((c, i) => {
+          {(item.passages || []).map((passage, i) => {
             const isPick = picked === i;
-            const isCorrect = feedback && feedback.correctIndex === i;
+            const isCorrect = feedback && (feedback.correctPassage ? passage === feedback.correctPassage : i === item.correctIndex);
             const isWrong = feedback && isPick && !feedback.correct;
             let bg = 'var(--sunken)';
             let border = '1px solid var(--border-2)';
@@ -303,13 +364,13 @@ function ContextStep({ item, index, total, onDone, onExit }) {
                   display: 'flex', alignItems: 'flex-start', gap: 12, textAlign: 'left',
                   padding: '12px 14px', borderRadius: 'var(--radius-md)',
                   background: bg, border, cursor: feedback ? 'default' : 'pointer',
-                  font: 'var(--role-body)', color: 'var(--text-primary)',
+                  font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45,
                 }}
               >
                 <span style={{
                   fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-tertiary)', minWidth: 18,
                 }}>{letters[i]}</span>
-                <span style={{ flex: 1 }}>{c}</span>
+                <span style={{ flex: 1 }}>{passage}</span>
               </button>
             );
           })}
@@ -325,8 +386,11 @@ function ContextStep({ item, index, total, onDone, onExit }) {
               {' — '}
               {feedback.definition || item.definition}
             </div>
-            {feedback.tip && (
-              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 12 }}>{feedback.tip}</div>
+            {!feedback.correct && feedback.correctPassage && (
+              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 12, padding: '10px 12px', background: 'rgba(34, 160, 90, 0.08)', borderRadius: 'var(--radius-md)' }}>
+                <span style={{ font: 'var(--role-caption)', color: 'var(--success)', display: 'block', marginBottom: 4 }}>Correct usage</span>
+                {feedback.correctPassage}
+              </div>
             )}
             <Button variant="primary" onClick={() => onDone({ correct: !!feedback.correct, word: item.word })}>
               {index + 1 >= total ? 'Finish' : 'Next'}
@@ -338,81 +402,7 @@ function ContextStep({ item, index, total, onDone, onExit }) {
   );
 }
 
-function ProduceStep({ item, index, total, onDone, onExit }) {
-  const { Card, Button } = SixteenNS;
-  const [text, setText] = React.useState('');
-  const [feedback, setFeedback] = React.useState(null);
-  const [submitting, setSubmitting] = React.useState(false);
-
-  const submit = async () => {
-    if (feedback || submitting) return;
-    setSubmitting(true);
-    try {
-      const r = await fetch('/api/vocab', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wordId: item.wordId, mode: 'produce', sentence: text }),
-      });
-      const j = await r.json();
-      if (!j?.success) throw new Error(j?.error || 'Submit failed');
-      setFeedback(j.data);
-    } catch (e) {
-      setFeedback({ correct: false, reason: e.message });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <div style={{ padding: '28px 36px', maxWidth: 640 }}>
-      <SessionHeader index={index} total={total} mode="Use it" category={item.categoryLabel} onExit={onExit} />
-      <Card padding="lg">
-        <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 8 }}>
-          Write one original sentence using the word so its meaning is clear from context.
-        </div>
-        <div style={{ marginBottom: 6, font: 'var(--role-title-sm)', color: 'var(--ink-1)' }}>{item.word}</div>
-        <div style={{ marginBottom: 16, font: 'var(--role-body)', color: 'var(--text-secondary)' }}>{item.definition}</div>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          disabled={!!feedback}
-          rows={3}
-          placeholder={`Use “${item.word}” in a sentence…`}
-          style={{
-            width: '100%', boxSizing: 'border-box', resize: 'vertical',
-            padding: '12px 14px', borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-2)', background: 'var(--sunken)',
-            font: 'var(--role-body)', color: 'var(--text-primary)',
-            marginBottom: 12,
-          }}
-        />
-        {!feedback && (
-          <Button variant="primary" disabled={submitting || text.trim().length < 8} onClick={submit}>
-            {submitting ? 'Checking…' : 'Check'}
-          </Button>
-        )}
-        {feedback && (
-          <div style={{ marginTop: 8 }}>
-            <div style={{ font: 'var(--role-label)', color: feedback.correct ? 'var(--success)' : 'var(--error)', marginBottom: 6 }}>
-              {feedback.correct ? 'Nice — that works' : 'Try again later'}
-            </div>
-            {feedback.reason && (
-              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 8 }}>{feedback.reason}</div>
-            )}
-            {feedback.tip && (
-              <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 12 }}>{feedback.tip}</div>
-            )}
-            <Button variant="primary" onClick={() => onDone({ correct: !!feedback.correct, word: item.word })}>
-              {index + 1 >= total ? 'Finish' : 'Next'}
-            </Button>
-          </div>
-        )}
-      </Card>
-    </div>
-  );
-}
-
-function SessionHeader({ index, total, mode, category, onExit }) {
+function SessionHeader({ index, total, mode, onExit }) {
   const { Button, Badge } = SixteenNS;
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
@@ -421,7 +411,6 @@ function SessionHeader({ index, total, mode, category, onExit }) {
         {index + 1} / {total}
       </span>
       <Badge>{mode}</Badge>
-      {category && <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>{category}</span>}
       <div style={{ flex: 1 }} />
       <div style={{ width: 120, height: 4, background: 'var(--sunken)', borderRadius: 2, overflow: 'hidden' }}>
         <div style={{ width: `${((index + 1) / total) * 100}%`, height: '100%', background: 'var(--brand-blue)' }} />
