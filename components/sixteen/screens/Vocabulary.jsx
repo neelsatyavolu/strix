@@ -450,93 +450,7 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
             gap: 16,
             padding: 'clamp(8px, 2vh, 24px) 0',
           }}>
-            <Card
-              padding="xl"
-              style={{
-                flex: '1 1 auto',
-                minHeight: 'min(420px, 52vh)',
-                maxHeight: 'min(560px, 68vh)',
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                cursor: flipped ? 'default' : 'pointer',
-                userSelect: 'none',
-                transition: 'background 0.15s ease',
-                boxSizing: 'border-box',
-              }}
-              onClick={() => { if (!flipped) setFlipped(true); }}
-            >
-              {!flipped ? (
-                <>
-                  <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 20, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
-                    Do you know this word?
-                  </div>
-                  <div style={{
-                    font: 'var(--role-title-lg)',
-                    fontSize: 'clamp(28px, 5vw, 42px)',
-                    fontWeight: 700,
-                    color: 'var(--ink-1)',
-                    marginBottom: 16,
-                    lineHeight: 1.15,
-                  }}>
-                    {item.word}
-                  </div>
-                  <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-                    Tap the card to flip for the definition
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>
-                    Definition
-                  </div>
-                  <div style={{ font: 'var(--role-title-sm)', fontSize: 'clamp(18px, 2.5vw, 22px)', color: 'var(--ink-1)', marginBottom: 14 }}>
-                    {item.word}
-                  </div>
-                  <div style={{
-                    font: 'var(--role-body-lg)',
-                    color: 'var(--text-secondary)',
-                    lineHeight: 1.55,
-                    maxWidth: 440,
-                    padding: '0 12px',
-                    marginBottom: item.memoryTip ? 18 : 0,
-                  }}>
-                    {item.definition}
-                  </div>
-                  {item.memoryTip && (
-                    <div style={{
-                      maxWidth: 440,
-                      margin: '0 12px',
-                      padding: '12px 14px',
-                      borderRadius: 'var(--radius-md)',
-                      background: 'rgba(59, 130, 246, 0.08)',
-                      border: '1px solid rgba(59, 130, 246, 0.18)',
-                      textAlign: 'left',
-                    }}>
-                      <div style={{
-                        font: 'var(--role-caption)',
-                        color: 'var(--brand-blue)',
-                        textTransform: 'uppercase',
-                        letterSpacing: 'var(--tracking-caps)',
-                        marginBottom: 6,
-                      }}>
-                        How to remember
-                      </div>
-                      <div style={{
-                        font: 'var(--role-body)',
-                        color: 'var(--text-primary)',
-                        lineHeight: 1.5,
-                      }}>
-                        {item.memoryTip}
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-            </Card>
+            <FlipCard flipped={flipped} onFlip={() => setFlipped((f) => !f)} word={item.word} definition={item.definition} memoryTip={item.memoryTip} />
 
             <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', flexShrink: 0 }}>
               {!flipped ? (
@@ -549,9 +463,14 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
                   </Button>
                 </>
               ) : (
-                <Button variant="primary" size="md" onClick={goUsage}>
-                  Check usage
-                </Button>
+                <>
+                  <Button variant="primary" size="md" onClick={goUsage}>
+                    Check usage
+                  </Button>
+                  <Button variant="secondary" size="md" icon={<Icon name="refresh-cw" size={13} />} onClick={() => setFlipped(false)}>
+                    Flip back
+                  </Button>
+                </>
               )}
             </div>
           </div>
@@ -660,6 +579,159 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
           </Card>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** 3D flip card — front = word, back = definition + memory tip. */
+function FlipCard({ flipped, onFlip, word, definition, memoryTip }) {
+  const faceBase = {
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: 24,
+    boxSizing: 'border-box',
+    borderRadius: 'var(--radius-lg)',
+    background: 'var(--surface-card)',
+    boxShadow: 'var(--shadow-sm)',
+    border: '1px solid var(--border-1)',
+    backfaceVisibility: 'hidden',
+    WebkitBackfaceVisibility: 'hidden',
+    overflow: 'auto',
+  };
+
+  return (
+    <div
+      style={{
+        flex: '1 1 auto',
+        minHeight: 'min(420px, 52vh)',
+        maxHeight: 'min(560px, 68vh)',
+        width: '100%',
+        perspective: 1400,
+        perspectiveOrigin: '50% 50%',
+        // Explicit height so absolute faces have something to fill
+        height: 'min(520px, 60vh)',
+      }}
+    >
+      <button
+        type="button"
+        aria-label={flipped ? 'Flip card back to word' : 'Flip card to definition'}
+        onClick={onFlip}
+        style={{
+          position: 'relative',
+          display: 'block',
+          width: '100%',
+          height: '100%',
+          border: 0,
+          padding: 0,
+          margin: 0,
+          background: 'transparent',
+          cursor: 'pointer',
+          transformStyle: 'preserve-3d',
+          WebkitTransformStyle: 'preserve-3d',
+          transition: 'transform var(--dur-slower) var(--ease-out)',
+          transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          userSelect: 'none',
+          WebkitTapHighlightColor: 'transparent',
+          // Soft lift while hovering the card
+          filter: flipped ? 'none' : undefined,
+        }}
+      >
+        {/* Front — word */}
+        <div style={{ ...faceBase, transform: 'rotateY(0deg)', zIndex: flipped ? 0 : 1 }}>
+          <div style={{
+            font: 'var(--role-caption)',
+            color: 'var(--text-tertiary)',
+            marginBottom: 20,
+            textTransform: 'uppercase',
+            letterSpacing: 'var(--tracking-caps)',
+          }}>
+            Do you know this word?
+          </div>
+          <div style={{
+            font: 'var(--role-title-lg)',
+            fontSize: 'clamp(28px, 5vw, 42px)',
+            fontWeight: 700,
+            color: 'var(--ink-1)',
+            marginBottom: 16,
+            lineHeight: 1.15,
+          }}>
+            {word}
+          </div>
+          <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
+            Tap to flip for the definition
+          </div>
+        </div>
+
+        {/* Back — definition + mnemonic */}
+        <div style={{
+          ...faceBase,
+          transform: 'rotateY(180deg)',
+          zIndex: flipped ? 1 : 0,
+        }}>
+          <div style={{
+            font: 'var(--role-caption)',
+            color: 'var(--text-tertiary)',
+            marginBottom: 12,
+            textTransform: 'uppercase',
+            letterSpacing: 'var(--tracking-caps)',
+          }}>
+            Definition
+          </div>
+          <div style={{
+            font: 'var(--role-title-sm)',
+            fontSize: 'clamp(18px, 2.5vw, 22px)',
+            color: 'var(--ink-1)',
+            marginBottom: 14,
+          }}>
+            {word}
+          </div>
+          <div style={{
+            font: 'var(--role-body-lg)',
+            color: 'var(--text-secondary)',
+            lineHeight: 1.55,
+            maxWidth: 440,
+            padding: '0 12px',
+            marginBottom: memoryTip ? 18 : 0,
+          }}>
+            {definition}
+          </div>
+          {memoryTip && (
+            <div style={{
+              maxWidth: 440,
+              width: '100%',
+              margin: '0 12px',
+              padding: '12px 14px',
+              borderRadius: 'var(--radius-md)',
+              background: 'rgba(59, 130, 246, 0.08)',
+              border: '1px solid rgba(59, 130, 246, 0.18)',
+              textAlign: 'left',
+              boxSizing: 'border-box',
+            }}>
+              <div style={{
+                font: 'var(--role-caption)',
+                color: 'var(--brand-blue)',
+                textTransform: 'uppercase',
+                letterSpacing: 'var(--tracking-caps)',
+                marginBottom: 6,
+              }}>
+                How to remember
+              </div>
+              <div style={{
+                font: 'var(--role-body)',
+                color: 'var(--text-primary)',
+                lineHeight: 1.5,
+              }}>
+                {memoryTip}
+              </div>
+            </div>
+          )}
+        </div>
+      </button>
     </div>
   );
 }
