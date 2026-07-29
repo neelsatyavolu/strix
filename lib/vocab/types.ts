@@ -9,6 +9,8 @@ export type VocabEntry = {
   word: string;
   definition: string;
   category: VocabCategory;
+  /** Short sticky mnemonic shown on the flashcard back. */
+  memoryTip: string;
   /** Passage that uses the word correctly. */
   correctPassage: string;
   /** Three passages that misuse the word. */
@@ -33,6 +35,7 @@ export type PracticeItem = {
   wordId: string;
   word: string;
   definition: string;
+  memoryTip: string;
   category: VocabCategory;
   categoryLabel: string;
   mode: PracticeMode;

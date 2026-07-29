@@ -122,6 +122,7 @@ export async function POST(req: NextRequest) {
         mastered: known,
         box: row.box,
         dueAt: row.due_at,
+        memoryTip: entry.memoryTip,
       },
     });
   }
@@ -165,6 +166,7 @@ export async function POST(req: NextRequest) {
       correct,
       tip: entry.tip,
       definition: entry.definition,
+      memoryTip: entry.memoryTip,
       word: entry.word,
       correctPassage: entry.correctPassage,
       box: row.box,

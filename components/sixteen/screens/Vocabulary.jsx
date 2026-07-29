@@ -502,9 +502,38 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
                     lineHeight: 1.55,
                     maxWidth: 440,
                     padding: '0 12px',
+                    marginBottom: item.memoryTip ? 18 : 0,
                   }}>
                     {item.definition}
                   </div>
+                  {item.memoryTip && (
+                    <div style={{
+                      maxWidth: 440,
+                      margin: '0 12px',
+                      padding: '12px 14px',
+                      borderRadius: 'var(--radius-md)',
+                      background: 'rgba(59, 130, 246, 0.08)',
+                      border: '1px solid rgba(59, 130, 246, 0.18)',
+                      textAlign: 'left',
+                    }}>
+                      <div style={{
+                        font: 'var(--role-caption)',
+                        color: 'var(--brand-blue)',
+                        textTransform: 'uppercase',
+                        letterSpacing: 'var(--tracking-caps)',
+                        marginBottom: 6,
+                      }}>
+                        How to remember
+                      </div>
+                      <div style={{
+                        font: 'var(--role-body)',
+                        color: 'var(--text-primary)',
+                        lineHeight: 1.5,
+                      }}>
+                        {item.memoryTip}
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
             </Card>
@@ -555,12 +584,7 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
             <div style={{ font: 'var(--role-title-sm)', color: 'var(--ink-1)', marginBottom: 4, textAlign: 'center' }}>
               {item.word}
             </div>
-            {(flipped || feedback) && (
-              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 16, textAlign: 'center' }}>
-                {item.definition}
-              </div>
-            )}
-            {!flipped && !feedback && (
+            {!feedback && (
               <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 16, textAlign: 'center' }}>
                 Choose the passage where “{item.word}” is used with the right meaning.
               </div>
@@ -607,6 +631,19 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
                   {' — '}
                   {feedback.definition || item.definition}
                 </div>
+                {(feedback.memoryTip || item.memoryTip) && (
+                  <div style={{
+                    font: 'var(--role-body)',
+                    color: 'var(--text-secondary)',
+                    marginBottom: 12,
+                    padding: '10px 12px',
+                    background: 'rgba(59, 130, 246, 0.08)',
+                    borderRadius: 'var(--radius-md)',
+                  }}>
+                    <span style={{ font: 'var(--role-caption)', color: 'var(--brand-blue)', display: 'block', marginBottom: 4 }}>How to remember</span>
+                    {feedback.memoryTip || item.memoryTip}
+                  </div>
+                )}
                 {!feedback.correct && feedback.correctPassage && (
                   <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 12, padding: '10px 12px', background: 'rgba(34, 160, 90, 0.08)', borderRadius: 'var(--radius-md)' }}>
                     <span style={{ font: 'var(--role-caption)', color: 'var(--success)', display: 'block', marginBottom: 4 }}>Correct usage</span>

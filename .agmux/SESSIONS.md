@@ -5,7 +5,7 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-29T03:10:03.000Z
+- **Updated**: 2026-07-29T03:16:08.000Z
 - **Sessions**: 7
 
 ## Vocab flashcards + AODEFEN 400
@@ -13,10 +13,10 @@
 - **id**: `02f384cf-d226-4d5b-933c-8c5883f1e142`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-07-29T03:10:03.000Z
+- **updated**: 2026-07-29T03:16:08.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fabc4-c6a0-7bf3-bd03-67abd20f6a2e/chat_history.jsonl`
 
-Vocab checklist: known/to-learn on hub with toggleable checkboxes; persists via vocab_progress (box>5=known). POST mode=mark. Migration 0013 expands last_mode to flash+manual. Search + filters. Practice still advances Leitner to known.
+Added memoryTip mnemonics for all 400 words; shown on flashcard flip + post-answer. e.g. Nebulous = dusty nebula / vague.
 
 ## Vocabulary tab
 

@@ -61,6 +61,7 @@ export function toItem(wordId: string): PracticeItem | null {
     wordId: w.id,
     word: w.word,
     definition: w.definition,
+    memoryTip: w.memoryTip,
     category: w.category,
     categoryLabel: CATEGORY_LABELS[w.category],
     mode: "flash",
