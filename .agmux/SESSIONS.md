@@ -5,7 +5,7 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-30T02:38:04.000Z
+- **Updated**: 2026-07-30T03:02:35.000Z
 - **Sessions**: 7
 
 ## Vocab flashcards + AODEFEN 400
@@ -13,10 +13,10 @@
 - **id**: `02f384cf-d226-4d5b-933c-8c5883f1e142`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-07-30T02:38:04.000Z
+- **updated**: 2026-07-30T03:02:35.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fabc4-c6a0-7bf3-bd03-67abd20f6a2e/chat_history.jsonl`
 
-Practice sessions now follow PDF/bank order (Arduous→…), skip known; only passage choices stay shuffled.
+Usage MCQ: killed shared wrong templates; 1200 unique POS-aware misuses so correct isn't identifiable as 'the different sentence'.
 
 ## Vocabulary tab
 
