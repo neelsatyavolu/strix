@@ -1,6 +1,7 @@
 import { VOCAB_BANK, VOCAB_BY_ID, listCategories } from "./bank";
 import { CATEGORY_LABELS, type PracticeItem, type VocabCategory, type VocabProgressRow } from "./types";
 import { isMastered, MAX_BOX } from "./schedule";
+import { buildUsageOptions } from "./usageOptions";
 
 const DEFAULT_COUNT = 12;
 
@@ -39,23 +40,14 @@ export function summarize(rows: VocabProgressRow[], now = new Date()) {
   };
 }
 
-function shuffle<T>(arr: T[], rng = Math.random): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(rng() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-/** Build a flashcard practice item with shuffled usage passages. */
+/**
+ * Build a flashcard practice item with a fresh usage MCQ set.
+ * Correct + wrongs are re-sampled every time so a retry is not the same four sentences.
+ */
 export function toItem(wordId: string): PracticeItem | null {
   const w = VOCAB_BY_ID[wordId];
   if (!w) return null;
-  const options = [w.correctPassage, ...w.wrongPassages];
-  const order = shuffle([0, 1, 2, 3]);
-  const passages = order.map((i) => options[i]);
-  const correctIndex = order.indexOf(0);
+  const { passages, correctIndex } = buildUsageOptions(w);
   return {
     wordId: w.id,
     word: w.word,

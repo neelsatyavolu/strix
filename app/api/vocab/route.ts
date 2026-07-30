@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { VOCAB_BANK, VOCAB_BY_ID, listCategories } from "@/lib/vocab/bank";
 import { summarize } from "@/lib/vocab/session";
 import { dueAt, isMastered, MAX_BOX, nextBox } from "@/lib/vocab/schedule";
+import { isCorrectUsage } from "@/lib/vocab/usageOptions";
 import type { VocabProgressRow } from "@/lib/vocab/types";
 
 export const runtime = "nodejs";
@@ -128,9 +129,10 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Flash practice attempt ────────────────────────────────────────
+  // Correct passage is sampled from a pool each session; accept any valid correct use.
   let correct = false;
   if (typeof body.passage === "string" && body.passage.trim()) {
-    correct = body.passage.trim() === entry.correctPassage.trim();
+    correct = isCorrectUsage(entry, body.passage);
   } else if (typeof body.correct === "boolean") {
     correct = body.correct;
   } else {
@@ -170,6 +172,7 @@ export async function POST(req: NextRequest) {
       definition: entry.definition,
       memoryTip: entry.memoryTip,
       word: entry.word,
+      // Canonical curated example (feedback); may differ from the MCQ they just saw
       correctPassage: entry.correctPassage,
       box: row.box,
       mastered: isMastered(row.box),
