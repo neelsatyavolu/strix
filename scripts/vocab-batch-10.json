@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w201",
+    "word": "Ostentatious",
+    "definition": "designed to impress or attract notice",
+    "memoryTip": "Osten-tatious: showy on purpose to impress.",
+    "correctPassage": "Ostentatious displays of wealth sat uneasily with the town\u2019s modest culture.",
+    "wrongPassages": [
+      "His ostentatious annex listed coordinates for a site already sold off.",
+      "The docks looked ostentatious under night lights with no cargo moving.",
+      "Critics called the production ostentatious after every cue landed on the beat."
+    ]
+  },
+  {
+    "id": "w202",
+    "word": "Conjectural",
+    "definition": "based on incomplete information; speculative",
+    "memoryTip": "Based on conjecture \u2014 guesswork, not proof.",
+    "correctPassage": "Any claim about the author\u2019s motives remains largely conjectural.",
+    "wrongPassages": [
+      "The depot\u2019s conjectural arrivals screen listed trains from a closed line.",
+      "The festival\u2019s conjectural tradition began yesterday and ends before dinner tonight.",
+      "a conjectural health check returns 200 even when dependencies are down."
+    ]
+  },
+  {
+    "id": "w203",
+    "word": "Stringent",
+    "definition": "strict, precise, and exacting",
+    "memoryTip": "String-tight rules \u2014 strict and exacting.",
+    "correctPassage": "Stringent safety standards apply to every chemical in the lab.",
+    "wrongPassages": [
+      "The password rule is stringent: any dictionary word is accepted without checks.",
+      "The subdominant drone was stringent under a final V\u2013I that never used IV.",
+      "The mediant drone was stringent under a tierce de Picardie elsewhere."
+    ]
+  },
+  {
+    "id": "w204",
+    "word": "Egotistical",
+    "definition": "excessively conceited",
+    "memoryTip": "Ego-tistical: all about me.",
+    "correctPassage": "An egotistical refusal to share credit damaged team morale.",
+    "wrongPassages": [
+      "Audiences called the concert film egotistical for cutting the best solo.",
+      "an egotistical dataset includes every field the model was trained to expect.",
+      "The ice apron felt egotistical on grated metal with fixed lights."
+    ]
+  },
+  {
+    "id": "w205",
+    "word": "Pliant",
+    "definition": "easily bent; easily influenced",
+    "memoryTip": "Pliable \u2014 bends easily; easily influenced.",
+    "correctPassage": "Young stems are pliant enough to train along a trellis.",
+    "wrongPassages": [
+      "The mole\u2019s pliant navigation light stuck on a single color all night.",
+      "a pliant lessons-learned deck has a title slide and nothing else.",
+      "The trio texture was pliant: three parts playing the identical line."
+    ]
+  },
+  {
+    "id": "w206",
+    "word": "Serene",
+    "definition": "calm, peaceful, and untroubled",
+    "memoryTip": "Serene scene \u2014 calm water, untroubled.",
+    "correctPassage": "The lake was serene at dawn, with barely a ripple on the surface.",
+    "wrongPassages": [
+      "The alert is serene when it fires only after the problem is already fixed.",
+      "The shear pin was serene: it held past the gearbox design torque.",
+      "The manuscript\u2019s serene structure put methods, results, and discussion in order."
+    ]
+  },
+  {
+    "id": "w207",
+    "word": "Vicarious",
+    "definition": "experienced through another person",
+    "memoryTip": "Via someone else\u2019s experience \u2014 live through them.",
+    "correctPassage": "Readers experience a kind of vicarious adventure through the narrator\u2019s travels.",
+    "wrongPassages": [
+      "The interlock was vicarious and never engaged under any tested fault.",
+      "The bog hollow stayed vicarious after drains lowered the water table.",
+      "She called the commute vicarious after moving into the building above the office."
+    ]
+  },
+  {
+    "id": "w208",
+    "word": "Forestall",
+    "definition": "prevent by taking action ahead of time",
+    "memoryTip": "Fore-stall: stop it before it starts.",
+    "correctPassage": "Early vaccination campaigns sought to forestall a winter outbreak.",
+    "wrongPassages": [
+      "The lobby\u2019s forestall carpet pattern was designed to induce vertigo.",
+      "Diplomats drafted forestall language that committed no party to any date or act.",
+      "a forestall property test generates no inputs and still reports success."
+    ]
+  },
+  {
+    "id": "w209",
+    "word": "Dwindle",
+    "definition": "diminish gradually",
+    "memoryTip": "Dwindle down \u2014 shrink gradually.",
+    "correctPassage": "As funding dwindled, the program had to drop several field sites.",
+    "wrongPassages": [
+      "The playa pool stayed dwindle in a climate run with zero precipitation.",
+      "a dwindle border on the chart matches the latest satellite shoreline exactly.",
+      "The update was sold as dwindle while it quietly removed the only useful feature."
+    ]
+  },
+  {
+    "id": "w210",
+    "word": "Provocative",
+    "definition": "causing annoyance or strong reaction",
+    "memoryTip": "Pro-voke: meant to stir a strong reaction.",
+    "correctPassage": "The exhibit\u2019s provocative title was meant to spark discussion, not offense.",
+    "wrongPassages": [
+      "His provocative preface apologized for a book he had not finished writing.",
+      "Viewers found the 3D conversion provocative for flat cutouts of the actors.",
+      "Students called the exam provocative when everyone finished with time to spare."
+    ]
+  },
+  {
+    "id": "w211",
+    "word": "Latency",
+    "definition": "the state of being hidden or dormant until conditions allow activity",
+    "memoryTip": "Latent stage \u2014 hidden until it activates.",
+    "correctPassage": "There is often a latency between infection and the appearance of symptoms.",
+    "wrongPassages": [
+      "She kept the utility closet\u2019s latency between tape rolls and spare batteries.",
+      "The drawer labeled latency contained only dried pens and a paperclip.",
+      "The keg stamped latency held CO2 cartridges and a small wrench."
+    ]
+  },
+  {
+    "id": "w212",
+    "word": "Incubate",
+    "definition": "develop slowly; keep at suitable conditions",
+    "memoryTip": "Like eggs incubating \u2014 develop slowly under care.",
+    "correctPassage": "The startup will incubate new ideas before seeking outside investment.",
+    "wrongPassages": [
+      "He moved to incubate the plagiarism claim by citing a source that did not exist.",
+      "She hoped to incubate the walkout by locking badge access during the meeting.",
+      "She hoped to incubate the strike threat by docking holiday pay in advance."
+    ]
+  },
+  {
+    "id": "w213",
+    "word": "Synergy",
+    "definition": "combined effect greater than the sum of parts",
+    "memoryTip": "Syn + energy: combined power greater than parts.",
+    "correctPassage": "The merger was sold on the promise of synergy between the two product lines.",
+    "wrongPassages": [
+      "a synergy continuity binder is a binder with a single blank tab.",
+      "Audiences called the live cut synergy for replacing solos with studio takes.",
+      "The plaza felt synergy when food trucks and music filled every corner at noon."
+    ]
+  },
+  {
+    "id": "w214",
+    "word": "Circumspect",
+    "definition": "wary and unwilling to take risks",
+    "memoryTip": "Circum-spect: look around before acting \u2014 cautious.",
+    "correctPassage": "Lawyers advised a circumspect response until more facts were known.",
+    "wrongPassages": [
+      "a circumspect capacity plan is a spreadsheet with one optimistic row.",
+      "He closed the outage as circumspect before anyone knew the root cause.",
+      "a circumspect login flow always asks for email, password, and a second factor."
+    ]
+  },
+  {
+    "id": "w215",
+    "word": "Guileless",
+    "definition": "innocent and without deception",
+    "memoryTip": "Without guile (tricks) \u2014 innocent and open.",
+    "correctPassage": "His guileless manner made colleagues trust him quickly.",
+    "wrongPassages": [
+      "Their guileless friendship, in the novel, starts with both characters never meeting.",
+      "The jetty\u2019s guileless depth board showed a number from an outdated survey.",
+      "a guileless performance budget is a slide with no numbers on it."
+    ]
+  },
+  {
+    "id": "w216",
+    "word": "Appease",
+    "definition": "pacify by giving in to demands",
+    "memoryTip": "A-peace: calm someone by giving in a bit.",
+    "correctPassage": "Concessions intended to appease critics only encouraged further demands.",
+    "wrongPassages": [
+      "an appease syllabus change moved one reading by a single day.",
+      "The lobby\u2019s appease greenery was plastic and never needed water.",
+      "The truce was appease the morning shells fell on both capitals."
+    ]
+  },
+  {
+    "id": "w217",
+    "word": "Indoctrinate",
+    "definition": "teach a person to accept a set of beliefs uncritically",
+    "memoryTip": "In-doctrine: fill with a doctrine, not free thinking.",
+    "correctPassage": "The camp was accused of trying to indoctrinate children rather than educate them.",
+    "wrongPassages": [
+      "The box marked indoctrinate was sealed and never opened at receiving.",
+      "She stamped the pallet indoctrinate and left it unopened in receiving.",
+      "He traded the upside-down indoctrinate ribbon for a real name badge at last."
+    ]
+  },
+  {
+    "id": "w218",
+    "word": "Avant-garde",
+    "definition": "new and experimental, especially in the arts",
+    "memoryTip": "French \u201cvanguard\u201d \u2014 ahead of the artistic pack; experimental.",
+    "correctPassage": "The gallery specializes in avant-garde work that challenges traditional form.",
+    "wrongPassages": [
+      "The avant-garde tax table simply restated last year\u2019s ordinary rates.",
+      "Engineers measured the avant-garde of the bridge as 214.6 meters of steel.",
+      "an avant-garde crowd of two was reported as a sold-out premiere."
+    ]
+  },
+  {
+    "id": "w219",
+    "word": "Cerebral",
+    "definition": "intellectual rather than emotional",
+    "memoryTip": "Cerebrum = brain \u2014 intellectual more than emotional.",
+    "correctPassage": "The film is more cerebral than emotional, built around ideas rather than action.",
+    "wrongPassages": [
+      "Leadership hoped to cerebral attrition metrics by changing the formula mid-year.",
+      "The witness gave a cerebral timeline that matched the footage minute by minute.",
+      "The injunction was cerebral on its face and needed no later clarification."
+    ]
+  },
+  {
+    "id": "w220",
+    "word": "Cajole",
+    "definition": "persuade by flattery",
+    "memoryTip": "Cage + jolly persuasion \u2014 sweet-talk into something.",
+    "correctPassage": "She tried to cajole reluctant volunteers into staffing the event.",
+    "wrongPassages": [
+      "The secondary theme was cajole and never interacted with the tonic.",
+      "Lenders avoided the cajole borrower who had never missed a payment.",
+      "Voters buried the cajole bond that engineers called urgent."
+    ]
+  }
+]

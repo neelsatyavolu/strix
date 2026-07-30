@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w021",
+    "word": "Tally",
+    "definition": "agree or correspond; count",
+    "memoryTip": "Like a tally stick of marks \u2014 counts match / add up.",
+    "correctPassage": "The final vote tally confirmed that the amendment had failed by a narrow margin.",
+    "wrongPassages": [
+      "The machine ran tally until the breaker tripped from sustained overload.",
+      "The team shipped tally by skipping every checklist item on the release gate.",
+      "He negotiated tally by accepting the first offer without a counter."
+    ]
+  },
+  {
+    "id": "w022",
+    "word": "Nebulous",
+    "definition": "vague or ill-defined",
+    "memoryTip": "Like a dusty nebula \u2014 cloudy, vague, not sharply defined.",
+    "correctPassage": "Critics called the mission statement nebulous because it never defined success.",
+    "wrongPassages": [
+      "The engineer\u2019s nebulous blueprint specified every measurement to the millimeter.",
+      "After the numbered checklist, nobody found the steps nebulous\u2014each had a diagram.",
+      "She stored the nebulous in a jar beside the other solid lab samples."
+    ]
+  },
+  {
+    "id": "w023",
+    "word": "Unassuming",
+    "definition": "modest; not pretentious",
+    "memoryTip": "Doesn\u2019t assume airs \u2014 quiet and modest.",
+    "correctPassage": "Despite her fame, she remained unassuming and preferred to work without publicity.",
+    "wrongPassages": [
+      "The ice lip felt unassuming on a grated overlook with warning signs.",
+      "He ranked the obstacle unassuming after walking around it in ten seconds.",
+      "The crevasse hop felt unassuming on a seasonal bridge with rails."
+    ]
+  },
+  {
+    "id": "w024",
+    "word": "Outsize",
+    "definition": "unusually large",
+    "memoryTip": "Out + size \u2014 bigger than the usual size.",
+    "correctPassage": "The museum devoted an outsize share of its budget to a single traveling exhibit.",
+    "wrongPassages": [
+      "They hoped to outsize the protest by moving public comment after midnight.",
+      "He moved to outsize the deposition by reading a prepared statement for every answer.",
+      "He tried to outsize the gag by quoting \u201canonymous sources\u201d that were himself."
+    ]
+  },
+  {
+    "id": "w025",
+    "word": "Inextricable",
+    "definition": "impossible to disentangle or separate",
+    "memoryTip": "In-extricable: can\u2019t extract yourself \u2014 tangled tight.",
+    "correctPassage": "In the novel, personal loyalty and political ambition become inextricable.",
+    "wrongPassages": [
+      "He greened the PIR checklist as inextricable with owners still unassigned.",
+      "an inextricable integration test mocks every dependency, including the system under test.",
+      "Her inextricable sketch caught the likeness in a few decisive lines."
+    ]
+  },
+  {
+    "id": "w026",
+    "word": "Incongruous",
+    "definition": "not in harmony; out of place",
+    "memoryTip": "In-congruent: doesn\u2019t \u201cfit\u201d the picture; out of place.",
+    "correctPassage": "A neon sign looked incongruous against the centuries-old stone facade.",
+    "wrongPassages": [
+      "Critics called the clean version incongruous for removing the song\u2019s only edge.",
+      "Parents called the concert incongruous after every child sat still through two full hours.",
+      "Her incongruous printer\u2019s note described a binding that was never used."
+    ]
+  },
+  {
+    "id": "w027",
+    "word": "Impertinent",
+    "definition": "rude; not showing proper respect",
+    "memoryTip": "Im-pertinent: not \u201cpertaining\u201d politely \u2014 rude and out of line.",
+    "correctPassage": "The reporter\u2019s impertinent questions about private finances angered the candidate.",
+    "wrongPassages": [
+      "The ice tongue tip felt impertinent behind a fence and viewing platform.",
+      "The leading-tone held was impertinent under a final open fifth on I.",
+      "The wharf\u2019s impertinent bollard load plate was for gear never installed on site."
+    ]
+  },
+  {
+    "id": "w028",
+    "word": "Insurmountable",
+    "definition": "too great to overcome",
+    "memoryTip": "Can\u2019t surmount (climb over) it \u2014 too big a barrier.",
+    "correctPassage": "What had seemed an insurmountable funding gap was closed by a single anonymous gift.",
+    "wrongPassages": [
+      "The approach felt insurmountable on a catwalk with welded railings.",
+      "The stand looked insurmountable in rain with awnings still rolled up.",
+      "The trail was so insurmountable that first-time hikers finished early without maps or guides."
+    ]
+  },
+  {
+    "id": "w029",
+    "word": "Tranquility",
+    "definition": "the quality of being calm and peaceful",
+    "memoryTip": "Tranquil + ity \u2014 calm lake, quiet mind.",
+    "correctPassage": "After the storm, a rare sense of tranquility settled over the harbor.",
+    "wrongPassages": [
+      "He matched zero locks with the keys from drawer tranquility.",
+      "He titled a sticky note tranquility and stuck it on an empty monitor.",
+      "The door system ignored middle initial tranquility after a firmware update."
+    ]
+  },
+  {
+    "id": "w030",
+    "word": "Reprieve",
+    "definition": "a temporary relief from something unpleasant",
+    "memoryTip": "A brief relief before the \u201chard thing\u201d resumes \u2014 temporary break.",
+    "correctPassage": "A last-minute injunction granted the tenants a temporary reprieve from eviction.",
+    "wrongPassages": [
+      "The cattle dock looked reprieve with ramps chained and unused for years.",
+      "The clinic tried to reprieve no-shows by double-booking every appointment slot.",
+      "The explosion hatch was reprieve and never opened in the overpressure test."
+    ]
+  },
+  {
+    "id": "w031",
+    "word": "Impervious",
+    "definition": "not allowing passage; unable to be affected",
+    "memoryTip": "Im-pervious: nothing can pierce through (water, criticism).",
+    "correctPassage": "The coating is nearly impervious to water and salt air.",
+    "wrongPassages": [
+      "The queue tried to impervious ASA by answering and parking callers on mute.",
+      "The trail felt impervious under boardwalk that never touched the mud.",
+      "The thermal fuse was impervious and never opened in the oven test."
+    ]
+  },
+  {
+    "id": "w032",
+    "word": "Untenable",
+    "definition": "not able to be defended or maintained",
+    "memoryTip": "Can\u2019t \u201ctenably\u201d hold it \u2014 argument collapses; position is indefensible.",
+    "correctPassage": "Once the data were corrected, the original hypothesis became untenable.",
+    "wrongPassages": [
+      "The countersubject was untenable and never entered stretto.",
+      "The crowd noise was untenable after the engineer isolated a single clap.",
+      "She treated the requirement as untenable after the client waived it in writing."
+    ]
+  },
+  {
+    "id": "w033",
+    "word": "Ubiquitous",
+    "definition": "present, appearing, or found everywhere",
+    "memoryTip": "Ubi = where (Latin) \u2014 seems to be everywhere you look.",
+    "correctPassage": "Smartphones are now so ubiquitous that many public spaces assume constant connectivity.",
+    "wrongPassages": [
+      "Rotary phones are ubiquitous here: one sits on every modern classroom desk.",
+      "The orchid is ubiquitous\u2014only a single wild specimen has ever been found.",
+      "He kept his ubiquitous diary in one locked drawer no visitor ever saw."
+    ]
+  },
+  {
+    "id": "w034",
+    "word": "Defunct",
+    "definition": "no longer existing or functioning",
+    "memoryTip": "De-funct: function stopped \u2014 dead, no longer running.",
+    "correctPassage": "The defunct railway line has been converted into a walking path.",
+    "wrongPassages": [
+      "He marked maintenance defunct while the change window still ran long.",
+      "a defunct golden test compares two empty files and passes.",
+      "The migration looked defunct on radar: one dense flock on a straight line."
+    ]
+  },
+  {
+    "id": "w035",
+    "word": "Detractor",
+    "definition": "a person who criticizes",
+    "memoryTip": "De-tract: pulls reputation down \u2014 a critic who knocks you.",
+    "correctPassage": "Even the project\u2019s fiercest detractor admitted the design was elegant.",
+    "wrongPassages": [
+      "She emptied folder detractor and it still showed 1 item: thumbs.db.",
+      "He stamped detractor in gold on an one-page \u201cpermit\u201d of doodles.",
+      "He wore the detractor ribbon upside down as a joke name tag."
+    ]
+  },
+  {
+    "id": "w036",
+    "word": "Exhaustive",
+    "definition": "including all possibilities; thorough",
+    "memoryTip": "Exhausts every option \u2014 complete, thorough, nothing left out.",
+    "correctPassage": "An exhaustive review of the literature found no support for the claim.",
+    "wrongPassages": [
+      "Critics called the box-set transfer exhaustive for surface noise left uncleaned.",
+      "The reedbed pool stayed exhaustive after a cut-off channel bypassed it entirely.",
+      "Viewers found the HDR pass exhaustive for crushing all shadow detail."
+    ]
+  },
+  {
+    "id": "w037",
+    "word": "Heterogeneous",
+    "definition": "diverse in character or content",
+    "memoryTip": "Hetero = different \u2014 a mixed, diverse group.",
+    "correctPassage": "The sample was deliberately heterogeneous, including rural and urban schools.",
+    "wrongPassages": [
+      "Fans found the immersive mix heterogeneous for burying the lead vocal.",
+      "The walk felt heterogeneous on a paved ramp with continuous handrails.",
+      "The salt pan stayed heterogeneous under a water budget with no wet season."
+    ]
+  },
+  {
+    "id": "w038",
+    "word": "Imperative",
+    "definition": "of vital importance; essential",
+    "memoryTip": "Like an imperative sentence (command) \u2014 must-do, essential.",
+    "correctPassage": "With the storm approaching, it was imperative that residents evacuate promptly.",
+    "wrongPassages": [
+      "The bay stand looked imperative between waves of arriving coaches.",
+      "The river ran imperative once engineers replaced every bend with a straight channel.",
+      "The bureau hoped to imperative backlog age by resetting ticket clocks nightly."
+    ]
+  },
+  {
+    "id": "w039",
+    "word": "Nuance",
+    "definition": "a subtle difference in meaning or expression",
+    "memoryTip": "New-ance of meaning \u2014 a subtle shade, not black-and-white.",
+    "correctPassage": "The translation preserved every nuance of the original poem\u2019s tone.",
+    "wrongPassages": [
+      "The hard looked nuance between markets with trestles stacked aside.",
+      "Her nuance bibliography cited URLs that only returned 404 errors.",
+      "The timber dock looked nuance at low water with piles fully exposed."
+    ]
+  },
+  {
+    "id": "w040",
+    "word": "Controversial",
+    "definition": "giving rise to public disagreement",
+    "memoryTip": "Causes controversy \u2014 people argue about it.",
+    "correctPassage": "The museum\u2019s controversial exhibit drew both praise and protests.",
+    "wrongPassages": [
+      "The wetland stayed controversial in plans that banned any new fill.",
+      "The thermal link was controversial: it held past the oven\u2019s maximum temperature.",
+      "Boards postponed the controversial safety retrofit inspectors had required."
+    ]
+  }
+]

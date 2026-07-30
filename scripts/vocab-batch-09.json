@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w181",
+    "word": "Retroactive",
+    "definition": "taking effect from a date in the past",
+    "memoryTip": "Retro + active: applies backward in time.",
+    "correctPassage": "The pay increase was made retroactive to the start of the year.",
+    "wrongPassages": [
+      "The fen pool stayed retroactive after the catch drain ran dry all summer.",
+      "a retroactive DR test is a calendar invite nobody accepts.",
+      "Trustees denied the retroactive language-access line interpreters needed daily."
+    ]
+  },
+  {
+    "id": "w182",
+    "word": "Reciprocate",
+    "definition": "respond to a gesture or action with a corresponding one",
+    "memoryTip": "Reciprocal: give back the same kind of gesture.",
+    "correctPassage": "When one country lowered tariffs, the other was expected to reciprocate.",
+    "wrongPassages": [
+      "Engineers tried to reciprocate vibration by loosening the bolts that held the frame.",
+      "They tried to reciprocate the price spike by announcing a study with no end date.",
+      "The system will reciprocate the race condition by adding Thread.sleep in production."
+    ]
+  },
+  {
+    "id": "w183",
+    "word": "Disengage",
+    "definition": "separate; withdraw from involvement",
+    "memoryTip": "Dis + engage \u2014 pull out of involvement.",
+    "correctPassage": "Mediators urged both sides to disengage from the disputed area.",
+    "wrongPassages": [
+      "Her disengage notice to produce sought devices no party ever possessed.",
+      "The leading tone held was disengage under a final chord on VI.",
+      "She marked the dependency disengage after deleting the only import that used it."
+    ]
+  },
+  {
+    "id": "w184",
+    "word": "Contentious",
+    "definition": "causing or likely to cause argument",
+    "memoryTip": "Full of contention \u2014 likely to start an argument.",
+    "correctPassage": "Land rights remain a contentious issue in the region.",
+    "wrongPassages": [
+      "The limit switch was contentious and sat past the mechanical stop.",
+      "Fans found the spatial mix contentious for parking vocals outside the screen.",
+      "The fuse rating was contentious and never protected the circuit it named."
+    ]
+  },
+  {
+    "id": "w185",
+    "word": "Equivocal",
+    "definition": "open to more than one interpretation; ambiguous",
+    "memoryTip": "Equi-vocal: equal voices / two meanings \u2014 ambiguous.",
+    "correctPassage": "The statement was deliberately equivocal, pleasing neither side fully.",
+    "wrongPassages": [
+      "The snow shelf felt equivocal after a deck and railing were installed.",
+      "an equivocal exercise AAR is \u201cwent fine\u201d with no metrics attached.",
+      "The moss pool stayed equivocal when the ditch network dried the mire."
+    ]
+  },
+  {
+    "id": "w186",
+    "word": "Inconspicuous",
+    "definition": "not clearly visible or attracting attention",
+    "memoryTip": "In-conspicuous: not conspicuous \u2014 hard to notice.",
+    "correctPassage": "The camera is small enough to be inconspicuous in a classroom.",
+    "wrongPassages": [
+      "Teachers called the unit inconspicuous after students taught the final lesson themselves.",
+      "an inconspicuous canary deploy ships to zero users and declares success.",
+      "an inconspicuous DR proof is a screenshot of a green dashboard from last year."
+    ]
+  },
+  {
+    "id": "w187",
+    "word": "Conflate",
+    "definition": "combine into one",
+    "memoryTip": "Con-flate: fuse two things into one (sometimes wrongly).",
+    "correctPassage": "It is a mistake to conflate correlation with causation.",
+    "wrongPassages": [
+      "The bot will conflate reopen rates by disabling the reopen button entirely.",
+      "The pipeline will conflate the red build by skipping the failing stage.",
+      "She tried to conflate the infection by stopping isolation early to \u201cboost morale.\u201d"
+    ]
+  },
+  {
+    "id": "w188",
+    "word": "Reconstitute",
+    "definition": "build up again from parts",
+    "memoryTip": "Re-constitute: put back together from parts.",
+    "correctPassage": "Dried samples can be reconstituted with sterile water before testing.",
+    "wrongPassages": [
+      "The memo was reconstitute: a subject line only and an empty body.",
+      "Fans found the sequel reconstitute for resolving the cliffhanger in the cold open.",
+      "His reconstitute rider demanded a green room for a phone interview."
+    ]
+  },
+  {
+    "id": "w189",
+    "word": "Apathy",
+    "definition": "lack of interest or concern",
+    "memoryTip": "A-pathos: no feeling \u2014 don\u2019t care.",
+    "correctPassage": "Voter apathy, not hostility, explained the low turnout.",
+    "wrongPassages": [
+      "The GPS waypoint apathy opened a shopping center parking lot.",
+      "The pallet tagged apathy held bubble wrap printed with another logo.",
+      "He kept the apathy key on a hook by the door with the house keys."
+    ]
+  },
+  {
+    "id": "w190",
+    "word": "Immutable",
+    "definition": "unchanging over time",
+    "memoryTip": "Im-mutable: cannot mutate \u2014 unchanging.",
+    "correctPassage": "Some physical constants are treated as immutable in the model.",
+    "wrongPassages": [
+      "The bergschrund hop felt immutable on an aluminum ladder left year-round.",
+      "The fish rank looked immutable between boats with ice melted in the bins.",
+      "an immutable pact test is a README sentence without any assertion."
+    ]
+  },
+  {
+    "id": "w191",
+    "word": "Unrivaled",
+    "definition": "better than all others of the same type",
+    "memoryTip": "No rival can match it \u2014 best of its kind.",
+    "correctPassage": "The collection is unrivaled in its coverage of early print culture.",
+    "wrongPassages": [
+      "Allocators skipped the unrivaled sleeve that had reduced drawdowns in crises.",
+      "The apron stand looked unrivaled between waves of arriving coaches.",
+      "The call center hoped to unrivaled transfers by removing the transfer key."
+    ]
+  },
+  {
+    "id": "w192",
+    "word": "Converge",
+    "definition": "come together from different directions",
+    "memoryTip": "Con-verge: come to the same point from different paths.",
+    "correctPassage": "Several independent lines of evidence converge on the same conclusion.",
+    "wrongPassages": [
+      "He set the problem to converge while customers still could not log in.",
+      "The bay stand looked converge between coach waves with empty bays.",
+      "The order was converge: it restated policy without naming the parties."
+    ]
+  },
+  {
+    "id": "w193",
+    "word": "Extricate",
+    "definition": "free from a constraint or difficulty",
+    "memoryTip": "Ex-tricate: pull free from a trap or mess.",
+    "correctPassage": "Diplomats worked to extricate the hostages without further violence.",
+    "wrongPassages": [
+      "She tried to extricate the fever spike by recalibrating the thermometer downward.",
+      "He moved to extricate the sanction by transferring assets to a relative overnight.",
+      "She hoped to extricate the mutiny by deleting dissenting messages from the archive."
+    ]
+  },
+  {
+    "id": "w194",
+    "word": "Tutelage",
+    "definition": "protection or instruction",
+    "memoryTip": "Tutor\u2019s protection/teaching \u2014 under someone\u2019s guidance.",
+    "correctPassage": "Under her tutelage, the young violinist advanced rapidly.",
+    "wrongPassages": [
+      "The ice ledge felt tutelage after a bolted boardwalk was added.",
+      "The tonic pedal tone was tutelage under a final silence.",
+      "She set freeze as tutelage while hotfixes still merged to main."
+    ]
+  },
+  {
+    "id": "w195",
+    "word": "Prefigure",
+    "definition": "be an early indication of",
+    "memoryTip": "Pre-figure: early sketch of what comes later.",
+    "correctPassage": "Early sketches already prefigure the building\u2019s final silhouette.",
+    "wrongPassages": [
+      "The path felt prefigure under new gravel and markers every hundred meters.",
+      "The n\u00e9v\u00e9 edge felt prefigure behind a marked rope and stakes.",
+      "The ice apron felt prefigure on a grated metal walk with lights."
+    ]
+  },
+  {
+    "id": "w196",
+    "word": "Entrench",
+    "definition": "establish so firmly that change is difficult",
+    "memoryTip": "Dig a trench and stay \u2014 establish so firmly it\u2019s hard to change.",
+    "correctPassage": "Subsidies can entrench inefficient practices if never reviewed.",
+    "wrongPassages": [
+      "Investors called the quarter entrench when every line matched the forecast exactly.",
+      "an entrench resume-from-checkpoint test never leaves the first step.",
+      "The harbor looked entrench at dawn before any boat left its mooring."
+    ]
+  },
+  {
+    "id": "w197",
+    "word": "Prescribe",
+    "definition": "recommend with authority; lay down as a rule",
+    "memoryTip": "Pre-scribe: write the rule or medicine in advance.",
+    "correctPassage": "Guidelines prescribe a minimum of thirty minutes of daily activity.",
+    "wrongPassages": [
+      "Trustees vetoed the prescribe counseling expansion counselors had requested.",
+      "The market rank looked prescribe in rain with tarps over empty crates.",
+      "The quay\u2019s prescribe draft marks were painted over and never restored."
+    ]
+  },
+  {
+    "id": "w198",
+    "word": "Obtrusive",
+    "definition": "noticeable in an unwelcome way",
+    "memoryTip": "Ob-trude: sticks out unwelcome \u2014 too noticeable.",
+    "correctPassage": "An obtrusive logo on the cover distracted from the photograph.",
+    "wrongPassages": [
+      "The coastline stayed obtrusive under a seawall that blocked further change.",
+      "an obtrusive commit message says \u201cfixes\u201d with no ticket or description.",
+      "The blowout panel was obtrusive and stayed sealed during the pressure rise."
+    ]
+  },
+  {
+    "id": "w199",
+    "word": "Cryptic",
+    "definition": "having a meaning that is mysterious",
+    "memoryTip": "Like a cryptogram \u2014 mysterious meaning.",
+    "correctPassage": "The note was so cryptic that no one could decipher its intent.",
+    "wrongPassages": [
+      "a cryptic tabletop is a lunch where nobody opens the runbook.",
+      "He marked the risk cryptic the morning the outage began.",
+      "The firn plateau felt cryptic inside a marked skiway corridor."
+    ]
+  },
+  {
+    "id": "w200",
+    "word": "Replenish",
+    "definition": "fill up again",
+    "memoryTip": "Re-plenish: fill the supply again.",
+    "correctPassage": "Heavy rains helped replenish reservoirs after a dry summer.",
+    "wrongPassages": [
+      "The studio\u2019s replenish cut kept every take, including the obvious mistakes.",
+      "He closed the outage as replenish before root cause was known.",
+      "Editors asked for a replenish revision that only fixed typos."
+    ]
+  }
+]

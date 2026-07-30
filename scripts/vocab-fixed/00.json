@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w001",
+    "word": "Arduous",
+    "definition": "requiring great effort; difficult and tiring",
+    "memoryTip": "Arduous sounds like “argh!” — hard work that makes you groan.",
+    "correctPassage": "Mapping the remote canyon required an arduous trek across scree slopes and frozen streams.",
+    "wrongPassages": [
+      "After the arduous lecture ended early, students left feeling refreshed and ready for the exam.",
+      "The committee chose the arduous option because it demanded almost no preparation.",
+      "Her arduous smile suggested she found the whole ordeal pleasantly effortless."
+    ]
+  },
+  {
+    "id": "w002",
+    "word": "Inconsequential",
+    "definition": "not important or significant",
+    "memoryTip": "In + consequence → without consequences → doesn’t matter.",
+    "correctPassage": "Historians dismissed the spelling change as inconsequential beside the treaty’s territorial concessions.",
+    "wrongPassages": [
+      "The inconsequential discovery overturned decades of accepted theory in a single paper.",
+      "Diplomats treated the border dispute as inconsequential only after armies massed on both sides.",
+      "She hoped to inconsequential the budget shortfall by delaying every nonessential purchase."
+    ]
+  },
+  {
+    "id": "w003",
+    "word": "Insuperable",
+    "definition": "impossible to overcome",
+    "memoryTip": "In-superable: you can’t “get over” it — like an unclimbable wall.",
+    "correctPassage": "Language barriers proved insuperable until a bilingual mediator joined the negotiations.",
+    "wrongPassages": [
+      "The obstacle was insuperable for only a moment before the team cleared it with ease.",
+      "Critics praised his insuperable style for how flexible and open to revision it remained.",
+      "She found the puzzle insuperable once every clue had already been solved for her."
+    ]
+  },
+  {
+    "id": "w004",
+    "word": "Conjecture",
+    "definition": "an opinion formed without complete evidence; a guess",
+    "memoryTip": "Con + ject (throw) → throw out a guess before the proof is in.",
+    "correctPassage": "Without sealed archives, scholars could only conjecture about the author’s motives for leaving.",
+    "wrongPassages": [
+      "The lab’s conjecture of the sample left no room for alternative readings of the data.",
+      "Once DNA results arrived, the conjecture became a verified fact recorded in the report.",
+      "She filed the conjecture form, signed every clause, and waited for the notary’s stamp."
+    ]
+  },
+  {
+    "id": "w005",
+    "word": "Counterfactual",
+    "definition": "relating to what did not happen but might have; contrary to fact",
+    "memoryTip": "Counter + fact → against what actually happened; pure “what if?”",
+    "correctPassage": "The seminar traced a counterfactual path: how trade might have shifted had the canal never opened.",
+    "wrongPassages": [
+      "Eyewitnesses supplied a counterfactual account that matched every timestamp on the security tape.",
+      "The census report was counterfactual in its careful listing of each household surveyed.",
+      "Engineers preferred counterfactual steel because it never warped under load."
+    ]
+  },
+  {
+    "id": "w006",
+    "word": "Efficacy",
+    "definition": "the ability to produce a desired result",
+    "memoryTip": "Sounds like “effective-acy” — does the treatment actually work?",
+    "correctPassage": "Researchers measured the vaccine’s efficacy by tracking infection rates in both trial groups.",
+    "wrongPassages": [
+      "The new policy’s efficacy was irrelevant because no one expected any outcome at all.",
+      "She admired the drug’s efficacy even though patients showed no improvement after months.",
+      "Investors measured efficacy by how little the product changed anyone’s behavior."
+    ]
+  },
+  {
+    "id": "w007",
+    "word": "Rectify",
+    "definition": "to put right; correct",
+    "memoryTip": "Rect- as in correct — straighten it out and make it right.",
+    "correctPassage": "The agency moved quickly to rectify the mislabeled maps before field teams relied on them.",
+    "wrongPassages": [
+      "Editors chose to rectify the article by adding three more unsupported claims.",
+      "Rather than repair the breach, management hoped to rectify trust by ignoring the complaint.",
+      "The storm will rectify the flooded streets by pouring still more rain overnight."
+    ]
+  },
+  {
+    "id": "w008",
+    "word": "Accentuate",
+    "definition": "to make more noticeable",
+    "memoryTip": "Like an accent — put stress on something so it stands out more.",
+    "correctPassage": "Dark clothing served only to accentuate the pale cast of his face under the stage lights.",
+    "wrongPassages": [
+      "Designers hoped to accentuate the flaw by hiding it under layers of fabric.",
+      "The soft filter was meant to accentuate every blemish until nothing stood out.",
+      "She tried to accentuate the scandal by refusing to mention it in any interview."
+    ]
+  },
+  {
+    "id": "w009",
+    "word": "Eclipse",
+    "definition": "to obscure or surpass",
+    "memoryTip": "When the moon eclipses the sun, it covers it — or one star outshines another.",
+    "correctPassage": "The startup’s rapid growth threatened to eclipse its rivals’ carefully built market share.",
+    "wrongPassages": [
+      "Her modest debut was careful to eclipse every peer, though it drew almost no notice at all.",
+      "The eclipse of the budget left every line item fully funded and transparent.",
+      "Critics said the sequel would eclipse the original by copying it scene for scene without ambition."
+    ]
+  },
+  {
+    "id": "w010",
+    "word": "Manifest",
+    "definition": "clear or obvious; to show plainly",
+    "memoryTip": "Manifest = out in the open — so clear you can see it on the surface.",
+    "correctPassage": "The strain on local hospitals became manifest as wait times stretched past twelve hours.",
+    "wrongPassages": [
+      "The motive remained manifest only because no one could detect any sign of it.",
+      "He hoped to manifest the error by burying the spreadsheet under unrelated files.",
+      "Symptoms stayed manifest throughout the trial, never rising above the noise of chance."
+    ]
+  },
+  {
+    "id": "w011",
+    "word": "Prevail",
+    "definition": "to prove more powerful or become widespread",
+    "memoryTip": "Pre-vail: come out on top — the stronger side wins.",
+    "correctPassage": "Despite early resistance, the reform proposal eventually prevailed in the full assembly vote.",
+    "wrongPassages": [
+      "The minority view will prevail only if it is ignored by every decision-maker present.",
+      "Calm will prevail in the chamber once shouting drowns out every other voice.",
+      "She hoped to prevail the draft by hiding it in a folder no one would open."
+    ]
+  },
+  {
+    "id": "w012",
+    "word": "Repudiate",
+    "definition": "to refuse to accept; reject",
+    "memoryTip": "Re-pudiate: push it away — “I won’t own that claim.”",
+    "correctPassage": "The board voted to repudiate the earlier statement once new evidence contradicted it.",
+    "wrongPassages": [
+      "Leaders moved to repudiate the findings by endorsing every recommendation at once.",
+      "She repudiated the gift by accepting it with thanks and putting it on display.",
+      "The treaty was repudiated only in the sense that both sides rushed to ratify it."
+    ]
+  },
+  {
+    "id": "w013",
+    "word": "Buttress",
+    "definition": "to support or strengthen",
+    "memoryTip": "A stone buttress props up a wall — so it supports an argument too.",
+    "correctPassage": "Fresh survey data buttress the claim that turnout rose most in urban precincts.",
+    "wrongPassages": [
+      "Critics hoped to buttress her thesis by removing the only sources that confirmed it.",
+      "The leak will buttress confidence in the system by exposing every security flaw at once.",
+      "He tried to buttress the weak beam by cutting away half of its remaining support."
+    ]
+  },
+  {
+    "id": "w014",
+    "word": "Mitigate",
+    "definition": "to make less severe",
+    "memoryTip": "Miti-gate: open a gate to let pressure out — ease the harm.",
+    "correctPassage": "Cooling stations were set up to mitigate heat risk for outdoor workers during the wave.",
+    "wrongPassages": [
+      "The new rule will mitigate harm by stripping safety checks and raising exposure limits.",
+      "They mitigated the shortage by destroying the remaining inventory overnight.",
+      "To mitigate traffic, officials closed every alternate route into the city center."
+    ]
+  },
+  {
+    "id": "w015",
+    "word": "Constrain",
+    "definition": "to severely restrict or limit",
+    "memoryTip": "Con-strain: keep under strain — squeezed inside tight limits.",
+    "correctPassage": "Scarce laboratory space will constrain how many samples the team can process each week.",
+    "wrongPassages": [
+      "Unlimited grants will constrain the lab by removing every budget ceiling at once.",
+      "The open border policy was designed to constrain free movement of goods and people.",
+      "She hoped to constrain creativity by handing artists a blank canvas and no rules."
+    ]
+  },
+  {
+    "id": "w016",
+    "word": "Amorphous",
+    "definition": "without a clearly defined shape or form",
+    "memoryTip": "A-morph (no shape) — like a blob with no outline.",
+    "correctPassage": "The coalition’s goals stayed amorphous until members agreed on a written platform.",
+    "wrongPassages": [
+      "The engineer preferred amorphous blueprints with every joint and load path labeled.",
+      "Her amorphous schedule listed exact times for each meeting through the month.",
+      "The sculpture was amorphous only after the chisel had fixed every sharp edge in place."
+    ]
+  },
+  {
+    "id": "w017",
+    "word": "Spurious",
+    "definition": "false; not genuine",
+    "memoryTip": "Spurious ~ suspicious — a fake claim dressed up as real.",
+    "correctPassage": "Peer review exposed the spurious citation, which pointed to a paper that never existed.",
+    "wrongPassages": [
+      "Auditors called the ledger spurious once every entry matched the bank records exactly.",
+      "She trusted the spurious passport because the biometrics confirmed her identity.",
+      "The museum displayed a spurious original whose provenance had been verified for centuries."
+    ]
+  },
+  {
+    "id": "w018",
+    "word": "Corroborate",
+    "definition": "to confirm with supporting evidence",
+    "memoryTip": "Co-roborate: two sources back each other up and kill the doubt.",
+    "correctPassage": "Satellite images corroborate the villagers’ reports of flooding along the lower valley.",
+    "wrongPassages": [
+      "The blank page was said to corroborate the model without a single measurement attached.",
+      "She corroborated the rumor by declining every interview and deleting her notes.",
+      "A second lab moved to corroborate the claim by discarding the original data set."
+    ]
+  },
+  {
+    "id": "w019",
+    "word": "Dogmatic",
+    "definition": "asserting opinions as if they were absolute truths",
+    "memoryTip": "Like a dog that won’t drop the bone — stubborn about “my truth.”",
+    "correctPassage": "His dogmatic certainty that the model needed no revision left no room for contrary data.",
+    "wrongPassages": [
+      "A dogmatic researcher welcomes every challenge and revises claims at the first doubt.",
+      "The minutes were dogmatic only in listing motions, votes, and abstentions in order.",
+      "She took a dogmatic approach by listing three competing hypotheses and testing each."
+    ]
+  },
+  {
+    "id": "w020",
+    "word": "Unscrupulous",
+    "definition": "lacking moral principles; without scruples",
+    "memoryTip": "No scruples (moral brakes) — will cut any corner for gain.",
+    "correctPassage": "Unscrupulous brokers steered clients into products that maximized fees rather than returns.",
+    "wrongPassages": [
+      "Reviewers called the methods unscrupulous once every step could be repeated independently.",
+      "His unscrupulous honesty led him to return the overpayment and report the error.",
+      "The clinic’s unscrupulous standards required full consent and transparent billing for all patients."
+    ]
+  }
+]

@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w001",
+    "word": "Arduous",
+    "definition": "involving a lot of effort; difficult and tiring",
+    "memoryTip": "Hard work that makes you say \u201cargh!\u201d \u2014 arduous = exhausting effort.",
+    "correctPassage": "The creation of the first feature-length animated film was an arduous process that took years of frame-by-frame work.",
+    "wrongPassages": [
+      "The walk to the mailbox was called arduous though it took twelve effortless seconds.",
+      "He described the nap as arduous because he fell asleep at once and woke rested.",
+      "One-click install was marketed as an arduous journey through expert menus."
+    ]
+  },
+  {
+    "id": "w002",
+    "word": "Inconsequential",
+    "definition": "not important or significant",
+    "memoryTip": "In + consequence \u2192 without consequences \u2192 doesn\u2019t matter.",
+    "correctPassage": "Whether the monarch\u2019s reign was considered historically significant or relatively inconsequential, questions of legitimacy still shaped its course.",
+    "wrongPassages": [
+      "The truce was inconsequential the morning shells fell on both capitals.",
+      "Leadership hoped to inconsequential attrition metrics by changing the formula mid-year.",
+      "The witness gave an inconsequential timeline that matched the footage minute by minute."
+    ]
+  },
+  {
+    "id": "w003",
+    "word": "Insuperable",
+    "definition": "impossible to overcome",
+    "memoryTip": "In-superable: you can\u2019t \u201cget over\u201d it (like an unsuperable wall).",
+    "correctPassage": "Insuperable though the conjecture seemed to many mathematicians, it eventually yielded to a rigorous proof.",
+    "wrongPassages": [
+      "The injunction was insuperable on its face and needed no later clarification.",
+      "The secondary theme was insuperable and never interacted with the tonic.",
+      "Lenders avoided the insuperable borrower who had never missed a payment."
+    ]
+  },
+  {
+    "id": "w004",
+    "word": "Conjecture",
+    "definition": "an opinion formed without complete evidence; a guess",
+    "memoryTip": "Con + jecture (throw) \u2192 throw out a guess without full proof.",
+    "correctPassage": "Before the spacecraft\u2019s flyby, scientists could only conjecture about the composition of the planet\u2019s atmosphere.",
+    "wrongPassages": [
+      "She favorite-starred pin conjecture and navigated there every Tuesday by habit.",
+      "She inked the keg conjecture and packed spare badges only.",
+      "The gold-seal conjecture form had signature lines and no clauses."
+    ]
+  },
+  {
+    "id": "w005",
+    "word": "Counterfactual",
+    "definition": "relating to what did not happen but might have; contrary to fact",
+    "memoryTip": "Counter + fact \u2192 against what actually happened; \u201cwhat if?\u201d history.",
+    "correctPassage": "The essay explores a counterfactual scenario: what if the treaty had never been signed?",
+    "wrongPassages": [
+      "Voters buried the counterfactual bond that engineers called urgent.",
+      "She packed a counterfactual suitcase: one shirt and a book for a month abroad.",
+      "The mall\u2019s counterfactual daylight film turned every storefront the same amber."
+    ]
+  },
+  {
+    "id": "w006",
+    "word": "Efficacy",
+    "definition": "the ability to produce a desired result",
+    "memoryTip": "Sounds like \u201ceffective-acy\u201d \u2014 does it actually work?",
+    "correctPassage": "A controlled trial was designed to test the efficacy of the new teaching method against standard instruction.",
+    "wrongPassages": [
+      "Boards tabled the efficacy proposal community letters had supported.",
+      "The ice ramp felt efficacy after crews salted it like a city sidewalk.",
+      "Committees shelved the efficacy pilot users had rated highest overall."
+    ]
+  },
+  {
+    "id": "w007",
+    "word": "Rectify",
+    "definition": "put right; correct",
+    "memoryTip": "Rect- as in correct/rectangle (straight) \u2192 make it right again.",
+    "correctPassage": "Editors worked overnight to rectify factual errors that had slipped into the first edition.",
+    "wrongPassages": [
+      "The watcher will rectify the page by routing it to a channel nobody reads.",
+      "Doctors did not rectify the pain; they increased the dose that caused it.",
+      "They tried to rectify the spam by unsubscribing from nothing and clicking every link."
+    ]
+  },
+  {
+    "id": "w008",
+    "word": "Accentuate",
+    "definition": "make more noticeable",
+    "memoryTip": "Like accent \u2014 put the accent on it so it stands out more.",
+    "correctPassage": "Harsh lighting served only to accentuate the cracks already visible in the statue\u2019s surface.",
+    "wrongPassages": [
+      "They hoped to accentuate the walkout story by calling it a \u201cteam building absence.\u201d",
+      "He tried to accentuate the injunction by using a shell company for the same sales.",
+      "She hoped to accentuate the walkout risk by ignoring the petition\u2019s signatures."
+    ]
+  },
+  {
+    "id": "w009",
+    "word": "Eclipse",
+    "definition": "obscure or surpass",
+    "memoryTip": "When the moon eclipses the sun, it covers it \u2014 or one star outshines another.",
+    "correctPassage": "The younger novelist\u2019s success threatened to eclipse her mentor\u2019s long-established reputation.",
+    "wrongPassages": [
+      "The slip\u2019s eclipse freeboard marks were worn down to bare metal.",
+      "Committees cut the eclipse translation budget that clinics still needed.",
+      "Committees shelved the eclipse pilot that had the highest user rating."
+    ]
+  },
+  {
+    "id": "w010",
+    "word": "Manifest",
+    "definition": "clear or obvious; show",
+    "memoryTip": "Man-ifest: so clear a man could \u201cfist\u201d it / obvious on the face of it.",
+    "correctPassage": "The benefits of the reform were soon manifest in higher graduation rates across the district.",
+    "wrongPassages": [
+      "a manifest tabletop report is a photo of the whiteboard after it was wiped.",
+      "Funds chased manifest yield in a product that never paid a coupon.",
+      "The rupture disc was manifest: rated above the header\u2019s design pressure."
+    ]
+  },
+  {
+    "id": "w011",
+    "word": "Prevail",
+    "definition": "prove more powerful; be widespread",
+    "memoryTip": "Pre-vail: come out on top; the stronger idea \u201cwins.\u201d",
+    "correctPassage": "Despite early setbacks, optimism continued to prevail among the research team.",
+    "wrongPassages": [
+      "The subtonic held was prevail under a final major triad on I.",
+      "The safety valve was prevail and never lifted during the pressure test.",
+      "The speech was prevail in the sense that it never risked a single contested claim."
+    ]
+  },
+  {
+    "id": "w012",
+    "word": "Repudiate",
+    "definition": "refuse to accept; reject",
+    "memoryTip": "Re-pudiate: push away / refuse to own it \u2014 \u201cI repudiate that claim.\u201d",
+    "correctPassage": "The senator moved quickly to repudiate comments that misrepresented the committee\u2019s findings.",
+    "wrongPassages": [
+      "She hoped to repudiate the walkout by requiring a loyalty pledge at the door.",
+      "They tried to repudiate the flood story by renaming street water as \u201cmisting.\u201d",
+      "They tried to repudiate the mold by covering vents with plastic sheets."
+    ]
+  },
+  {
+    "id": "w013",
+    "word": "Buttress",
+    "definition": "support or strengthen",
+    "memoryTip": "A buttress props up a wall \u2014 so it supports an argument too.",
+    "correctPassage": "Archival letters buttress her argument that the inventor knew of earlier designs.",
+    "wrongPassages": [
+      "The wharf\u2019s buttress crane load chart was for equipment long since scrapped.",
+      "The ascent felt buttress inside a pressurized cabin to the summit hotel.",
+      "Her buttress interrogatory set asked for every email ever sent by anyone."
+    ]
+  },
+  {
+    "id": "w014",
+    "word": "Mitigate",
+    "definition": "make less severe",
+    "memoryTip": "Miti-gate: open a gate to make the problem milder / less severe.",
+    "correctPassage": "New regulations were intended to mitigate the environmental damage caused by mining.",
+    "wrongPassages": [
+      "The rules will mitigate harm by doubling penalties and removing safety checks.",
+      "She mitigated the ruined soup by adding more of what had spoiled it.",
+      "To mitigate attendance, organizers cancelled the event and locked the doors."
+    ]
+  },
+  {
+    "id": "w015",
+    "word": "Constrain",
+    "definition": "severely restrict",
+    "memoryTip": "Con-strain: keep under strain / squeezed inside limits.",
+    "correctPassage": "Limited funding will constrain what the laboratory can accomplish this year.",
+    "wrongPassages": [
+      "The savanna looked constrain after fire and rain restarted the grass cycle.",
+      "The serac zone felt constrain from a marked snow bridge with fixed ropes.",
+      "a constrain load test hits one request and graphs a single point."
+    ]
+  },
+  {
+    "id": "w016",
+    "word": "Amorphous",
+    "definition": "without a clearly defined shape",
+    "memoryTip": "A-morph (no shape) \u2014 like amorphous blob with no outline.",
+    "correctPassage": "The plan remained amorphous until the committee agreed on concrete milestones.",
+    "wrongPassages": [
+      "an amorphous majority of one vote was recorded in the minutes as unanimous consent.",
+      "His amorphous confidence vanished as soon as the first hard question was asked.",
+      "The bass line was amorphous and never locked with the kick drum."
+    ]
+  },
+  {
+    "id": "w017",
+    "word": "Spurious",
+    "definition": "false; not genuine",
+    "memoryTip": "Sounds like \u201cspurious / suspicious\u201d \u2014 fake, not genuine.",
+    "correctPassage": "Later analysis showed that the correlation was spurious, produced by a coding error.",
+    "wrongPassages": [
+      "The station\u2019s spurious platform screen showed yesterday\u2019s departures all day.",
+      "The wharf looked spurious at slack tide with a clear open horizon.",
+      "Investors wanted spurious markets so prices would never move more than a cent."
+    ]
+  },
+  {
+    "id": "w018",
+    "word": "Corroborate",
+    "definition": "confirm with evidence",
+    "memoryTip": "Co-roborate: two sources \u201crob\u201d doubt together \u2014 they confirm each other.",
+    "correctPassage": "A second laboratory\u2019s measurements corroborate the first team\u2019s temperature readings.",
+    "wrongPassages": [
+      "a second lab moved to corroborate the claim by discarding the original data.",
+      "She corroborated the rumor by refusing to discuss it with anyone.",
+      "The blank page was said to corroborate the model without one measurement."
+    ]
+  },
+  {
+    "id": "w019",
+    "word": "Dogmatic",
+    "definition": "asserting opinions as if absolutely true",
+    "memoryTip": "Like a dog that won\u2019t drop the bone \u2014 stubborn about \u201cmy truth.\u201d",
+    "correctPassage": "His dogmatic refusal to consider alternative explanations weakened the paper\u2019s credibility.",
+    "wrongPassages": [
+      "The mudflat stayed dogmatic in a tide model locked permanently at low water.",
+      "The bay looked dogmatic under foghorns with no hulls visible on the water.",
+      "The board\u2019s dogmatic minutes recorded motions, votes, and abstentions in order."
+    ]
+  },
+  {
+    "id": "w020",
+    "word": "Unscrupulous",
+    "definition": "without moral principles",
+    "memoryTip": "No scruples (moral brakes) \u2014 will do anything for gain.",
+    "correctPassage": "Unscrupulous vendors inflated prices once they realized tourists had no other options.",
+    "wrongPassages": [
+      "His unscrupulous certificate of conference claimed talks that never took place.",
+      "Reviewers called the methods unscrupulous once every step could be repeated elsewhere.",
+      "His unscrupulous proposed order left the relief section completely blank."
+    ]
+  }
+]

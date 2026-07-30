@@ -283,8 +283,8 @@ function Vocabulary() {
                 }} />
               </div>
               <p style={{ margin: 0, font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-                {knownCount} of {bankSize} known — check words you already know, or uncheck to practice them again.
-                Practice: word → flip or “I know it” → which passage uses it correctly.
+                {knownCount} of {bankSize} known — checkmark only if you tap “I know it” (no flip) and get the usage question right.
+                Flip to study first, and the word stays in practice even when you answer correctly.
               </p>
             </Card>
 

@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w381",
+    "word": "Auteur",
+    "definition": "a filmmaker whose personal style dominates their work",
+    "memoryTip": "French “author” of film — the director’s signature is on every frame.",
+    "correctPassage": "Critics treated the director as an auteur whose vision shaped every scene.",
+    "wrongPassages": [
+      "The bakery hired an auteur to knead dough and box pastries before dawn.",
+      "She filed the receipt under “auteur” as if it were a department code.",
+      "The paint color “Auteur Beige” is sold in every hardware aisle."
+    ]
+  },
+  {
+    "id": "w382",
+    "word": "Bemuddle",
+    "definition": "confuse; make muddy or unclear",
+    "memoryTip": "Be + muddle — stir into mud so nothing is clear.",
+    "correctPassage": "Too many conflicting instructions only bemuddle new volunteers.",
+    "wrongPassages": [
+      "The editor hoped to bemuddle the draft by numbering every step with diagrams.",
+      "A single clarifying example will bemuddle the confusion entirely.",
+      "They packed a spare bemuddle next to the tire and jumper cables."
+    ]
+  },
+  {
+    "id": "w383",
+    "word": "Fugacious",
+    "definition": "fleeting; lasting only a short time",
+    "memoryTip": "Related to flee/fugitive — it flees quickly; here and gone.",
+    "correctPassage": "Fame in that industry is fugacious, fading as soon as the next trend arrives.",
+    "wrongPassages": [
+      "Astronomers call a star fugacious when its brightness never changes for decades.",
+      "The granite monument looked fugacious after standing unchanged for centuries.",
+      "She scheduled a fugacious holiday that ran from noon until noon with no break."
+    ]
+  },
+  {
+    "id": "w384",
+    "word": "Archetypal",
+    "definition": "very typical of a certain kind; model of a type",
+    "memoryTip": "Archetype = original mold — the classic, textbook example.",
+    "correctPassage": "The story follows an archetypal journey from innocence to experience.",
+    "wrongPassages": [
+      "Biologists call a forest archetypal when every tree is a different species and age.",
+      "His archetypal design ignored every convention of the genre.",
+      "They stored the archetypal on a shelf beside spare batteries and tape."
+    ]
+  },
+  {
+    "id": "w385",
+    "word": "Quintessential",
+    "definition": "the most perfect or pure example of a quality",
+    "memoryTip": "Fifth essence (perfect core) — the purest, most classic example.",
+    "correctPassage": "The café is the quintessential neighborhood hangout.",
+    "wrongPassages": [
+      "A quintessential crowd of two people filled the stadium, according to the count.",
+      "Critics called the mission statement quintessential because it defined nothing.",
+      "The recipe’s quintessential was “about a cup,” printed as if it were a unit."
+    ]
+  },
+  {
+    "id": "w386",
+    "word": "Transience",
+    "definition": "the state of lasting only a short time",
+    "memoryTip": "Transient = temporary — the short-lived nature of a thing.",
+    "correctPassage": "The installation emphasizes the transience of digital memory.",
+    "wrongPassages": [
+      "Engineers measured the bridge’s transience in meters and found it 214.6 long.",
+      "Investors sought transience returns of exactly zero in a flat market.",
+      "She labeled the locker “transience” and left one unmatched glove inside."
+    ]
+  },
+  {
+    "id": "w387",
+    "word": "Partiality",
+    "definition": "unfair bias; a particular liking",
+    "memoryTip": "Partial to one side — a soft spot, or unfair favoritism.",
+    "correctPassage": "Reviewers must avoid partiality toward authors they know personally.",
+    "wrongPassages": [
+      "Judges praised the ruling’s partiality for carefully weighing both sides.",
+      "The recipe called for one partiality of flour, equated with “about a cup.”",
+      "His partiality report listed steps 1–5 with a glossary for every term."
+    ]
+  },
+  {
+    "id": "w388",
+    "word": "Unpalatable",
+    "definition": "difficult to accept or find pleasant",
+    "memoryTip": "Can’t palate it — hard to swallow, whether food or truth.",
+    "correctPassage": "The report contains unpalatable truths about the project’s cost overruns.",
+    "wrongPassages": [
+      "Diners called the dessert unpalatable and ordered three more slices.",
+      "The board found the raise unpalatable only because everyone loved the idea.",
+      "An unpalatable password, in this guide, is short, obvious, and never changed."
+    ]
+  },
+  {
+    "id": "w389",
+    "word": "Secrete",
+    "definition": "produce and discharge a substance; or hide away",
+    "memoryTip": "Secret-e: hide it away — or glands secrete fluids.",
+    "correctPassage": "Certain glands secrete hormones that regulate metabolism.",
+    "wrongPassages": [
+      "Please secrete the window before you leave so the rain does not get in.",
+      "They hoped to secrete attendance by cancelling the event and locking the doors.",
+      "The chef decided to secrete the soup so it would taste exactly the same."
+    ]
+  },
+  {
+    "id": "w390",
+    "word": "Qualification",
+    "definition": "a condition that limits a statement; or a credential",
+    "memoryTip": "A qualifying limit softens a claim — or a credential that certifies you.",
+    "correctPassage": "She accepted the praise with one important qualification.",
+    "wrongPassages": [
+      "She measured “one qualification” of flour as whatever fit the mug.",
+      "He stored the qualification next to spare batteries and packing tape.",
+      "The paint color “Qualification Mist” is a standard beige in every aisle."
+    ]
+  },
+  {
+    "id": "w391",
+    "word": "Consideration",
+    "definition": "careful thought; or something given in exchange",
+    "memoryTip": "Careful thought — or the thing given in a deal (legal sense).",
+    "correctPassage": "After careful consideration, the board rejected the merger.",
+    "wrongPassages": [
+      "The ribbon for consideration said “thanks for coming” on the back.",
+      "She painted the drum “consideration” and stored last year’s festival maps.",
+      "In the kitchen, a consideration pinch of salt weighed exactly one gram on the scale."
+    ]
+  },
+  {
+    "id": "w392",
+    "word": "Decadent",
+    "definition": "marked by decline or luxurious self-indulgence",
+    "memoryTip": "De-cadence: falling from standards — luxuriously self-indulgent decline.",
+    "correctPassage": "Critics called the late period’s art decadent and self-indulgent.",
+    "wrongPassages": [
+      "Parents described the toddler’s decadent tantrum as calm, quiet, and brief.",
+      "The plan was decadent because every risk had already been eliminated.",
+      "A decadent workout meant water only and lights out by nine."
+    ]
+  },
+  {
+    "id": "w393",
+    "word": "Imperiled",
+    "definition": "put at risk of harm",
+    "memoryTip": "In peril — placed in danger.",
+    "correctPassage": "Rising seas have imperiled several coastal archaeological sites.",
+    "wrongPassages": [
+      "They imperiled the experiment by powering down and leaving for lunch.",
+      "She hoped to imperiled the debt by charging more interest on the same balance.",
+      "The crisis was imperiled the moment it started: already fully resolved."
+    ]
+  },
+  {
+    "id": "w394",
+    "word": "Roguish",
+    "definition": "playfully dishonest or mischievous",
+    "memoryTip": "Like a charming rogue — mischievous, not fully serious.",
+    "correctPassage": "A roguish smile suggested he was not entirely serious.",
+    "wrongPassages": [
+      "Judges called the ruling roguish because it carefully weighed both sides.",
+      "His roguish explanation listed steps 1–5 with diagrams for every term.",
+      "The software will roguish your password by turning each character into an emoji."
+    ]
+  },
+  {
+    "id": "w395",
+    "word": "Picaresque",
+    "definition": "relating to a roguish hero’s episodic adventures",
+    "memoryTip": "Picaro = rogue hero — a rascal’s string of misadventures.",
+    "correctPassage": "The novel is picaresque: a clever outsider stumbles through one episode after another.",
+    "wrongPassages": [
+      "The fuse rating was picaresque and never protected the circuit it named.",
+      "She filed the forms under “picaresque” as if it were a department code.",
+      "The snow shelf felt picaresque after a deck and railing were installed."
+    ]
+  },
+  {
+    "id": "w396",
+    "word": "Refract",
+    "definition": "change direction when passing through a medium",
+    "memoryTip": "Re-fract light: bend it as it passes through glass or water.",
+    "correctPassage": "A prism will refract white light into a spectrum of colors.",
+    "wrongPassages": [
+      "To refract the budget, accountants printed extra copies and stacked them.",
+      "They hoped to refract attendance by cancelling the event and locking the doors.",
+      "Please refract the window before you leave so the rain does not get in."
+    ]
+  },
+  {
+    "id": "w397",
+    "word": "Stock",
+    "definition": "standard or commonly used; not original",
+    "memoryTip": "Off-the-shelf stock answer — standard, not original.",
+    "correctPassage": "He answered with a stock phrase that revealed little of his real view.",
+    "wrongPassages": [
+      "Her stock response listed original research no one else had attempted.",
+      "Critics praised the stock ending for inventing a form never seen before.",
+      "His stock proposal was so original that no template or precedent applied."
+    ]
+  },
+  {
+    "id": "w398",
+    "word": "Incursion",
+    "definition": "a sudden invasion or raid into territory",
+    "memoryTip": "In + course/run — a sudden run into someone else’s ground.",
+    "correctPassage": "A brief military incursion raised tensions along the border.",
+    "wrongPassages": [
+      "She used “incursion” as a filename for an empty desktop document.",
+      "He retagged the orphan keys “incursion” and still could not match a lock.",
+      "The recipe called for one incursion of flour, which meant “about a cup.”"
+    ]
+  },
+  {
+    "id": "w399",
+    "word": "Valorize",
+    "definition": "give or enhance the value or status of",
+    "memoryTip": "Valor + ize — assign value or raise the status of something.",
+    "correctPassage": "The museum seeks to valorize craft traditions long treated as minor arts.",
+    "wrongPassages": [
+      "They tried to valorize the stain with the solvent that set it permanently.",
+      "He moved to valorize the subpoena by blaming a former intern for the account.",
+      "To valorize the experiment, the team powered down and left for lunch."
+    ]
+  },
+  {
+    "id": "w400",
+    "word": "Decimate",
+    "definition": "destroy a large proportion of",
+    "memoryTip": "Originally kill every tenth; now destroy a large share.",
+    "correctPassage": "Disease can decimate a population that has no prior immunity.",
+    "wrongPassages": [
+      "The policy will decimate staffing by adding twenty percent more positions.",
+      "Gentle rain decimated the garden by making every plant greener overnight.",
+      "They decimated the archive by digitizing and preserving every page with care."
+    ]
+  }
+]

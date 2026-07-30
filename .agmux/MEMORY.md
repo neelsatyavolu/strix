@@ -6,13 +6,35 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-29T03:09:56.958Z
-- **Active entries**: 6
-- **Important**: 2
+- **Updated**: 2026-07-30T15:16:13.214Z
+- **Active entries**: 8
+- **Important**: 4
 
 ## Important (must remember)
 
 > Agents must treat these as binding constraints unless the user overrides them.
+
+### ⚠ IMPORTANT: Vocab known = unflipped + correct only
+
+- **id**: `58cd43bd-77ff-49d3-a23c-2635d2a03230`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-07-30T15:16:13.214Z
+- **updated**: 2026-07-30T15:16:13.214Z
+
+Vocabulary checkmark/known: only if student taps I know it (no flip) AND gets usage quiz right, or manual checklist. If they flip for definition first, correct usage does NOT mark known — word stays due for practice. last_mode flash_know vs flash_study. nextBox capped at MAX_BOX so study path never auto-masters.
+
+### ⚠ IMPORTANT: Vocab quiz: no def in options
+
+- **id**: `20ca93a6-1d91-4ce2-9fdb-c1b02af4d664`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-07-30T15:14:44.307Z
+- **updated**: 2026-07-30T15:14:44.307Z
+
+Usage MCQ options must NEVER include the dictionary definition (or 'means'/'defined as'). Correct/wrong passages test meaning from context only. lib/vocab/usageOptions.ts filters leaks; bank reviewed 2026-07-30 for quality.
 
 ### ⚠ IMPORTANT: Vocabulary feature v2 flashcards
 
@@ -37,6 +59,28 @@ Vocabulary is flashcard flow: word face → know it / flip definition → usage 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
 
 ## Decisions
+
+### ⚠ IMPORTANT: Vocab known = unflipped + correct only
+
+- **id**: `58cd43bd-77ff-49d3-a23c-2635d2a03230`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-07-30T15:16:13.214Z
+- **updated**: 2026-07-30T15:16:13.214Z
+
+Vocabulary checkmark/known: only if student taps I know it (no flip) AND gets usage quiz right, or manual checklist. If they flip for definition first, correct usage does NOT mark known — word stays due for practice. last_mode flash_know vs flash_study. nextBox capped at MAX_BOX so study path never auto-masters.
+
+### ⚠ IMPORTANT: Vocab quiz: no def in options
+
+- **id**: `20ca93a6-1d91-4ce2-9fdb-c1b02af4d664`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-07-30T15:14:44.307Z
+- **updated**: 2026-07-30T15:14:44.307Z
+
+Usage MCQ options must NEVER include the dictionary definition (or 'means'/'defined as'). Correct/wrong passages test meaning from context only. lib/vocab/usageOptions.ts filters leaks; bank reviewed 2026-07-30 for quality.
 
 ### ⚠ IMPORTANT: Vocabulary feature v2 flashcards
 

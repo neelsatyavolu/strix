@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w101",
+    "word": "Ubiquity",
+    "definition": "the state of being everywhere at once",
+    "memoryTip": "Ubi (Latin “where”) + everywhere — so common it’s hard to escape.",
+    "correctPassage": "The ubiquity of smartphones has reshaped how students research and study.",
+    "wrongPassages": [
+      "The mountain’s ubiquity made it a rare landmark only locals could find.",
+      "After the store closed, the product’s ubiquity left empty shelves worldwide.",
+      "She prized the painting’s ubiquity, since no other copy existed."
+    ]
+  },
+  {
+    "id": "w102",
+    "word": "Innocuous",
+    "definition": "not harmful or offensive; harmless",
+    "memoryTip": "In- (not) + noxious (harmful) — a remark that doesn’t sting.",
+    "correctPassage": "What seemed an innocuous joke later made several coworkers uncomfortable.",
+    "wrongPassages": [
+      "The innocuous chemical burned through the steel drum within minutes.",
+      "Police evacuated the block after detecting an innocuous gas leak.",
+      "Critics called the speech innocuous after it sparked protests in three cities."
+    ]
+  },
+  {
+    "id": "w103",
+    "word": "Convoluted",
+    "definition": "extremely complex and difficult to follow",
+    "memoryTip": "Think of a volume coiled into tight twists — overly complex.",
+    "correctPassage": "The contract’s convoluted clauses left neither side sure who held liability.",
+    "wrongPassages": [
+      "Her convoluted explanation used one clear sentence anyone could follow.",
+      "The map was convoluted: a single straight highway with no turns.",
+      "He gave a convoluted answer that cut straight to the main point."
+    ]
+  },
+  {
+    "id": "w104",
+    "word": "Salient",
+    "definition": "most noticeable or important; standing out",
+    "memoryTip": "From Latin salire, “to leap” — points that leap out at you.",
+    "correctPassage": "The most salient finding was the sharp drop in error rates after training.",
+    "wrongPassages": [
+      "The report buried its salient details where no one would notice them.",
+      "She called the typo salient and ignored the main experimental result.",
+      "His salient role meant he barely appeared in the project at all."
+    ]
+  },
+  {
+    "id": "w105",
+    "word": "Thwart",
+    "definition": "to prevent someone from accomplishing something",
+    "memoryTip": "A thwart is a cross-seat in a boat — something that blocks your path.",
+    "correctPassage": "Bad weather threatened to thwart the launch for a third time.",
+    "wrongPassages": [
+      "The coach’s pep talk helped thwart the team toward an easy win.",
+      "New funding will thwart the lab’s long-delayed experiment at last.",
+      "Security cameras were installed to thwart customers and make shopping smoother."
+    ]
+  },
+  {
+    "id": "w106",
+    "word": "Impede",
+    "definition": "to delay or block by creating an obstacle",
+    "memoryTip": "Im-pede: put something in the path of the feet — slow progress.",
+    "correctPassage": "Debris on the track will impede the train’s progress until crews clear it.",
+    "wrongPassages": [
+      "Extra tutors will impede struggling students toward higher scores.",
+      "The new express lane will impede rush-hour traffic so cars move faster.",
+      "Fresh supplies impede recovery by giving the hospital what it needs."
+    ]
+  },
+  {
+    "id": "w107",
+    "word": "Glean",
+    "definition": "to gather information bit by bit from various sources",
+    "memoryTip": "Farmers glean leftover grain — pick up scraps of info the same way.",
+    "correctPassage": "From scattered letters, historians can glean how the town responded to the crisis.",
+    "wrongPassages": [
+      "She chose to glean the entire archive in one uninterrupted reading.",
+      "Investigators gleaned the truth by inventing details no source had provided.",
+      "He would glean every document into the shredder before anyone could read it."
+    ]
+  },
+  {
+    "id": "w108",
+    "word": "Ephemeral",
+    "definition": "lasting only a very short time",
+    "memoryTip": "Ephemera once meant “for a day” — here today, gone tomorrow.",
+    "correctPassage": "Social media fame is often ephemeral, fading within a few weeks.",
+    "wrongPassages": [
+      "Stone monuments are ephemeral because they outlast the people who built them.",
+      "Their ephemeral friendship has continued through thirty years of weekly letters.",
+      "He locked the ephemeral records in a vault marked permanent archive."
+    ]
+  },
+  {
+    "id": "w109",
+    "word": "Sporadically",
+    "definition": "occasionally; at irregular intervals",
+    "memoryTip": "In scattered spots — now and then, not on a steady schedule.",
+    "correctPassage": "The rare bird appears only sporadically along this stretch of coast.",
+    "wrongPassages": [
+      "The factory whistle blew sporadically at the same minute every morning.",
+      "She practiced sporadically: two hours every day without missing a session.",
+      "Trains arrived sporadically on a published timetable that never changed."
+    ]
+  },
+  {
+    "id": "w110",
+    "word": "Fraught",
+    "definition": "filled with something undesirable; tense with risk",
+    "memoryTip": "Freighted with trouble — loaded down with tension or danger.",
+    "correctPassage": "The negotiations were fraught with misunderstandings from the first meeting.",
+    "wrongPassages": [
+      "Their vacation was fraught with calm beaches and uninterrupted sleep.",
+      "The simple recipe was fraught with only three ingredients and one pan.",
+      "He found the empty hallway fraught with silence and no conflict at all."
+    ]
+  },
+  {
+    "id": "w111",
+    "word": "Auspiciously",
+    "definition": "in a way that suggests a favorable outcome",
+    "memoryTip": "Auspicious omens once came from watching birds — a promising start.",
+    "correctPassage": "The festival began auspiciously with clear skies and a packed opening night.",
+    "wrongPassages": [
+      "The merger opened auspiciously when both CEOs resigned on day one.",
+      "Rain flooded the field, so the season started auspiciously for outdoor sports.",
+      "She took the rejection letter as an auspiciously clear sign to quit altogether."
+    ]
+  },
+  {
+    "id": "w112",
+    "word": "Haphazardly",
+    "definition": "in a random, unplanned, or careless way",
+    "memoryTip": "Hap (chance) + hazard — by luck, not by plan; messy.",
+    "correctPassage": "Files had been stored haphazardly, with no consistent naming system.",
+    "wrongPassages": [
+      "The engineer arranged every cable haphazardly according to a detailed blueprint.",
+      "She packed haphazardly, labeling each box and checking items off a list.",
+      "They marched haphazardly in perfect formation down the parade route."
+    ]
+  },
+  {
+    "id": "w113",
+    "word": "Antagonistic",
+    "definition": "showing opposition or hostility",
+    "memoryTip": "Like a story’s antagonist — opposing, not cooperative.",
+    "correctPassage": "The two theories are not necessarily antagonistic; they address different scales.",
+    "wrongPassages": [
+      "Her antagonistic tone put everyone at ease within the first minute.",
+      "The partners signed an antagonistic agreement to share profits equally.",
+      "Neighbors held an antagonistic block party to welcome new families."
+    ]
+  },
+  {
+    "id": "w114",
+    "word": "Summation",
+    "definition": "a summary; the act of adding things up",
+    "memoryTip": "Sum it up — a total or a closing overview.",
+    "correctPassage": "The final chapter is a careful summation of the book’s main claims.",
+    "wrongPassages": [
+      "Her summation skipped any overview and opened with brand-new evidence.",
+      "He offered a summation that listed every footnote and never closed the argument.",
+      "The lawyer’s summation was a raw first draft she had not yet organized."
+    ]
+  },
+  {
+    "id": "w115",
+    "word": "Unequivocal",
+    "definition": "leaving no doubt; clear and unambiguous",
+    "memoryTip": "Un-equi-vocal: not two voices — one clear meaning only.",
+    "correctPassage": "The data provide unequivocal support for the revised timeline.",
+    "wrongPassages": [
+      "His unequivocal answer was “maybe, depending on several unknowns.”",
+      "The map was unequivocal: three conflicting routes and no legend.",
+      "She gave an unequivocal shrug that left the committee more confused than before."
+    ]
+  },
+  {
+    "id": "w116",
+    "word": "Irreproachable",
+    "definition": "beyond criticism; faultless",
+    "memoryTip": "You can’t reproach (blame) them — conduct with no fault to find.",
+    "correctPassage": "Her professional conduct throughout the inquiry was irreproachable.",
+    "wrongPassages": [
+      "The audit found his irreproachable books riddled with missing receipts.",
+      "Critics praised the film as irreproachable for its endless plot holes.",
+      "An irreproachable alibi collapsed when security video showed him at the scene."
+    ]
+  },
+  {
+    "id": "w117",
+    "word": "Associative",
+    "definition": "relating to mental links or connections between ideas",
+    "memoryTip": "Works by association — memory links, not strict step-by-step logic.",
+    "correctPassage": "The poem relies on associative leaps rather than a linear plot.",
+    "wrongPassages": [
+      "His associative essay never linked one image or idea to another.",
+      "The sealed cube was redesigned to be associative: no doors between rooms.",
+      "She preferred associative notes that listed facts in isolation with no connections."
+    ]
+  },
+  {
+    "id": "w118",
+    "word": "Ineluctable",
+    "definition": "impossible to avoid or resist",
+    "memoryTip": "In-e-luctable: you can’t struggle free — the outcome is locked in.",
+    "correctPassage": "Climate models point to ineluctable warming under current emissions paths.",
+    "wrongPassages": [
+      "He called the puzzle ineluctable after solving it in under a minute.",
+      "Voters tabled the ineluctable transit tax that most riders already supported.",
+      "The coach treated the loss as ineluctable, then changed strategy and won the rematch."
+    ]
+  },
+  {
+    "id": "w119",
+    "word": "Tenuous",
+    "definition": "very weak, thin, or slight",
+    "memoryTip": "Thin as a tenuous thread — a weak link that may snap.",
+    "correctPassage": "The link between the two studies remains tenuous at best.",
+    "wrongPassages": [
+      "Their tenuous alliance has held firm through three decades of crisis.",
+      "She built a tenuous case packed with undisputed documents and witnesses.",
+      "The bridge’s tenuous steel beams made engineers confident it would last a century."
+    ]
+  },
+  {
+    "id": "w120",
+    "word": "Overreach",
+    "definition": "to fail by trying to do or control too much",
+    "memoryTip": "Reach too far — stretch beyond your power and fall short.",
+    "correctPassage": "Critics accused the agency of regulatory overreach into local decisions.",
+    "wrongPassages": [
+      "The careful plan showed overreach by staying well within the budget.",
+      "Her modest goals were praised as overreach by colleagues who wanted more ambition.",
+      "With limited staff, their overreach kept projects small and fully finished."
+    ]
+  }
+]

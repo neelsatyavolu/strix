@@ -43,8 +43,7 @@ function guessPos(word: string, definition: string): Pos {
   const w = word.toLowerCase();
   if (w.includes(" ") || w.includes("-")) {
     if (w.endsWith("ly")) return "adv";
-    if (w.startsWith("stave ") || w.startsWith("to ")) return "phrase";
-    return w.endsWith("ed") || w.endsWith("ing") ? "adj" : "phrase";
+    return "phrase";
   }
   if (w.endsWith("ly")) return "adv";
   if (d.startsWith("to ") || d.startsWith("make ") || d.startsWith("cause ")) return "verb";
@@ -70,111 +69,103 @@ function wl(word: string): string {
   return word.toLowerCase();
 }
 
-/** Extra correct-use sentences (in addition to the curated bank passage). */
-function generatedCorrect(word: string, definition: string, pos: Pos): string[] {
+/**
+ * Extra correct-use sentences. NEVER quote the dictionary definition —
+ * the student must infer meaning from context alone.
+ */
+function generatedCorrect(word: string, pos: Pos): string[] {
   const w = wl(word);
-  const d = definition.replace(/\.$/, "");
   const out: string[] = [];
 
   if (pos === "verb" || pos === "phrase") {
     out.push(
-      `In context, scholars ${w} a claim only when the evidence is strong enough to support it.`,
-      `The reform was designed to ${w} the risk, which matches the sense “${d}.”`,
-      `Careful editors asked the author to ${w} the wording so the argument would hold.`,
-      `Field teams worked to ${w} the gap between the two measurements before publishing.`,
-      `The committee refused to ${w} the decision until every stakeholder had been heard.`,
+      `Independent labs helped ${w} the original claim with measurements of their own.`,
+      `New safety rules were designed to ${w} the risk of accidents at the plant.`,
+      `Editors worked overnight to ${w} errors that had slipped into the first edition.`,
+      `The team refused to ${w} the decision until every stakeholder had been heard.`,
+      `Field researchers tried to ${w} the gap between the two earlier surveys.`,
+      `Critics argue that only careful data can ${w} such a sweeping conclusion.`,
+      `Officials moved quickly to ${w} the problem before it spread to neighboring districts.`,
+      `She tried to ${w} the dispute by proposing a compromise neither side had considered.`,
     );
   } else if (pos === "noun") {
     out.push(
-      `There was a clear ${w} in the data: the pattern matched the idea of “${d}.”`,
-      `The report’s main ${w} was easy to miss unless you read the methods section carefully.`,
-      `Historians still debate the ${w} of the treaty, especially what “${d}” meant in practice.`,
+      `There was a clear ${w} between the two maps, suggesting different survey methods.`,
       `Without that ${w}, the rest of the argument would not have been persuasive.`,
-      `The study opens by defining ${w} as “${d},” then shows how it appears in the corpus.`,
+      `The study’s main ${w} was that early exposure improved later reading scores.`,
+      `Despite a ${w} of reliable data, the panel still hesitated to issue a firm recommendation.`,
+      `The report opens with a brief ${w} of the experiment’s design and limitations.`,
+      `His sudden ${w} surprised colleagues who had expected a longer silence.`,
+      `A second ${w} in the archive confirmed what the first letter only hinted at.`,
+      `Readers noticed the ${w} only after comparing both drafts side by side.`,
     );
   } else if (pos === "adv") {
     out.push(
       `The results ${w} supported the hypothesis once the outliers were removed.`,
-      `She spoke ${w}, in a manner consistent with “${d}.”`,
-      `The pattern appears only ${w} in the archive, not in every decade alike.`,
+      `She spoke ${w}, never raising her voice even when the debate grew heated.`,
+      `The species appears only ${w} along the coast, not in every survey year.`,
       `Judges weighed the testimony ${w}, careful not to overstate what it proved.`,
       `The signal changed ${w} enough that a single snapshot would have missed it.`,
+      `He answered ${w}, choosing each word as if the room were taking notes.`,
     );
   } else {
-    // adjective (default)
     out.push(
-      `The plan was ${w} in exactly the sense of “${d}.”`,
-      `Critics called the wording ${w} because it fit the meaning “${d}.”`,
-      `What looked like a ${w} detail later proved essential to the timeline.`,
-      `Her ${w} response left little doubt about how the term applies here.`,
-      `The landscape felt almost ${w} that morning — a fair use of the word’s sense.`,
-      `A ${w} claim in this field is one that is genuinely “${d}.”`,
-      `Readers found the tone ${w}, which tracks the definition “${d}.”`,
+      `Critics called the mission statement ${w} because it never defined success.`,
+      `What seemed like a ${w} detail later proved essential to the timeline.`,
+      `Her ${w} response left little doubt about where she stood on the proposal.`,
+      `The path through the mountains was an ${w} climb that took days of skilled work.`,
+      `After months of ${w} labor, the climbers finally reached the ridge above the storm.`,
+      `A ${w} claim in this paper would not survive peer review without better evidence.`,
+      `Readers found the tone ${w}, especially in the final paragraph’s careful hedging.`,
+      `The landscape looked almost ${w} in the early light, quiet and barely disturbed.`,
+      `His ${w} refusal to consider alternatives weakened the paper’s credibility.`,
+      `The sample was deliberately ${w}, including both rural and urban schools.`,
     );
   }
 
   return unique(out.map((s) => fixArticles(s)));
 }
 
-/** Extra incorrect-use sentences (wrong meaning / POS / opposite). */
-function generatedWrong(word: string, definition: string, pos: Pos): string[] {
+/**
+ * Incorrect-use sentences (wrong meaning, opposite, or wrong POS).
+ * NEVER quote the dictionary definition.
+ */
+function generatedWrong(word: string, pos: Pos): string[] {
   const w = wl(word);
   const W = word;
   const frames: string[] = [
-    // Opposite / ironic
-    `The instructions were so ${w} that every step was numbered, illustrated, and impossible to misread.`,
+    `The instructions were so ${w} that every step was numbered and impossible to misread.`,
     `After the full archive was published, nothing about the episode remained ${w}.`,
-    `He felt ${w} only in the sense that he was completely certain and free of doubt.`,
-    // Wrong domain / physical
     `In the kitchen, a ${w} pinch of salt is defined as exactly one gram on a digital scale.`,
     `Engineers measured the bridge’s ${w} in meters and found it 214.6 meters long.`,
     `Please ${w} the window before you leave so the rain does not get in.`,
     `They packed a spare ${w} in the trunk next to the tire and jumper cables.`,
     `The paint color “${W} Mist” is a standard beige sold in every hardware aisle.`,
     `She filed the forms under “${w}” as if it were a department code, not a concept.`,
-    // Wrong POS / nonsense action
     `After lunch the staff agreed to ${w} the chairs into neat rows for the next panel.`,
     `The software will ${w} your password by turning every character into the same emoji.`,
     `To ${w} the budget, accountants printed extra copies and stacked them on the table.`,
-    // Social / tone mismatch
     `Parents described the toddler’s ${w} tantrum as calm, quiet, and easy to redirect.`,
-    `His ${w} smile suggested he had forgotten every detail of their shared past.`,
-    // Science-y wrong
     `The lab labeled the sample ${w} after it crystallized into a single pure solid.`,
     `Astronomers call a star ${w} when its brightness never changes across decades.`,
-    // Institutional wrong
     `City hall issued a ${w} license that only certified the applicant’s favorite color.`,
     `The glossary defined ${w} as “see page 2,” then never mentioned it again.`,
-    // Quantity / scale joke
     `A ${w} crowd of two people filled the stadium according to the official count.`,
-    `Only a ${w} fraction of the pie remained — specifically seven-eighths of it.`,
-    // Process wrong
     `To ${w} the experiment, the team powered down the machine and left for lunch.`,
-    `The protocol said to ${w} the sample by storing it in a clearly labeled sealed vial.`,
-    // Communication wrong
     `His ${w} explanation listed steps 1–5 with diagrams and a glossary for every term.`,
     `She gave a ${w} answer — “yes” — then left without another word.`,
-    // Time wrong
     `The crisis was ${w} the moment it started: already fully resolved before anyone noticed.`,
     `They scheduled a ${w} holiday that lasted from noon until noon with no interruption.`,
-    // Money / status
     `Investors sought ${w} returns of exactly zero in a guaranteed flat market.`,
-    `A ${w} budget is one where every dollar is already spent and no contingency remains.`,
-    // Nature
     `Biologists call a forest ${w} when every tree is the same species and the same age.`,
-    `The river ran ${w} after engineers straightened every bend into a concrete channel.`,
-    // Tech
     `The update was ${w}: it fixed nothing and removed the only feature people used.`,
     `Programmers tried to ${w} the crash by closing the laptop and going to lunch.`,
-    // Learning
     `Students completed a ${w} worksheet that asked only for their name written once.`,
     `The lecture was ${w}: it covered every theorem with full proofs on the board.`,
-    // Ethics
-    `Her ${w} honesty included inventing quotes whenever sources were hard to find.`,
     `Judges called the ruling ${w} because it carefully weighed both sides and cited law.`,
+    `The river ran ${w} after engineers straightened every bend into a concrete channel.`,
   ];
 
-  // POS-targeted extras
   if (pos === "verb" || pos === "phrase") {
     frames.push(
       `The chef decided to ${w} the soup so it would taste exactly the same as before.`,
@@ -201,21 +192,47 @@ function generatedWrong(word: string, definition: string, pos: Pos): string[] {
     );
   }
 
-  // Avoid accidental near-corrects that just restate the definition positively with no misuse —
-  // these frames intentionally reverse, reify, or mis-POS the word.
   return unique(frames.map((s) => fixArticles(s)));
+}
+
+/** Strip options that leak dictionary wording or meta-definition language. */
+function rejectsDefinitionLeak(passage: string, definition: string): boolean {
+  const p = passage.toLowerCase();
+  const d = definition.toLowerCase().replace(/\.$/, "").trim();
+  if (d.length >= 12 && p.includes(d)) return true;
+  // long contiguous chunk of definition
+  if (d.length >= 20) {
+    const chunk = d.slice(0, Math.min(28, d.length));
+    if (chunk.length >= 12 && p.includes(chunk)) return true;
+  }
+  if (
+    /\bdefinition\b/.test(p) ||
+    /\bmeans\b/.test(p) ||
+    /\bsense of\b/.test(p) ||
+    /\bsense “/.test(p) ||
+    /\bdefined as\b/.test(p) ||
+    /\bdictionary\b/.test(p) ||
+    /\bmeaning “/.test(p) ||
+    /\btracks the definition\b/.test(p)
+  ) {
+    return true;
+  }
+  return false;
 }
 
 /** All passages that count as correct uses for scoring. */
 export function correctPool(entry: VocabEntry): string[] {
   const pos = guessPos(entry.word, entry.definition);
-  return unique([entry.correctPassage, ...generatedCorrect(entry.word, entry.definition, pos)]);
+  const raw = unique([entry.correctPassage, ...generatedCorrect(entry.word, pos)]);
+  const filtered = raw.filter((s) => !rejectsDefinitionLeak(s, entry.definition));
+  return filtered.length > 0 ? filtered : [entry.correctPassage];
 }
 
 /** All passages that are incorrect uses (for sampling distractors). */
 export function wrongPool(entry: VocabEntry): string[] {
   const pos = guessPos(entry.word, entry.definition);
-  return unique([...entry.wrongPassages, ...generatedWrong(entry.word, entry.definition, pos)]);
+  const raw = unique([...entry.wrongPassages, ...generatedWrong(entry.word, pos)]);
+  return raw.filter((s) => !rejectsDefinitionLeak(s, entry.definition));
 }
 
 export function isCorrectUsage(entry: VocabEntry, passage: string): boolean {
@@ -225,7 +242,7 @@ export function isCorrectUsage(entry: VocabEntry, passage: string): boolean {
 
 /**
  * Fresh multiple-choice set: 1 correct + 3 wrongs, shuffled.
- * Call on every practice appearance so retries never reuse the same quartet.
+ * Never includes the dictionary definition in any option.
  */
 export function buildUsageOptions(
   entry: VocabEntry,
@@ -234,19 +251,20 @@ export function buildUsageOptions(
   const corrects = correctPool(entry);
   const wrongs = wrongPool(entry);
   const correctPassage = pickN(corrects, 1, rng)[0] ?? entry.correctPassage;
-  // Exclude any wrong that equals the chosen correct
   const wrongPoolFiltered = wrongs.filter(
     (w) => normPassage(w).toLowerCase() !== normPassage(correctPassage).toLowerCase(),
   );
   let chosenWrongs = pickN(wrongPoolFiltered, 3, rng);
-  // Pad if pool is thin
   let guard = 0;
-  while (chosenWrongs.length < 3 && guard < 10) {
+  while (chosenWrongs.length < 3 && guard < 12) {
     guard += 1;
     const filler = fixArticles(
-      `Here “${wl(entry.word)}” is used only as a brand name on a water-bottle label, not with its usual meaning (${guard}).`,
+      `Here “${wl(entry.word)}” appears only as a brand name on a water-bottle label (${guard}).`,
     );
-    if (!chosenWrongs.some((w) => normPassage(w).toLowerCase() === normPassage(filler).toLowerCase())) {
+    if (
+      !rejectsDefinitionLeak(filler, entry.definition) &&
+      !chosenWrongs.some((w) => normPassage(w).toLowerCase() === normPassage(filler).toLowerCase())
+    ) {
       chosenWrongs.push(filler);
     }
   }

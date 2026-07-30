@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w121",
+    "word": "Constrict",
+    "definition": "make narrower by squeezing",
+    "memoryTip": "Con-strict: squeeze tight like a constrictor snake.",
+    "correctPassage": "Swelling can constrict the airway if not treated promptly.",
+    "wrongPassages": [
+      "They hoped to constrict the empty highway by opening every lane to traffic.",
+      "She tried to constrict the speech by adding three more digressions and a long anecdote.",
+      "The chef will constrict the soup so it tastes exactly the same as before."
+    ]
+  },
+  {
+    "id": "w122",
+    "word": "Emulate",
+    "definition": "match or surpass by imitation",
+    "memoryTip": "E-mulate: imitate to equal or beat someone you admire.",
+    "correctPassage": "Young designers often try to emulate the restraint of mid-century masters.",
+    "wrongPassages": [
+      "He moved to emulate the accusation by inventing a brand-new charge no one had made.",
+      "She tried to emulate silence by talking faster without answering the question.",
+      "The job will emulate failed tasks by deleting them from the dashboard view."
+    ]
+  },
+  {
+    "id": "w123",
+    "word": "Augment",
+    "definition": "make greater by adding to",
+    "memoryTip": "Aug-ment: add more; make something greater.",
+    "correctPassage": "Grants will augment the school’s own funding for after-school programs.",
+    "wrongPassages": [
+      "They hoped to augment scarcity by rationing the last supplies even more tightly.",
+      "Managers moved to augment headcount by freezing all hiring for the year.",
+      "She tried to augment the silence by unplugging every microphone in the hall."
+    ]
+  },
+  {
+    "id": "w124",
+    "word": "Vacate",
+    "definition": "leave a place previously occupied",
+    "memoryTip": "Leave it vacant — empty the place and go.",
+    "correctPassage": "Tenants were ordered to vacate the building within thirty days.",
+    "wrongPassages": [
+      "He tried to vacate the courtroom by packing it with more spectators than seats.",
+      "The device will vacate alerts by silencing them for twenty-four hours straight.",
+      "She tried to vacate the office by moving extra desks into the same room."
+    ]
+  },
+  {
+    "id": "w125",
+    "word": "Extrapolate",
+    "definition": "extend conclusions beyond known data",
+    "memoryTip": "Extra + polate: push the pattern past the data you have.",
+    "correctPassage": "It is risky to extrapolate from such a small sample to the whole population.",
+    "wrongPassages": [
+      "He moved to extrapolate the warrant by remote-wiping the phone before surrender.",
+      "They hoped to extrapolate the blackout by cycling power on and off every minute.",
+      "She tried to extrapolate the equation by erasing every variable until nothing remained."
+    ]
+  },
+  {
+    "id": "w126",
+    "word": "Convene",
+    "definition": "come or bring together for a meeting",
+    "memoryTip": "Con-vene: come together for a meeting.",
+    "correctPassage": "The board will convene next Monday to vote on the proposal.",
+    "wrongPassages": [
+      "Managers announced they would convene the staff by sending everyone home early.",
+      "She tried to convene the jury by dismissing half the panel before opening statements.",
+      "Please convene the window before you leave so the rain does not get in."
+    ]
+  },
+  {
+    "id": "w127",
+    "word": "Banal",
+    "definition": "so lacking in originality as to be boring",
+    "memoryTip": "So common it bans all interest — boringly ordinary.",
+    "correctPassage": "What might have been a powerful speech was undermined by banal slogans.",
+    "wrongPassages": [
+      "Critics praised the banal ending for inventing a structure no one had seen before.",
+      "Her banal theorem introduced an entirely new branch of mathematics overnight.",
+      "The lecture was banal: every claim was backed by rare archival finds and original proofs."
+    ]
+  },
+  {
+    "id": "w128",
+    "word": "Erratic",
+    "definition": "not even or regular in pattern; unpredictable",
+    "memoryTip": "Err + path: jumps around without a steady pattern.",
+    "correctPassage": "Erratic attendance made it hard to keep the seminar on schedule.",
+    "wrongPassages": [
+      "Astronomers call a star erratic when its brightness never changes across decades.",
+      "She kept an erratic schedule: the same three tasks at the same times each day.",
+      "His erratic explanation listed steps 1–5 with diagrams and a glossary for every term."
+    ]
+  },
+  {
+    "id": "w129",
+    "word": "Disingenuous",
+    "definition": "not candid or sincere; falsely appearing frank",
+    "memoryTip": "Dis + ingenuous (innocent) — fake sincerity, not genuine.",
+    "correctPassage": "Claiming surprise at the outcome seemed disingenuous after months of warnings.",
+    "wrongPassages": [
+      "Listeners found the lecture disingenuous because no term was left undefined on the board.",
+      "Her disingenuous apology named every harm and accepted full responsibility without excuses.",
+      "Judges called the ruling disingenuous because it carefully weighed both sides and cited law."
+    ]
+  },
+  {
+    "id": "w130",
+    "word": "Vacillate",
+    "definition": "waver between different opinions or actions",
+    "memoryTip": "Vacillate like a vacuum of decision — swing back and forth.",
+    "correctPassage": "Investors continue to vacillate between optimism and caution.",
+    "wrongPassages": [
+      "They voted to vacillate: every hand went up on the first call with no discussion.",
+      "She tried to vacillate the injunction by serving an outdated address.",
+      "He tried to vacillate the drought narrative by renaming the emergency a dry spell."
+    ]
+  },
+  {
+    "id": "w131",
+    "word": "Mutilate",
+    "definition": "inflict serious damage on; disfigure",
+    "memoryTip": "Mutilate = maim: seriously harm or disfigure something.",
+    "correctPassage": "Vandals mutilated the statue beyond easy repair.",
+    "wrongPassages": [
+      "Restorers hoped to mutilate the painting by cleaning dust from the frame only.",
+      "The monitor will mutilate escalations by looping them into a channel nobody reads.",
+      "To mutilate the dispute, both sides published a joint statement of full agreement."
+    ]
+  },
+  {
+    "id": "w132",
+    "word": "Ingenuous",
+    "definition": "innocent and unsuspecting; candidly naive",
+    "memoryTip": "In-genuous: genuine innocence — not scheming (not ingenious!).",
+    "correctPassage": "Her ingenuous questions revealed how little the brochure had explained.",
+    "wrongPassages": [
+      "His ingenuous scheme used three shell companies and a forged audit trail.",
+      "The spy’s ingenuous cover story was rehearsed for months and left no loose ends.",
+      "An ingenuous negotiator outmaneuvered every rival with careful misdirection."
+    ]
+  },
+  {
+    "id": "w133",
+    "word": "Ingenious",
+    "definition": "clever, original, and inventive",
+    "memoryTip": "In-genius: clever invention (don’t confuse with ingenuous!).",
+    "correctPassage": "An ingenious use of recycled materials kept construction costs low.",
+    "wrongPassages": [
+      "Critics called the plan ingenious because it copied last year’s memo word for word.",
+      "An ingenious worksheet asked only for the student’s name written once.",
+      "He packed a spare ingenious in the trunk next to the tire and jumper cables."
+    ]
+  },
+  {
+    "id": "w134",
+    "word": "Imprudent",
+    "definition": "not showing care for the consequences of an action",
+    "memoryTip": "Im-prudent: not prudent — careless about consequences.",
+    "correctPassage": "Borrowing against future revenue was widely seen as imprudent.",
+    "wrongPassages": [
+      "The plan looked imprudent on paper: every risk already removed and every owner named.",
+      "Her imprudent budget set aside emergency reserves and deferred nonessential spending.",
+      "Judges called the ruling imprudent because it carefully weighed both sides and cited law."
+    ]
+  },
+  {
+    "id": "w135",
+    "word": "Presage",
+    "definition": "be a sign or warning of (a future event)",
+    "memoryTip": "Pre-sage: a sign before the event — an omen.",
+    "correctPassage": "Darkening skies seemed to presage a severe storm.",
+    "wrongPassages": [
+      "Please presage the chairs into neat rows for the next panel.",
+      "They packed a spare presage in the trunk next to the tire and jumper cables.",
+      "After lunch the staff agreed to presage the budget by printing extra copies."
+    ]
+  },
+  {
+    "id": "w136",
+    "word": "Muzzle",
+    "definition": "prevent from speaking freely",
+    "memoryTip": "Like a dog’s muzzle — silence or restrain speech.",
+    "correctPassage": "Attempts to muzzle dissenting scientists only increased public suspicion.",
+    "wrongPassages": [
+      "Editors hoped to muzzle the debate by inviting every critic onto the live panel.",
+      "She tried to muzzle the hearing by publishing the full transcript the same day.",
+      "The software will muzzle your password by turning every character into the same emoji."
+    ]
+  },
+  {
+    "id": "w137",
+    "word": "Ineffectual",
+    "definition": "not producing the desired effect",
+    "memoryTip": "In-effectual: has no real effect; doesn’t work.",
+    "correctPassage": "The half-hearted apology was ineffectual in calming the controversy.",
+    "wrongPassages": [
+      "Her ineffectual treatment cleared every symptom within forty-eight hours.",
+      "The vaccine was ineffectual: infection rates dropped sharply within a month.",
+      "Traders wanted ineffectual news so prices would gap overnight on major data."
+    ]
+  },
+  {
+    "id": "w138",
+    "word": "Subvert",
+    "definition": "undermine the power or authority of",
+    "memoryTip": "Sub + vert: overturn from below — undermine authority.",
+    "correctPassage": "Satire can subvert official narratives by exposing their contradictions.",
+    "wrongPassages": [
+      "The reforms were meant to subvert democracy by expanding voting access and transparency.",
+      "They hoped to subvert attendance by cancelling the event and locking the building.",
+      "She tried to subvert the locked door with a polite thank-you note slipped underneath."
+    ]
+  },
+  {
+    "id": "w139",
+    "word": "Imperious",
+    "definition": "assuming power without justification; arrogantly domineering",
+    "memoryTip": "Imperial attitude — bossy, assuming command without right.",
+    "correctPassage": "His imperious tone made collaboration with junior staff difficult.",
+    "wrongPassages": [
+      "Her imperious manner put everyone at ease and invited open disagreement.",
+      "Parents described the toddler’s imperious tantrum as calm, quiet, and easy to redirect.",
+      "Colleagues praised his imperious style for never giving orders and always asking first."
+    ]
+  },
+  {
+    "id": "w140",
+    "word": "Scanty",
+    "definition": "small or insufficient in quantity",
+    "memoryTip": "Scant = barely enough — too little of something.",
+    "correctPassage": "Evidence for the theory remains scanty and contested.",
+    "wrongPassages": [
+      "The harvest was scanty: silos overflowed and crews still left grain in the fields.",
+      "Her scanty briefing covered risks, costs, and a recommendation in four full slides.",
+      "The archive looked scanty after every shelf overflowed with complete journal runs."
+    ]
+  }
+]

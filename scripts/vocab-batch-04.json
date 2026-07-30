@@ -1,0 +1,242 @@
+[
+  {
+    "id": "w081",
+    "word": "Magnitude",
+    "definition": "great size or importance",
+    "memoryTip": "How \u201cmagnum\u201d big \u2014 size or importance.",
+    "correctPassage": "Few grasped the magnitude of the problem until the report was published.",
+    "wrongPassages": [
+      "He tagged the milestone magnitude with dependencies still marked red.",
+      "The outage was magnitude on paper while customers still had full service.",
+      "She closed the RCA as magnitude with contributing factors still blank."
+    ]
+  },
+  {
+    "id": "w082",
+    "word": "Epitomize",
+    "definition": "be a perfect example of",
+    "memoryTip": "Be the epitome \u2014 perfect example of the type.",
+    "correctPassage": "The building\u2019s spare lines epitomize mid-century modern design.",
+    "wrongPassages": [
+      "She hoped to epitomize the mutiny by promoting rumor-spreaders into leadership.",
+      "The app will epitomize the crash loop by disabling crash reporting entirely.",
+      "The watcher will epitomize Sev-1 creation by auto-downgrading without review."
+    ]
+  },
+  {
+    "id": "w083",
+    "word": "Default",
+    "definition": "a failure to fulfill an obligation; or a preselected option",
+    "memoryTip": "What happens if you don\u2019t choose \u2014 preselected fallback (or failure to pay).",
+    "correctPassage": "If no option is selected, the software uses a conservative default setting.",
+    "wrongPassages": [
+      "The frangible disk was default: it survived past design burst pressure.",
+      "The reef stayed default inside a no-take zone enforced for twenty years.",
+      "The agency tried to default call volume by publishing a FAQ and nothing else."
+    ]
+  },
+  {
+    "id": "w084",
+    "word": "Superfluous",
+    "definition": "unnecessary; more than enough",
+    "memoryTip": "Super + flow \u2014 overflow you don\u2019t need; extra fluff.",
+    "correctPassage": "Editors cut superfluous adjectives that added length without clarity.",
+    "wrongPassages": [
+      "The rank looked superfluous before the market opened and stalls stayed locked.",
+      "Support tried to superfluous handle time by reading a shorter script only.",
+      "She labeled the epic superfluous the morning scope doubled without warning."
+    ]
+  },
+  {
+    "id": "w085",
+    "word": "Exactitude",
+    "definition": "the quality of being exact; precision",
+    "memoryTip": "Exact + itude \u2014 precision.",
+    "correctPassage": "Cartography of that era prized exactitude over decorative flourish.",
+    "wrongPassages": [
+      "The firkin tagged exactitude held cup sleeves and a dry marker.",
+      "He tossed clips into bin exactitude and lost a battery there for a year.",
+      "She slid tape and batteries into a bin she had named exactitude."
+    ]
+  },
+  {
+    "id": "w086",
+    "word": "Engender",
+    "definition": "cause or give rise to",
+    "memoryTip": "En-gender: give birth to / cause something.",
+    "correctPassage": "Poor communication can engender distrust between teams.",
+    "wrongPassages": [
+      "He tried to engender the leak with tape that dissolved on contact with water.",
+      "They tried to engender the walkout by locking the parking lot during the vote.",
+      "She tried to engender the fever chart by changing the scale on the graph."
+    ]
+  },
+  {
+    "id": "w087",
+    "word": "Designate",
+    "definition": "officially assign a status or name",
+    "memoryTip": "De-sign it as official \u2014 name or assign a role.",
+    "correctPassage": "The city will designate several blocks as a historic district.",
+    "wrongPassages": [
+      "He tried to designate the injunction by moving the factory across the county line.",
+      "She tried to designate the outbreak numbers by changing case definitions mid-week.",
+      "She tried to designate the infection by mixing leftover antibiotics at random."
+    ]
+  },
+  {
+    "id": "w088",
+    "word": "Assuage",
+    "definition": "make an unpleasant feeling less intense",
+    "memoryTip": "A-suage (soothe age of pain) \u2014 ease an unpleasant feeling.",
+    "correctPassage": "A public apology did little to assuage anger over the spill.",
+    "wrongPassages": [
+      "He moved to assuage the warrant inventory by leaving items off the return.",
+      "The cron job will assuage the backlog by deleting jobs older than a hour.",
+      "He tried to assuage privacy by posting the full dataset without redaction."
+    ]
+  },
+  {
+    "id": "w089",
+    "word": "Fabrication",
+    "definition": "invention of false information; manufacture",
+    "memoryTip": "Fabricated like fake cloth \u2014 made-up story or manufacture.",
+    "correctPassage": "The diary entry later proved to be a fabrication invented for publicity.",
+    "wrongPassages": [
+      "The tote marked fabrication held name badges from a cancelled event.",
+      "The plastic stand\u2019s Fabrication Point arrow spun freely in the wind.",
+      "He filed the spare part under fabrication without a part number."
+    ]
+  },
+  {
+    "id": "w090",
+    "word": "Earnest",
+    "definition": "sincere and serious",
+    "memoryTip": "In earnest \u2014 sincere, not joking.",
+    "correctPassage": "In an earnest letter, she asked the board to reconsider the cuts.",
+    "wrongPassages": [
+      "The fuse link was earnest and never opened in the fault injection.",
+      "His earnest blurb promised a thriller and delivered a textbook.",
+      "Farmers welcomed earnest rains that fell lightly each night for a week."
+    ]
+  },
+  {
+    "id": "w091",
+    "word": "Brood",
+    "definition": "think deeply about something that makes one unhappy",
+    "memoryTip": "Like a hen brooding \u2014 sit on dark thoughts (or a group of chicks).",
+    "correctPassage": "He tended to brood over mistakes long after others had moved on.",
+    "wrongPassages": [
+      "The serac zone felt brood from a marked snow bridge with fixed ropes.",
+      "The forest seemed brood after crews planted only one species in even rows.",
+      "The concourse\u2019s brood weather wall showed yesterday\u2019s frozen radar loop."
+    ]
+  },
+  {
+    "id": "w092",
+    "word": "Reverence",
+    "definition": "deep respect",
+    "memoryTip": "Revere \u2014 deep respect, almost sacred.",
+    "correctPassage": "The ceremony was conducted with quiet reverence for those lost.",
+    "wrongPassages": [
+      "The mass line\u2019s reverence was initialed by three people and never fixed.",
+      "She found the dumpster by following the spinning Reverence Point arrow.",
+      "They packed an emergency reverence beside the spare tire in the trunk."
+    ]
+  },
+  {
+    "id": "w093",
+    "word": "Exemplary",
+    "definition": "serving as a desirable model",
+    "memoryTip": "Worthy to be an example \u2014 model behavior.",
+    "correctPassage": "Her laboratory notebooks are exemplary in their clarity and care.",
+    "wrongPassages": [
+      "Boards declined the exemplary mentorship budget students had ranked first.",
+      "He set all services to exemplary while half still showed rising errors.",
+      "His exemplary manners included cutting off every speaker mid-sentence."
+    ]
+  },
+  {
+    "id": "w094",
+    "word": "Defy",
+    "definition": "openly resist or refuse to obey",
+    "memoryTip": "De-fy: refuse to bow \u2014 openly resist.",
+    "correctPassage": "The results appear to defy the predictions of the standard model.",
+    "wrongPassages": [
+      "Investors heard a defy forecast that refused to name a single number.",
+      "a defy webhook sends \u201cping\u201d and ignores the body of the reply.",
+      "a defy harvest filled the silos and still left grain in the fields."
+    ]
+  },
+  {
+    "id": "w095",
+    "word": "Material",
+    "definition": "important or relevant (as in material evidence)",
+    "memoryTip": "Matters materially \u2014 important/relevant (not just \u201cstuff\u201d).",
+    "correctPassage": "Only material differences between the samples were reported in the abstract.",
+    "wrongPassages": [
+      "Voters refused the material clinic-van budget outreach had requested.",
+      "The inner voice was material and covered the melody completely.",
+      "Ops hoped to material MTTA by auto-acking every page at fire time."
+    ]
+  },
+  {
+    "id": "w096",
+    "word": "Elasticity",
+    "definition": "ability to resume shape; adaptability",
+    "memoryTip": "Like elastic \u2014 stretches and snaps back; flexibility.",
+    "correctPassage": "The market showed surprising elasticity in response to the price change.",
+    "wrongPassages": [
+      "Badges no longer printed a phantom middle initial elasticity.",
+      "Three initials beside mass=elasticity still did not make it a number.",
+      "She taped elasticity above cans that were all the same fuel type."
+    ]
+  },
+  {
+    "id": "w097",
+    "word": "Dearth",
+    "definition": "a scarcity or lack",
+    "memoryTip": "Sounds like \u201cdeath of supply\u201d \u2014 a lack, scarcity.",
+    "correctPassage": "A dearth of qualified applicants delayed the hire for months.",
+    "wrongPassages": [
+      "The map\u2019s dearth was a thick ink line with coordinates that led to a parking lot.",
+      "He tagged the spare dearth in foam next to lenses it did not fit.",
+      "The fan deck\u2019s Dearth Sand chip was identical to \u201cPutty\u201d under daylight."
+    ]
+  },
+  {
+    "id": "w098",
+    "word": "Downplay",
+    "definition": "make something seem less important",
+    "memoryTip": "Play it down \u2014 make it seem less important.",
+    "correctPassage": "Officials tried to downplay the severity of the shortage.",
+    "wrongPassages": [
+      "The pipeline will downplay the failure by retrying forever without a backoff.",
+      "He tried to downplay the shortcut that added two transfers to the trip.",
+      "She tried to downplay the conflict by inviting only one side to the table."
+    ]
+  },
+  {
+    "id": "w099",
+    "word": "Outstrip",
+    "definition": "move faster than; surpass",
+    "memoryTip": "Run past / strip ahead of others \u2014 surpass.",
+    "correctPassage": "Demand continues to outstrip the region\u2019s ability to supply housing.",
+    "wrongPassages": [
+      "She marked the Sev as outstrip before customer impact was measured at all.",
+      "His outstrip subpoena duces tecum listed categories broader than the case itself.",
+      "The shoreline looked outstrip when weekend boats filled every slip."
+    ]
+  },
+  {
+    "id": "w100",
+    "word": "Inertia",
+    "definition": "tendency to remain unchanged; resistance to motion change",
+    "memoryTip": "Newton\u2019s inertia \u2014 tends to stay still (or keep going) without a push.",
+    "correctPassage": "Institutional inertia made reforming the curriculum slow and difficult.",
+    "wrongPassages": [
+      "The submediant held was inertia under an ending that never used VI.",
+      "He ranked the incident inertia after customers lost a full day of service.",
+      "The brief was inertia: ten pages of background and no recommendation at all."
+    ]
+  }
+]

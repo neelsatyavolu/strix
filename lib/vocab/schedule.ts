@@ -4,11 +4,20 @@
 export const INTERVALS_DAYS = [0, 1, 3, 7, 16]; // box 1..5
 export const MAX_BOX = INTERVALS_DAYS.length;
 
+/**
+ * Leitner step for study path (flipped card).
+ * Never returns > MAX_BOX — known/checkmarked only via unflipped “I know it” + correct,
+ * or manual checklist mark.
+ */
 export function nextBox(box: number, correct: boolean): number {
   if (!correct) return 1;
-  // Unseen (box 0) treated as first exposure in box 1; a hit advances to 2.
   const cur = Math.max(box, 1);
-  return cur + 1;
+  return Math.min(cur + 1, MAX_BOX);
+}
+
+/** Graduate to known (checklist). */
+export function knownBox(): number {
+  return MAX_BOX + 1;
 }
 
 export function intervalDays(box: number): number {
