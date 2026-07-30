@@ -139,7 +139,9 @@ export async function POST(req: NextRequest) {
 
   const prevBox = existing?.box ?? 0;
   const box = nextBox(prevBox, correct);
-  const due = dueAt(box, now);
+  // Wrong → due immediately so it returns in the next practice session.
+  // Correct → schedule by Leitner box interval.
+  const due = correct ? dueAt(box, now) : now;
   const times_seen = (existing?.times_seen ?? 0) + 1;
   const times_correct = (existing?.times_correct ?? 0) + (correct ? 1 : 0);
 

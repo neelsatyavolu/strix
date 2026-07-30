@@ -70,9 +70,11 @@ export function toItem(wordId: string): PracticeItem | null {
 }
 
 /**
- * Build a practice session in PDF / bank order (w001 → w400).
- * Skips words already marked known; does not randomize word order.
- * (Passage choices within a card are still shuffled.)
+ * Build a practice session:
+ * 1) Missed last time (retry) — first, bank order
+ * 2) Other due words — bank order
+ * 3) Rest of the list in PDF order (skip known)
+ * Passage choices within a card are still shuffled.
  */
 export function buildSession(opts: {
   progress: VocabProgressRow[];
@@ -81,25 +83,37 @@ export function buildSession(opts: {
   now?: Date;
 }): PracticeItem[] {
   const count = Math.min(20, Math.max(4, opts.count ?? DEFAULT_COUNT));
+  const nowMs = (opts.now ?? new Date()).getTime();
   const map = progressMap(opts.progress);
   const pool = opts.category
     ? VOCAB_BANK.filter((w) => w.category === opts.category)
     : VOCAB_BANK;
 
-  const picked: string[] = [];
+  const retries: string[] = []; // last attempt wrong — show next session
+  const due: string[] = [];
+  const rest: string[] = [];
+
   for (const w of pool) {
     const p = map.get(w.id);
-    if (p && isMastered(p.box)) continue; // known / graduated — skip
-    picked.push(w.id);
-    if (picked.length >= count) break;
+    if (p && isMastered(p.box)) continue; // known — skip
+
+    if (p && p.last_result === false) {
+      retries.push(w.id);
+      continue;
+    }
+    if (p && new Date(p.due_at).getTime() <= nowMs) {
+      due.push(w.id);
+      continue;
+    }
+    rest.push(w.id);
   }
 
-  // If everything is known, offer a short refresh in bank order
+  const ordered = [...retries, ...due, ...rest];
+  let picked = ordered.slice(0, count);
+
+  // If everything is known, short refresh in bank order
   if (picked.length === 0) {
-    for (const w of pool) {
-      picked.push(w.id);
-      if (picked.length >= Math.min(count, 4)) break;
-    }
+    picked = pool.slice(0, Math.min(count, 4)).map((w) => w.id);
   }
 
   const items: PracticeItem[] = [];
