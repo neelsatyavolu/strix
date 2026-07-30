@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w311",
+    "word": "Repertoire",
+    "definition": "a stock of skills, pieces, or roles one can perform",
+    "memoryTip": "Your repertory of tricks: the set of things you can do.",
+    "correctPassage": "The pianist expanded her repertoire to include modern jazz standards.",
+    "wrongPassages": [
+      "His repertoire for the role was a single line he still had not learned.",
+      "The empty repertoire folder held every song the band had ever played.",
+      "She expanded her repertoire by erasing every song she already knew."
+    ]
+  },
+  {
+    "id": "w312",
+    "word": "Jut",
+    "definition": "extend out beyond a surface or line",
+    "memoryTip": "Jut out like a jaw: stick out past the edge.",
+    "correctPassage": "Balconies jut over the street, shading the sidewalk below.",
+    "wrongPassages": [
+      "The smooth wall seemed to jut inward, leaving no edge at all.",
+      "They jut the carpet flat so nothing stuck up from the floor.",
+      "The lake jutted deep underground with no surface shoreline."
+    ]
+  },
+  {
+    "id": "w313",
+    "word": "Seismic",
+    "definition": "relating to earthquakes; of enormous or sudden impact",
+    "memoryTip": "Seismograph quake energy: huge shakes, literal or figurative.",
+    "correctPassage": "The merger sent a seismic shock through the entire industry.",
+    "wrongPassages": [
+      "The seismic change was so tiny that no one noticed it at all.",
+      "They called the quiet nap a seismic event in the afternoon schedule.",
+      "A seismic whisper barely disturbed the air in the library."
+    ]
+  },
+  {
+    "id": "w314",
+    "word": "Predicament",
+    "definition": "a difficult, unpleasant, or embarrassing situation",
+    "memoryTip": "Stuck in a pickle: a predicament is a hard spot to escape.",
+    "correctPassage": "Without a spare tire, they faced a real predicament on the remote road.",
+    "wrongPassages": [
+      "After years of careful saving, their predicament was a fully funded retirement.",
+      "Her predicament was so easy that she solved it in under a minute.",
+      "They celebrated the predicament of a perfectly planned vacation."
+    ]
+  },
+  {
+    "id": "w315",
+    "word": "Culpability",
+    "definition": "responsibility for a fault or wrong; blameworthiness",
+    "memoryTip": "Culpa = blame: culpability is how much fault you carry.",
+    "correctPassage": "The inquiry assessed each manager's culpability for the safety failure.",
+    "wrongPassages": [
+      "His clear innocence increased his culpability in the public eye.",
+      "They awarded culpability medals to the volunteers who helped most.",
+      "She felt deep culpability for a success she had fully earned."
+    ]
+  }
+]

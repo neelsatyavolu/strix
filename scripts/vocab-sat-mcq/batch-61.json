@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w306",
+    "word": "Copious",
+    "definition": "abundant in quantity or supply",
+    "memoryTip": "Copy lots: copious means there's plenty to go around.",
+    "correctPassage": "She took copious notes during the lecture and barely looked up.",
+    "wrongPassages": [
+      "The drought left only copious water in the cracked riverbed.",
+      "His copious vocabulary consisted of fewer than twenty words.",
+      "They packed a copious lunch: one cracker and a dry raisin."
+    ]
+  },
+  {
+    "id": "w307",
+    "word": "Circumvent",
+    "definition": "find a way around an obstacle or rule",
+    "memoryTip": "Circum- (around) + vent (go): slip around the barrier.",
+    "correctPassage": "The startup found a legal way to circumvent the outdated licensing rule.",
+    "wrongPassages": [
+      "She tried to circumvent the mountain by tunneling straight through its core.",
+      "He would circumvent every problem by meeting it head-on with full force.",
+      "They circumvented the fence by climbing over the exact center of it."
+    ]
+  },
+  {
+    "id": "w308",
+    "word": "Sterilize",
+    "definition": "make free from bacteria or other living microorganisms",
+    "memoryTip": "Make sterile: kill germs so nothing can grow.",
+    "correctPassage": "Lab techs sterilize the petri dishes before each experiment.",
+    "wrongPassages": [
+      "They sterilize the garden by planting more flowers every spring.",
+      "She sterilized the messy desk by stacking more papers on top.",
+      "He sterilized the spoiled milk by leaving it on the warm counter."
+    ]
+  },
+  {
+    "id": "w309",
+    "word": "Endemic",
+    "definition": "regularly found among a people or in a particular place",
+    "memoryTip": "En-demos: native to a people/place, not a one-time visitor.",
+    "correctPassage": "Malaria remains endemic in several lowland regions of the country.",
+    "wrongPassages": [
+      "The virus was endemic for a single weekend and then vanished forever.",
+      "Snow is endemic to the desert, appearing only once every few centuries.",
+      "An endemic guest visited the town once and never returned."
+    ]
+  },
+  {
+    "id": "w310",
+    "word": "Tangential",
+    "definition": "only slightly related to the main matter; diverging",
+    "memoryTip": "Off on a tangent: barely touching the main point.",
+    "correctPassage": "His tangential comments about lunch delayed the budget vote.",
+    "wrongPassages": [
+      "Her tangential evidence proved every claim in the central argument.",
+      "The tangential chapter was the book's main thesis from start to finish.",
+      "They called the plan tangential because it addressed the core problem directly."
+    ]
+  }
+]

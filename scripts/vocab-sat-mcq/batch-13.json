@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w066",
+    "word": "Deplete",
+    "definition": "use up or greatly reduce the supply of",
+    "memoryTip": "De-plete (empty the plate) \u2014 drain the stock until little is left.",
+    "correctPassage": "Overfishing continues to deplete stocks that once seemed inexhaustible.",
+    "wrongPassages": [
+      "Rain helped deplete the reservoir until it overflowed its banks.",
+      "They hoped to deplete the food banks by donating truckloads of supplies.",
+      "A long rest will deplete your energy before the big race."
+    ]
+  },
+  {
+    "id": "w067",
+    "word": "Conform",
+    "definition": "comply with rules, standards, or prevailing norms",
+    "memoryTip": "Con-form: take the same form as the rules or the group.",
+    "correctPassage": "The design must conform to accessibility standards before construction begins.",
+    "wrongPassages": [
+      "She refused to conform by carefully following every item in the dress code.",
+      "The rebel plan was to conform and break every rule on the first day.",
+      "Engineers made the bridge conform by ignoring the building code entirely."
+    ]
+  },
+  {
+    "id": "w068",
+    "word": "Rudimentary",
+    "definition": "basic; involving only the simplest principles",
+    "memoryTip": "Rude / raw basics \u2014 only the first, simplest steps, not advanced.",
+    "correctPassage": "Even a rudimentary grasp of statistics helps readers evaluate the claims.",
+    "wrongPassages": [
+      "Her rudimentary thesis won the award for the most sophisticated research of the year.",
+      "The surgeon described the twelve-hour procedure as rudimentary and routine.",
+      "They called the PhD-level textbook rudimentary because beginners could not open it."
+    ]
+  },
+  {
+    "id": "w069",
+    "word": "Paucity",
+    "definition": "scarcity; smallness of number or amount",
+    "memoryTip": "Pauc- = few (Latin) \u2014 a paucity means not many, almost none.",
+    "correctPassage": "A paucity of reliable data made firm conclusions difficult.",
+    "wrongPassages": [
+      "Shoppers complained about the paucity of choices in a store with thousands of brands.",
+      "The library\u2019s paucity of books filled every shelf from floor to ceiling.",
+      "A paucity of rainfall flooded the valley for the third week in a row."
+    ]
+  },
+  {
+    "id": "w070",
+    "word": "Verisimilitude",
+    "definition": "the appearance of being true or real",
+    "memoryTip": "Veri (truth) + similar \u2014 looks true-to-life, even if it\u2019s fiction.",
+    "correctPassage": "The novel\u2019s careful period detail gives it a strong sense of verisimilitude.",
+    "wrongPassages": [
+      "Her verisimilitude briefing covered risks, costs, and a recommendation in four slides.",
+      "The cartoon\u2019s wild talking animals were praised for strict historical verisimilitude.",
+      "He demanded verisimilitude by inventing facts no one could check."
+    ]
+  }
+]

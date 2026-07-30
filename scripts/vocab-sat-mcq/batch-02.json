@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w011",
+    "word": "Prevail",
+    "definition": "to prove more powerful or become widespread",
+    "memoryTip": "Pre-vail: come out on top \u2014 the stronger side wins.",
+    "correctPassage": "Despite early resistance, the reform proposal eventually prevailed in the full assembly vote.",
+    "wrongPassages": [
+      "The minority view will prevail only if it is ignored by every decision-maker present.",
+      "Calm will prevail in the chamber once shouting drowns out every other voice.",
+      "She hoped to prevail the draft by hiding it in a folder no one would open."
+    ]
+  },
+  {
+    "id": "w012",
+    "word": "Repudiate",
+    "definition": "to refuse to accept; reject",
+    "memoryTip": "Re-pudiate: push it away \u2014 \u201cI won\u2019t own that claim.\u201d",
+    "correctPassage": "The board voted to repudiate the earlier statement once new evidence contradicted it.",
+    "wrongPassages": [
+      "Leaders moved to repudiate the findings by endorsing every recommendation at once.",
+      "She repudiated the gift by accepting it with thanks and putting it on display.",
+      "The treaty was repudiated only in the sense that both sides rushed to ratify it."
+    ]
+  },
+  {
+    "id": "w013",
+    "word": "Buttress",
+    "definition": "to support or strengthen",
+    "memoryTip": "A stone buttress props up a wall \u2014 so it supports an argument too.",
+    "correctPassage": "Fresh survey data buttress the claim that turnout rose most in urban precincts.",
+    "wrongPassages": [
+      "Critics hoped to buttress her thesis by removing the only sources that confirmed it.",
+      "The leak will buttress confidence in the system by exposing every security flaw at once.",
+      "He tried to buttress the weak beam by cutting away half of its remaining support."
+    ]
+  },
+  {
+    "id": "w014",
+    "word": "Mitigate",
+    "definition": "to make less severe",
+    "memoryTip": "Miti-gate: open a gate to let pressure out \u2014 ease the harm.",
+    "correctPassage": "Cooling stations were set up to mitigate heat risk for outdoor workers during the wave.",
+    "wrongPassages": [
+      "The new rule will mitigate harm by stripping safety checks and raising exposure limits.",
+      "They mitigated the shortage by destroying the remaining inventory overnight.",
+      "To mitigate traffic, officials closed every alternate route into the city center."
+    ]
+  },
+  {
+    "id": "w015",
+    "word": "Constrain",
+    "definition": "to severely restrict or limit",
+    "memoryTip": "Con-strain: keep under strain \u2014 squeezed inside tight limits.",
+    "correctPassage": "Scarce laboratory space will constrain how many samples the team can process each week.",
+    "wrongPassages": [
+      "Unlimited grants will constrain the lab by removing every budget ceiling at once.",
+      "The open border policy was designed to constrain free movement of goods and people.",
+      "She hoped to constrain creativity by handing artists a blank canvas and no rules."
+    ]
+  }
+]

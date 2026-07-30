@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w271",
+    "word": "Fecundity",
+    "definition": "fruitfulness; capacity to produce abundantly",
+    "memoryTip": "Fecund means fertile \u2014 fecundity is productive abundance.",
+    "correctPassage": "The novelist's creative fecundity produced three acclaimed books in five years.",
+    "wrongPassages": [
+      "The desert's fecundity showed in endless dunes with almost no plant life.",
+      "Budget fecundity forced the lab to cancel half its planned experiments.",
+      "He praised the speech's fecundity for saying almost nothing in twenty minutes."
+    ]
+  },
+  {
+    "id": "w272",
+    "word": "Heterogeneity",
+    "definition": "the quality of being diverse in character or content",
+    "memoryTip": "Hetero = different; heterogeneity is mixed variety.",
+    "correctPassage": "The city's cultural heterogeneity is visible in its markets and festivals.",
+    "wrongPassages": [
+      "Factory bosses prized the product line's heterogeneity: every unit identical.",
+      "Genetic heterogeneity vanished once every sample matched the control exactly.",
+      "The choir's heterogeneity meant all singers held the same pitch and tone."
+    ]
+  },
+  {
+    "id": "w273",
+    "word": "Dissipate",
+    "definition": "disperse or scatter; waste or squander",
+    "memoryTip": "Like mist burning off \u2014 scatter away, or waste until nothing remains.",
+    "correctPassage": "By noon the morning mist had begun to dissipate over the fields.",
+    "wrongPassages": [
+      "The librarian hoped to dissipate the archive by locking every shelf for decades.",
+      "Savings will dissipate if left untouched in a high-interest account for years.",
+      "She dissipated the crowd by inviting more people through the main doors."
+    ]
+  },
+  {
+    "id": "w274",
+    "word": "Expediency",
+    "definition": "convenience or advantage, often at the expense of principle",
+    "memoryTip": "What is expedient: the convenient shortcut, not always the right path.",
+    "correctPassage": "They chose silence out of political expediency rather than conviction.",
+    "wrongPassages": [
+      "Political expediency drove him to ignore convenience and follow principle alone.",
+      "Please expediency the chairs after lunch.",
+      "City hall issued an expediency license for favorite colors."
+    ]
+  },
+  {
+    "id": "w275",
+    "word": "Indeterminacy",
+    "definition": "the quality of not being precisely fixed or decided",
+    "memoryTip": "In-determine: not yet fixed \u2014 outcome still open.",
+    "correctPassage": "Legal indeterminacy in the statute left judges wide room to interpret.",
+    "wrongPassages": [
+      "The contract's indeterminacy listed every price, date, and party in bold type.",
+      "Indeterminacy of the final score was settled long before the last play.",
+      "She valued the map's indeterminacy: every trail marked to the nearest meter."
+    ]
+  }
+]

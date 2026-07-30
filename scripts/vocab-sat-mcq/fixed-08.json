@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w041",
+    "word": "Foraging",
+    "definition": "searching widely for food or provisions",
+    "memoryTip": "For-aging: out aging in the wild hunting for food.",
+    "correctPassage": "Along the riverbank, the documentary crew filmed bears foraging for salmon among the rocks.",
+    "wrongPassages": [
+      "The committee spent the morning foraging the budget proposal line by line.",
+      "After the storm, the marina looked foraging, with every slip left empty.",
+      "She offered a foraging compromise that neither faction would fully accept."
+    ]
+  },
+  {
+    "id": "w042",
+    "word": "Implicitly",
+    "definition": "in a way not directly expressed; understood without being stated",
+    "memoryTip": "Im-plied, not said out loud — understood between the lines.",
+    "correctPassage": "By remaining silent during the vote, the board implicitly endorsed the chair's decision.",
+    "wrongPassages": [
+      "He answered implicitly by reading every clause of the contract aloud to the room.",
+      "She argued implicitly, raising her voice each time a critic interrupted her claim.",
+      "The lecturer spoke so implicitly that every syllable was easy to transcribe."
+    ]
+  },
+  {
+    "id": "w043",
+    "word": "Affinity",
+    "definition": "a natural liking or sense of connection",
+    "memoryTip": "A-finity: a natural 'fit' — you click with someone or something.",
+    "correctPassage": "She felt an immediate affinity for the spare, geometric style of the paintings.",
+    "wrongPassages": [
+      "Signing the contract created a legal affinity requiring delivery by the end of June.",
+      "Surveyors recorded the affinity between the two property lines before building the fence.",
+      "He felt such affinity for the rival proposal that he blocked any further discussion of it."
+    ]
+  },
+  {
+    "id": "w044",
+    "word": "Partition",
+    "definition": "division into parts; a wall or screen that divides space",
+    "memoryTip": "Part + ition — splits a whole into parts, or the wall that does it.",
+    "correctPassage": "A temporary partition divided the gallery into two smaller exhibition rooms.",
+    "wrongPassages": [
+      "Management planned to partition the two research labs into a single shared workspace.",
+      "Students must partition in at least one community project before graduation.",
+      "Please partition the windows before the overnight storm reaches the coast."
+    ]
+  },
+  {
+    "id": "w045",
+    "word": "Adept",
+    "definition": "very skilled or proficient at something",
+    "memoryTip": "A-dept: depth of skill — you're really good at it.",
+    "correctPassage": "She is adept at turning dense research into clear explanations for a general audience.",
+    "wrongPassages": [
+      "The new curriculum was adept from materials the department had used a decade earlier.",
+      "After a brief public hearing, the council adept the revised zoning ordinance.",
+      "After the festival ended, the empty lot felt strangely adept in the morning light."
+    ]
+  }
+]

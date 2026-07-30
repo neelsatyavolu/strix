@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w236",
+    "word": "Equitable",
+    "definition": "fair and impartial",
+    "memoryTip": "Equity = fairness\u2014equitable means just and even-handed to all sides.",
+    "correctPassage": "An equitable distribution of resources was the panel\u2019s main goal.",
+    "wrongPassages": [
+      "The judge\u2019s equitable ruling gave every prize to one side without hearing the other.",
+      "An equitable split left one partner with nothing and the other with the firm.",
+      "The wharf\u2019s equitable crane load chart was for equipment long since scrapped."
+    ]
+  },
+  {
+    "id": "w237",
+    "word": "Unattainable",
+    "definition": "not able to be reached or achieved",
+    "memoryTip": "Can\u2019t attain it\u2014unattainable means out of reach, not merely hard.",
+    "correctPassage": "Perfection is unattainable, but steady improvement is not.",
+    "wrongPassages": [
+      "The shelf was unattainable once she stepped over and lifted the box down.",
+      "Her unattainable goal was finished before lunch on the first quiet day.",
+      "The summit felt unattainable after the marked path delivered them to the top."
+    ]
+  },
+  {
+    "id": "w238",
+    "word": "Vapid",
+    "definition": "offering nothing stimulating; bland",
+    "memoryTip": "Vapor-thin flavor\u2014vapid talk is bland, empty, and quickly forgotten.",
+    "correctPassage": "The speech was elegant in form but vapid in content.",
+    "wrongPassages": [
+      "The vapid lecture packed every theorem with full proofs and sharp examples.",
+      "Critics called the novel vapid because every page startled them awake.",
+      "A vapid load test hits one request and graphs a single point."
+    ]
+  },
+  {
+    "id": "w239",
+    "word": "Sanction",
+    "definition": "a penalty for disobeying; or official permission",
+    "memoryTip": "Two-faced word: sanctions punish\u2014or sanction means officially allow.",
+    "correctPassage": "The league may sanction the team for violating recruitment rules.",
+    "wrongPassages": [
+      "He packed emergency sanction next to flares that had expired years ago.",
+      "Without any vote, the clerk claimed to sanction the plan by ignoring it entirely.",
+      "Deleting thumbs.db finally made folder sanction truly empty."
+    ]
+  },
+  {
+    "id": "w240",
+    "word": "Incongruity",
+    "definition": "the state of being out of place or inconsistent",
+    "memoryTip": "Incongruous mismatch\u2014incongruity is when pieces simply don\u2019t fit.",
+    "correctPassage": "There is a striking incongruity between the firm\u2019s green claims and its emissions.",
+    "wrongPassages": [
+      "The museum stored its incongruity in a drawer marked miscellaneous hardware.",
+      "She enabled incongruity mode that only dimmed the wallpaper.",
+      "The matching set showed perfect incongruity: every piece the same color and size."
+    ]
+  }
+]

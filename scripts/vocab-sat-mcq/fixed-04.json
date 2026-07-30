@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w021",
+    "word": "Tally",
+    "definition": "a count or total; to agree or correspond",
+    "memoryTip": "Marks on a stick that add up — the counts match.",
+    "correctPassage": "The auditors found that the warehouse inventory did not tally with the figures reported in the quarterly statement.",
+    "wrongPassages": [
+      "She hoped to tally the opposition by refusing every compromise until they withdrew the bill.",
+      "The committee described the new policy as tally once the final vote had already been certified.",
+      "He negotiated a tally agreement that deliberately omitted any mention of the disputed funds."
+    ]
+  },
+  {
+    "id": "w022",
+    "word": "Nebulous",
+    "definition": "vague or ill-defined",
+    "memoryTip": "Like a dusty nebula — cloudy, vague, not sharply defined.",
+    "correctPassage": "Critics called the mission statement nebulous because it never specified what success would look like.",
+    "wrongPassages": [
+      "The engineer's nebulous blueprint listed every measurement to the nearest millimeter.",
+      "After months of debate, the council adopted a nebulous statute that left no clause open to interpretation.",
+      "She preferred a nebulous timeline because every deadline and milestone was already fixed in writing."
+    ]
+  },
+  {
+    "id": "w023",
+    "word": "Unassuming",
+    "definition": "modest; not pretentious",
+    "memoryTip": "Doesn't assume airs — quiet and modest.",
+    "correctPassage": "Despite her international reputation, she remained unassuming and rarely mentioned her awards in public.",
+    "wrongPassages": [
+      "The unassuming executive insisted on a private entrance and a dedicated security detail for every appearance.",
+      "Reviewers called the speech unassuming after he repeatedly credited himself as the sole architect of the reform.",
+      "Her unassuming wardrobe consisted only of limited-edition labels chosen by a team of stylists."
+    ]
+  },
+  {
+    "id": "w024",
+    "word": "Outsize",
+    "definition": "unusually large",
+    "memoryTip": "Out + size — bigger than the usual size.",
+    "correctPassage": "The foundation devoted an outsize share of its annual budget to a single multiyear research initiative.",
+    "wrongPassages": [
+      "Analysts described the company's market share as outsize after it sold fewer than two dozen units nationwide.",
+      "The mediator hoped to outsize the dispute by scheduling public comment for after midnight.",
+      "Editors praised the essay for its outsize argument, which they said barely filled half a page."
+    ]
+  },
+  {
+    "id": "w025",
+    "word": "Inextricable",
+    "definition": "impossible to disentangle or separate",
+    "memoryTip": "In-extricable: can't extract yourself — tangled tight.",
+    "correctPassage": "In the novel, personal loyalty and political ambition become inextricable as the protagonist rises through the party.",
+    "wrongPassages": [
+      "The two accounts were inextricable: a single audit line separated legitimate expenses from the rest.",
+      "She filed an inextricable petition that the court dismissed for lacking any supporting documentation.",
+      "Historians praised his inextricable summary for reducing a decade of conflict to a few clear causes."
+    ]
+  }
+]

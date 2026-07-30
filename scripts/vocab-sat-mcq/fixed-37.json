@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w186",
+    "word": "Inconspicuous",
+    "definition": "not clearly visible or attracting attention",
+    "memoryTip": "In-conspicuous: the opposite of flashy — easy to miss.",
+    "correctPassage": "The researcher preferred an inconspicuous seat near the exit, where she could observe without drawing notice.",
+    "wrongPassages": [
+      "Her inconspicuous jacket, bright red and covered in reflective logos, drew stares across the plaza.",
+      "The museum placed the artifact in an inconspicuous display under a spotlight at the gallery entrance.",
+      "He made an inconspicuous entrance by pausing mid-aisle until every head had turned toward him."
+    ]
+  },
+  {
+    "id": "w187",
+    "word": "Conflate",
+    "definition": "combine two things into one, often mistakenly",
+    "memoryTip": "Con-flate: fuse two ideas into one (sometimes wrongly).",
+    "correctPassage": "Critics warned not to conflate correlation with causation when interpreting the survey results.",
+    "wrongPassages": [
+      "Historians will conflate the two archives by keeping their catalogs carefully separate.",
+      "She tried to conflate the dispute by listing each side’s claims without mixing them together.",
+      "Engineers plan to conflate the prototype by stripping it down to a single tested component."
+    ]
+  },
+  {
+    "id": "w188",
+    "word": "Reconstitute",
+    "definition": "build or form again from parts; restore",
+    "memoryTip": "Re-constitute: put the pieces back together as a whole.",
+    "correctPassage": "After the merger collapsed, the firm moved quickly to reconstitute its original research division.",
+    "wrongPassages": [
+      "The committee voted to reconstitute the program by dissolving it and redistributing its budget.",
+      "Editors will reconstitute the manuscript by cutting several core chapters without replacement.",
+      "Officials chose to reconstitute the damaged bridge by leaving the debris exactly as it fell."
+    ]
+  },
+  {
+    "id": "w189",
+    "word": "Apathy",
+    "definition": "lack of interest, enthusiasm, or concern",
+    "memoryTip": "A-pathos: no feeling — you simply don’t care.",
+    "correctPassage": "Voter apathy, more than organized opposition, explained the record-low turnout.",
+    "wrongPassages": [
+      "Her apathy for the campaign showed in late nights, extra revisions, and constant volunteer outreach.",
+      "The crowd’s apathy erupted into sustained cheers when the underdog took the lead.",
+      "Teachers praised the class’s apathy, noting how eagerly students debated every assigned text."
+    ]
+  },
+  {
+    "id": "w190",
+    "word": "Immutable",
+    "definition": "unchanging over time; unable to be altered",
+    "memoryTip": "Im-mutable: cannot mutate — locked in place forever.",
+    "correctPassage": "In the theoretical model, the physical constants are treated as immutable.",
+    "wrongPassages": [
+      "Fashion trends proved immutable, shifting dramatically from one season to the next.",
+      "His immutable mood swung from elation to frustration within a single meeting.",
+      "They kept an immutable schedule so that meetings could be moved whenever conflicts arose."
+    ]
+  }
+]

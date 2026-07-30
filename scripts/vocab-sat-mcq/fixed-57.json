@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w286",
+    "word": "Delusive",
+    "definition": "giving a false or misleading impression",
+    "memoryTip": "Delusion-ive — creates a false belief that feels true.",
+    "correctPassage": "Investors soon found the promise of risk-free returns delusive once the market corrected.",
+    "wrongPassages": [
+      "The laboratory's delusive instruments matched every certified standard without a single error.",
+      "Her delusive summary listed each finding exactly as the peer reviewers had confirmed it.",
+      "Analysts praised the delusive forecast for predicting employment gains with unusual accuracy."
+    ]
+  },
+  {
+    "id": "w287",
+    "word": "Tortuous",
+    "definition": "full of twists and turns; overly complex",
+    "memoryTip": "A tortured path — winding twists, or an argument that never ends.",
+    "correctPassage": "Negotiators spent months on a tortuous route through conflicting statutes before reaching a draft.",
+    "wrongPassages": [
+      "The highway ran in a tortuous straight line across the plain with no curves for miles.",
+      "Her tortuous brief reduced the entire dispute to three plain sentences anyone could follow.",
+      "He preferred the tortuous staircase that climbed in one unbroken flight to the landing."
+    ]
+  },
+  {
+    "id": "w288",
+    "word": "Furtive",
+    "definition": "attempting to avoid notice; secretive",
+    "memoryTip": "Fur-tive like a thief's quiet sneak — a secretive glance.",
+    "correctPassage": "During the hearing he cast a furtive glance at his notes when the chair turned away.",
+    "wrongPassages": [
+      "Her furtive announcement filled the auditorium after days of open press briefings.",
+      "The band made a furtive entrance under fireworks while the crowd chanted their names.",
+      "He delivered a furtive keynote from the main stage under the hall's brightest spotlights."
+    ]
+  },
+  {
+    "id": "w289",
+    "word": "Debunk",
+    "definition": "expose the falseness of a claim or idea",
+    "memoryTip": "De-bunk: knock the bunk (nonsense) out — prove it false.",
+    "correctPassage": "The study aims to debunk popular myths about multitasking and long-term memory.",
+    "wrongPassages": [
+      "Editors moved to debunk the rumor by reprinting it as confirmed fact on the front page.",
+      "She hoped to debunk the theory by gathering still more evidence in its favor.",
+      "The panel will debunk the proposal by endorsing every claim without further scrutiny."
+    ]
+  },
+  {
+    "id": "w290",
+    "word": "Hallmark",
+    "definition": "a distinctive feature or sign of quality",
+    "memoryTip": "Gold hallmark stamp — the distinctive mark of real quality.",
+    "correctPassage": "Precision remains the hallmark of her laboratory's published work.",
+    "wrongPassages": [
+      "Confusion is the hallmark of her carefully organized and cross-checked field notes.",
+      "Critics called silence the hallmark of the arena during the championship's loudest roar.",
+      "Random typos became the hallmark of a manuscript that had passed three rounds of proofreading."
+    ]
+  }
+]

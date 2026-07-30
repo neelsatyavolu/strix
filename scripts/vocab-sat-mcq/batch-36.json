@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w181",
+    "word": "Retroactive",
+    "definition": "taking effect from a date in the past",
+    "memoryTip": "Retro = back: the rule reaches backward in time.",
+    "correctPassage": "The pay raise was retroactive to January, so employees received months of back pay.",
+    "wrongPassages": [
+      "She preferred retroactive furniture that looked like it came from the 1950s.",
+      "The coach ran a retroactive drill so the team could practice the play again.",
+      "His retroactive mood made him refuse every new idea on principle."
+    ]
+  },
+  {
+    "id": "w182",
+    "word": "Reciprocate",
+    "definition": "respond to a gesture or action with a corresponding one",
+    "memoryTip": "Reciprocal: give back the same kind of gesture you got.",
+    "correctPassage": "When one nation cut tariffs, trading partners were expected to reciprocate.",
+    "wrongPassages": [
+      "He tried to reciprocate the broken vase by gluing the shards back together.",
+      "The engine will reciprocate fuel into electricity more efficiently this year.",
+      "She hoped to reciprocate her essay by cutting it from five pages to two."
+    ]
+  },
+  {
+    "id": "w183",
+    "word": "Disengage",
+    "definition": "withdraw from involvement; detach",
+    "memoryTip": "Dis + engage: unhook yourself and step away.",
+    "correctPassage": "Mediators urged both armies to disengage and pull back from the border.",
+    "wrongPassages": [
+      "The company planned to disengage three new factories next quarter.",
+      "She tried to disengage the audience by telling a long, lively story.",
+      "Judges will disengage the winner after scoring each routine."
+    ]
+  },
+  {
+    "id": "w184",
+    "word": "Contentious",
+    "definition": "causing or likely to cause argument; quarrelsome",
+    "memoryTip": "Full of contention \u2014 built to start a fight.",
+    "correctPassage": "Land rights remain a contentious issue that splits the community.",
+    "wrongPassages": [
+      "The museum display was contentious, packing a thousand years into one case.",
+      "Her contentious notes summarized every lecture in neat bullet points.",
+      "They chose a contentious hotel because it was quiet and inexpensive."
+    ]
+  },
+  {
+    "id": "w185",
+    "word": "Equivocal",
+    "definition": "open to more than one interpretation; ambiguous",
+    "memoryTip": "Equi-vocal: equal voices, so the meaning cuts both ways.",
+    "correctPassage": "His answer was deliberately equivocal, satisfying neither side completely.",
+    "wrongPassages": [
+      "The coach was equivocal about practice, repeating the same drills every day.",
+      "She gave an equivocal speech praising the team without a single reservation.",
+      "The recipe was equivocal, listing exact grams for every ingredient."
+    ]
+  }
+]

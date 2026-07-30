@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w196",
+    "word": "Entrench",
+    "definition": "establish so firmly that change becomes difficult",
+    "memoryTip": "Dig a trench and stay put — hard to dig out later.",
+    "correctPassage": "Years of unchallenged procedure had entrenched practices that later reforms struggled to reverse.",
+    "wrongPassages": [
+      "The committee hoped to entrench the old policy by discarding it after a single meeting.",
+      "Volunteers entrenched the trail by clearing brush so hikers could pass more easily.",
+      "She tried to entrench the dough by kneading it lightly and leaving it soft and pliable."
+    ]
+  },
+  {
+    "id": "w197",
+    "word": "Prescribe",
+    "definition": "lay down as a rule; authorize a treatment",
+    "memoryTip": "Pre-scribe: write the rule or medicine ahead of time.",
+    "correctPassage": "The new protocol prescribes a mandatory cooling-off period before any major budget reallocation.",
+    "wrongPassages": [
+      "The handbook prescribes overtime by forbidding any work beyond the scheduled shift.",
+      "Physicians prescribe rest by requiring patients to resume intense training the same day.",
+      "The board prescribed the proposal only after refusing to set any rules about how it should proceed."
+    ]
+  },
+  {
+    "id": "w198",
+    "word": "Obtrusive",
+    "definition": "noticeable in an unwelcome or intrusive way",
+    "memoryTip": "Ob-trude: sticks out where it doesn’t belong.",
+    "correctPassage": "An obtrusive watermark across the image distracted readers from the underlying data.",
+    "wrongPassages": [
+      "The observer remained obtrusive by standing well outside the room and never speaking.",
+      "Her obtrusive notes were written so lightly that the instructor asked her to rewrite them darker.",
+      "Designers praised the obtrusive controls, which stayed hidden until a user actively requested them."
+    ]
+  },
+  {
+    "id": "w199",
+    "word": "Cryptic",
+    "definition": "having a mysterious or obscure meaning",
+    "memoryTip": "Like a cryptogram — meaning locked behind a code.",
+    "correctPassage": "The footnote was so cryptic that even specialists debated what the author intended.",
+    "wrongPassages": [
+      "Her cryptic directions listed each turn, street name, and landmark in plain sequence.",
+      "The diagram was cryptic, with bold labels and a full key explaining every symbol.",
+      "He delivered a cryptic summary that left the committee with no ambiguity about next steps."
+    ]
+  },
+  {
+    "id": "w200",
+    "word": "Replenish",
+    "definition": "fill up again; restore a supply",
+    "memoryTip": "Re-plenish: make full again after something is used up.",
+    "correctPassage": "After the harvest, farmers used compost and irrigation to replenish nutrients in the soil.",
+    "wrongPassages": [
+      "The editor planned to replenish the manuscript by cutting several supporting sections.",
+      "City planners hoped to replenish downtown traffic by closing two of the three main arteries.",
+      "She replenished the emergency fund by withdrawing most of its remaining balance."
+    ]
+  }
+]

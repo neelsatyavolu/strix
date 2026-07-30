@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w151",
+    "word": "Commonality",
+    "definition": "a shared feature or attribute",
+    "memoryTip": "What is common to both — a feature they share.",
+    "correctPassage": "Despite cultural differences, researchers found a surprising commonality in how children learn numbers.",
+    "wrongPassages": [
+      "Survey results revealed a striking commonality: respondents agreed on almost none of the questions.",
+      "The report stressed a commonality that made each region’s economy distinct from all the others.",
+      "Linguists found little commonality between the dialects, which shared nearly identical grammar and vocabulary."
+    ]
+  },
+  {
+    "id": "w152",
+    "word": "Animosity",
+    "definition": "strong hostility or ill will",
+    "memoryTip": "Animus = hostile spirit — deep dislike, not mild annoyance.",
+    "correctPassage": "Years of rivalry had produced deep animosity between the neighboring towns.",
+    "wrongPassages": [
+      "Long collaboration left an animosity that made the partners eager to work together again.",
+      "Her animosity toward the mentor was plain in the gratitude she expressed at every ceremony.",
+      "The treaty was signed amid animosity so warm that both sides hosted joint celebrations for weeks."
+    ]
+  },
+  {
+    "id": "w153",
+    "word": "Profusion",
+    "definition": "an abundance or large quantity",
+    "memoryTip": "Pro-fusion: pour forth in abundance — almost too much.",
+    "correctPassage": "Spring brought a profusion of wildflowers to the hillside.",
+    "wrongPassages": [
+      "A profusion of applications left the committee with almost no candidates to consider.",
+      "After the drought, farmers noted a profusion of crops that barely filled a single wagon.",
+      "The archive’s profusion of documents meant researchers found almost nothing on the subject."
+    ]
+  },
+  {
+    "id": "w154",
+    "word": "Negate",
+    "definition": "cancel out; make ineffective",
+    "memoryTip": "Make it negative — wipe out the force of a claim or effect.",
+    "correctPassage": "One contradictory finding does not negate the overall pattern in the data.",
+    "wrongPassages": [
+      "Independent replications negate the original result by confirming it in three laboratories.",
+      "The amendment was meant to negate the statute by restating its core provisions more clearly.",
+      "Further evidence will only negate the theory, which already fits every observation on record."
+    ]
+  },
+  {
+    "id": "w155",
+    "word": "Arcane",
+    "definition": "understood by few; obscure or mysterious",
+    "memoryTip": "Arcane knowledge sits in a secret arc — only specialists get it.",
+    "correctPassage": "The paper is full of arcane terminology familiar only to specialists.",
+    "wrongPassages": [
+      "The handbook’s arcane instructions walked first-time users through every step in plain language.",
+      "What made the rule arcane was how readily any citizen could recite and apply it.",
+      "She preferred arcane explanations that avoided jargon and assumed no prior training."
+    ]
+  }
+]

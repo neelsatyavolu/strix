@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w091",
+    "word": "Brood",
+    "definition": "dwell unhappily on a thought; also a group of young birds",
+    "memoryTip": "Like a hen brooding — sit and stew on dark thoughts (or a clutch of chicks).",
+    "correctPassage": "He continued to brood over the failed trial long after the rest of the team had moved on.",
+    "wrongPassages": [
+      "She brooded over the invitation by accepting it at once and arriving early to help set up.",
+      "Once the problem was solved, they brooded cheerfully over their success around the table.",
+      "The panel brooded the agenda item for two minutes, then approved it without further comment."
+    ]
+  },
+  {
+    "id": "w092",
+    "word": "Reverence",
+    "definition": "deep respect, often tinged with awe",
+    "memoryTip": "Revere someone — treat them with deep, almost sacred respect.",
+    "correctPassage": "Visitors approached the manuscript with a reverence reserved for rare and fragile objects.",
+    "wrongPassages": [
+      "Critics praised his reverence for the score, which he rearranged freely without consulting the original markings.",
+      "The class showed reverence for the guest lecturer by talking through most of her presentation.",
+      "She expressed reverence for the collection by handling the oldest volumes without gloves."
+    ]
+  },
+  {
+    "id": "w093",
+    "word": "Exemplary",
+    "definition": "serving as a desirable model; outstandingly good",
+    "memoryTip": "Worthy to be an example — model behavior others should copy.",
+    "correctPassage": "Her laboratory notebooks are exemplary in their clarity and care.",
+    "wrongPassages": [
+      "Reviewers called the draft exemplary, citing its incomplete citations and unsupported claims.",
+      "His exemplary attendance record listed more absences than any other student in the course.",
+      "The board held up the delayed, over-budget project as exemplary of how future initiatives should run."
+    ]
+  },
+  {
+    "id": "w094",
+    "word": "Defy",
+    "definition": "openly resist or refuse to obey; go against",
+    "memoryTip": "De-fy: refuse to bow — openly resist an order or expectation.",
+    "correctPassage": "The results appear to defy the predictions of the standard model.",
+    "wrongPassages": [
+      "She chose to defy the curfew by returning home well before the deadline each night.",
+      "The class decided to defy the instructor by following the assigned outline section by section.",
+      "He managed to defy the ban by securing every required permit before the event began."
+    ]
+  },
+  {
+    "id": "w095",
+    "word": "Material",
+    "definition": "important or relevant (as in material evidence)",
+    "memoryTip": "Matters materially — important/relevant, not just “stuff” you can touch.",
+    "correctPassage": "Only material differences between the samples were reported in the abstract.",
+    "wrongPassages": [
+      "The judge called the typo material to the verdict, noting that it changed nothing about the evidence.",
+      "Counsel argued that a material fact was one the jury could safely set aside.",
+      "Researchers labeled the discrepancy material precisely because it had no bearing on the conclusions."
+    ]
+  }
+]

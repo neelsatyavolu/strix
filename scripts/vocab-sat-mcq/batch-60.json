@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w301",
+    "word": "Insolent",
+    "definition": "showing rude or arrogant lack of respect",
+    "memoryTip": "In-solent: so rude you feel the insult \u2014 cheeky disrespect.",
+    "correctPassage": "The student gave an insolent answer that left the principal speechless.",
+    "wrongPassages": [
+      "Teachers praised her insolent manners for being perfectly polite all semester.",
+      "Please insolent the chairs into rows.",
+      "City hall issued an insolent license for shoe size only."
+    ]
+  },
+  {
+    "id": "w302",
+    "word": "Diffusion",
+    "definition": "the process of spreading more widely",
+    "memoryTip": "Diffuse = scatter: ideas or particles spreading out.",
+    "correctPassage": "The diffusion of new teaching methods reached rural schools within a year.",
+    "wrongPassages": [
+      "The diffusion of the crowd into one tiny room made movement impossible.",
+      "She practiced diffusion by locking every window against the wind.",
+      "The museum's diffusion of the statue kept it sealed in a vault."
+    ]
+  },
+  {
+    "id": "w303",
+    "word": "Extemporaneous",
+    "definition": "spoken or done without preparation",
+    "memoryTip": "Ex tempore = out of the moment \u2014 no notes, no rehearsal.",
+    "correctPassage": "When the slides failed, she delivered an extemporaneous talk that still won the room.",
+    "wrongPassages": [
+      "His extemporaneous speech had been rehearsed for three solid weeks.",
+      "They filed an extemporaneous report after months of careful drafting.",
+      "The extemporaneous ceremony followed a script printed the day before."
+    ]
+  },
+  {
+    "id": "w304",
+    "word": "Reminiscent",
+    "definition": "tending to remind one of something",
+    "memoryTip": "Reminisce = remember: reminiscent things spark old memories.",
+    "correctPassage": "The alley was reminiscent of the neighborhood where she grew up.",
+    "wrongPassages": [
+      "The brand-new design was reminiscent of nothing anyone had ever seen.",
+      "He stayed reminiscent so he would never look back on the past.",
+      "A totally blank memory made the photo feel deeply reminiscent."
+    ]
+  },
+  {
+    "id": "w305",
+    "word": "Enmity",
+    "definition": "deep-seated hostility or active opposition",
+    "memoryTip": "Enemy + -ity: the state of being someone's enemy.",
+    "correctPassage": "Decades of enmity made even a handshake between the leaders unlikely.",
+    "wrongPassages": [
+      "Their lifelong enmity was the reason they never stopped helping each other.",
+      "The club's enmity toward new members showed in warm welcome dinners.",
+      "She felt only enmity for the friend who had always stood by her."
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w106",
+    "word": "Impede",
+    "definition": "to delay or block by creating an obstacle",
+    "memoryTip": "Im-pede: put something in the path of the feet — slow progress.",
+    "correctPassage": "Construction along the highway will impede delivery trucks until the detour opens next month.",
+    "wrongPassages": [
+      "Additional funding will impede the research team’s ability to finish the study on schedule.",
+      "The new software is designed to impede workflow by automating the most time-consuming steps.",
+      "Mentors impede first-year students by helping them navigate registration and course selection."
+    ]
+  },
+  {
+    "id": "w107",
+    "word": "Glean",
+    "definition": "to gather information bit by bit from various sources",
+    "memoryTip": "Farmers glean leftover grain — pick up scraps of info the same way.",
+    "correctPassage": "From scattered field notes, the biologist could glean how the bird population had shifted over decades.",
+    "wrongPassages": [
+      "She chose to glean the entire archive in a single uninterrupted afternoon of reading.",
+      "Investigators gleaned the missing motive by inventing details no witness had supplied.",
+      "Administrators chose to glean the controversial passage by deleting it from the final report."
+    ]
+  },
+  {
+    "id": "w108",
+    "word": "Ephemeral",
+    "definition": "lasting only a very short time",
+    "memoryTip": "Ephemera once meant “for a day” — here today, gone tomorrow.",
+    "correctPassage": "The desert bloom is ephemeral, vanishing within days once the rains end.",
+    "wrongPassages": [
+      "Stone monuments are ephemeral because they outlast the civilizations that raised them.",
+      "Their ephemeral collaboration has produced books together for more than thirty years.",
+      "He filed the ephemeral records in a permanent archive meant to preserve them indefinitely."
+    ]
+  },
+  {
+    "id": "w109",
+    "word": "Sporadically",
+    "definition": "occasionally; at irregular intervals",
+    "memoryTip": "In scattered spots — now and then, not on a steady schedule.",
+    "correctPassage": "The rare bird appears only sporadically along this stretch of coast.",
+    "wrongPassages": [
+      "The factory whistle blew sporadically at the same minute every morning without fail.",
+      "She practiced sporadically: two hours each day for six months without missing a session.",
+      "Trains arrived sporadically according to a published timetable that never varied."
+    ]
+  },
+  {
+    "id": "w110",
+    "word": "Fraught",
+    "definition": "filled with something undesirable; tense with risk",
+    "memoryTip": "Freighted with trouble — loaded down with tension or danger.",
+    "correctPassage": "The negotiations were fraught with misunderstandings from the first meeting.",
+    "wrongPassages": [
+      "Their vacation was fraught with calm beaches and uninterrupted sleep.",
+      "The simple recipe was fraught with only three ingredients and one pan.",
+      "He found the empty hallway fraught with silence and free of any tension."
+    ]
+  }
+]

@@ -70,8 +70,8 @@ function wl(word: string): string {
 }
 
 /**
- * Extra correct-use sentences. NEVER quote the dictionary definition —
- * the student must infer meaning from context alone.
+ * Extra correct-use sentences — Digital SAT / academic register.
+ * NEVER quote the dictionary definition.
  */
 function generatedCorrect(word: string, pos: Pos): string[] {
   const w = wl(word);
@@ -79,23 +79,23 @@ function generatedCorrect(word: string, pos: Pos): string[] {
 
   if (pos === "verb" || pos === "phrase") {
     out.push(
-      `Independent labs helped ${w} the original claim with measurements of their own.`,
-      `New safety rules were designed to ${w} the risk of accidents at the plant.`,
-      `Editors worked overnight to ${w} errors that had slipped into the first edition.`,
-      `The team refused to ${w} the decision until every stakeholder had been heard.`,
-      `Field researchers tried to ${w} the gap between the two earlier surveys.`,
-      `Critics argue that only careful data can ${w} such a sweeping conclusion.`,
+      `A second laboratory’s results help ${w} the original claim about rising ocean temperatures.`,
+      `Editors worked to ${w} several errors that had slipped into the first edition.`,
+      `New regulations were intended to ${w} the environmental damage caused by mining.`,
+      `The committee refused to ${w} the proposal until the safety data were released.`,
+      `Historians still try to ${w} how the treaty was negotiated from incomplete letters.`,
+      `The study was designed to ${w} whether the new curriculum meets state standards.`,
+      `Critics argue that only careful measurements can ${w} such a sweeping conclusion.`,
       `Officials moved quickly to ${w} the problem before it spread to neighboring districts.`,
-      `She tried to ${w} the dispute by proposing a compromise neither side had considered.`,
     );
   } else if (pos === "noun") {
     out.push(
-      `There was a clear ${w} between the two maps, suggesting different survey methods.`,
+      `There was a clear ${w} between the two maps, suggesting they were drawn from different surveys.`,
       `Without that ${w}, the rest of the argument would not have been persuasive.`,
-      `The study’s main ${w} was that early exposure improved later reading scores.`,
-      `Despite a ${w} of reliable data, the panel still hesitated to issue a firm recommendation.`,
-      `The report opens with a brief ${w} of the experiment’s design and limitations.`,
-      `His sudden ${w} surprised colleagues who had expected a longer silence.`,
+      `The report’s main ${w} is that early reading programs improve later test scores.`,
+      `Despite a ${w} of reliable measurements, the panel hesitated to issue a firm recommendation.`,
+      `The chapter opens with a brief ${w} of the experiment’s design and limitations.`,
+      `His sudden ${w} surprised colleagues who had expected a longer period of silence.`,
       `A second ${w} in the archive confirmed what the first letter only hinted at.`,
       `Readers noticed the ${w} only after comparing both drafts side by side.`,
     );
@@ -111,11 +111,11 @@ function generatedCorrect(word: string, pos: Pos): string[] {
   } else {
     out.push(
       `Critics called the mission statement ${w} because it never defined success.`,
-      `What seemed like a ${w} detail later proved essential to the timeline.`,
+      `What seemed like a ${w} detail later proved essential to understanding the timeline.`,
       `Her ${w} response left little doubt about where she stood on the proposal.`,
-      `The path through the mountains was an ${w} climb that took days of skilled work.`,
-      `After months of ${w} labor, the climbers finally reached the ridge above the storm.`,
-      `A ${w} claim in this paper would not survive peer review without better evidence.`,
+      `Building the bridge through the mountains was an ${w} task that took years of skilled labor.`,
+      `After months of ${w} labor, the climbers finally reached the ridge above the storm clouds.`,
+      `A ${w} claim of that kind would not survive peer review without stronger evidence.`,
       `Readers found the tone ${w}, especially in the final paragraph’s careful hedging.`,
       `The landscape looked almost ${w} in the early light, quiet and barely disturbed.`,
       `His ${w} refusal to consider alternatives weakened the paper’s credibility.`,
@@ -127,68 +127,62 @@ function generatedCorrect(word: string, pos: Pos): string[] {
 }
 
 /**
- * Incorrect-use sentences (wrong meaning, opposite, or wrong POS).
+ * Incorrect-use sentences — same academic register, clear wrong meaning.
+ * Prefer reverse sense / wrong role, NOT cartoon absurds (no trunk/paint/emoji jokes).
  * NEVER quote the dictionary definition.
  */
 function generatedWrong(word: string, pos: Pos): string[] {
   const w = wl(word);
-  const W = word;
-  const frames: string[] = [
-    `The instructions were so ${w} that every step was numbered and impossible to misread.`,
-    `After the full archive was published, nothing about the episode remained ${w}.`,
-    `In the kitchen, a ${w} pinch of salt is defined as exactly one gram on a digital scale.`,
-    `Engineers measured the bridge’s ${w} in meters and found it 214.6 meters long.`,
-    `Please ${w} the window before you leave so the rain does not get in.`,
-    `They packed a spare ${w} in the trunk next to the tire and jumper cables.`,
-    `The paint color “${W} Mist” is a standard beige sold in every hardware aisle.`,
-    `She filed the forms under “${w}” as if it were a department code, not a concept.`,
-    `After lunch the staff agreed to ${w} the chairs into neat rows for the next panel.`,
-    `The software will ${w} your password by turning every character into the same emoji.`,
-    `To ${w} the budget, accountants printed extra copies and stacked them on the table.`,
-    `Parents described the toddler’s ${w} tantrum as calm, quiet, and easy to redirect.`,
-    `The lab labeled the sample ${w} after it crystallized into a single pure solid.`,
-    `Astronomers call a star ${w} when its brightness never changes across decades.`,
-    `City hall issued a ${w} license that only certified the applicant’s favorite color.`,
-    `The glossary defined ${w} as “see page 2,” then never mentioned it again.`,
-    `A ${w} crowd of two people filled the stadium according to the official count.`,
-    `To ${w} the experiment, the team powered down the machine and left for lunch.`,
-    `His ${w} explanation listed steps 1–5 with diagrams and a glossary for every term.`,
-    `She gave a ${w} answer — “yes” — then left without another word.`,
-    `The crisis was ${w} the moment it started: already fully resolved before anyone noticed.`,
-    `They scheduled a ${w} holiday that lasted from noon until noon with no interruption.`,
-    `Investors sought ${w} returns of exactly zero in a guaranteed flat market.`,
-    `Biologists call a forest ${w} when every tree is the same species and the same age.`,
-    `The update was ${w}: it fixed nothing and removed the only feature people used.`,
-    `Programmers tried to ${w} the crash by closing the laptop and going to lunch.`,
-    `Students completed a ${w} worksheet that asked only for their name written once.`,
-    `The lecture was ${w}: it covered every theorem with full proofs on the board.`,
-    `Judges called the ruling ${w} because it carefully weighed both sides and cited law.`,
-    `The river ran ${w} after engineers straightened every bend into a concrete channel.`,
-  ];
+  const frames: string[] = [];
 
   if (pos === "verb" || pos === "phrase") {
     frames.push(
-      `The chef decided to ${w} the soup so it would taste exactly the same as before.`,
-      `They hoped to ${w} attendance by cancelling the event and locking the building.`,
-      `She tried to ${w} the locked door with a polite thank-you note slipped underneath.`,
+      `The new policy will ${w} the problem by making it twice as severe and harder to reverse.`,
+      `Editors chose to ${w} the article by deleting every citation that supported its claim.`,
+      `She tried to ${w} trust by repeating a rumor she knew was false.`,
+      `Managers hoped to ${w} morale by freezing raises and cutting staff without explanation.`,
+      `The team moved to ${w} the dispute by refusing to meet with the other side at all.`,
+      `Researchers will ${w} the hypothesis by discarding the only data that tested it.`,
+      `Officials planned to ${w} attendance by canceling the event and locking the doors.`,
+      `He hoped to ${w} the criticism by ignoring every request for clarification.`,
+      `The board voted to ${w} the reform by postponing it indefinitely without debate.`,
+      `Critics said the update would ${w} safety by removing the only working alarm system.`,
     );
   } else if (pos === "noun") {
     frames.push(
-      `He stored the ${w} on a shelf next to the spare batteries and packing tape.`,
-      `The recipe called for one ${w} of flour, which the author equated with “about a cup.”`,
-      `In the report, “${W}” was written where a numeric measurement should have been.`,
+      `There was a ${w} of evidence: every measurement contradicted every other measurement.`,
+      `Without any ${w} whatever, the paper still claimed absolute certainty.`,
+      `The report’s main ${w} was that nothing interesting had occurred and no claim was made.`,
+      `Historians praised the ${w} of the treaty while admitting no treaty had been signed.`,
+      `A second ${w} in the archive showed only blank pages with no text at all.`,
+      `Readers found the ${w} so precise that it left the argument completely unsupported.`,
+      `The study opens with a ${w} that lists no methods, no data, and no conclusions.`,
+      `His sudden ${w} was expected; everyone had scheduled it months in advance.`,
     );
   } else if (pos === "adv") {
     frames.push(
-      `She answered ${w} by remaining silent for the entire interview.`,
-      `The machine ran ${w} until the breaker tripped from a sustained overload.`,
-      `They voted ${w}: every hand went up on the first call with no discussion.`,
+      `The results ${w} contradicted the hypothesis while the authors claimed full support.`,
+      `She spoke ${w}, shouting over every speaker and refusing to let anyone finish.`,
+      `The species appears ${w} in every habitat on every continent with no exceptions.`,
+      `Judges weighed the testimony ${w}, announcing a verdict before any witness spoke.`,
+      `He answered ${w}, repeating random numbers that had no connection to the question.`,
+      `The signal changed ${w} by remaining perfectly flat for the entire observation period.`,
     );
   } else {
+    // adjective
     frames.push(
-      `The plan was ${w} because every risk had already been eliminated and every owner named.`,
-      `Critics praised the ${w} ending for resolving every subplot in the first ten minutes.`,
-      `A ${w} claim in this brochure means “guaranteed and free of all uncertainty.”`,
+      `The plan was so ${w} that every risk had already been eliminated and every step numbered.`,
+      `Critics called the wording ${w} because it was crystal clear and left no ambiguity.`,
+      `What seemed like a ${w} detail was actually the only point everyone already agreed on.`,
+      `Her ${w} response was a long silence that never stated a position at all.`,
+      `Building the bridge was a ${w} task completed in ten effortless minutes by one worker.`,
+      `A ${w} claim of that kind would be accepted without any evidence or review.`,
+      `Readers found the tone ${w} in the sense that it was loud, extreme, and never careful.`,
+      `The landscape looked ${w} under neon signs, traffic, and continuous construction noise.`,
+      `His ${w} refusal to consider alternatives actually welcomed every competing theory.`,
+      `The sample was deliberately ${w}: every school was identical in size, location, and funding.`,
+      `The instructions were so ${w} that first-time readers finished them without a single question.`,
+      `After the full archive was published, nothing about the episode remained ${w}.`,
     );
   }
 
@@ -200,7 +194,6 @@ function rejectsDefinitionLeak(passage: string, definition: string): boolean {
   const p = passage.toLowerCase();
   const d = definition.toLowerCase().replace(/\.$/, "").trim();
   if (d.length >= 12 && p.includes(d)) return true;
-  // long contiguous chunk of definition
   if (d.length >= 20) {
     const chunk = d.slice(0, Math.min(28, d.length));
     if (chunk.length >= 12 && p.includes(chunk)) return true;
@@ -214,6 +207,17 @@ function rejectsDefinitionLeak(passage: string, definition: string): boolean {
     /\bdictionary\b/.test(p) ||
     /\bmeaning “/.test(p) ||
     /\btracks the definition\b/.test(p)
+  ) {
+    return true;
+  }
+  // Reject cartoon distractors if any remain in bank
+  if (
+    /\btrunk\b/.test(p) && /\bspare\b/.test(p) ||
+    /\bpaint color\b/.test(p) ||
+    /\bemoji\b/.test(p) ||
+    /\bfavorite color\b/.test(p) ||
+    /\bwater-bottle\b/.test(p) ||
+    /\bhardware aisle\b/.test(p)
   ) {
     return true;
   }
@@ -255,17 +259,31 @@ export function buildUsageOptions(
     (w) => normPassage(w).toLowerCase() !== normPassage(correctPassage).toLowerCase(),
   );
   let chosenWrongs = pickN(wrongPoolFiltered, 3, rng);
+  // Prefer bank wrongs when available (usually higher quality after review)
+  const bankWrongs = entry.wrongPassages.filter(
+    (w) =>
+      !rejectsDefinitionLeak(w, entry.definition) &&
+      normPassage(w).toLowerCase() !== normPassage(correctPassage).toLowerCase(),
+  );
+  if (bankWrongs.length >= 3) {
+    chosenWrongs = pickN(bankWrongs, 3, rng);
+  } else if (bankWrongs.length > 0) {
+    const rest = wrongPoolFiltered.filter((w) => !bankWrongs.includes(w as typeof bankWrongs[0]));
+    chosenWrongs = [...pickN(bankWrongs, bankWrongs.length, rng), ...pickN(rest, 3 - bankWrongs.length, rng)].slice(0, 3);
+  }
+
   let guard = 0;
   while (chosenWrongs.length < 3 && guard < 12) {
     guard += 1;
-    const filler = fixArticles(
-      `Here “${wl(entry.word)}” appears only as a brand name on a water-bottle label (${guard}).`,
-    );
+    const pos = guessPos(entry.word, entry.definition);
+    const extra = generatedWrong(entry.word, pos);
+    const cand = pickN(extra, 1, rng)[0];
     if (
-      !rejectsDefinitionLeak(filler, entry.definition) &&
-      !chosenWrongs.some((w) => normPassage(w).toLowerCase() === normPassage(filler).toLowerCase())
+      cand &&
+      !rejectsDefinitionLeak(cand, entry.definition) &&
+      !chosenWrongs.some((w) => normPassage(w).toLowerCase() === normPassage(cand).toLowerCase())
     ) {
-      chosenWrongs.push(filler);
+      chosenWrongs.push(cand);
     }
   }
   chosenWrongs = chosenWrongs.slice(0, 3);

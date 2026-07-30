@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w196",
+    "word": "Entrench",
+    "definition": "establish so firmly that change becomes difficult",
+    "memoryTip": "Dig a trench and stay put \u2014 hard to dig out later.",
+    "correctPassage": "Long-running subsidies can entrench wasteful habits if never reviewed.",
+    "wrongPassages": [
+      "Volunteers will entrench the park by clearing litter every weekend.",
+      "The chef hoped to entrench the sauce by thinning it with water.",
+      "Editors entrench articles so readers finish them in under a minute."
+    ]
+  },
+  {
+    "id": "w197",
+    "word": "Prescribe",
+    "definition": "lay down as a rule; authorize a treatment",
+    "memoryTip": "Pre-scribe: write the rule or medicine ahead of time.",
+    "correctPassage": "The guidelines prescribe at least thirty minutes of activity each day.",
+    "wrongPassages": [
+      "Mechanics prescribe oil changes by forbidding any maintenance at all.",
+      "Doctors prescribe rest by ordering nonstop marathon training.",
+      "She packed a spare prescribe in the trunk next to the tire."
+    ]
+  },
+  {
+    "id": "w198",
+    "word": "Obtrusive",
+    "definition": "noticeable in an unwelcome or intrusive way",
+    "memoryTip": "Ob-trude: sticks out where it doesn\u2019t belong.",
+    "correctPassage": "An obtrusive logo on the cover pulled attention from the photograph.",
+    "wrongPassages": [
+      "The spy stayed obtrusive by wearing gray and avoiding eye contact.",
+      "Her obtrusive handwriting was so faint that graders needed a lamp.",
+      "They designed an obtrusive interface that hid every button until needed."
+    ]
+  },
+  {
+    "id": "w199",
+    "word": "Cryptic",
+    "definition": "having a mysterious or obscure meaning",
+    "memoryTip": "Like a cryptogram \u2014 meaning locked behind a code.",
+    "correctPassage": "The note was so cryptic that no one could decode its intent.",
+    "wrongPassages": [
+      "Her cryptic instructions listed every step in numbered order.",
+      "The map was cryptic, with bold labels on every street and landmark.",
+      "He gave a cryptic speech that left no room for another interpretation."
+    ]
+  },
+  {
+    "id": "w200",
+    "word": "Replenish",
+    "definition": "fill up again; restore a supply",
+    "memoryTip": "Re-plenish: make full again after something is used up.",
+    "correctPassage": "Heavy rains helped replenish the reservoirs after a dry summer.",
+    "wrongPassages": [
+      "The editor will replenish the article by cutting half its length.",
+      "They hope to replenish traffic by closing two of the three lanes.",
+      "She replenished the debt by borrowing even more from the bank."
+    ]
+  }
+]

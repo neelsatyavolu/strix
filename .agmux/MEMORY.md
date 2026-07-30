@@ -6,8 +6,8 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-30T15:18:44.091Z
-- **Active entries**: 9
+- **Updated**: 2026-07-30T19:41:05.503Z
+- **Active entries**: 10
 - **Important**: 4
 
 ## Important (must remember)
@@ -103,6 +103,16 @@ Vocabulary is flashcard flow: word face → know it / flip definition → usage 
 - **updated**: 2026-07-28T02:12:20.274Z
 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
+
+### Vocab MCQ SAT-style pools
+
+- **id**: `fa6df638-1201-42c7-af64-54d36c95de14`
+- **kind**: decision
+- **source**: agent
+- **created**: 2026-07-30T19:41:05.503Z
+- **updated**: 2026-07-30T19:41:05.503Z
+
+Usage MCQ pools (correctPassage + wrongPassages) for all 400 bank words rewritten via 80-agent pass under scripts/vocab-sat-mcq/. Correct = natural Digital-SAT academic sentence; wrongs = same register, clear misuse (wrong/opposite sense), not absurd jokes. No definition text in options. Merge source: fixed-00..79.json → lib/vocab/bank.ts. usageOptions prefers bank wrongs and rejects absurd/def-leak templates.
 
 ### No manual vocab checkmarks
 

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w231",
+    "word": "Ambivalent",
+    "definition": "having mixed or conflicting feelings",
+    "memoryTip": "Ambi = both ways—ambivalent means pulled in two directions at once.",
+    "correctPassage": "She remained ambivalent about the offer, drawn by the salary yet wary of the longer commute.",
+    "wrongPassages": [
+      "The committee was ambivalent: every member cast a firm, identical vote of approval.",
+      "His ambivalent endorsement left no doubt that he fully backed the proposal.",
+      "Ambivalent about the outcome, she felt only pure excitement with no second thoughts."
+    ]
+  },
+  {
+    "id": "w232",
+    "word": "Analogical",
+    "definition": "based on or involving analogy",
+    "memoryTip": "Analogy = comparison—analogical reasoning maps one case onto another.",
+    "correctPassage": "Her analogical argument compared the immune system to a well-trained security force.",
+    "wrongPassages": [
+      "The report was purely analogical, listing only raw measurements with no comparisons drawn.",
+      "They preferred an analogical method that avoided all metaphor and treated each case in isolation.",
+      "An analogical proof, in their view, was one that relied solely on direct observation of the specimen itself."
+    ]
+  },
+  {
+    "id": "w233",
+    "word": "Transpose",
+    "definition": "cause two or more things to change places",
+    "memoryTip": "Trans-pose: switch places—or move a melody into another key.",
+    "correctPassage": "The editor asked her to transpose the two paragraphs so the conclusion would come last.",
+    "wrongPassages": [
+      "To transpose the files, she left each document in its original folder untouched.",
+      "They hoped to transpose the dispute by ignoring it until interest faded on its own.",
+      "The clerk will transpose the inventory by adding new items without rearranging any labels."
+    ]
+  },
+  {
+    "id": "w234",
+    "word": "Candor",
+    "definition": "the quality of being open and honest",
+    "memoryTip": "Candid camera honesty—candor is frank, open speech without sugarcoating.",
+    "correctPassage": "The director's candor about budget shortfalls surprised staff who expected a polished spin.",
+    "wrongPassages": [
+      "His candor consisted of carefully avoiding every difficult question in the interview.",
+      "She was praised for candor after delivering only vague, noncommittal answers.",
+      "The report's candor lay in its elaborate euphemisms that concealed the real losses."
+    ]
+  },
+  {
+    "id": "w235",
+    "word": "Prudence",
+    "definition": "careful good judgment; caution",
+    "memoryTip": "Prudent choices—prudence is careful good sense, not reckless risk.",
+    "correctPassage": "Fiscal prudence led the board to delay expansion until reserves were rebuilt.",
+    "wrongPassages": [
+      "Spending the emergency fund on a speculative venture showed remarkable prudence.",
+      "Her prudence was clear when she dismissed every warning and signed without reading.",
+      "They celebrated his prudence after he took the largest, least-informed risk of the year."
+    ]
+  }
+]

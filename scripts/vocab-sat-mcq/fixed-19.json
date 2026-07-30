@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w096",
+    "word": "Elasticity",
+    "definition": "ability to stretch and resume shape; adaptability",
+    "memoryTip": "Like elastic — stretches and snaps back; also flexible response to change.",
+    "correctPassage": "The market showed surprising elasticity as consumers adjusted quickly to the sudden rise in prices.",
+    "wrongPassages": [
+      "The department’s elasticity showed in its refusal to alter any procedure after the new rules took effect.",
+      "Critics praised his elasticity of mind for rejecting every alternative without a second look.",
+      "Once stretched past its limit, the material’s elasticity left it permanently deformed and unable to recover."
+    ]
+  },
+  {
+    "id": "w097",
+    "word": "Dearth",
+    "definition": "a scarcity or lack of something",
+    "memoryTip": "Sounds like “death of supply” — a serious lack or shortage.",
+    "correctPassage": "A dearth of qualified applicants delayed the hire for months.",
+    "wrongPassages": [
+      "A dearth of volunteers filled every available shift well ahead of the deadline.",
+      "Farmers celebrated a dearth of rainfall that left reservoirs above capacity for the first time in years.",
+      "The library’s dearth of new titles forced an expansion of the stacks to house the surplus."
+    ]
+  },
+  {
+    "id": "w098",
+    "word": "Downplay",
+    "definition": "make something seem less important than it is",
+    "memoryTip": "Play it down — shrink how big or serious something sounds.",
+    "correctPassage": "Officials tried to downplay the severity of the shortage in their public statements.",
+    "wrongPassages": [
+      "She downplayed the award by arranging extensive coverage and a formal reception in her honor.",
+      "They downplayed the risk by printing large warnings on every package the company sold.",
+      "He downplayed the scandal by giving reporters a detailed timeline of every disputed decision."
+    ]
+  },
+  {
+    "id": "w099",
+    "word": "Outstrip",
+    "definition": "surpass; go beyond or move faster than",
+    "memoryTip": "Strip ahead of the pack — run past and leave others behind.",
+    "correctPassage": "Demand continues to outstrip the region’s ability to supply housing.",
+    "wrongPassages": [
+      "Sales outstripped the forecast by falling short of the target every quarter.",
+      "Her pace outstripped the field when she finished several minutes behind the leaders.",
+      "Junior staff outstripped senior analysts by needing substantially more supervision on each project."
+    ]
+  },
+  {
+    "id": "w100",
+    "word": "Inertia",
+    "definition": "tendency to stay unchanged; resistance to a change in motion",
+    "memoryTip": "Newton’s inertia — stays still (or keeps going) until something pushes it.",
+    "correctPassage": "Institutional inertia made reforming the curriculum slow and difficult.",
+    "wrongPassages": [
+      "The startup’s inertia was evident in its weekly product redesigns and shifting strategy.",
+      "Her inertia showed as she revised the proposal three times before the morning meeting ended.",
+      "Market inertia kept prices swinging sharply with each new rumor throughout the session."
+    ]
+  }
+]

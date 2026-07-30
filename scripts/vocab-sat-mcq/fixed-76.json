@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w381",
+    "word": "Auteur",
+    "definition": "a filmmaker whose personal style dominates their work",
+    "memoryTip": "French “author” of film — the director’s signature is on every frame.",
+    "correctPassage": "Critics praised the filmmaker as an auteur whose visual language was unmistakable across every project.",
+    "wrongPassages": [
+      "The studio hired an auteur mainly to manage ticket sales and concession inventory.",
+      "Reviewers called the editor an auteur because she deferred entirely to the producer’s choices.",
+      "As an auteur, the director insisted on remaining anonymous so no personal style would mark the film."
+    ]
+  },
+  {
+    "id": "w382",
+    "word": "Bemuddle",
+    "definition": "confuse; make muddy or unclear",
+    "memoryTip": "Be + muddle — stir into mud so nothing is clear.",
+    "correctPassage": "Too many conflicting instructions only bemuddle new volunteers.",
+    "wrongPassages": [
+      "A single clarifying diagram will bemuddle the procedure for first-time users.",
+      "The historian tried to bemuddle the timeline by arranging events in strict chronological order.",
+      "Clear section headings are designed to bemuddle the argument rather than scatter it."
+    ]
+  },
+  {
+    "id": "w383",
+    "word": "Fugacious",
+    "definition": "fleeting; lasting only a short time",
+    "memoryTip": "Related to flee/fugitive — it flees quickly; here and gone.",
+    "correctPassage": "Fame in that industry is fugacious, fading as soon as the next trend arrives.",
+    "wrongPassages": [
+      "The treaty established a fugacious alliance expected to endure for generations.",
+      "Geologists described the mountain range as fugacious because it had stood unchanged for millennia.",
+      "She sought a fugacious career path, one that would remain stable and predictable for decades."
+    ]
+  },
+  {
+    "id": "w384",
+    "word": "Archetypal",
+    "definition": "very typical of a certain kind; model of a type",
+    "memoryTip": "Archetype = original mold — the classic, textbook example.",
+    "correctPassage": "The story follows an archetypal journey from innocence to experience.",
+    "wrongPassages": [
+      "Her approach was so archetypal that no earlier model or convention could describe it.",
+      "Critics called the design archetypal precisely because it broke every established pattern in the field.",
+      "Biologists labeled the specimen archetypal when it matched none of the known traits of its species."
+    ]
+  },
+  {
+    "id": "w385",
+    "word": "Quintessential",
+    "definition": "the most perfect or pure example of a quality",
+    "memoryTip": "Fifth essence (perfect core) — the purest, most classic example.",
+    "correctPassage": "The café is the quintessential neighborhood hangout: crowded, informal, and known to everyone on the block.",
+    "wrongPassages": [
+      "The proposal was quintessential of the genre in that it shared almost none of its usual features.",
+      "Reviewers called the draft quintessential because it was a rough outline missing every key component.",
+      "A quintessential sample of the data set would be one that is incomplete, outlier-heavy, and unrepresentative."
+    ]
+  }
+]

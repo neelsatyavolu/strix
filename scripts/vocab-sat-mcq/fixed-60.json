@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w301",
+    "word": "Insolent",
+    "definition": "showing rude or arrogant lack of respect",
+    "memoryTip": "In-solent: so rude you feel the insult — cheeky disrespect.",
+    "correctPassage": "The committee chair cut off the witness for an insolent remark that mocked the panel’s authority.",
+    "wrongPassages": [
+      "Her insolent reply thanked the judges and deferred to every point they raised.",
+      "Staff described his insolent manner as careful, deferential, and free of sarcasm.",
+      "The manual praised insolent customer service that treated every complaint with patience and respect."
+    ]
+  },
+  {
+    "id": "w302",
+    "word": "Diffusion",
+    "definition": "the process of spreading more widely",
+    "memoryTip": "Diffuse = scatter: ideas or particles spreading out.",
+    "correctPassage": "Historians trace the diffusion of printing technology from a few workshops to presses across the continent.",
+    "wrongPassages": [
+      "Strict export bans ensured the diffusion of the formula stayed locked inside a single laboratory.",
+      "The diffusion of the protest into one sealed auditorium kept the message from reaching the city.",
+      "Curators celebrated the sculpture’s diffusion by burying it in a private vault for decades."
+    ]
+  },
+  {
+    "id": "w303",
+    "word": "Extemporaneous",
+    "definition": "spoken or done without preparation",
+    "memoryTip": "Ex tempore = out of the moment — no notes, no rehearsal.",
+    "correctPassage": "When the projector failed, she offered an extemporaneous summary that still answered every key question.",
+    "wrongPassages": [
+      "His extemporaneous lecture followed a script he had memorized over three full weeks.",
+      "The team filed an extemporaneous brief only after months of drafting and legal review.",
+      "An extemporaneous ceremony unfolded exactly as the printed program prescribed, line by line."
+    ]
+  },
+  {
+    "id": "w304",
+    "word": "Reminiscent",
+    "definition": "tending to remind one of something",
+    "memoryTip": "Reminisce = remember: reminiscent things spark old memories.",
+    "correctPassage": "The café’s tiled floor was reminiscent of the station waiting room she had known as a child.",
+    "wrongPassages": [
+      "Critics called the brand-new design reminiscent of nothing anyone could associate with prior work.",
+      "He stayed carefully reminiscent so that no detail of the past would ever come to mind.",
+      "A completely blank memory made the faded photograph feel intensely reminiscent of her childhood."
+    ]
+  },
+  {
+    "id": "w305",
+    "word": "Enmity",
+    "definition": "deep-seated hostility or active opposition",
+    "memoryTip": "Enemy + -ity: the state of being someone's enemy.",
+    "correctPassage": "Decades of enmity between the two parties made even a brief joint appearance unlikely.",
+    "wrongPassages": [
+      "Their lifelong enmity explained why they still mentored each other’s students without hesitation.",
+      "The club’s enmity toward newcomers was clear in the warm dinners held for every new member.",
+      "She felt only enmity for the colleague who had defended her work through every setback."
+    ]
+  }
+]

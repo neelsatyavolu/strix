@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w176",
+    "word": "Misanthropic",
+    "definition": "having a dislike or distrust of humankind",
+    "memoryTip": "Mis + anthropos (human) \u2014 distrusts or dislikes people in general.",
+    "correctPassage": "The character's misanthropic outlook colors every relationship in the novel.",
+    "wrongPassages": [
+      "His misanthropic nature showed in weekly dinners for the whole neighborhood.",
+      "The misanthropic hostess thrived on large parties and constant guests.",
+      "She was so misanthropic that strangers always felt instantly welcomed."
+    ]
+  },
+  {
+    "id": "w177",
+    "word": "Recalcitrant",
+    "definition": "stubbornly uncooperative or resistant to authority",
+    "memoryTip": "Re-calcitrant: digs in heels and kicks back \u2014 won't cooperate.",
+    "correctPassage": "Recalcitrant members refused to accept the committee's compromise.",
+    "wrongPassages": [
+      "The recalcitrant intern finished every task early and asked for more.",
+      "Recalcitrant voters lined up to support the bill without a single amendment.",
+      "Her recalcitrant attitude made her the easiest teammate to manage."
+    ]
+  },
+  {
+    "id": "w178",
+    "word": "Desultory",
+    "definition": "lacking a plan or purpose; jumping from thing to thing",
+    "memoryTip": "De-sultory leaps: hops around with no clear direction.",
+    "correctPassage": "Their desultory efforts at reform produced little lasting change.",
+    "wrongPassages": [
+      "His desultory study plan covered every chapter in careful order.",
+      "The desultory investigation followed a strict checklist from start to finish.",
+      "She gave a desultory presentation that never strayed from the outline."
+    ]
+  },
+  {
+    "id": "w179",
+    "word": "Veritable",
+    "definition": "used for emphasis to mean genuine or true; real",
+    "memoryTip": "Very + true \u2014 a genuine thing: a veritable flood of emails.",
+    "correctPassage": "The archive is a veritable treasure of primary sources.",
+    "wrongPassages": [
+      "The empty hall was a veritable throng of cheering fans.",
+      "Two lukewarm reviews made the film a veritable masterpiece overnight.",
+      "His veritable fortune consisted of three dollars and a broken watch."
+    ]
+  },
+  {
+    "id": "w180",
+    "word": "Swoon",
+    "definition": "to faint or nearly faint from extreme emotion",
+    "memoryTip": "Classic romance trope: so overwhelmed you almost faint.",
+    "correctPassage": "Fans did not literally swoon, but the concert's energy was overwhelming.",
+    "wrongPassages": [
+      "She managed to swoon through the entire lecture without losing focus.",
+      "He will swoon the spreadsheet by sorting every column twice.",
+      "The coach told them to swoon harder if they wanted to win the race."
+    ]
+  }
+]

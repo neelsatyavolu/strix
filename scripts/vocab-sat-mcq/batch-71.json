@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w356",
+    "word": "Enervate",
+    "definition": "drain of energy; weaken",
+    "memoryTip": "E-nerve-ate: strip the nerve/energy out \u2014 weaken (not energize!).",
+    "correctPassage": "Heat and humidity can enervate even seasoned hikers.",
+    "wrongPassages": [
+      "A cold shower and strong coffee will enervate you for the morning run.",
+      "The coach\u2019s speech was meant to enervate the team into a furious comeback.",
+      "They hoped the rest day would enervate sore muscles back to full strength."
+    ]
+  },
+  {
+    "id": "w357",
+    "word": "Belligerent",
+    "definition": "hostile and aggressive",
+    "memoryTip": "Belli- (war) + gerent \u2014 warlike and ready to fight.",
+    "correctPassage": "A belligerent tone in the letter made negotiation unlikely.",
+    "wrongPassages": [
+      "His belligerent handshake and warm smile put every guest at ease.",
+      "The mediator stayed belligerent by refusing to raise her voice or take sides.",
+      "They praised the belligerent cease-fire that ended every dispute without a threat."
+    ]
+  },
+  {
+    "id": "w358",
+    "word": "Voracious",
+    "definition": "wanting or devouring great quantities of something",
+    "memoryTip": "Vora = devour \u2014 a huge appetite for food, books, or work.",
+    "correctPassage": "A voracious reader, she finished several novels each week.",
+    "wrongPassages": [
+      "His voracious appetite was satisfied by half a cracker and a sip of water.",
+      "The voracious archive held only one short pamphlet no one ever opened.",
+      "She was a voracious student who never finished a single assigned chapter."
+    ]
+  },
+  {
+    "id": "w359",
+    "word": "Vicissitude",
+    "definition": "a change of circumstances, often unwelcome",
+    "memoryTip": "Vici-change: the ups and downs fortune throws at you.",
+    "correctPassage": "The firm survived every vicissitude of the market cycle.",
+    "wrongPassages": [
+      "Life under the monarchy was one long vicissitude of perfect, unchanging calm.",
+      "They planned for vicissitude by freezing every policy for the next decade.",
+      "The lake\u2019s vicissitude meant the waterline never rose or fell by an inch."
+    ]
+  },
+  {
+    "id": "w360",
+    "word": "Lugubrious",
+    "definition": "looking or sounding sad and dismal",
+    "memoryTip": "Lugubrious funeral face \u2014 exaggeratedly mournful and gloomy.",
+    "correctPassage": "A lugubrious soundtrack made the short film feel longer than it was.",
+    "wrongPassages": [
+      "His lugubrious welcome was a bright grin and a round of cheerful jokes.",
+      "The parade stayed lugubrious with confetti, brass bands, and dancing crowds.",
+      "She delivered a lugubrious toast that left the room laughing for minutes."
+    ]
+  }
+]

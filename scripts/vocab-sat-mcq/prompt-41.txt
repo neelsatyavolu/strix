@@ -1,0 +1,13 @@
+Rewrite SAT-style MCQ passages for 5 vocab words.
+
+Criteria: /Users/neel/Documents/GitHub/strix/scripts/vocab-sat-mcq/CRITERIA.md
+Input: /Users/neel/Documents/GitHub/strix/scripts/vocab-sat-mcq/batch-41.json
+Output: /Users/neel/Documents/GitHub/strix/scripts/vocab-sat-mcq/fixed-41.json
+
+For EACH word rewrite correctPassage + exactly 3 wrongPassages.
+- Correct: natural Digital-SAT academic sentence using the word properly
+- Wrongs: same register, clear misuse (wrong/opposite meaning), NOT absurd jokes
+- No definition text in any option
+- Keep id, word, definition, memoryTip unchanged (unless tip is empty)
+
+Write only the JSON array of 5 entries. High quality.

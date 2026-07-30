@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w151",
+    "word": "Commonality",
+    "definition": "a shared feature or attribute",
+    "memoryTip": "What is common to both \u2014 a feature they share.",
+    "correctPassage": "Despite cultural differences, researchers found a surprising commonality in how children learn numbers.",
+    "wrongPassages": [
+      "The only commonality was that no two items shared any feature whatsoever.",
+      "Please commonality the chairs into neat rows after lunch.",
+      "He stored the commonality next to batteries and packing tape."
+    ]
+  },
+  {
+    "id": "w152",
+    "word": "Animosity",
+    "definition": "strong hostility or ill will",
+    "memoryTip": "Animus = hostile spirit \u2014 deep dislike, not mild annoyance.",
+    "correctPassage": "Years of rivalry had produced deep animosity between the neighboring towns.",
+    "wrongPassages": [
+      "Their animosity showed in warm toasts and long hugs at the reunion.",
+      "The balance sheet listed animosity where a weight in grams belonged.",
+      "She felt animosity for the quiet park because it calmed her every evening."
+    ]
+  },
+  {
+    "id": "w153",
+    "word": "Profusion",
+    "definition": "an abundance or large quantity",
+    "memoryTip": "Pro-fusion: pour forth in abundance \u2014 almost too much.",
+    "correctPassage": "Spring brought a profusion of wildflowers to the hillside.",
+    "wrongPassages": [
+      "There was a profusion of nothing on the empty shelf\u2014literally zero items.",
+      "Engineers measured the bridge\u2019s profusion in meters as 214.6.",
+      "The software will profusion your password into one repeated emoji."
+    ]
+  },
+  {
+    "id": "w154",
+    "word": "Negate",
+    "definition": "cancel out; make ineffective",
+    "memoryTip": "Make it negative \u2014 wipe out the force of a claim or effect.",
+    "correctPassage": "One contradictory finding does not negate the overall pattern in the data.",
+    "wrongPassages": [
+      "New measurements negate the claim by matching it point for point.",
+      "Please negate the window before you leave so rain does not get in.",
+      "They negated the budget gap by ignoring it in every public report."
+    ]
+  },
+  {
+    "id": "w155",
+    "word": "Arcane",
+    "definition": "understood by few; obscure or mysterious",
+    "memoryTip": "Arcane knowledge sits in a secret arc \u2014 only specialists get it.",
+    "correctPassage": "The paper is full of arcane terminology familiar only to specialists.",
+    "wrongPassages": [
+      "The instructions were so arcane that a child finished them without help.",
+      "Her arcane welcome speech used only words every first-grader already knew.",
+      "City hall issued an arcane license that only certified the applicant\u2019s favorite color."
+    ]
+  }
+]

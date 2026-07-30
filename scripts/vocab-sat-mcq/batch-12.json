@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w061",
+    "word": "Posterior",
+    "definition": "situated at the back; later in time",
+    "memoryTip": "Post = after/behind \u2014 rear end of the body, or what comes later.",
+    "correctPassage": "In the diagram, the posterior section of the brain is shaded in blue.",
+    "wrongPassages": [
+      "She booked a posterior appointment for first thing Monday morning.",
+      "The poster hung posterior on the bulletin board so everyone would see it first.",
+      "Investors chased a posterior market that had not moved a cent all year."
+    ]
+  },
+  {
+    "id": "w062",
+    "word": "Petition",
+    "definition": "a formal written request; to make such a request",
+    "memoryTip": "A formal \u201cplease\u201d on paper \u2014 you petition for action, not for fun.",
+    "correctPassage": "Residents signed a petition asking the city to restore weekend bus service.",
+    "wrongPassages": [
+      "She stuck a gold petition star on the chart to mark her highest score.",
+      "Bakers wrote \u201cpetition = 120 g flour\u201d on the test-kitchen wall.",
+      "The coach called a petition timeout when the game got out of hand."
+    ]
+  },
+  {
+    "id": "w063",
+    "word": "Mandatory",
+    "definition": "required by law or rules; compulsory",
+    "memoryTip": "Mandate = command \u2014 if it\u2019s mandatory, skipping it isn\u2019t allowed.",
+    "correctPassage": "Safety training is mandatory for everyone who enters the laboratory.",
+    "wrongPassages": [
+      "Attendance was mandatory only if you felt like showing up that day.",
+      "Critics called the ending mandatory because it answered every plot question early.",
+      "She kept a mandatory schedule of hobbies she could drop anytime."
+    ]
+  },
+  {
+    "id": "w064",
+    "word": "Permissible",
+    "definition": "allowed; permitted under the rules",
+    "memoryTip": "You have permission \u2014 permissible means it\u2019s okay to do.",
+    "correctPassage": "Under the new rules, only certain additives are permissible in the product.",
+    "wrongPassages": [
+      "In this handbook, speeding is listed as permissible and recommended for every driver.",
+      "The museum stored its permissible in a drawer of miscellaneous screws.",
+      "A permissible crowd of two people was reported as a sold-out show."
+    ]
+  },
+  {
+    "id": "w065",
+    "word": "Contingent",
+    "definition": "dependent on something else; a group representing a larger body",
+    "memoryTip": "Tied to a contingency \u2014 it happens only if X happens first.",
+    "correctPassage": "Approval is contingent on the environmental review being completed on time.",
+    "wrongPassages": [
+      "Approval was contingent on nothing at all; it was guaranteed no matter what happened.",
+      "They packed a spare contingent in the trunk next to the jumper cables.",
+      "Please contingent the window before you leave so the rain stays out."
+    ]
+  }
+]

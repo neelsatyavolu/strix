@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w076",
+    "word": "Confound",
+    "definition": "cause surprise or confusion; mix up or thwart",
+    "memoryTip": "Con-found: throw into confusion \u2014 mix up or leave people stunned.",
+    "correctPassage": "The unexpected results confound earlier models of the disease\u2019s spread.",
+    "wrongPassages": [
+      "Clear labels were added to confound shoppers who had been confused before.",
+      "She hoped to confound the mystery by publishing every clue in plain order.",
+      "Teachers used the answer key to confound students who already knew the material."
+    ]
+  },
+  {
+    "id": "w077",
+    "word": "Disregard",
+    "definition": "pay no attention to; ignore",
+    "memoryTip": "Dis + regard \u2014 drop your regard; treat it as if it doesn\u2019t matter.",
+    "correctPassage": "Critics accused the agency of disregard for community concerns.",
+    "wrongPassages": [
+      "She showed complete disregard by reading every comment and answering each one.",
+      "The pilot\u2019s disregard for the checklist meant he reviewed every step twice.",
+      "They planned to disregard the warning by posting it on every door in the building."
+    ]
+  },
+  {
+    "id": "w078",
+    "word": "Underscore",
+    "definition": "emphasize or draw attention to",
+    "memoryTip": "Like underlining a line \u2014 you underscore what matters most.",
+    "correctPassage": "The new findings underscore the need for longer-term studies.",
+    "wrongPassages": [
+      "He tried to underscore the point by mumbling it once and changing the subject.",
+      "Editors underscored the headline by deleting it from the front page entirely.",
+      "The report underscored safety risks by burying them in an unread appendix."
+    ]
+  },
+  {
+    "id": "w079",
+    "word": "Orthodox",
+    "definition": "conforming to traditional or established doctrine",
+    "memoryTip": "Ortho = straight \u2014 by-the-book, traditional belief or method.",
+    "correctPassage": "Her approach departed from orthodox methods used in the field for decades.",
+    "wrongPassages": [
+      "His orthodox plan threw out every tradition the profession still followed.",
+      "Critics called the radical redesign orthodox for breaking every design rule.",
+      "She took an orthodox path by inventing a method no textbook had ever taught."
+    ]
+  },
+  {
+    "id": "w080",
+    "word": "Zenith",
+    "definition": "the highest point; peak of power or success",
+    "memoryTip": "Highest point in the sky \u2014 and the peak of a career or empire.",
+    "correctPassage": "The empire reached its zenith under the rule of the second emperor.",
+    "wrongPassages": [
+      "The company hit its zenith the year sales collapsed and half the staff left.",
+      "At the zenith of the valley, water collected in the lowest ditch.",
+      "Her career\u2019s zenith was the unpaid internship she took right after college."
+    ]
+  }
+]

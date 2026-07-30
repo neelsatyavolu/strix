@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w171",
+    "word": "Hamper",
+    "definition": "to hinder or impede the progress of",
+    "memoryTip": "Like a laundry basket in the doorway \u2014 blocks the way.",
+    "correctPassage": "Poor road conditions hamper delivery of supplies to remote villages.",
+    "wrongPassages": [
+      "The coach\u2019s advice only hampered progress by removing every obstacle in their path.",
+      "Please hamper the window so the rain does not get in.",
+      "City hall issued a hamper license for the applicant\u2019s favorite color."
+    ]
+  },
+  {
+    "id": "w172",
+    "word": "Mollify",
+    "definition": "to appease someone's anger; to soothe or calm",
+    "memoryTip": "Molli- = soft \u2014 soften anger, not harden it.",
+    "correctPassage": "A partial refund did little to mollify angry customers.",
+    "wrongPassages": [
+      "The insult was meant to mollify her by making her angrier and more upset.",
+      "They mollified the crowd by shouting threats and slamming the doors.",
+      "He stored the mollify next to spare batteries on the shelf."
+    ]
+  },
+  {
+    "id": "w173",
+    "word": "Desolate",
+    "definition": "empty, bleak, and abandoned in appearance; feeling forsaken",
+    "memoryTip": "De-solate: a lonely, empty stretch with no life in sight.",
+    "correctPassage": "After the fire, the once-busy street looked desolate.",
+    "wrongPassages": [
+      "The desolate market thronged with shoppers on a sunny Saturday.",
+      "Her desolate garden overflowed with color and visiting neighbors.",
+      "They called the packed stadium desolate as the crowd roared."
+    ]
+  },
+  {
+    "id": "w174",
+    "word": "Discriminating",
+    "definition": "showing refined taste or careful judgment; selective",
+    "memoryTip": "Not just bias \u2014 a discriminating eye picks quality with care.",
+    "correctPassage": "A discriminating reader will notice the shift in the author's tone.",
+    "wrongPassages": [
+      "His discriminating palate accepted every cheap wine without a second thought.",
+      "She was discriminating in hiring: she interviewed no one and hired at random.",
+      "A discriminating collector buys whatever is nearest the door."
+    ]
+  },
+  {
+    "id": "w175",
+    "word": "Impetuous",
+    "definition": "acting quickly and rashly, without careful thought",
+    "memoryTip": "Rides pure impetus \u2014 charges ahead before thinking it through.",
+    "correctPassage": "An impetuous decision to expand too quickly nearly bankrupted the firm.",
+    "wrongPassages": [
+      "Her impetuous plan took six months of research before a single step.",
+      "The impetuous driver checked every mirror twice before leaving the curb.",
+      "He made an impetuous career choice after carefully listing every risk."
+    ]
+  }
+]

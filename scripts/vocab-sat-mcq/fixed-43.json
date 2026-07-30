@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w216",
+    "word": "Appease",
+    "definition": "pacify someone by giving in to demands",
+    "memoryTip": "A-peace: buy quiet by yielding a little (or a lot).",
+    "correctPassage": "Officials hoped a modest concession would appease critics without rewriting the entire policy.",
+    "wrongPassages": [
+      "The mayor sought to appease residents by rejecting every petition they had filed.",
+      "She tried to appease the client by escalating the dispute into a public lawsuit.",
+      "The firm hoped to appease regulators by concealing the audit findings entirely."
+    ]
+  },
+  {
+    "id": "w217",
+    "word": "Indoctrinate",
+    "definition": "teach someone to accept a set of beliefs uncritically",
+    "memoryTip": "In-doctrine: pour in a doctrine; no free questioning allowed.",
+    "correctPassage": "Critics claimed the program sought to indoctrinate recruits rather than encourage independent judgment.",
+    "wrongPassages": [
+      "The seminar was designed to indoctrinate students by requiring them to challenge every claim.",
+      "She hoped to indoctrinate the class through open debate and competing primary sources.",
+      "The lab manual aimed to indoctrinate curiosity, not loyalty to a single fixed theory."
+    ]
+  },
+  {
+    "id": "w218",
+    "word": "Avant-garde",
+    "definition": "new and experimental, especially in the arts",
+    "memoryTip": "French for \"vanguard\" — out front of the artistic pack.",
+    "correctPassage": "The festival championed avant-garde compositions that abandoned conventional melody and form.",
+    "wrongPassages": [
+      "The museum's avant-garde wing featured only the most conservative nineteenth-century portraits.",
+      "Editors called the report avant-garde because it followed the agency's standard template exactly.",
+      "His avant-garde lecture restated the textbook definitions without offering a single new claim."
+    ]
+  },
+  {
+    "id": "w219",
+    "word": "Cerebral",
+    "definition": "intellectual rather than emotional or physical",
+    "memoryTip": "Cerebrum = brain — more thinking than feeling.",
+    "correctPassage": "The documentary is deliberately cerebral, favoring close analysis over spectacle or sentiment.",
+    "wrongPassages": [
+      "Reviewers called the chase sequence cerebral for its nonstop crashes and almost no dialogue.",
+      "Fans praised the cerebral finale for its tearful reunions and total silence on ideas.",
+      "Coaches designed a cerebral drill that tested only sprint speed and vertical jump."
+    ]
+  },
+  {
+    "id": "w220",
+    "word": "Cajole",
+    "definition": "persuade by flattery or gentle urging",
+    "memoryTip": "Cage + jolly talk — sweet-talk someone into the cage (or the favor).",
+    "correctPassage": "She managed to cajole several reluctant donors into covering the shortfall with well-timed praise.",
+    "wrongPassages": [
+      "He tried to cajole the clerk by pounding the desk and threatening to call security.",
+      "They cajoled the committee with a cold memo and no attempt at personal persuasion.",
+      "The general hoped to cajole the city by imposing a curfew and cutting off supplies."
+    ]
+  }
+]

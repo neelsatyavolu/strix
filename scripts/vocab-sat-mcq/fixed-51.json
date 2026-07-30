@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w256",
+    "word": "Comity",
+    "definition": "courtesy and mutual respect among people or nations",
+    "memoryTip": "Comity ≈ committee of courtesy — polite mutual respect.",
+    "correctPassage": "Years of diplomatic comity made the trade negotiations unusually free of public recrimination.",
+    "wrongPassages": [
+      "The sudden collapse of comity between the two ministries was celebrated as a triumph of open hostility.",
+      "Critics praised the firm’s comity when it refused every request for cooperation from its rivals.",
+      "Historians attributed the alliance’s success to comity that required neither courtesy nor mutual restraint."
+    ]
+  },
+  {
+    "id": "w257",
+    "word": "Mordant",
+    "definition": "bitingly sharp or critically caustic",
+    "memoryTip": "Mord- = bite — mordant wit has a sharp bite.",
+    "correctPassage": "The essay’s mordant asides undercut the official narrative without ever raising its voice.",
+    "wrongPassages": [
+      "Her mordant tribute was so gentle that even the subject’s fiercest critics found nothing sharp in it.",
+      "The committee issued a mordant report that carefully avoided any note of criticism or irony.",
+      "Students welcomed the instructor’s mordant feedback, which consisted only of mild encouragement."
+    ]
+  },
+  {
+    "id": "w258",
+    "word": "Onerous",
+    "definition": "involving a heavy burden or obligation",
+    "memoryTip": "Onus = burden — an onerous task is crushingly heavy.",
+    "correctPassage": "Compliance with the new audit rules proved onerous for clinics already short of administrative staff.",
+    "wrongPassages": [
+      "Applicants found the one-page form so onerous that most finished it in under a minute.",
+      "The board described the unpaid internship as onerous precisely because it demanded almost no work.",
+      "Reformers called the regulations onerous for removing every significant obligation on large firms."
+    ]
+  },
+  {
+    "id": "w259",
+    "word": "Pretense",
+    "definition": "a false appearance; a claim not based in fact",
+    "memoryTip": "Pretend-sense — a fake show of something real.",
+    "correctPassage": "Under the pretense of a routine inspection, investigators gathered evidence for weeks.",
+    "wrongPassages": [
+      "The witness’s pretense of the timeline was later confirmed by three independent cameras.",
+      "Researchers trusted the paper’s pretense because every claim matched the published data set.",
+      "With full pretense, the auditor listed every conflict of interest in the public record."
+    ]
+  },
+  {
+    "id": "w260",
+    "word": "Capricious",
+    "definition": "given to sudden, unpredictable changes of mood or behavior",
+    "memoryTip": "Like a goat’s caper — sudden leaps of mood or decision.",
+    "correctPassage": "Capricious grading left students unable to predict which criteria would matter from week to week.",
+    "wrongPassages": [
+      "The agency’s capricious schedule never varied, repeating the same sequence every quarter.",
+      "Investors preferred the fund’s capricious strategy because it followed a fixed formula for decades.",
+      "Her capricious habits—rising at six, reviewing the same checklist—made each day identical to the last."
+    ]
+  }
+]

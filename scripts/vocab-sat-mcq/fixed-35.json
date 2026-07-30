@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w176",
+    "word": "Misanthropic",
+    "definition": "having a dislike or distrust of humankind",
+    "memoryTip": "Mis + anthropos (human) — distrusts or dislikes people in general.",
+    "correctPassage": "Critics traced the narrator's misanthropic tone to years of betrayal by every institution he had trusted.",
+    "wrongPassages": [
+      "The misanthropic mayor spent weekends greeting constituents and hosting open forums at city hall.",
+      "Her misanthropic reputation rested on tireless volunteering and an open door for neighbors in need.",
+      "Reviewers praised the novel's misanthropic warmth, especially its faith in ordinary human kindness."
+    ]
+  },
+  {
+    "id": "w177",
+    "word": "Recalcitrant",
+    "definition": "stubbornly uncooperative or resistant to authority",
+    "memoryTip": "Re-calcitrant: digs in heels and kicks back — won't cooperate.",
+    "correctPassage": "Even after repeated warnings, the recalcitrant contractor ignored safety protocols and delayed inspections.",
+    "wrongPassages": [
+      "The recalcitrant intern finished every assignment early and asked supervisors for additional work.",
+      "Recalcitrant delegates signed the compromise without amendment and thanked the chair for her leadership.",
+      "Coaches valued her recalcitrant attitude because she accepted every correction without argument."
+    ]
+  },
+  {
+    "id": "w178",
+    "word": "Desultory",
+    "definition": "lacking a plan or purpose; jumping from thing to thing",
+    "memoryTip": "De-sultory leaps: hops around with no clear direction.",
+    "correctPassage": "Their desultory discussion skipped from budgets to parking to cafeteria menus without settling a single vote.",
+    "wrongPassages": [
+      "His desultory outline marched chapter by chapter through each required unit in strict sequence.",
+      "The desultory audit followed a fixed checklist and closed every account before moving on.",
+      "She delivered a desultory lecture that never left the prepared slides or the stated thesis."
+    ]
+  },
+  {
+    "id": "w179",
+    "word": "Veritable",
+    "definition": "used for emphasis to mean genuine or true; real",
+    "memoryTip": "Very + true — a genuine thing: a veritable flood of emails.",
+    "correctPassage": "After the merger, the firm became a veritable archive of industry patents and technical manuals.",
+    "wrongPassages": [
+      "The deserted plaza was a veritable throng of vendors, tourists, and street musicians.",
+      "Two mild notices made the play a veritable triumph according to every major critic that week.",
+      "She hoped to veritable the rumor by checking three independent sources before publishing."
+    ]
+  },
+  {
+    "id": "w180",
+    "word": "Swoon",
+    "definition": "to faint or nearly faint from extreme emotion",
+    "memoryTip": "Classic romance trope: so overwhelmed you almost faint.",
+    "correctPassage": "Audience members seemed ready to swoon as the final aria rose and held a trembling high note.",
+    "wrongPassages": [
+      "She managed to swoon through the dense textbook and still outline every chapter cleanly.",
+      "Analysts planned to swoon the quarterly data into a clearer set of regional charts.",
+      "The coach urged the team to swoon harder in the final mile if they wanted the medal."
+    ]
+  }
+]

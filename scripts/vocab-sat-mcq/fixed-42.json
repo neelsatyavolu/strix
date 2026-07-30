@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w211",
+    "word": "Latency",
+    "definition": "the state of being dormant or delayed until conditions allow activity",
+    "memoryTip": "Latent stage — hidden or idle until something triggers it.",
+    "correctPassage": "Epidemiologists measured a latency of several weeks between exposure and the first detectable symptoms.",
+    "wrongPassages": [
+      "The system showed no latency: every command executed the moment it was issued.",
+      "Her latency at the podium meant she began speaking before the chair finished the introduction.",
+      "The volcano’s latency produced continuous eruptions that never paused long enough for ash to settle."
+    ]
+  },
+  {
+    "id": "w212",
+    "word": "Incubate",
+    "definition": "develop slowly under favorable conditions; keep warm to hatch or grow",
+    "memoryTip": "Like eggs in an incubator — grow slowly under steady care.",
+    "correctPassage": "The research group planned to incubate promising prototypes in a low-pressure pilot program before scaling production.",
+    "wrongPassages": [
+      "Editors decided to incubate the unfinished draft by publishing it on the front page the same afternoon.",
+      "Managers hoped to incubate the fragile partnership by cutting all joint funding overnight.",
+      "She incubated the seedlings by leaving them outdoors during the first hard freeze of the season."
+    ]
+  },
+  {
+    "id": "w213",
+    "word": "Synergy",
+    "definition": "combined effect greater than the sum of the parts",
+    "memoryTip": "Syn + energy: working together multiplies the power.",
+    "correctPassage": "Analysts argued that synergy between the design and manufacturing teams would cut costs without lowering quality.",
+    "wrongPassages": [
+      "Working in isolation, she produced more synergy than any of the collaborative projects on the calendar.",
+      "The departments claimed synergy while rejecting every proposal that required them to share resources.",
+      "Rival firms created synergy by refusing to coordinate and by undercutting each other’s bids."
+    ]
+  },
+  {
+    "id": "w214",
+    "word": "Circumspect",
+    "definition": "wary and careful; unwilling to take unnecessary risks",
+    "memoryTip": "Circum-spect: look all around before you step.",
+    "correctPassage": "Counsel urged a circumspect public statement until the investigation clarified the remaining facts.",
+    "wrongPassages": [
+      "His circumspect dive off the pier disregarded every posted warning about submerged rocks.",
+      "A circumspect investor shifted the entire portfolio into a single unvetted tip the day it appeared.",
+      "She offered a circumspect reply that promised sweeping reforms before any review had begun."
+    ]
+  },
+  {
+    "id": "w215",
+    "word": "Guileless",
+    "definition": "innocent and without deception",
+    "memoryTip": "Without guile (tricks) — open, honest, nothing up the sleeve.",
+    "correctPassage": "The witness’s guileless account matched the documents and left little room for doubt about the timeline.",
+    "wrongPassages": [
+      "The guileless negotiator hid two conflicting offers and revealed each only when it served her side.",
+      "His guileless pitch omitted the fees that would appear only after customers signed the contract.",
+      "A guileless broker rearranged account labels so clients could not see where the funds had gone."
+    ]
+  }
+]

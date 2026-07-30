@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w001",
+    "word": "Arduous",
+    "definition": "requiring great effort; difficult and tiring",
+    "memoryTip": "Arduous sounds like \u201cargh!\u201d \u2014 hard work that makes you groan.",
+    "correctPassage": "Mapping the remote canyon required an arduous trek across scree slopes and frozen streams.",
+    "wrongPassages": [
+      "After the arduous lecture ended early, students left feeling refreshed and ready for the exam.",
+      "The committee chose the arduous option because it demanded almost no preparation.",
+      "Her arduous smile suggested she found the whole ordeal pleasantly effortless."
+    ]
+  },
+  {
+    "id": "w002",
+    "word": "Inconsequential",
+    "definition": "not important or significant",
+    "memoryTip": "In + consequence \u2192 without consequences \u2192 doesn\u2019t matter.",
+    "correctPassage": "Historians dismissed the spelling change as inconsequential beside the treaty\u2019s territorial concessions.",
+    "wrongPassages": [
+      "The inconsequential discovery overturned decades of accepted theory in a single paper.",
+      "Diplomats treated the border dispute as inconsequential only after armies massed on both sides.",
+      "She hoped to inconsequential the budget shortfall by delaying every nonessential purchase."
+    ]
+  },
+  {
+    "id": "w003",
+    "word": "Insuperable",
+    "definition": "impossible to overcome",
+    "memoryTip": "In-superable: you can\u2019t \u201cget over\u201d it \u2014 like an unclimbable wall.",
+    "correctPassage": "Language barriers proved insuperable until a bilingual mediator joined the negotiations.",
+    "wrongPassages": [
+      "The obstacle was insuperable for only a moment before the team cleared it with ease.",
+      "Critics praised his insuperable style for how flexible and open to revision it remained.",
+      "She found the puzzle insuperable once every clue had already been solved for her."
+    ]
+  },
+  {
+    "id": "w004",
+    "word": "Conjecture",
+    "definition": "an opinion formed without complete evidence; a guess",
+    "memoryTip": "Con + ject (throw) \u2192 throw out a guess before the proof is in.",
+    "correctPassage": "Without sealed archives, scholars could only conjecture about the author\u2019s motives for leaving.",
+    "wrongPassages": [
+      "The lab recorded the conjecture on a digital scale as exactly one gram of salt.",
+      "Once DNA results arrived, every claim became a verified fact\u2014no conjecture remained to discuss.",
+      "She packed a spare conjecture in the trunk next to the tire and jumper cables."
+    ]
+  },
+  {
+    "id": "w005",
+    "word": "Counterfactual",
+    "definition": "relating to what did not happen but might have; contrary to fact",
+    "memoryTip": "Counter + fact \u2192 against what actually happened; pure \u201cwhat if?\u201d",
+    "correctPassage": "The seminar traced a counterfactual path: how trade might have shifted had the canal never opened.",
+    "wrongPassages": [
+      "Eyewitnesses supplied a counterfactual account that matched every timestamp on the security tape.",
+      "The census report was counterfactual in its careful listing of each household surveyed.",
+      "Engineers preferred counterfactual steel because it never warped under load."
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w281",
+    "word": "Implacable",
+    "definition": "unable to be appeased or calmed; relentless",
+    "memoryTip": "Im-placable: cannot be placated \u2014 nothing soothes that anger.",
+    "correctPassage": "An implacable foe of the treaty refused every compromise offered at the table.",
+    "wrongPassages": [
+      "She stayed implacable toward the puppy by forgiving it instantly every time.",
+      "Please implacable the window before you leave.",
+      "They packed a spare implacable in the trunk."
+    ]
+  },
+  {
+    "id": "w282",
+    "word": "Inimical",
+    "definition": "harmful or hostile; unfriendly",
+    "memoryTip": "Enemy-ical \u2014 like an enemy: harmful or unfriendly.",
+    "correctPassage": "Conditions on the planet's surface are inimical to known forms of life.",
+    "wrongPassages": [
+      "The warm climate proved inimical to the citrus groves that thrived there.",
+      "Her inimical welcome included fresh towels and a basket of fruit.",
+      "They called the mentoring program inimical because every intern found a job."
+    ]
+  },
+  {
+    "id": "w283",
+    "word": "Impute",
+    "definition": "attribute a quality or fault to someone",
+    "memoryTip": "Im-pute: put the blame (or a quality) onto someone.",
+    "correctPassage": "It is unfair to impute bad motives when the evidence is still incomplete.",
+    "wrongPassages": [
+      "She hoped to impute the missing file by downloading it again from the server.",
+      "The clerk will impute the receipt into the scanner before you leave.",
+      "They tried to impute the fence so the neighbors could not see the yard."
+    ]
+  },
+  {
+    "id": "w284",
+    "word": "Tenacious",
+    "definition": "holding firmly; persistent",
+    "memoryTip": "Tenax = holding tight \u2014 a grip that will not let go.",
+    "correctPassage": "Tenacious reporting eventually uncovered the source of the leak.",
+    "wrongPassages": [
+      "His tenacious interest faded after the first page of the novel.",
+      "She gave a tenacious shrug and walked away from the unfinished project.",
+      "The tenacious soft ice cream melted before anyone could take a bite."
+    ]
+  },
+  {
+    "id": "w285",
+    "word": "Salutary",
+    "definition": "producing a beneficial effect",
+    "memoryTip": "Salute to health \u2014 good for you, even when the lesson is harsh.",
+    "correctPassage": "The failure had a salutary effect: teams began documenting assumptions.",
+    "wrongPassages": [
+      "Skipping every practice session had a salutary effect on her performance.",
+      "The salutary mold behind the sink spread into the drywall overnight.",
+      "Voters called the tax hike salutary only because it funded nothing useful."
+    ]
+  }
+]

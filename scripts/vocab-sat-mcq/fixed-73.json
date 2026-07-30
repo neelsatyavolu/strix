@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w366",
+    "word": "Succinctly",
+    "definition": "in a brief and clearly expressed manner",
+    "memoryTip": "Succinct = cinched tight like a belt—short and clear.",
+    "correctPassage": "The researcher summarized her findings succinctly, distilling months of data into a few precise claims.",
+    "wrongPassages": [
+      "He described the proposal so succinctly that the presentation stretched well past the allotted hour.",
+      "The memo was written succinctly, wandering through several digressions before reaching its point.",
+      "She answered the question succinctly by repeating the same anecdote with ever more detail."
+    ]
+  },
+  {
+    "id": "w367",
+    "word": "Punctilious",
+    "definition": "showing great attention to correct detail or form",
+    "memoryTip": "Punctual about points—picky about every detail of etiquette.",
+    "correctPassage": "A punctilious archivist corrected every citation so that no source was incomplete or mislabeled.",
+    "wrongPassages": [
+      "His punctilious review of the application skipped the required forms and ignored the dress code.",
+      "She was too punctilious to notice that the contract bore the wrong date and signature.",
+      "The punctilious clerk filed every document into a single unmarked drawer without sorting them."
+    ]
+  },
+  {
+    "id": "w368",
+    "word": "Eldritch",
+    "definition": "weird, sinister, or ghostly",
+    "memoryTip": "Elder-witch eerie—uncanny, weird, and ghostly.",
+    "correctPassage": "An eldritch light over the marsh made the abandoned mill seem less abandoned than watching.",
+    "wrongPassages": [
+      "The eldritch kitchen felt warm and ordinary after a long day of errands.",
+      "Neighbors described the eldritch block party as cheerful, familiar, and entirely predictable.",
+      "She preferred eldritch lighting that left every corner of the room bright and inviting."
+    ]
+  },
+  {
+    "id": "w369",
+    "word": "Obfuscate",
+    "definition": "make obscure or unintelligible",
+    "memoryTip": "Ob-fus-cate: cloud over—deliberately make it hard to understand.",
+    "correctPassage": "Dense legal jargon can obfuscate responsibility rather than make it plain to the public.",
+    "wrongPassages": [
+      "The diagram was redesigned to obfuscate the process so beginners could follow each step.",
+      "Teachers asked students to obfuscate their main claim in one clear, direct sentence.",
+      "The FAQ was rewritten to obfuscate common questions with plain-language answers."
+    ]
+  },
+  {
+    "id": "w370",
+    "word": "Articulate",
+    "definition": "express fluently and coherently",
+    "memoryTip": "Clear joints of speech—express ideas smoothly and clearly.",
+    "correctPassage": "Few candidates could articulate a coherent plan for reforming the district's budget.",
+    "wrongPassages": [
+      "He could only articulate in broken fragments that left the audience more confused than before.",
+      "She refused to articulate any position, remaining silent through the entire debate.",
+      "His attempt to articulate dissolved into mumbled half-sentences no one could parse."
+    ]
+  }
+]

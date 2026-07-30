@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w331",
+    "word": "Appraise",
+    "definition": "to assess the value, quality, or worth of something",
+    "memoryTip": "APPRAise the price\u2014assess value (not the same as praise).",
+    "correctPassage": "A jeweler came to appraise the necklace before the insurance renewal.",
+    "wrongPassages": [
+      "Fans rose to appraise the singer with a standing ovation.",
+      "The lab will appraise contamination by leaving samples unlabeled.",
+      "She hoped the coach would appraise her effort with a public speech."
+    ]
+  },
+  {
+    "id": "w332",
+    "word": "Discern",
+    "definition": "to perceive, detect, or recognize with care",
+    "memoryTip": "DIS-cern: sift carefully until you can tell things apart.",
+    "correctPassage": "Only a trained ear can discern the slight change in pitch.",
+    "wrongPassages": [
+      "The firm tried to discern open tickets by auto-closing anything over thirty days old.",
+      "They billed discern time by rounding every six-minute block upward.",
+      "The tide gauge's discern needle had been frozen mid-scale for months."
+    ]
+  },
+  {
+    "id": "w333",
+    "word": "Conspicuous",
+    "definition": "clearly visible; attracting notice",
+    "memoryTip": "Con-SPIC-uous: easy to SEE (Latin spicere) because it stands out.",
+    "correctPassage": "His bright red jacket made him conspicuous in the gray crowd.",
+    "wrongPassages": [
+      "She kept the papers conspicuous in a locked drawer no one ever opened.",
+      "The motif sounded conspicuous after brass buried it completely.",
+      "His quiet, camouflaged outfit was designed to be as conspicuous as possible."
+    ]
+  },
+  {
+    "id": "w334",
+    "word": "Renounce",
+    "definition": "to formally declare that one is giving something up",
+    "memoryTip": "Re-NOUNCE: publicly announce you are giving it up.",
+    "correctPassage": "She chose to renounce the inheritance and donate it instead.",
+    "wrongPassages": [
+      "Reviewers called the stats renounce after the reanalysis matched the paper.",
+      "The empty dock looked renounce with loaders parked for a decade.",
+      "He hoped to renounce the award by accepting it on live television."
+    ]
+  },
+  {
+    "id": "w335",
+    "word": "Foible",
+    "definition": "a minor weakness or harmless eccentricity",
+    "memoryTip": "A little FOIBLE is a foil-able flaw\u2014minor, not fatal.",
+    "correctPassage": "His only foible was humming while he graded late at night.",
+    "wrongPassages": [
+      "The structural foible cracked the foundation from corner to corner.",
+      "Critics praised her foible leadership for saving the company in a crisis.",
+      "The only foible in the bridge design was a missing support beam."
+    ]
+  }
+]

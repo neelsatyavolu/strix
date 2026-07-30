@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w351",
+    "word": "Ingratiate",
+    "definition": "bring oneself into favor through flattery or effort to please",
+    "memoryTip": "In + graces: flattery to get into someone\u2019s good graces.",
+    "correctPassage": "He tried to ingratiate himself with the new director through constant flattery.",
+    "wrongPassages": [
+      "She managed to ingratiate the entire board by insulting each member in turn.",
+      "His plan to ingratiate the budget cut was to ignore every request for funding.",
+      "They ingratiated the angry crowd by refusing to answer questions at all."
+    ]
+  },
+  {
+    "id": "w352",
+    "word": "Garrulous",
+    "definition": "excessively talkative, especially about trivial matters",
+    "memoryTip": "A garrulous guest pours a garbled river of endless small talk.",
+    "correctPassage": "A garrulous seatmate made the long flight feel even longer.",
+    "wrongPassages": [
+      "The garrulous hermit went years without speaking to another person.",
+      "Her garrulous reply was a single nod and then complete silence.",
+      "Judges praised the garrulous witness who answered only yes or no."
+    ]
+  },
+  {
+    "id": "w353",
+    "word": "Fervid",
+    "definition": "intensely enthusiastic or passionate",
+    "memoryTip": "Fervor on fire \u2014 fervid means passion running hot.",
+    "correctPassage": "Fervid supporters filled the square hours before the speech.",
+    "wrongPassages": [
+      "His fervid reaction was a shrug and a muttered \u201cwhatever.\u201d",
+      "The crowd stayed fervid by leaving early and barely clapping.",
+      "She gave a fervid presentation in a flat monotone that put half the room to sleep."
+    ]
+  },
+  {
+    "id": "w354",
+    "word": "Exigent",
+    "definition": "pressing; demanding immediate attention",
+    "memoryTip": "Exigent = emergency-urgent \u2014 it demands attention now.",
+    "correctPassage": "Exigent circumstances justified the emergency order.",
+    "wrongPassages": [
+      "The exigent memo could wait until next fiscal year without any harm.",
+      "They labeled the optional survey exigent and told staff to ignore it.",
+      "His exigent vacation plans involved no deadlines and no time pressure at all."
+    ]
+  },
+  {
+    "id": "w355",
+    "word": "Esoteric",
+    "definition": "understood by only a small specialist group",
+    "memoryTip": "Eso-teric: for the inner circle only \u2014 specialist knowledge.",
+    "correctPassage": "The seminar covers esoteric topics rarely taught to undergraduates.",
+    "wrongPassages": [
+      "The esoteric flyer used words every kindergartner already knew by heart.",
+      "They called the national anthem esoteric because the whole stadium sang along.",
+      "Her esoteric cooking show explained only how to boil water for pasta."
+    ]
+  }
+]

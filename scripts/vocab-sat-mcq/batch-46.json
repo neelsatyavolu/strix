@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w231",
+    "word": "Ambivalent",
+    "definition": "having mixed or conflicting feelings",
+    "memoryTip": "Ambi = both ways\u2014ambivalent means pulled in two directions at once.",
+    "correctPassage": "She felt ambivalent about leaving a job she both loved and resented.",
+    "wrongPassages": [
+      "He was ambivalent: completely for the plan and free of any reservation.",
+      "Her ambivalent vote was a clear yes on every line of the proposal.",
+      "Ambivalent supporters filled the hall with one unbroken chant of approval."
+    ]
+  },
+  {
+    "id": "w232",
+    "word": "Analogical",
+    "definition": "based on or involving analogy",
+    "memoryTip": "Analogy = comparison\u2014analogical reasoning maps one case onto another.",
+    "correctPassage": "The argument is analogical: it treats cities as if they were living organisms.",
+    "wrongPassages": [
+      "Her analogical proof listed only raw measurements with no comparison at all.",
+      "They called the receipt analogical because it showed the exact dollar total.",
+      "An analogical bridge is one rated solely by its measured load in tons."
+    ]
+  },
+  {
+    "id": "w233",
+    "word": "Transpose",
+    "definition": "cause two or more things to change places",
+    "memoryTip": "Trans-pose: switch places\u2014or move a melody into another key.",
+    "correctPassage": "Students were asked to transpose the melody into a different key.",
+    "wrongPassages": [
+      "They hoped to transpose the protest by filming empty chairs as consensus.",
+      "To transpose the names, she left both labels exactly where they already were.",
+      "The bot will transpose ticket age by bulk-closing anything older than a week."
+    ]
+  },
+  {
+    "id": "w234",
+    "word": "Candor",
+    "definition": "the quality of being open and honest",
+    "memoryTip": "Candid camera honesty\u2014candor is frank, open speech without sugarcoating.",
+    "correctPassage": "His candor about past mistakes earned him unexpected support.",
+    "wrongPassages": [
+      "She kept a candor spare in the glove box next to the registration papers.",
+      "His candor consisted of dodging every question with a polished half-smile.",
+      "The lobby playlist\u2019s candor was one looped track at constant volume."
+    ]
+  },
+  {
+    "id": "w235",
+    "word": "Prudence",
+    "definition": "careful good judgment; caution",
+    "memoryTip": "Prudent choices\u2014prudence is careful good sense, not reckless risk.",
+    "correctPassage": "Fiscal prudence kept the university solvent during the downturn.",
+    "wrongPassages": [
+      "He tossed a foam block labeled prudence into the trunk \u201cjust in case.\u201d",
+      "Spending the reserve on a lottery ticket was pure prudence in action.",
+      "Her prudence showed when she ignored every warning and signed on the spot."
+    ]
+  }
+]

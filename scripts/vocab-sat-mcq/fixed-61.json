@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w306",
+    "word": "Copious",
+    "definition": "abundant in quantity or supply",
+    "memoryTip": "Copy lots: copious means there's plenty to go around.",
+    "correctPassage": "The archival team catalogued copious correspondence between the ambassadors, filling several bound volumes.",
+    "wrongPassages": [
+      "After successive droughts, the reservoir retained only a copious trickle of water.",
+      "Her copious remarks consisted of a single, carefully chosen sentence.",
+      "The museum's copious collection of Roman coins numbered fewer than a dozen pieces."
+    ]
+  },
+  {
+    "id": "w307",
+    "word": "Circumvent",
+    "definition": "find a way around an obstacle or rule",
+    "memoryTip": "Circum- (around) + vent (go): slip around the barrier.",
+    "correctPassage": "By filing under a different statute, the firm sought to circumvent the expired licensing requirement.",
+    "wrongPassages": [
+      "The hikers circumvented the blocked trail by continuing straight along the same marked path.",
+      "Rather than avoid the ban, the company circumvented the regulation by complying with every clause.",
+      "She circumvented the difficult conversation by addressing the conflict directly and in full."
+    ]
+  },
+  {
+    "id": "w308",
+    "word": "Sterilize",
+    "definition": "make free from bacteria or other living microorganisms",
+    "memoryTip": "Make sterile: kill germs so nothing can grow.",
+    "correctPassage": "Before surgery, nurses sterilize the instruments in an autoclave to eliminate microbial contamination.",
+    "wrongPassages": [
+      "Farmers sterilize the soil each spring by adding compost that encourages microbial growth.",
+      "The chef sterilized the cutting board by leaving it unwashed overnight on the counter.",
+      "Conservationists sterilize the wetland by introducing a greater diversity of plant and animal species."
+    ]
+  },
+  {
+    "id": "w309",
+    "word": "Endemic",
+    "definition": "regularly found among a people or in a particular place",
+    "memoryTip": "En-demos: native to a people/place, not a one-time visitor.",
+    "correctPassage": "The rare orchid is endemic to the cloud forests of that range and is seldom found elsewhere.",
+    "wrongPassages": [
+      "The illness was endemic for a single afternoon before vanishing from the region entirely.",
+      "Snow is endemic in the coastal desert, where it has been recorded only once in history.",
+      "An endemic visitor arrived from overseas for a brief conference and departed the next week."
+    ]
+  },
+  {
+    "id": "w310",
+    "word": "Tangential",
+    "definition": "only slightly related to the main matter; diverging",
+    "memoryTip": "Off on a tangent: barely touching the main point.",
+    "correctPassage": "The committee set aside several tangential objections that did not bear on the proposal's central provisions.",
+    "wrongPassages": [
+      "Her tangential analysis formed the core of the argument and resolved every outstanding dispute.",
+      "The tangential section of the report was devoted entirely to the study's primary research question.",
+      "Reviewers called the plan tangential because it addressed the core problem with precision."
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w046",
+    "word": "Sanguine",
+    "definition": "cheerfully optimistic, especially in a difficult situation",
+    "memoryTip": "From Latin sang (blood) — rosy-cheeked and upbeat when things look grim.",
+    "correctPassage": "Despite repeated setbacks, the director remained sanguine about meeting the opening date.",
+    "wrongPassages": [
+      "Her sanguine memo listed every reason the project was certain to collapse before launch.",
+      "After the funding cut, the committee grew sanguine and abandoned any hope of recovery.",
+      "The critic’s sanguine review condemned the novel as dull and poorly argued."
+    ]
+  },
+  {
+    "id": "w047",
+    "word": "Notional",
+    "definition": "existing only in theory or as an idea; hypothetical",
+    "memoryTip": "Only a notion — theoretical on paper, not yet real.",
+    "correctPassage": "The budget included only a notional amount for travel until actual costs were known.",
+    "wrongPassages": [
+      "The notional figures were wire-transferred and already spent by Tuesday.",
+      "City officials granted a notional license that authorized the restaurant to open at once.",
+      "The notional duty of the editor was to fact-check every claim before publication."
+    ]
+  },
+  {
+    "id": "w048",
+    "word": "Slumberous",
+    "definition": "sleepy; tending to induce sleep",
+    "memoryTip": "Slumber = sleep — anything slumberous makes you drowsy.",
+    "correctPassage": "The heat and the soft music had a slumberous effect on the audience.",
+    "wrongPassages": [
+      "The slumberous finale jolted every listener upright and shouting for an encore.",
+      "A slumberous series of emails demanded immediate replies from the research team.",
+      "The slumberous marketplace rang with horns, vendors, and midday traffic."
+    ]
+  },
+  {
+    "id": "w049",
+    "word": "Restorative",
+    "definition": "having the ability to restore health, strength, or well-being",
+    "memoryTip": "Restores you — rest or care that puts energy back.",
+    "correctPassage": "A weekend by the lake proved restorative after months of deadline pressure.",
+    "wrongPassages": [
+      "The restorative schedule left the volunteers more depleted than before the break.",
+      "Managers scheduled a restorative all-nighter that exhausted the design staff.",
+      "The principal imposed a restorative detention that doubled the original penalty."
+    ]
+  },
+  {
+    "id": "w050",
+    "word": "Impart",
+    "definition": "to make information known; to give a quality to something",
+    "memoryTip": "Im-part: pass along a part of knowledge or a quality.",
+    "correctPassage": "Good mentors impart not only techniques but also habits of careful reading.",
+    "wrongPassages": [
+      "She chose to impart nothing and sealed the research notes from every colleague.",
+      "The filter is designed to impart impurities from the sample before analysis.",
+      "Inspectors tried to impart a confession from the reluctant witness."
+    ]
+  }
+]

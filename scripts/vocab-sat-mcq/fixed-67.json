@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w336",
+    "word": "Reproach",
+    "definition": "to express disapproval or disappointment; blame",
+    "memoryTip": "Re-PROACH: approach someone again—with blame, not praise.",
+    "correctPassage": "There was quiet reproach in the way she asked why he had missed the deadline.",
+    "wrongPassages": [
+      "After the championship win, the coach offered only reproach, listing each player's strengths in detail.",
+      "Her letter of reproach thanked him warmly for every favor he had done.",
+      "The board's formal reproach endorsed the policy and recommended a raise for the director."
+    ]
+  },
+  {
+    "id": "w337",
+    "word": "Contemptuous",
+    "definition": "showing scorn or deep disrespect",
+    "memoryTip": "Full of CONTEMPT—scornful, looking down on someone.",
+    "correctPassage": "His contemptuous shrug made it clear he thought the proposal was foolish.",
+    "wrongPassages": [
+      "She gave a contemptuous smile that radiated pure admiration for the speaker.",
+      "In a contemptuous show of respect, he stood and applauded the critic's argument.",
+      "The mentor's contemptuous comments on the draft were full of encouragement and praise."
+    ]
+  },
+  {
+    "id": "w338",
+    "word": "Startling",
+    "definition": "very surprising or astonishing",
+    "memoryTip": "Makes you START (jump)—so surprising you flinch.",
+    "correctPassage": "The most startling finding was that sleep alone cut the error rate in half.",
+    "wrongPassages": [
+      "Historians called the long-predicted election result startling, since polls had forecast it for months.",
+      "The lab reported a startling pattern: every trial matched the control with no unexpected deviation.",
+      "Her startling presentation simply repeated the three bullet points the team already knew by heart."
+    ]
+  },
+  {
+    "id": "w339",
+    "word": "Belie",
+    "definition": "to fail to give a true impression of; to contradict",
+    "memoryTip": "Be-LIE: the surface lies about what is really underneath.",
+    "correctPassage": "His calm tone belied how nervous he felt before the exam.",
+    "wrongPassages": [
+      "Rising enrollment numbers belied the claim that the program was thriving.",
+      "Her tearful apology belied how sincerely sorry she felt after the mistake.",
+      "The detailed footnotes belied every source she cited, confirming each quotation line by line."
+    ]
+  },
+  {
+    "id": "w340",
+    "word": "Idiosyncratic",
+    "definition": "peculiar to an individual; highly distinctive",
+    "memoryTip": "IDIO + quirks: your personal odd habits and style.",
+    "correctPassage": "Her idiosyncratic color code made the spreadsheet unreadable to anyone else on the team.",
+    "wrongPassages": [
+      "Everyone followed the same idiosyncratic checklist issued by headquarters.",
+      "The style guide enforced one idiosyncratic format so that all reports looked identical.",
+      "Regulators praised the idiosyncratic protocol for eliminating personal variation across every lab."
+    ]
+  }
+]

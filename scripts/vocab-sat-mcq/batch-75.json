@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w376",
+    "word": "Ignoble",
+    "definition": "not honorable in character or purpose",
+    "memoryTip": "Ig-noble: not noble\u2014base or dishonorable motives.",
+    "correctPassage": "Betraying a colleague for promotion was an ignoble act.",
+    "wrongPassages": [
+      "Rescuing strangers at great personal risk was widely praised as ignoble.",
+      "The scholarship fund was an ignoble effort to help students who could not pay.",
+      "Historians called her lifelong public service an ignoble model for future leaders."
+    ]
+  },
+  {
+    "id": "w377",
+    "word": "Purloin",
+    "definition": "steal",
+    "memoryTip": "Purloin = quietly pocket something that isn't yours.",
+    "correctPassage": "Someone had managed to purloin several rare maps from the archive.",
+    "wrongPassages": [
+      "She offered to purloin the gift by wrapping it carefully and handing it over in person.",
+      "The museum will purloin the painting by returning it to the original owner.",
+      "He planned to purloin the missing funds by transferring them back into the account."
+    ]
+  },
+  {
+    "id": "w378",
+    "word": "Brazen",
+    "definition": "bold and without shame",
+    "memoryTip": "Brass-bold\u2014shamelessly bold, like polished brass.",
+    "correctPassage": "The theft was brazen: it happened in full view of security cameras.",
+    "wrongPassages": [
+      "His brazen apology was whispered in private and full of genuine shame.",
+      "She made a brazen request only after hiding for weeks and avoiding every camera.",
+      "The brazen clerk blushed, stammered, and quietly withdrew the complaint."
+    ]
+  },
+  {
+    "id": "w379",
+    "word": "Venal",
+    "definition": "open to bribery; corruptible",
+    "memoryTip": "Venal for sale\u2014open to bribes and corruption.",
+    "correctPassage": "A venal official accepted bribes to overlook safety violations.",
+    "wrongPassages": [
+      "The venal judge returned every gift and recused herself from the case.",
+      "Voters trusted his venal record of refusing all donations from lobbyists.",
+      "Her venal ethics code barred any employee from accepting money or favors."
+    ]
+  },
+  {
+    "id": "w380",
+    "word": "Palimpsest",
+    "definition": "a surface reused after earlier writing was erased; layered history",
+    "memoryTip": "Scraped parchment rewritten\u2014old layers still show through.",
+    "correctPassage": "The city is a palimpsest of architectural styles from many centuries.",
+    "wrongPassages": [
+      "The brand-new blank notebook was a pure palimpsest with no prior marks at all.",
+      "He called the single-use form a palimpsest because it could never be written on twice.",
+      "The palimpsest wall was poured yesterday and has never held another design."
+    ]
+  }
+]

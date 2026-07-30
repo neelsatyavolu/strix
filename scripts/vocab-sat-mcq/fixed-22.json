@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w111",
+    "word": "Auspiciously",
+    "definition": "in a way that suggests a favorable outcome",
+    "memoryTip": "Auspicious omens once came from watching birds — a promising start.",
+    "correctPassage": "The campaign opened auspiciously, drawing record attendance and early endorsements.",
+    "wrongPassages": [
+      "Negotiations began auspiciously when both sides walked out after ten minutes.",
+      "The harvest started auspiciously under a late frost that ruined the first crop.",
+      "Critics took the empty house on opening night as an auspiciously promising sign."
+    ]
+  },
+  {
+    "id": "w112",
+    "word": "Haphazardly",
+    "definition": "in a random, unplanned, or careless way",
+    "memoryTip": "Hap (chance) + hazard — by luck, not by plan; messy.",
+    "correctPassage": "Evidence had been filed haphazardly, so researchers spent weeks reconstructing the timeline.",
+    "wrongPassages": [
+      "The archivist arranged the letters haphazardly by date, sender, and subject.",
+      "She packed haphazardly, numbering each carton and checking items against a list.",
+      "The drill team advanced haphazardly in precise formation across the field."
+    ]
+  },
+  {
+    "id": "w113",
+    "word": "Antagonistic",
+    "definition": "showing opposition or hostility",
+    "memoryTip": "Like a story’s antagonist — opposing, not cooperative.",
+    "correctPassage": "The two accounts need not be antagonistic; each explains a different stage of the process.",
+    "wrongPassages": [
+      "Her antagonistic remarks quickly put the room at ease.",
+      "The firms signed an antagonistic partnership to share costs and profits.",
+      "Residents organized an antagonistic welcome dinner for the new neighbors."
+    ]
+  },
+  {
+    "id": "w114",
+    "word": "Summation",
+    "definition": "a summary; the act of adding things up",
+    "memoryTip": "Sum it up — a total or a closing overview.",
+    "correctPassage": "In her summation, the author restated the study’s main findings without adding new data.",
+    "wrongPassages": [
+      "His summation introduced entirely new evidence and abandoned any closing overview.",
+      "The report’s summation scattered unfinished notes instead of drawing the claims together.",
+      "She began the talk with a summation that postponed any review until the final slide."
+    ]
+  },
+  {
+    "id": "w115",
+    "word": "Unequivocal",
+    "definition": "leaving no doubt; clear and unambiguous",
+    "memoryTip": "Un-equi-vocal: not two voices — one clear meaning only.",
+    "correctPassage": "The committee issued an unequivocal statement endorsing the revised policy.",
+    "wrongPassages": [
+      "His unequivocal reply was that the outcome might change under several unknowns.",
+      "The instructions were unequivocal: three conflicting steps and no final choice.",
+      "She offered an unequivocal shrug that left the panel more uncertain than before."
+    ]
+  }
+]

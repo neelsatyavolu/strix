@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w261",
+    "word": "Stave off",
+    "definition": "delay or prevent something bad from happening",
+    "memoryTip": "Hold off danger with a stave (staff) \u2014 keep the bad thing at bay.",
+    "correctPassage": "Extra funding helped the clinic stave off closure for another year.",
+    "wrongPassages": [
+      "The chef hoped to stave off dinner by plating the first course early.",
+      "She staved off the award ceremony by accepting the trophy with a speech.",
+      "Volunteers staved off the festival by opening the gates an hour ahead of schedule."
+    ]
+  },
+  {
+    "id": "w262",
+    "word": "Expedite",
+    "definition": "make happen sooner or more quickly",
+    "memoryTip": "Think expedition: speed the process so it arrives sooner.",
+    "correctPassage": "The clerk offered to expedite the passport renewal for travelers leaving Friday.",
+    "wrongPassages": [
+      "Managers decided to expedite the project by adding three more months to the deadline.",
+      "He expedited the argument by refusing to reply for weeks.",
+      "They expedited the meal by letting it cool on the counter all afternoon."
+    ]
+  },
+  {
+    "id": "w263",
+    "word": "Turnover",
+    "definition": "rate at which people leave and are replaced; or total sales",
+    "memoryTip": "Staff or stock turns over \u2014 how fast people/goods cycle through.",
+    "correctPassage": "Low turnover kept the research team stable through the multi-year study.",
+    "wrongPassages": [
+      "The coach praised the team's turnover for never swapping players mid-season.",
+      "She measured the room's turnover as the distance from wall to wall.",
+      "His turnover for the night meant he slept through every alarm."
+    ]
+  },
+  {
+    "id": "w264",
+    "word": "Stifle",
+    "definition": "restrain or suppress",
+    "memoryTip": "Stifle a yawn or a fire \u2014 smother it so it cannot break free.",
+    "correctPassage": "Strict rules can stifle creativity when every idea needs three approvals.",
+    "wrongPassages": [
+      "The coach hoped to stifle the players by giving them freer practice drills.",
+      "Open debate stifled the bill by bringing every amendment to a full vote.",
+      "She stifled the engine so it would roar louder on the highway."
+    ]
+  },
+  {
+    "id": "w265",
+    "word": "Recant",
+    "definition": "withdraw a former statement or belief",
+    "memoryTip": "Re-cant: sing the claim again the other way \u2014 take it back.",
+    "correctPassage": "Facing new evidence, the witness agreed to recant her earlier testimony.",
+    "wrongPassages": [
+      "He recanted the hymn by singing the first verse louder than before.",
+      "The mayor recanted her support by repeating the same endorsement on TV.",
+      "Students recanted the lecture notes into a cleaner outline for class."
+    ]
+  }
+]

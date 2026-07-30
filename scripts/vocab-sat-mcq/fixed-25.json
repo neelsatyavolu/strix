@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w126",
+    "word": "Convene",
+    "definition": "come or bring together for a meeting",
+    "memoryTip": "Con-vene: come together for a meeting.",
+    "correctPassage": "The board will convene next Monday to vote on the proposal.",
+    "wrongPassages": [
+      "Managers convened the staff by sending everyone home early and locking the offices.",
+      "The mediator convened the talks by canceling the remaining sessions without notice.",
+      "She convened the coalition by dissolving it into separate, noncommunicating factions."
+    ]
+  },
+  {
+    "id": "w127",
+    "word": "Banal",
+    "definition": "so lacking in originality as to be boring",
+    "memoryTip": "So common it bans all interest — boringly ordinary.",
+    "correctPassage": "What might have been a powerful speech was undermined by banal slogans.",
+    "wrongPassages": [
+      "Critics praised the film’s banal plot for inventing a structure no prior director had tried.",
+      "Her banal theorem introduced an entirely new branch of mathematics almost overnight.",
+      "Reviewers called the novel banal because every chapter broke with convention in unexpected ways."
+    ]
+  },
+  {
+    "id": "w128",
+    "word": "Erratic",
+    "definition": "not even or regular in pattern; unpredictable",
+    "memoryTip": "Err + path: jumps around without a steady pattern.",
+    "correctPassage": "Erratic attendance made it hard to keep the seminar on schedule.",
+    "wrongPassages": [
+      "Astronomers call a star erratic when its brightness never changes across decades.",
+      "She kept an erratic schedule: the same three tasks at the same times each day.",
+      "His erratic explanation listed steps in order with diagrams and a glossary for every term."
+    ]
+  },
+  {
+    "id": "w129",
+    "word": "Disingenuous",
+    "definition": "not candid or sincere; falsely appearing frank",
+    "memoryTip": "Dis + ingenuous (innocent) — fake sincerity, not genuine.",
+    "correctPassage": "Claiming surprise at the outcome seemed disingenuous after months of warnings.",
+    "wrongPassages": [
+      "Colleagues trusted her disingenuous account because she documented every step without concealment.",
+      "His disingenuous apology named every harm, accepted full blame, and offered a concrete remedy.",
+      "Judges called the ruling disingenuous because it carefully weighed both sides and cited the law."
+    ]
+  },
+  {
+    "id": "w130",
+    "word": "Vacillate",
+    "definition": "waver between different opinions or actions",
+    "memoryTip": "Vacillate like a vacuum of decision — swing back and forth.",
+    "correctPassage": "Investors continue to vacillate between optimism and caution.",
+    "wrongPassages": [
+      "They vacillated on the first vote: every hand went up at once with no further discussion.",
+      "She vacillated between options by locking in her first choice and never revisiting it.",
+      "His vacillating leadership held a single, unchanging course for the entire term."
+    ]
+  }
+]

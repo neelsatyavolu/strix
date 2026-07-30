@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w121",
+    "word": "Constrict",
+    "definition": "make narrower by squeezing",
+    "memoryTip": "Con-strict: squeeze tight like a constrictor snake.",
+    "correctPassage": "Cold can constrict blood vessels near the skin, reducing heat loss from the body.",
+    "wrongPassages": [
+      "Engineers plan to constrict the tunnel by widening it to four lanes of traffic.",
+      "The reforms will constrict competition by removing licensing barriers for new firms.",
+      "She tried to constrict the tight deadline by adding two extra weeks to the schedule."
+    ]
+  },
+  {
+    "id": "w122",
+    "word": "Emulate",
+    "definition": "match or surpass by imitation",
+    "memoryTip": "E-mulate: imitate to equal or beat someone you admire.",
+    "correctPassage": "Young designers often try to emulate the restraint of mid-century masters.",
+    "wrongPassages": [
+      "She chose to emulate the mentor by ignoring every technique the mentor had used.",
+      "Critics hope the studio will emulate the hit film by inventing a story with no shared elements.",
+      "He tried to emulate the outdated methods by discarding them entirely in favor of new ones."
+    ]
+  },
+  {
+    "id": "w123",
+    "word": "Augment",
+    "definition": "make greater by adding to",
+    "memoryTip": "Aug-ment: add more; make something greater.",
+    "correctPassage": "Grants will augment the school’s own funding for after-school programs.",
+    "wrongPassages": [
+      "The board voted to augment the budget by cutting every discretionary line item.",
+      "Managers plan to augment staffing by freezing all hiring through the next fiscal year.",
+      "She hoped to augment the sparse collection by returning several volumes to the donor."
+    ]
+  },
+  {
+    "id": "w124",
+    "word": "Vacate",
+    "definition": "leave a place previously occupied",
+    "memoryTip": "Leave it vacant — empty the place and go.",
+    "correctPassage": "Tenants were ordered to vacate the building within thirty days.",
+    "wrongPassages": [
+      "The firm will vacate the office by moving additional staff into the same suite.",
+      "He refused to vacate the apartment and signed a three-year extension instead.",
+      "Organizers plan to vacate the hall by packing every available seat before the doors open."
+    ]
+  },
+  {
+    "id": "w125",
+    "word": "Extrapolate",
+    "definition": "extend conclusions beyond known data",
+    "memoryTip": "Extra + polate: push the pattern past the data you have.",
+    "correctPassage": "It is risky to extrapolate from such a small sample to the whole population.",
+    "wrongPassages": [
+      "She refused to extrapolate, reporting only results that fell inside the measured range.",
+      "They chose to extrapolate the dataset by discarding every observation past the first year.",
+      "He tried to extrapolate the trend by averaging only the known points and stopping there."
+    ]
+  }
+]

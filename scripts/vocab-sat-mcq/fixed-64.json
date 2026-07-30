@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w321",
+    "word": "Contrivance",
+    "definition": "a cleverly devised plan, scheme, or device, often artificial",
+    "memoryTip": "Con-TRIVE-ance: a clever TRICK or device someone contrived.",
+    "correctPassage": "Critics dismissed the subplot as a contrivance meant only to force the rivals into a final confrontation.",
+    "wrongPassages": [
+      "Historians praised the treaty as a contrivance that arose without planning or human design.",
+      "The archaeologist labeled each fossil a contrivance because it had formed over millions of years.",
+      "After years of drought, the reservoir’s low level was a natural contrivance no engineer had engineered."
+    ]
+  },
+  {
+    "id": "w322",
+    "word": "Abut",
+    "definition": "to share a boundary with; touch along an edge",
+    "memoryTip": "A-BUTT against: properties that butt up against each other.",
+    "correctPassage": "The new library will abut the historic courthouse, sharing a continuous stone wall along the east side.",
+    "wrongPassages": [
+      "The committee voted to abut the hearing until next month so members could review the report.",
+      "Her abrupt manners seemed to abut the guests, who left the dinner early.",
+      "Investors hoped the forecast would abut, offering precise figures for every quarter."
+    ]
+  },
+  {
+    "id": "w323",
+    "word": "Indefatigable",
+    "definition": "persisting tirelessly; incapable of being worn out",
+    "memoryTip": "In-de-FATIGUE-able: fatigue cannot stop you.",
+    "correctPassage": "An indefatigable researcher returned to the archives each morning until the missing letters surfaced.",
+    "wrongPassages": [
+      "After one short shift, the indefatigable intern asked to go home and sleep for the rest of the week.",
+      "The curator asked staff to indefatigable the exhibit cases before opening the gallery.",
+      "Surveyors recorded the bridge’s indefatigable as a span of nearly two hundred meters."
+    ]
+  },
+  {
+    "id": "w324",
+    "word": "Pseudonymous",
+    "definition": "written or published under a false name",
+    "memoryTip": "PSEUDO + name: a fake name on the byline.",
+    "correctPassage": "The essayist published a pseudonymous critique of the firm where she still worked under her real name.",
+    "wrongPassages": [
+      "Once the orchestra drowned the choir, the voices sounded almost pseudonymous from the back row.",
+      "She submitted a pseudonymous application that listed only her legal name and government ID number.",
+      "The mayor hoped a live press conference would make the scandal pseudonymous by putting every detail on record."
+    ]
+  },
+  {
+    "id": "w325",
+    "word": "Nudge",
+    "definition": "to gently push; to lightly encourage toward an action",
+    "memoryTip": "Elbow NUDGE: a light push that steers without force.",
+    "correctPassage": "A well-timed reminder can nudge employees to complete the survey before the deadline.",
+    "wrongPassages": [
+      "The demolition crew gave the support beam one final nudge, and the entire structure collapsed.",
+      "A single nudge of the thrusters was enough to hurl the rocket beyond Earth’s atmosphere.",
+      "By late afternoon the harbor looked nudge, with tourist boats filling every available slip."
+    ]
+  }
+]

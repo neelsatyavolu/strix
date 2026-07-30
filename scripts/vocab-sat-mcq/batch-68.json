@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w341",
+    "word": "Importunate",
+    "definition": "persistently demanding to the point of annoyance",
+    "memoryTip": "Im-PORTUNE: keep porting the same ask until it\u2019s annoying.",
+    "correctPassage": "Importunate callers continued to press for an early decision.",
+    "wrongPassages": [
+      "The quiet librarian was importunate, never once interrupting a reader.",
+      "She hoped a single polite email would importunate the committee into approval.",
+      "His importunate silence filled the room after he refused to speak again."
+    ]
+  },
+  {
+    "id": "w342",
+    "word": "Dexterity",
+    "definition": "skill in performing tasks, especially with the hands",
+    "memoryTip": "Dexterous hands \u2014 think \u201cDexter\u201d building gadgets with skill.",
+    "correctPassage": "Repairing the mechanism required considerable manual dexterity.",
+    "wrongPassages": [
+      "His verbal dexterity left him tongue-tied and unable to finish a sentence.",
+      "They praised her dexterity for dropping every tool she picked up.",
+      "The team measured dexterity by how slowly and clumsily the task was done."
+    ]
+  },
+  {
+    "id": "w343",
+    "word": "Irrespective",
+    "definition": "without regard to; regardless of",
+    "memoryTip": "Ir-respective: without respect to X \u2014 regardless of it.",
+    "correctPassage": "The rule applies to all students, irrespective of major.",
+    "wrongPassages": [
+      "The rule applies irrespective of major only when your major is engineering.",
+      "Please irrespective the window before rain.",
+      "They packed a spare irrespective in the trunk."
+    ]
+  },
+  {
+    "id": "w344",
+    "word": "Vanity",
+    "definition": "excessive pride in appearance or achievements",
+    "memoryTip": "Vain about looks or status \u2014 vanity is that excessive pride.",
+    "correctPassage": "The project was driven more by vanity than by public need.",
+    "wrongPassages": [
+      "Her vanity showed when she credited the whole team and stepped out of the photo.",
+      "He treated vanity as pure generosity, giving every award away anonymously.",
+      "The modest cabin was built for vanity, with no mirrors and no display of wealth."
+    ]
+  },
+  {
+    "id": "w345",
+    "word": "Opaque",
+    "definition": "not transparent; hard to understand",
+    "memoryTip": "Can\u2019t see through it \u2014 glass that blocks light, or prose that blocks meaning.",
+    "correctPassage": "The process remains opaque to anyone outside the committee.",
+    "wrongPassages": [
+      "The glass door was so opaque that every desk in the office was clearly visible.",
+      "Her opaque summary listed each step in plain language a child could follow.",
+      "They called the crystal-clear water opaque because fish swam freely through it."
+    ]
+  }
+]

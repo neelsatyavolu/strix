@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w026",
+    "word": "Incongruous",
+    "definition": "not in harmony; out of place",
+    "memoryTip": "In-congruent: doesn\u2019t \u201cfit\u201d the picture; out of place.",
+    "correctPassage": "A neon sign looked incongruous against the centuries-old stone facade.",
+    "wrongPassages": [
+      "The navy suit was incongruous with the formal dress code and drew no second glances.",
+      "Editors praised the chapter as incongruous because every scene advanced the same theme.",
+      "Her incongruous color scheme matched the room\u2019s palette down to the trim."
+    ]
+  },
+  {
+    "id": "w027",
+    "word": "Impertinent",
+    "definition": "rude; not showing proper respect",
+    "memoryTip": "Im-pertinent: not \u201cpertaining\u201d politely \u2014 rude and out of line.",
+    "correctPassage": "The reporter\u2019s impertinent questions about private finances angered the candidate.",
+    "wrongPassages": [
+      "The clerk\u2019s impertinent reply restated the policy and offered three clear next steps.",
+      "Judges called the brief impertinent for citing every relevant statute with care.",
+      "Her impertinent silence during the award speech was taken as deep respect."
+    ]
+  },
+  {
+    "id": "w028",
+    "word": "Insurmountable",
+    "definition": "too great to overcome",
+    "memoryTip": "Can\u2019t surmount (climb over) it \u2014 too big a barrier.",
+    "correctPassage": "What had seemed an insurmountable funding gap was closed by a single anonymous gift.",
+    "wrongPassages": [
+      "The trail was so insurmountable that first-time hikers finished early without maps.",
+      "They treated the checklist as insurmountable and cleared every item before lunch.",
+      "Once the password reset worked, the login barrier proved entirely insurmountable."
+    ]
+  },
+  {
+    "id": "w029",
+    "word": "Tranquility",
+    "definition": "the quality of being calm and peaceful",
+    "memoryTip": "Tranquil + ity \u2014 calm lake, quiet mind.",
+    "correctPassage": "After the storm, a rare sense of tranquility settled over the harbor.",
+    "wrongPassages": [
+      "The market\u2019s tranquility showed in triple-digit swings and halted trading.",
+      "Residents fled the tranquility of sirens and continuous construction noise.",
+      "He sought tranquility by scheduling three overlapping deadlines for the same afternoon."
+    ]
+  },
+  {
+    "id": "w030",
+    "word": "Reprieve",
+    "definition": "a temporary relief from something unpleasant",
+    "memoryTip": "A brief relief before the hard thing resumes \u2014 temporary break.",
+    "correctPassage": "A last-minute injunction granted the tenants a temporary reprieve from eviction.",
+    "wrongPassages": [
+      "The clinic tried to reprieve no-shows by double-booking every appointment slot.",
+      "After the verdict, the sentence was a permanent reprieve with no chance of review.",
+      "She called the longer workday a welcome reprieve from free evenings at home."
+    ]
+  }
+]

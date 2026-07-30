@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w361",
+    "word": "Mercurial",
+    "definition": "subject to sudden or unpredictable mood changes",
+    "memoryTip": "Mercury races across the sky\u2014mercurial people change moods just as fast.",
+    "correctPassage": "Her mercurial moods made long-term planning with her difficult.",
+    "wrongPassages": [
+      "The bridge was mercurial, standing for centuries without a single repair.",
+      "He kept a mercurial schedule that never varied by even a minute.",
+      "The committee wanted mercurial rules so nothing would ever need updating."
+    ]
+  },
+  {
+    "id": "w362",
+    "word": "Obsequious",
+    "definition": "excessively obedient or attentive; servile",
+    "memoryTip": "Obey-sequious: so eager to please it turns into fawning.",
+    "correctPassage": "Obsequious assistants hovered, waiting for the slightest request.",
+    "wrongPassages": [
+      "The general's obsequious refusal to follow orders cost the unit the battle.",
+      "Her obsequious critique demolished every assumption the panel cherished.",
+      "He was so obsequious that he never spoke to anyone above his own rank."
+    ]
+  },
+  {
+    "id": "w363",
+    "word": "Surreptitious",
+    "definition": "done secretly, especially because it would not be approved",
+    "memoryTip": "Surreptitious sneak\u2014on the sly because it wouldn't be allowed.",
+    "correctPassage": "A surreptitious glance at his notes did not go unnoticed.",
+    "wrongPassages": [
+      "The mayor made a surreptitious announcement on live television to the whole city.",
+      "Their surreptitious wedding was livestreamed with open invitations for all.",
+      "She left a surreptitious notice taped to the office door where everyone could see it."
+    ]
+  },
+  {
+    "id": "w364",
+    "word": "Prescient",
+    "definition": "having knowledge of events before they take place",
+    "memoryTip": "Pre-science: knows what will happen before it does.",
+    "correctPassage": "Her prescient warning about housing risk was ignored until too late.",
+    "wrongPassages": [
+      "His prescient summary only restated what everyone already knew from yesterday's news.",
+      "The prescient report carefully avoided any claim about what might happen next.",
+      "She was praised as prescient for documenting events only after they had finished."
+    ]
+  },
+  {
+    "id": "w365",
+    "word": "Iconoclastic",
+    "definition": "attacking or rejecting cherished beliefs or institutions",
+    "memoryTip": "Icon-clast: smashes sacred icons\u2014challenges tradition.",
+    "correctPassage": "An iconoclastic critic challenged nearly every received opinion in the field.",
+    "wrongPassages": [
+      "The museum's iconoclastic exhibit carefully preserved every traditional display.",
+      "Her iconoclastic loyalty to the founding charter never wavered for decades.",
+      "The board praised his iconoclastic refusal to question any established policy."
+    ]
+  }
+]

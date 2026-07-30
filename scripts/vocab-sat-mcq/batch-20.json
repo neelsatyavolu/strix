@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w101",
+    "word": "Ubiquity",
+    "definition": "the state of being everywhere at once",
+    "memoryTip": "Ubi (Latin \u201cwhere\u201d) + everywhere \u2014 so common it\u2019s hard to escape.",
+    "correctPassage": "The ubiquity of smartphones has reshaped how students research and study.",
+    "wrongPassages": [
+      "The mountain\u2019s ubiquity made it a rare landmark only locals could find.",
+      "After the store closed, the product\u2019s ubiquity left empty shelves worldwide.",
+      "She prized the painting\u2019s ubiquity, since no other copy existed."
+    ]
+  },
+  {
+    "id": "w102",
+    "word": "Innocuous",
+    "definition": "not harmful or offensive; harmless",
+    "memoryTip": "In- (not) + noxious (harmful) \u2014 a remark that doesn\u2019t sting.",
+    "correctPassage": "What seemed an innocuous joke later made several coworkers uncomfortable.",
+    "wrongPassages": [
+      "The innocuous chemical burned through the steel drum within minutes.",
+      "Police evacuated the block after detecting an innocuous gas leak.",
+      "Critics called the speech innocuous after it sparked protests in three cities."
+    ]
+  },
+  {
+    "id": "w103",
+    "word": "Convoluted",
+    "definition": "extremely complex and difficult to follow",
+    "memoryTip": "Think of a volume coiled into tight twists \u2014 overly complex.",
+    "correctPassage": "The contract\u2019s convoluted clauses left neither side sure who held liability.",
+    "wrongPassages": [
+      "Her convoluted explanation used one clear sentence anyone could follow.",
+      "The map was convoluted: a single straight highway with no turns.",
+      "He gave a convoluted answer that cut straight to the main point."
+    ]
+  },
+  {
+    "id": "w104",
+    "word": "Salient",
+    "definition": "most noticeable or important; standing out",
+    "memoryTip": "From Latin salire, \u201cto leap\u201d \u2014 points that leap out at you.",
+    "correctPassage": "The most salient finding was the sharp drop in error rates after training.",
+    "wrongPassages": [
+      "The report buried its salient details where no one would notice them.",
+      "She called the typo salient and ignored the main experimental result.",
+      "His salient role meant he barely appeared in the project at all."
+    ]
+  },
+  {
+    "id": "w105",
+    "word": "Thwart",
+    "definition": "to prevent someone from accomplishing something",
+    "memoryTip": "A thwart is a cross-seat in a boat \u2014 something that blocks your path.",
+    "correctPassage": "Bad weather threatened to thwart the launch for a third time.",
+    "wrongPassages": [
+      "The coach\u2019s pep talk helped thwart the team toward an easy win.",
+      "New funding will thwart the lab\u2019s long-delayed experiment at last.",
+      "Security cameras were installed to thwart customers and make shopping smoother."
+    ]
+  }
+]

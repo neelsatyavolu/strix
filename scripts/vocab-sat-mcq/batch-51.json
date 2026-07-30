@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w256",
+    "word": "Comity",
+    "definition": "courtesy and mutual respect among people or nations",
+    "memoryTip": "Comity \u2248 committee of courtesy \u2014 polite mutual respect.",
+    "correctPassage": "Diplomatic comity requires each government to treat the other\u2019s envoys with respect.",
+    "wrongPassages": [
+      "Diplomatic comity flourished when both sides traded open insults all day.",
+      "Please comity the chairs into rows.",
+      "Engineers measured the bridge\u2019s comity in meters."
+    ]
+  },
+  {
+    "id": "w257",
+    "word": "Mordant",
+    "definition": "bitingly sharp or critically caustic",
+    "memoryTip": "Mord- = bite \u2014 mordant wit has a sharp bite.",
+    "correctPassage": "Her mordant review left few illusions about the play\u2019s weak second act.",
+    "wrongPassages": [
+      "His mordant praise gushed with pure affection and no critical edge at all.",
+      "The trail was so mordant that first-time hikers finished early without maps.",
+      "She offered a mordant apology that carefully avoided any hint of sarcasm."
+    ]
+  },
+  {
+    "id": "w258",
+    "word": "Onerous",
+    "definition": "involving a heavy burden or obligation",
+    "memoryTip": "Onus = burden \u2014 an onerous task is crushingly heavy.",
+    "correctPassage": "The reporting rules proved onerous for small nonprofits with tiny staffs.",
+    "wrongPassages": [
+      "One click and a prefilled form made the process pleasantly onerous for everyone.",
+      "The clinic tried to onerous no-shows by double-booking every appointment slot.",
+      "Critics called the vacation policy onerous because it required almost no paperwork."
+    ]
+  },
+  {
+    "id": "w259",
+    "word": "Pretense",
+    "definition": "a false appearance; a claim not based in fact",
+    "memoryTip": "Pretend-sense \u2014 a fake show of something real.",
+    "correctPassage": "Under the pretense of routine maintenance, the system was quietly redesigned.",
+    "wrongPassages": [
+      "There was no pretense left once she openly pretended everything was fine.",
+      "They packed a spare pretense next to the jumper cables.",
+      "City hall issued a pretense license for shoe sizes."
+    ]
+  },
+  {
+    "id": "w260",
+    "word": "Capricious",
+    "definition": "given to sudden, unpredictable changes of mood or behavior",
+    "memoryTip": "Like a goat\u2019s caper \u2014 sudden leaps of mood or decision.",
+    "correctPassage": "Capricious enforcement of the rules undermined any trust in the process.",
+    "wrongPassages": [
+      "The judge\u2019s capricious ruling followed the same fixed rule for every identical case.",
+      "Please capricious the window before you leave.",
+      "She stored the capricious beside the batteries."
+    ]
+  }
+]

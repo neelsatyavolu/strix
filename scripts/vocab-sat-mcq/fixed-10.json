@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w051",
+    "word": "Unwarranted",
+    "definition": "not justified or authorized; lacking good reason",
+    "memoryTip": "No warrant — no justification; not called for.",
+    "correctPassage": "The committee dismissed the accusations as unwarranted, noting that the audit had found no irregularities.",
+    "wrongPassages": [
+      "After months of careful review, the board granted her an unwarranted promotion for outstanding results.",
+      "The treaty was unwarranted by both nations, who signed it in a public ceremony.",
+      "Researchers described the new vaccine as unwarranted because it consistently reduced infection rates."
+    ]
+  },
+  {
+    "id": "w052",
+    "word": "Exorbitant",
+    "definition": "unreasonably high in price or amount",
+    "memoryTip": "Ex-orbit: way outside the orbit of a fair price — too high.",
+    "correctPassage": "Critics argued that the exorbitant tuition left many qualified applicants unable to enroll.",
+    "wrongPassages": [
+      "The library offered exorbitant access to its archives, charging nothing for student cards.",
+      "Volunteers agreed that the modest stipend was exorbitant given how little work the role required.",
+      "She hoped the exorbitant weather would cool enough for the outdoor ceremony."
+    ]
+  },
+  {
+    "id": "w053",
+    "word": "Demarcate",
+    "definition": "to set or mark the boundaries of something",
+    "memoryTip": "De-mark a line — draw the borders clearly.",
+    "correctPassage": "The treaty used a river to demarcate the disputed territory between the two provinces.",
+    "wrongPassages": [
+      "The historian tried to demarcate the scandal by refusing to answer any further questions.",
+      "Editors asked her to demarcate the draft until every paragraph was vivid and persuasive.",
+      "The charity hopes to demarcate poverty by expanding access to job training programs."
+    ]
+  },
+  {
+    "id": "w054",
+    "word": "Intelligible",
+    "definition": "able to be understood; clear enough to grasp",
+    "memoryTip": "You can 'get' the intelligence of it — understandable.",
+    "correctPassage": "Once the lecturer slowed her pace, the technical argument became intelligible to the whole class.",
+    "wrongPassages": [
+      "The museum measured each sculpture’s intelligible before deciding where to place it in the gallery.",
+      "He preferred films that were deliberately intelligible, full of private jokes no outsider could follow.",
+      "The committee voted to intelligible the proposal and send it to the mayor for signature."
+    ]
+  },
+  {
+    "id": "w055",
+    "word": "Discretion",
+    "definition": "careful judgment; freedom to decide as one sees fit",
+    "memoryTip": "Discreet judgment — careful choice, or the power to choose.",
+    "correctPassage": "Within the budget ceiling, the principal has discretion to fund programs she considers most urgent.",
+    "wrongPassages": [
+      "The courier delivered the sealed discretion to the clerk and requested a signature.",
+      "Bound by a rigid checklist with no exceptions, the clerk exercised broad discretion on every application.",
+      "The architect praised the building’s discretion, especially the marble columns along the facade."
+    ]
+  }
+]

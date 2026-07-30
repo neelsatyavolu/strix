@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w006",
+    "word": "Efficacy",
+    "definition": "the ability to produce a desired result",
+    "memoryTip": "Sounds like \u201ceffective-acy\u201d \u2014 does the treatment actually work?",
+    "correctPassage": "Researchers measured the vaccine\u2019s efficacy by tracking infection rates in both trial groups.",
+    "wrongPassages": [
+      "The app\u2019s efficacy mode simply turns the screen grayscale and does nothing else.",
+      "City hall issued an efficacy license that only certified the applicant\u2019s favorite color.",
+      "He stored the efficacy on a shelf next to spare batteries and packing tape."
+    ]
+  },
+  {
+    "id": "w007",
+    "word": "Rectify",
+    "definition": "to put right; correct",
+    "memoryTip": "Rect- as in correct \u2014 straighten it out and make it right.",
+    "correctPassage": "The agency moved quickly to rectify the mislabeled maps before field teams relied on them.",
+    "wrongPassages": [
+      "Editors chose to rectify the article by adding three more unsupported claims.",
+      "Rather than repair the breach, management hoped to rectify trust by ignoring the complaint.",
+      "The storm will rectify the flooded streets by pouring still more rain overnight."
+    ]
+  },
+  {
+    "id": "w008",
+    "word": "Accentuate",
+    "definition": "to make more noticeable",
+    "memoryTip": "Like an accent \u2014 put stress on something so it stands out more.",
+    "correctPassage": "Dark clothing served only to accentuate the pale cast of his face under the stage lights.",
+    "wrongPassages": [
+      "Designers hoped to accentuate the flaw by hiding it under layers of fabric.",
+      "The soft filter was meant to accentuate every blemish until nothing stood out.",
+      "She tried to accentuate the scandal by refusing to mention it in any interview."
+    ]
+  },
+  {
+    "id": "w009",
+    "word": "Eclipse",
+    "definition": "to obscure or surpass",
+    "memoryTip": "When the moon eclipses the sun, it covers it \u2014 or one star outshines another.",
+    "correctPassage": "The startup\u2019s rapid growth threatened to eclipse its rivals\u2019 carefully built market share.",
+    "wrongPassages": [
+      "Her modest debut was careful to eclipse every peer, though it drew almost no notice at all.",
+      "The eclipse of the budget left every line item fully funded and transparent.",
+      "Critics said the sequel would eclipse the original by copying it scene for scene without ambition."
+    ]
+  },
+  {
+    "id": "w010",
+    "word": "Manifest",
+    "definition": "clear or obvious; to show plainly",
+    "memoryTip": "Manifest = out in the open \u2014 so clear you can see it on the surface.",
+    "correctPassage": "The strain on local hospitals became manifest as wait times stretched past twelve hours.",
+    "wrongPassages": [
+      "The motive remained manifest only because no one could detect any sign of it.",
+      "He hoped to manifest the error by burying the spreadsheet under unrelated files.",
+      "Symptoms stayed manifest throughout the trial, never rising above the noise of chance."
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w161",
+    "word": "Instigate",
+    "definition": "to bring about or initiate (an action, often trouble)",
+    "memoryTip": "In-stigate: stir the pot \u2014 you start the trouble, not stop it.",
+    "correctPassage": "A single inflammatory post can instigate a wave of online harassment.",
+    "wrongPassages": [
+      "She hoped to instigate calm by agreeing with every point and ending the quarrel.",
+      "The host planned to instigate the guest by praising every career highlight.",
+      "They instigated peace by canceling the meeting and going home early."
+    ]
+  },
+  {
+    "id": "w162",
+    "word": "Counterproductive",
+    "definition": "having the opposite of the desired effect",
+    "memoryTip": "Counter + productive: works against the goal, not toward it.",
+    "correctPassage": "Harsh punishments can be counterproductive if they drive problems underground.",
+    "wrongPassages": [
+      "The new study schedule proved counterproductive, raising every student's score.",
+      "Her calm apology was counterproductive and finally ended the dispute.",
+      "Extra practice was counterproductive, so the team improved faster than ever."
+    ]
+  },
+  {
+    "id": "w163",
+    "word": "Vigilance",
+    "definition": "the state of keeping careful watch for danger or difficulty",
+    "memoryTip": "Think night vigil: staying alert and watchful.",
+    "correctPassage": "Public health depends on continued vigilance against new outbreaks.",
+    "wrongPassages": [
+      "His vigilance showed when he ignored every warning light on the dashboard.",
+      "They celebrated their vigilance by leaving the lab unlocked overnight.",
+      "She practiced vigilance by skimming the contract and signing immediately."
+    ]
+  },
+  {
+    "id": "w164",
+    "word": "Paradoxically",
+    "definition": "in a way that seems self-contradictory yet may be true",
+    "memoryTip": "Paradox: looks impossible, but still holds \u2014 'oddly, both ways true.'",
+    "correctPassage": "Paradoxically, adding more choices made people less satisfied with their decisions.",
+    "wrongPassages": [
+      "He parked paradoxically, aligning the car perfectly between the lines.",
+      "She answered paradoxically, restating the question in clearer words.",
+      "The recipe worked paradoxically: follow each step exactly as written."
+    ]
+  },
+  {
+    "id": "w165",
+    "word": "Momentous",
+    "definition": "of great importance or historical significance",
+    "memoryTip": "Of great moment \u2014 a huge, history-making event, not a brief moment.",
+    "correctPassage": "The signing of the treaty was a momentous event for the region.",
+    "wrongPassages": [
+      "She made a momentous note on a sticky pad and forgot it by lunch.",
+      "The momentous delay lasted only three seconds before the train moved.",
+      "His momentous choice of socks barely registered with anyone at the party."
+    ]
+  }
+]

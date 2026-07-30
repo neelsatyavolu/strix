@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w061",
+    "word": "Posterior",
+    "definition": "situated at the back; later in time",
+    "memoryTip": "Post = after/behind — rear end of the body, or what comes later.",
+    "correctPassage": "In the diagram, the posterior section of the brain is shaded in blue.",
+    "wrongPassages": [
+      "She reserved the posterior seats near the stage so the audience would see her first.",
+      "Archaeologists labeled the earliest layer posterior because it was deposited before all others.",
+      "The committee made the posterior announcement at the start of the meeting, ahead of every other item."
+    ]
+  },
+  {
+    "id": "w062",
+    "word": "Petition",
+    "definition": "a formal written request; to make such a request",
+    "memoryTip": "A formal “please” on paper — you petition for action, not for fun.",
+    "correctPassage": "Residents signed a petition asking the city to restore weekend bus service.",
+    "wrongPassages": [
+      "The judge issued a petition ordering the company to halt construction at once.",
+      "Researchers published a petition summarizing three years of climate measurements.",
+      "She petitioned the whiteboard with lecture notes before the students arrived."
+    ]
+  },
+  {
+    "id": "w063",
+    "word": "Mandatory",
+    "definition": "required by law or rules; compulsory",
+    "memoryTip": "Mandate = command — if it’s mandatory, skipping it isn’t allowed.",
+    "correctPassage": "Safety training is mandatory for everyone who enters the laboratory.",
+    "wrongPassages": [
+      "Parking in the fire lane is mandatory under the city’s traffic rules.",
+      "The workshop was mandatory, so volunteers could skip it without consequence.",
+      "After a social-media trend, the novel became mandatory among teenagers who simply preferred it."
+    ]
+  },
+  {
+    "id": "w064",
+    "word": "Permissible",
+    "definition": "allowed; permitted under the rules",
+    "memoryTip": "You have permission — permissible means it’s okay to do.",
+    "correctPassage": "Under the new rules, only certain additives are permissible in the product.",
+    "wrongPassages": [
+      "Driving through a red light is permissible under standard traffic law.",
+      "Reviewers called the staging permissible, the finest production of the year.",
+      "They drafted a permissible contract that neither side could ever revise or cancel."
+    ]
+  },
+  {
+    "id": "w065",
+    "word": "Contingent",
+    "definition": "dependent on something else; a group representing a larger body",
+    "memoryTip": "Tied to a contingency — it happens only if X happens first.",
+    "correctPassage": "Approval is contingent on the environmental review being completed on time.",
+    "wrongPassages": [
+      "Funding was contingent and required no conditions of any kind.",
+      "Meteorologists tracked a contingent high-pressure system that never varied with other weather patterns.",
+      "Please contingent your travel plans before you book the flights."
+    ]
+  }
+]

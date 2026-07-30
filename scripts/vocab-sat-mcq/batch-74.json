@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w371",
+    "word": "Apotheosis",
+    "definition": "the highest point; ideal or culminating example",
+    "memoryTip": "Apo-theos: raised to godlike status\u2014the peak or ideal.",
+    "correctPassage": "The performance was widely seen as the apotheosis of her career.",
+    "wrongPassages": [
+      "Critics called the messy first draft the apotheosis of her unfinished career start.",
+      "The project\u2019s apotheosis was the day it was cancelled before any work began.",
+      "Please apotheosis the window before you leave."
+    ]
+  },
+  {
+    "id": "w372",
+    "word": "Ekphrastic",
+    "definition": "describing a work of visual art in literary form",
+    "memoryTip": "Ekphrasis = words that re-paint art\u2014a poem about a painting.",
+    "correctPassage": "Her ekphrastic poem traces each brushstroke of the museum's new landscape.",
+    "wrongPassages": [
+      "His ekphrastic novel never mentioned any painting, sculpture, or photograph.",
+      "The lab report was ekphrastic, listing only measurements with no visual subject.",
+      "She filed an ekphrastic budget memo that ignored every image in the catalog."
+    ]
+  },
+  {
+    "id": "w373",
+    "word": "Agential",
+    "definition": "relating to an agent or the capacity to act",
+    "memoryTip": "Agent-ial: about who can act\u2014having agency.",
+    "correctPassage": "The theory emphasizes the agential capacity of communities, not only institutions.",
+    "wrongPassages": [
+      "The agential statue sat motionless while visitors walked past it for hours.",
+      "Critics called the plot agential because no character ever made a choice.",
+      "The agential sample under the microscope showed no motion and no living cells."
+    ]
+  },
+  {
+    "id": "w374",
+    "word": "Vexation",
+    "definition": "the state of being annoyed or worried",
+    "memoryTip": "Vexed feeling\u2014annoyance, irritation, fret.",
+    "correctPassage": "Minor technical glitches were a constant source of vexation.",
+    "wrongPassages": [
+      "Her only vexation was the calm joy she felt finishing the puzzle early.",
+      "The award speech filled him with pure vexation and lifelong contentment.",
+      "Guests described the party as a vexation of laughter, ease, and warm welcome."
+    ]
+  },
+  {
+    "id": "w375",
+    "word": "Onomatopoeia",
+    "definition": "words that imitate the sound they name",
+    "memoryTip": "Buzz, hiss, boom\u2014words that sound like what they mean.",
+    "correctPassage": "In the comic, every crash panel was filled with bold onomatopoeia.",
+    "wrongPassages": [
+      "The abstract essay relied on onomatopoeia without any sound-imitating words at all.",
+      "Her onomatopoeia chapter discussed only silent geometric shapes and color theory.",
+      "He labeled pure math symbols as onomatopoeia even though they name no sound."
+    ]
+  }
+]

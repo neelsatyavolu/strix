@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w206",
+    "word": "Serene",
+    "definition": "calm, peaceful, and untroubled",
+    "memoryTip": "Serene scene \u2014 still water, no wind, no worry.",
+    "correctPassage": "The lake was serene at dawn, with barely a ripple on the surface.",
+    "wrongPassages": [
+      "The trading floor was serene as alarms blared and phones rang without pause.",
+      "Her serene outburst knocked over two chairs before anyone could intervene.",
+      "The serene debate featured raised voices, slammed papers, and a walkout."
+    ]
+  },
+  {
+    "id": "w207",
+    "word": "Vicarious",
+    "definition": "experienced through another person rather than firsthand",
+    "memoryTip": "Via someone else \u2014 you feel their thrills secondhand.",
+    "correctPassage": "Readers experience a kind of vicarious adventure through the narrator's travels.",
+    "wrongPassages": [
+      "She earned a vicarious degree by attending every lecture and sitting every exam herself.",
+      "His vicarious injury came from the fall he took on the ice, not from watching others.",
+      "They planned a vicarious vacation and booked the flights under their own names."
+    ]
+  },
+  {
+    "id": "w208",
+    "word": "Forestall",
+    "definition": "prevent or hinder by taking action ahead of time",
+    "memoryTip": "Fore-stall: block it before it starts.",
+    "correctPassage": "Early vaccination campaigns sought to forestall a winter outbreak.",
+    "wrongPassages": [
+      "They waited to forestall the leak until after the basement had already flooded.",
+      "Management chose to forestall the crisis by ignoring the first dozen warning emails.",
+      "She forestalled the deadline by submitting the report three weeks late."
+    ]
+  },
+  {
+    "id": "w209",
+    "word": "Dwindle",
+    "definition": "diminish or shrink gradually",
+    "memoryTip": "Dwindle down \u2014 shrink little by little until almost gone.",
+    "correctPassage": "As funding dwindled, the program had to drop several field sites.",
+    "wrongPassages": [
+      "Enrollment dwindled from 40 students to 400 within a single semester.",
+      "The surplus dwindled upward after three profitable quarters in a row.",
+      "Her confidence dwindled into a bold keynote that filled the largest hall on campus."
+    ]
+  },
+  {
+    "id": "w210",
+    "word": "Provocative",
+    "definition": "tending to provoke a strong reaction, interest, or annoyance",
+    "memoryTip": "Pro-voke: built to stir a reaction, not to soothe.",
+    "correctPassage": "The exhibit's provocative title was meant to spark discussion, not offense.",
+    "wrongPassages": [
+      "The lullaby was so provocative that every child fell asleep within minutes.",
+      "His provocative apology smoothed every conflict and left no one upset.",
+      "Students found the review sheet provocative because it repeated only the easiest drills."
+    ]
+  }
+]

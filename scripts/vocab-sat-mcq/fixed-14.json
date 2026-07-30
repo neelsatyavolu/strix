@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w071",
+    "word": "Ascertain",
+    "definition": "find out for certain; determine",
+    "memoryTip": "As-certain: make it certain — dig until you know for sure.",
+    "correctPassage": "Investigators sought to ascertain whether the signal was natural or artificial.",
+    "wrongPassages": [
+      "Without consulting the archives, the historian simply ascertained that the treaty had never been signed.",
+      "The board hoped the new policy would ascertain employee morale by lengthening lunch breaks.",
+      "Several witnesses ascertained colorful details that later proved to have no basis in the record."
+    ]
+  },
+  {
+    "id": "w072",
+    "word": "Substantiate",
+    "definition": "provide evidence to support a claim",
+    "memoryTip": "Give the claim substance — back it up with proof, not vibes.",
+    "correctPassage": "Without field measurements, the team could not substantiate its claim.",
+    "wrongPassages": [
+      "He tried to substantiate the charge by discarding every document that might contradict it.",
+      "The essay substantiated its thesis merely by restating the claim in more emphatic language.",
+      "Editors asked her to substantiate the article by stripping out the footnotes and source notes."
+    ]
+  },
+  {
+    "id": "w073",
+    "word": "Prodigious",
+    "definition": "remarkably great in size, amount, or degree",
+    "memoryTip": "Prodigy-level scale — so large or impressive it stands out.",
+    "correctPassage": "The archive preserves a prodigious number of letters from the period.",
+    "wrongPassages": [
+      "After years of study he showed only a prodigious grasp of the material, stumbling over basic terms.",
+      "The museum devoted a prodigious gallery to a single postage-stamp-sized watercolor.",
+      "Critics called the reform package prodigious, noting that it altered only one minor administrative rule."
+    ]
+  },
+  {
+    "id": "w074",
+    "word": "Fraudulent",
+    "definition": "involving deceit; obtained or done by deception",
+    "memoryTip": "Fraud — dishonest, fake, or won by tricking someone.",
+    "correctPassage": "Auditors uncovered fraudulent invoices submitted by a subcontractor.",
+    "wrongPassages": [
+      "Reviewers dismissed the thoroughly sourced study as fraudulent after confirming each cited reference.",
+      "Her fraudulent disclosure listed every asset exactly as the filing rules required.",
+      "The firm’s fraudulent ledgers balanced because each transaction was recorded under accepted standards."
+    ]
+  },
+  {
+    "id": "w075",
+    "word": "Palpable",
+    "definition": "able to be touched or felt; so intense as to seem tangible",
+    "memoryTip": "You can almost palm it — so clear or strong you can feel it.",
+    "correctPassage": "Tension in the room was palpable as the results were announced.",
+    "wrongPassages": [
+      "The discrepancy between the two drafts was so palpable that careful readers failed to notice it.",
+      "A palpable hush filled the stadium once the crowd began cheering at full volume.",
+      "Administrators tried to palpable the complaints by removing the public comment form."
+    ]
+  }
+]

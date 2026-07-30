@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w381",
+    "word": "Auteur",
+    "definition": "a filmmaker whose personal style dominates their work",
+    "memoryTip": "French \u201cauthor\u201d of film \u2014 the director\u2019s signature is on every frame.",
+    "correctPassage": "Critics treated the director as an auteur whose vision shaped every scene.",
+    "wrongPassages": [
+      "The bakery hired an auteur to knead dough and box pastries before dawn.",
+      "She filed the receipt under \u201cauteur\u201d as if it were a department code.",
+      "The paint color \u201cAuteur Beige\u201d is sold in every hardware aisle."
+    ]
+  },
+  {
+    "id": "w382",
+    "word": "Bemuddle",
+    "definition": "confuse; make muddy or unclear",
+    "memoryTip": "Be + muddle \u2014 stir into mud so nothing is clear.",
+    "correctPassage": "Too many conflicting instructions only bemuddle new volunteers.",
+    "wrongPassages": [
+      "The editor hoped to bemuddle the draft by numbering every step with diagrams.",
+      "A single clarifying example will bemuddle the confusion entirely.",
+      "They packed a spare bemuddle next to the tire and jumper cables."
+    ]
+  },
+  {
+    "id": "w383",
+    "word": "Fugacious",
+    "definition": "fleeting; lasting only a short time",
+    "memoryTip": "Related to flee/fugitive \u2014 it flees quickly; here and gone.",
+    "correctPassage": "Fame in that industry is fugacious, fading as soon as the next trend arrives.",
+    "wrongPassages": [
+      "Fame in that industry is fugacious, lasting for decades without fading once.",
+      "They scheduled a fugacious holiday that never ends and has no return date.",
+      "Please fugacious the chairs into neat rows."
+    ]
+  },
+  {
+    "id": "w384",
+    "word": "Archetypal",
+    "definition": "very typical of a certain kind; model of a type",
+    "memoryTip": "Archetype = original mold \u2014 the classic, textbook example.",
+    "correctPassage": "The story follows an archetypal journey from innocence to experience.",
+    "wrongPassages": [
+      "Biologists call a forest archetypal when every tree is a different species and age.",
+      "His archetypal design ignored every convention of the genre.",
+      "They stored the archetypal on a shelf beside spare batteries and tape."
+    ]
+  },
+  {
+    "id": "w385",
+    "word": "Quintessential",
+    "definition": "the most perfect or pure example of a quality",
+    "memoryTip": "Fifth essence (perfect core) \u2014 the purest, most classic example.",
+    "correctPassage": "The caf\u00e9 is the quintessential neighborhood hangout.",
+    "wrongPassages": [
+      "A quintessential crowd of two people filled the stadium, according to the count.",
+      "Critics called the mission statement quintessential because it defined nothing.",
+      "The recipe\u2019s quintessential was \u201cabout a cup,\u201d printed as if it were a unit."
+    ]
+  }
+]

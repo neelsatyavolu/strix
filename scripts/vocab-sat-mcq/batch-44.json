@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w221",
+    "word": "Malleable",
+    "definition": "easily shaped or influenced; pliable",
+    "memoryTip": "Hit metal with a mallet\u2014malleable stuff bends; minds can bend too.",
+    "correctPassage": "Public opinion on the issue remains malleable, especially among younger voters.",
+    "wrongPassages": [
+      "The steel beam was so malleable that not even a forge could change its shape.",
+      "She packed a malleable suitcase: one shirt and a book for a month abroad.",
+      "His malleable schedule never changed, no matter who asked for a new time."
+    ]
+  },
+  {
+    "id": "w222",
+    "word": "Felicitous",
+    "definition": "well chosen or suited to the circumstances",
+    "memoryTip": "Felicity = apt happiness\u2014a felicitous phrase is a happily perfect fit.",
+    "correctPassage": "It was a felicitous choice of words that captured the mood exactly.",
+    "wrongPassages": [
+      "The icy sidewalk felt felicitous after crews forgot the salt and left it glazed.",
+      "Her felicitous remark insulted every guest and emptied the room in minutes.",
+      "They called the plan felicitous because it clashed with every stated goal."
+    ]
+  },
+  {
+    "id": "w223",
+    "word": "Meticulousness",
+    "definition": "extreme care and attention to detail",
+    "memoryTip": "Meticulous = tiny details\u2014meticulousness is extreme care, not speed.",
+    "correctPassage": "The restorer\u2019s meticulousness is visible in every repaired seam.",
+    "wrongPassages": [
+      "His meticulousness meant skipping the checklist and guessing the measurements.",
+      "She showed meticulousness by tossing the parts in a box and walking away.",
+      "The drawer of meticulousness held one key that opened nothing in the building."
+    ]
+  },
+  {
+    "id": "w224",
+    "word": "Invigorate",
+    "definition": "give strength or energy to",
+    "memoryTip": "In + vigor: put vigor in\u2014energize, wake up, strengthen.",
+    "correctPassage": "A change of leadership can invigorate an organization that has grown stagnant.",
+    "wrongPassages": [
+      "The long meeting seemed to invigorate everyone into yawning at their desks.",
+      "They hoped to invigorate the team by cancelling training and cutting coffee.",
+      "She tried to invigorate the garden by withholding water for three dry weeks."
+    ]
+  },
+  {
+    "id": "w225",
+    "word": "Pristine",
+    "definition": "in original condition; unspoiled",
+    "memoryTip": "Priest-clean pure\u2014pristine means untouched, unspoiled original condition.",
+    "correctPassage": "Hikers are asked to leave the trail as pristine as they found it.",
+    "wrongPassages": [
+      "The dump looked pristine after weeks of litter and oil stains along the fence.",
+      "His pristine desk was buried under empty cups, sticky notes, and broken pens.",
+      "They sold the car as pristine despite the cracked windshield and missing bumper."
+    ]
+  }
+]

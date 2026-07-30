@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w266",
+    "word": "Tractable",
+    "definition": "easy to control, manage, or influence",
+    "memoryTip": "Tractable like a tract you can handle \u2014 easy to manage or solve.",
+    "correctPassage": "Once simplified, the math problem became tractable for most of the class.",
+    "wrongPassages": [
+      "The software was so tractable that nobody could change a single setting.",
+      "A tractable problem is one that has defeated every expert for decades.",
+      "Please tractable the chairs into neat rows."
+    ]
+  },
+  {
+    "id": "w267",
+    "word": "Perilous",
+    "definition": "full of danger or risk",
+    "memoryTip": "Packed with peril \u2014 clearly dangerous.",
+    "correctPassage": "Climbing the ridge in a storm would be perilous even for experts.",
+    "wrongPassages": [
+      "The babysitter called the quiet nap room perilous for the sleeping twins.",
+      "A perilous commute meant empty roads and green lights the whole way home.",
+      "Tourists preferred the perilous boardwalk because every railing was new."
+    ]
+  },
+  {
+    "id": "w268",
+    "word": "Exasperate",
+    "definition": "irritate intensely; infuriate",
+    "memoryTip": "Ex-asperate: push past the last of someone's patience.",
+    "correctPassage": "Endless hold music began to exasperate customers waiting for support.",
+    "wrongPassages": [
+      "The nurse hoped to exasperate the pain with a carefully chosen sedative.",
+      "Soft lighting and calm music exasperated the spa guests into deep rest.",
+      "She exasperated the deadline by finishing the report two days early."
+    ]
+  },
+  {
+    "id": "w269",
+    "word": "Vilify",
+    "definition": "speak or write about someone in an abusively critical way",
+    "memoryTip": "Turn someone into a villain with harsh, smearing words.",
+    "correctPassage": "Critics tried to vilify the scientist instead of addressing her data.",
+    "wrongPassages": [
+      "The host planned to vilify the guest by praising every career highlight.",
+      "Editors vilified the draft by adding only minor grammar fixes.",
+      "She vilified the charity by donating anonymously every month."
+    ]
+  },
+  {
+    "id": "w270",
+    "word": "Congruent",
+    "definition": "in agreement or harmony; matching",
+    "memoryTip": "Like congruent triangles \u2014 same shape, in agreement.",
+    "correctPassage": "Her actions were congruent with the values she taught her students.",
+    "wrongPassages": [
+      "The two maps were congruent in that no line on either map matched the other.",
+      "Please congruent the window before rain gets in.",
+      "They packed a spare congruent in the trunk."
+    ]
+  }
+]

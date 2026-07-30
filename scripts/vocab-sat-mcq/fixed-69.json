@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w346",
+    "word": "Multifarious",
+    "definition": "many and of various types",
+    "memoryTip": "Multi + farious forms — many varied kinds at once.",
+    "correctPassage": "The archive's multifarious holdings span field notes, oral histories, and rare botanical sketches.",
+    "wrongPassages": [
+      "Reviewers praised the report's multifarious focus on a single, narrowly defined case study.",
+      "The committee sought a multifarious policy that treated every district by the exact same rule.",
+      "Her multifarious wardrobe consisted of one navy blazer worn to every formal event."
+    ]
+  },
+  {
+    "id": "w347",
+    "word": "Stratified",
+    "definition": "arranged in layers; divided into status levels",
+    "memoryTip": "In strata (layers) — stacked rock or stacked social ranks.",
+    "correctPassage": "Access to specialized care remained stratified by income, region, and insurance status.",
+    "wrongPassages": [
+      "Geologists described the cliff as stratified after finding a single uniform deposit with no distinct bands.",
+      "They mixed the pigment until it was stratified into one smooth, undifferentiated color.",
+      "The firm insisted its workforce was stratified because every employee earned the same wage and title."
+    ]
+  },
+  {
+    "id": "w348",
+    "word": "Substantive",
+    "definition": "having real importance or a firm basis",
+    "memoryTip": "Has substance — real weight and importance, not fluff.",
+    "correctPassage": "The board demanded substantive revisions to the budget, not cosmetic wording changes.",
+    "wrongPassages": [
+      "They called the plan substantive even though it offered only vague slogans and no data.",
+      "They labeled the empty press release substantive for using elegant stationery and a formal seal.",
+      "A substantive edit left every flawed claim intact while adding several pages of filler."
+    ]
+  },
+  {
+    "id": "w349",
+    "word": "Stride",
+    "definition": "a long step; progress made",
+    "memoryTip": "A long step forward — or progress (“made great strides”).",
+    "correctPassage": "Public health agencies made a significant stride in reducing childhood infection rates.",
+    "wrongPassages": [
+      "After months of setbacks, the team celebrated a stride that returned them to the project's starting point.",
+      "Her stride across the stage was a sequence of tiny, hesitant shuffles between the microphones.",
+      "Missing every milestone was treated as a stride toward completing the product on schedule."
+    ]
+  },
+  {
+    "id": "w350",
+    "word": "Insidious",
+    "definition": "proceeding gradually and subtly with harmful effects",
+    "memoryTip": "In-side-ious: harm sneaks in from inside before you notice.",
+    "correctPassage": "An insidious form of measurement bias can quietly distort results long before anyone notices.",
+    "wrongPassages": [
+      "The hazard was insidious: alarms sounded and warning signs marked every entrance in bright red.",
+      "Colleagues trusted his insidious candor, which left motives open and tricks impossible.",
+      "They welcomed the insidious reform that openly corrected every flaw in a single afternoon."
+    ]
+  }
+]

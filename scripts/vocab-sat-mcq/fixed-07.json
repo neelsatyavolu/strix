@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w036",
+    "word": "Exhaustive",
+    "definition": "including all possibilities; thorough",
+    "memoryTip": "Exhausts every option — complete, thorough, nothing left out.",
+    "correctPassage": "An exhaustive review of the literature found no support for the claim.",
+    "wrongPassages": [
+      "The committee issued an exhaustive statement that addressed only the first of several open questions.",
+      "After an exhaustive glance at the abstract, she claimed to have mastered the entire study.",
+      "Critics dismissed the audit as exhaustive because it skipped half the departments under review."
+    ]
+  },
+  {
+    "id": "w037",
+    "word": "Heterogeneous",
+    "definition": "diverse in character or content",
+    "memoryTip": "Hetero = different — a mixed, diverse group.",
+    "correctPassage": "The sample was deliberately heterogeneous, including rural and urban schools.",
+    "wrongPassages": [
+      "Researchers described the cohort as heterogeneous even though every participant shared the same age, income, and education level.",
+      "The alloy was labeled heterogeneous despite consisting of a single pure metal throughout.",
+      "Editors praised the anthology’s heterogeneous voice after noticing that every essay repeated the same argument in the same style."
+    ]
+  },
+  {
+    "id": "w038",
+    "word": "Imperative",
+    "definition": "of vital importance; essential",
+    "memoryTip": "Like an imperative sentence (command) — must-do, essential.",
+    "correctPassage": "With the storm approaching, it was imperative that residents evacuate promptly.",
+    "wrongPassages": [
+      "Selecting a typeface for the cover letter felt imperative to the success of the clinical trial.",
+      "The board treated the optional icebreaker as imperative and canceled the safety briefing instead.",
+      "Because nothing of consequence hinged on the outcome, finishing the form became imperative overnight."
+    ]
+  },
+  {
+    "id": "w039",
+    "word": "Nuance",
+    "definition": "a subtle difference in meaning or expression",
+    "memoryTip": "A fine shade of meaning — subtle, not black-and-white.",
+    "correctPassage": "The translation preserved every nuance of the original poem’s tone.",
+    "wrongPassages": [
+      "The campaign’s nuance was a single all-caps slogan designed to be read from a highway billboard.",
+      "He reduced the policy debate to a binary choice and called that nuance enough for voters.",
+      "Her report captured every nuance by replacing detailed analysis with a yes-or-no checklist."
+    ]
+  },
+  {
+    "id": "w040",
+    "word": "Controversial",
+    "definition": "giving rise to public disagreement",
+    "memoryTip": "Causes controversy — people argue about it.",
+    "correctPassage": "The museum’s controversial exhibit drew both praise and protests.",
+    "wrongPassages": [
+      "The controversial ordinance passed unanimously and prompted no public comment whatsoever.",
+      "Parents and inspectors alike endorsed the upgrade, so the media labeled it the year’s most controversial reform.",
+      "Analysts called the quiet consensus vote controversial after an entirely uneventful session with no dissent."
+    ]
+  }
+]

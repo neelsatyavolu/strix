@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w386",
+    "word": "Transience",
+    "definition": "the state of lasting only a short time",
+    "memoryTip": "Transient = temporary — the short-lived nature of a thing.",
+    "correctPassage": "The essay reflects on the transience of childhood friendships that fade after a single school year.",
+    "wrongPassages": [
+      "Builders chose granite for its transience, expecting the memorial to last for centuries.",
+      "Economists celebrated the economy’s transience, pointing to decades of uninterrupted growth.",
+      "The archivist valued the manuscript’s transience, confident that its ink would never fade."
+    ]
+  },
+  {
+    "id": "w387",
+    "word": "Partiality",
+    "definition": "unfair bias; a particular liking",
+    "memoryTip": "Partial to one side — a soft spot, or unfair favoritism.",
+    "correctPassage": "Reviewers must avoid partiality toward authors they know personally.",
+    "wrongPassages": [
+      "Her partiality as a mediator consisted of refusing to favor either side in the dispute.",
+      "Scientists aim for partiality so that personal preferences never color their conclusions.",
+      "Judges praised the ruling’s partiality for weighing both arguments with equal care."
+    ]
+  },
+  {
+    "id": "w388",
+    "word": "Unpalatable",
+    "definition": "difficult to accept or find pleasant",
+    "memoryTip": "Can’t palate it — hard to swallow, whether food or truth.",
+    "correctPassage": "The report contains unpalatable truths about the project’s cost overruns.",
+    "wrongPassages": [
+      "Voters found the tax plan so unpalatable that they approved it without debate.",
+      "Critics called the ending unpalatable and recommended the film to every friend.",
+      "The compromise proved unpalatable to both parties, who signed it eagerly that afternoon."
+    ]
+  },
+  {
+    "id": "w389",
+    "word": "Secrete",
+    "definition": "produce and discharge a substance; or hide away",
+    "memoryTip": "Secret-e: hide it away — or glands secrete fluids.",
+    "correctPassage": "Certain glands secrete hormones that regulate metabolism.",
+    "wrongPassages": [
+      "Please secrete the windows before the storm so nothing blows open.",
+      "City planners hoped to secrete congestion by opening two additional bridges.",
+      "The studio planned to secrete the premiere date on billboards across the city."
+    ]
+  },
+  {
+    "id": "w390",
+    "word": "Qualification",
+    "definition": "a condition that limits a statement; or a credential",
+    "memoryTip": "A qualifying limit softens a claim — or a credential that certifies you.",
+    "correctPassage": "She accepted the praise with one important qualification about the study’s small sample.",
+    "wrongPassages": [
+      "The recipe called for two qualifications of oil, measured roughly by eye.",
+      "He praised the proposal without qualification, then spent an hour listing its serious flaws.",
+      "The referee issued a qualification that removed the player from the rest of the match."
+    ]
+  }
+]

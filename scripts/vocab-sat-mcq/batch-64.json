@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w321",
+    "word": "Contrivance",
+    "definition": "a cleverly devised plan, scheme, or device, often artificial",
+    "memoryTip": "Con-TRIVE-ance: a clever TRICK or device someone contrived.",
+    "correctPassage": "The rescue hinged on a last-minute contrivance involving spare rope and a pulley.",
+    "wrongPassages": [
+      "The plot\u2019s only contrivance was a perfectly natural, unsurprising coincidence.",
+      "Please contrivance the window before rain.",
+      "They packed a spare contrivance next to the tire."
+    ]
+  },
+  {
+    "id": "w322",
+    "word": "Abut",
+    "definition": "to share a boundary with; touch along an edge",
+    "memoryTip": "A-BUTT against: properties that butt up against each other.",
+    "correctPassage": "Our backyard abuts a quiet creek that floods only in spring.",
+    "wrongPassages": [
+      "Please abut the meeting until everyone has arrived.",
+      "His abut manners made the dinner conversation impossible.",
+      "Investors expected an abut forecast with exact quarterly numbers."
+    ]
+  },
+  {
+    "id": "w323",
+    "word": "Indefatigable",
+    "definition": "persisting tirelessly; incapable of being worn out",
+    "memoryTip": "In-de-FATIGUE-able: fatigue cannot stop you.",
+    "correctPassage": "An indefatigable coach ran drills with the team until dusk every day.",
+    "wrongPassages": [
+      "The indefatigable volunteer quit after five minutes and never returned.",
+      "Please indefatigable the chairs after lunch.",
+      "Engineers measured the bridge\u2019s indefatigable in meters."
+    ]
+  },
+  {
+    "id": "w324",
+    "word": "Pseudonymous",
+    "definition": "written or published under a false name",
+    "memoryTip": "PSEUDO + name: a fake name on the byline.",
+    "correctPassage": "The columnist kept a pseudonymous blog to criticize her own industry.",
+    "wrongPassages": [
+      "The choir sounded pseudonymous once the organ drowned every voice.",
+      "She filed a pseudonymous tax return listing her real legal name.",
+      "Ops hoped to make the outage pseudonymous by posting a public status update."
+    ]
+  },
+  {
+    "id": "w325",
+    "word": "Nudge",
+    "definition": "to gently push; to lightly encourage toward an action",
+    "memoryTip": "Elbow NUDGE: a light push that steers without force.",
+    "correctPassage": "A reminder email can nudge students to finish the form before Friday.",
+    "wrongPassages": [
+      "The wrecking ball gave the wall one final nudge and the building collapsed.",
+      "A single nudge of the throttle launched the rocket into orbit.",
+      "The shoreline looked nudge once weekend boats filled every slip."
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w396",
+    "word": "Refract",
+    "definition": "change direction when passing through a medium",
+    "memoryTip": "Re-fract light: bend it as it passes through glass or water.",
+    "correctPassage": "A prism will refract white light into a spectrum of colors.",
+    "wrongPassages": [
+      "To refract the budget, accountants printed extra copies and stacked them.",
+      "They hoped to refract attendance by cancelling the event and locking the doors.",
+      "Please refract the window before you leave so the rain does not get in."
+    ]
+  },
+  {
+    "id": "w397",
+    "word": "Stock",
+    "definition": "standard or commonly used; not original",
+    "memoryTip": "Off-the-shelf stock answer \u2014 standard, not original.",
+    "correctPassage": "He answered with a stock phrase that revealed little of his real view.",
+    "wrongPassages": [
+      "Her stock response listed original research no one else had attempted.",
+      "Critics praised the stock ending for inventing a form never seen before.",
+      "His stock proposal was so original that no template or precedent applied."
+    ]
+  },
+  {
+    "id": "w398",
+    "word": "Incursion",
+    "definition": "a sudden invasion or raid into territory",
+    "memoryTip": "In + course/run \u2014 a sudden run into someone else\u2019s ground.",
+    "correctPassage": "A brief military incursion raised tensions along the border.",
+    "wrongPassages": [
+      "She used \u201cincursion\u201d as a filename for an empty desktop document.",
+      "He retagged the orphan keys \u201cincursion\u201d and still could not match a lock.",
+      "The recipe called for one incursion of flour, which meant \u201cabout a cup.\u201d"
+    ]
+  },
+  {
+    "id": "w399",
+    "word": "Valorize",
+    "definition": "give or enhance the value or status of",
+    "memoryTip": "Valor + ize \u2014 assign value or raise the status of something.",
+    "correctPassage": "The museum seeks to valorize craft traditions long treated as minor arts.",
+    "wrongPassages": [
+      "They tried to valorize the stain with the solvent that set it permanently.",
+      "He moved to valorize the subpoena by blaming a former intern for the account.",
+      "To valorize the experiment, the team powered down and left for lunch."
+    ]
+  },
+  {
+    "id": "w400",
+    "word": "Decimate",
+    "definition": "destroy a large proportion of",
+    "memoryTip": "Originally kill every tenth; now destroy a large share.",
+    "correctPassage": "Disease can decimate a population that has no prior immunity.",
+    "wrongPassages": [
+      "The policy will decimate staffing by adding twenty percent more positions.",
+      "Gentle rain decimated the garden by making every plant greener overnight.",
+      "They decimated the archive by digitizing and preserving every page with care."
+    ]
+  }
+]

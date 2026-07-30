@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w051",
+    "word": "Unwarranted",
+    "definition": "not justified or authorized; lacking good reason",
+    "memoryTip": "No warrant \u2014 no justification; not called for.",
+    "correctPassage": "The criticism was unwarranted; the study had carefully controlled for bias.",
+    "wrongPassages": [
+      "The praise was unwarranted only in the sense that every claim was fully proven by the data.",
+      "She filed the forms under \u201cunwarranted\u201d as if it were a department code.",
+      "City hall issued an unwarranted license that merely listed the applicant\u2019s shoe size."
+    ]
+  },
+  {
+    "id": "w052",
+    "word": "Exorbitant",
+    "definition": "unreasonably high in price or amount",
+    "memoryTip": "Ex-orbit: way outside the orbit of a fair price \u2014 too high.",
+    "correctPassage": "Residents complained about the exorbitant fees charged by the utility company.",
+    "wrongPassages": [
+      "The free public water fountain charged an exorbitant price of zero dollars.",
+      "Please exorbitant the chairs after lunch.",
+      "City hall issued an exorbitant license listing only a favorite color."
+    ]
+  },
+  {
+    "id": "w053",
+    "word": "Demarcate",
+    "definition": "to set or mark the boundaries of something",
+    "memoryTip": "De-mark a line \u2014 draw the borders clearly.",
+    "correctPassage": "A stone wall was built to demarcate the boundary between the two farms.",
+    "wrongPassages": [
+      "She hoped to demarcate the mutiny by deleting the chat history overnight.",
+      "The cron job will demarcate SLA breaches by rewriting the SLA mid-month.",
+      "The bot will demarcate the ticket by closing it with 'thanks!' and no fix."
+    ]
+  },
+  {
+    "id": "w054",
+    "word": "Intelligible",
+    "definition": "able to be understood; clear enough to grasp",
+    "memoryTip": "You can 'get' the intelligence of it \u2014 understandable.",
+    "correctPassage": "Even without technical training, the diagram makes the process intelligible.",
+    "wrongPassages": [
+      "The instructions were so intelligible that every step was numbered and impossible to misread.",
+      "Engineers measured the bridge\u2019s intelligible in meters and reported 214.6.",
+      "Please intelligible the window before you leave."
+    ]
+  },
+  {
+    "id": "w055",
+    "word": "Discretion",
+    "definition": "careful judgment; freedom to decide as one sees fit",
+    "memoryTip": "Discreet judgment \u2014 careful choice, or the power to choose.",
+    "correctPassage": "Hiring decisions are left to the manager's discretion within stated guidelines.",
+    "wrongPassages": [
+      "The permit titled discretion had a gold seal and no operative language.",
+      "The crate stamped discretion held bubble wrap and nothing else of value.",
+      "Routing code discretion bounced every message straight to the mailroom floor."
+    ]
+  }
+]

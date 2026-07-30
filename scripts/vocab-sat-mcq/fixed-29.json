@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w146",
+    "word": "Anterior",
+    "definition": "situated at the front; earlier in time",
+    "memoryTip": "Ante = before — the front side, or what came earlier.",
+    "correctPassage": "The surgeon marked the incision along the anterior surface of the thigh.",
+    "wrongPassages": [
+      "From the rear of the auditorium, she had a clear anterior view of the stage.",
+      "The sequel, released years later, was described as anterior to the original film.",
+      "The revised conclusion, written last, was labeled the anterior section of the paper."
+    ]
+  },
+  {
+    "id": "w147",
+    "word": "Amass",
+    "definition": "gather or accumulate in large amount",
+    "memoryTip": "A-mass: pile up a mass of something over time.",
+    "correctPassage": "Over decades the archive amassed one of the region’s most complete sets of wartime letters.",
+    "wrongPassages": [
+      "The collector amassed the collection by selling every rare piece within a week.",
+      "She amassed the debt by clearing every balance the day each statement arrived.",
+      "The laboratory amassed its samples by discarding any specimen that failed inspection."
+    ]
+  },
+  {
+    "id": "w148",
+    "word": "Concur",
+    "definition": "agree; occur at the same time",
+    "memoryTip": "Con-cur: run together — same opinion, or same moment.",
+    "correctPassage": "Most historians concur that the reform had a larger effect than its authors expected.",
+    "wrongPassages": [
+      "The two committees concurred by issuing sharply opposed recommendations.",
+      "She concurred the locked laboratory door with a brief note left for the staff.",
+      "Reviewers called the recovery concur once the patient was discharged the same day."
+    ]
+  },
+  {
+    "id": "w149",
+    "word": "Intercede",
+    "definition": "intervene on behalf of another",
+    "memoryTip": "Inter + cede: step between parties and plead for someone.",
+    "correctPassage": "A respected diplomat offered to intercede with the board on the students’ behalf.",
+    "wrongPassages": [
+      "Rather than plead for leniency, the lawyer interceded by urging a harsher penalty.",
+      "She interceded her own promotion without once referring to a colleague’s case.",
+      "Editors labeled the chapter intercede after it introduced every specialized term."
+    ]
+  },
+  {
+    "id": "w150",
+    "word": "Refinement",
+    "definition": "a small improvement; elegance or polish",
+    "memoryTip": "Make finer — polish the details until it feels elegant.",
+    "correctPassage": "A final refinement of the algorithm reduced error rates without slowing the system.",
+    "wrongPassages": [
+      "The rough outline was already a refinement of the polished final manuscript.",
+      "They stored the refinement in a drawer beside spare cables and blank forms.",
+      "His refinement of the proposal stripped out every improvement and restored earlier flaws."
+    ]
+  }
+]

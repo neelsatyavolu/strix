@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w141",
+    "word": "Misconstrue",
+    "definition": "interpret wrongly; misunderstand",
+    "memoryTip": "Mis + construe (build meaning) \u2014 you build the wrong meaning from what was said.",
+    "correctPassage": "Readers should not misconstrue correlation as proof of causation.",
+    "wrongPassages": [
+      "She carefully misconstrued the blueprint so every joint lined up perfectly.",
+      "They hired an editor to misconstrue the draft into clear, precise prose.",
+      "The translator misconstrued every line so faithfully that nothing was changed."
+    ]
+  },
+  {
+    "id": "w142",
+    "word": "Denigrate",
+    "definition": "criticize unfairly; belittle",
+    "memoryTip": "De-nigrate: blacken someone\u2019s name \u2014 smear them with unfair criticism.",
+    "correctPassage": "It is unfair to denigrate the entire field for one flawed study.",
+    "wrongPassages": [
+      "The coach denigrated the team by praising each player after the win.",
+      "Reviewers denigrated the novel with a glowing front-page recommendation.",
+      "She denigrated the lab by funding its next three research proposals."
+    ]
+  },
+  {
+    "id": "w143",
+    "word": "Nullify",
+    "definition": "make void or cancel out",
+    "memoryTip": "Make null \u2014 cancel it so it no longer counts or has force.",
+    "correctPassage": "A clerical error threatened to nullify the results of the election.",
+    "wrongPassages": [
+      "The court will nullify the contract by signing both parties into a longer deal.",
+      "She will nullify the schedule by confirming every meeting for the week ahead.",
+      "They nullify the gap by adding data that strengthened the original finding."
+    ]
+  },
+  {
+    "id": "w144",
+    "word": "Extraneous",
+    "definition": "irrelevant or unrelated to the matter at hand",
+    "memoryTip": "Extra stuff that doesn\u2019t belong \u2014 noise outside the real point.",
+    "correctPassage": "Cut extraneous detail that does not advance the argument.",
+    "wrongPassages": [
+      "The thesis sentence was extraneous: every later paragraph depended on it.",
+      "Judges called the key evidence extraneous because it decided the case.",
+      "Her extraneous outline listed only the steps the team actually needed."
+    ]
+  },
+  {
+    "id": "w145",
+    "word": "Agglomerate",
+    "definition": "collect or form into a mass or cluster",
+    "memoryTip": "Ag-glomerate like glue \u2014 bits clump into one sticky mass.",
+    "correctPassage": "Dust particles agglomerate into larger clusters in humid air.",
+    "wrongPassages": [
+      "The chemist will agglomerate the solution until every crystal fully dissolves.",
+      "They agglomerated the crowd by opening three extra exits and clearing the hall.",
+      "She agglomerated the report by cutting it from forty pages down to two."
+    ]
+  }
+]

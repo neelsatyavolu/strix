@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w211",
+    "word": "Latency",
+    "definition": "the state of being dormant or delayed until conditions allow activity",
+    "memoryTip": "Latent stage \u2014 hidden or idle until something triggers it.",
+    "correctPassage": "There is often a latency between infection and the appearance of symptoms.",
+    "wrongPassages": [
+      "The latency of the fireworks display meant the sky lit up the instant the switch was flipped.",
+      "She measured the drawer labeled latency and found only pens and spare batteries inside.",
+      "His latency attendance meant he never missed a single class all year."
+    ]
+  },
+  {
+    "id": "w212",
+    "word": "Incubate",
+    "definition": "develop slowly under favorable conditions; keep warm to hatch or grow",
+    "memoryTip": "Like eggs in an incubator \u2014 grow slowly under steady care.",
+    "correctPassage": "The startup will incubate new ideas before seeking outside investment.",
+    "wrongPassages": [
+      "They hoped to incubate the scandal by leaking it to every outlet at once.",
+      "She incubated the walkout by locking the doors and cutting badge access mid-meeting.",
+      "He tried to incubate the rumor by demanding an immediate public retraction."
+    ]
+  },
+  {
+    "id": "w213",
+    "word": "Synergy",
+    "definition": "combined effect greater than the sum of the parts",
+    "memoryTip": "Syn + energy: working together multiplies the power.",
+    "correctPassage": "The merger was sold on the promise of synergy between the two product lines.",
+    "wrongPassages": [
+      "Working alone, she produced more synergy than the entire committee combined.",
+      "The rivalry created synergy by ensuring the two teams never shared data.",
+      "Each department claimed synergy while refusing every joint project on the calendar."
+    ]
+  },
+  {
+    "id": "w214",
+    "word": "Circumspect",
+    "definition": "wary and careful; unwilling to take unnecessary risks",
+    "memoryTip": "Circum-spect: look all around before you step.",
+    "correctPassage": "Lawyers advised a circumspect response until more facts were known.",
+    "wrongPassages": [
+      "His circumspect dive off the pier ignored every posted warning about the rocks.",
+      "A circumspect investor poured the entire savings account into a single unvetted tip.",
+      "She gave a circumspect answer that named names and promised results by Friday."
+    ]
+  },
+  {
+    "id": "w215",
+    "word": "Guileless",
+    "definition": "innocent and without deception",
+    "memoryTip": "Without guile (tricks) \u2014 open, honest, nothing up the sleeve.",
+    "correctPassage": "His guileless manner made colleagues trust him quickly.",
+    "wrongPassages": [
+      "The guileless con artist ran three aliases and a fake charity for years.",
+      "Her guileless contract buried the fees in footnotes no customer would read.",
+      "A guileless witness changed the story three times and denied knowing the defendant."
+    ]
+  }
+]

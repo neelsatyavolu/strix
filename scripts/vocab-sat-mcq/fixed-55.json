@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w276",
+    "word": "Mundane",
+    "definition": "ordinary and unexciting; of the everyday world",
+    "memoryTip": "From monde (world) — plain earthly, everyday stuff.",
+    "correctPassage": "Between breakthroughs, researchers still handle mundane paperwork and routine correspondence.",
+    "wrongPassages": [
+      "Critics called the premiere mundane for its unprecedented staging and daring score.",
+      "Her mundane itinerary included polar expeditions, summit meetings, and rare archival discoveries.",
+      "The museum reserved its most mundane gallery for the once-in-a-century loan of royal jewels."
+    ]
+  },
+  {
+    "id": "w277",
+    "word": "Retrenchment",
+    "definition": "reduction of costs or spending; a pulling back",
+    "memoryTip": "Re-trench: dig in and cut back spending.",
+    "correctPassage": "After the boom, corporate retrenchment meant hiring freezes and smaller offices.",
+    "wrongPassages": [
+      "The board framed its retrenchment as a plan to double the payroll and open three new campuses.",
+      "Investors cheered the firm's retrenchment into overseas markets it had never entered before.",
+      "Festival organizers announced a retrenchment that lengthened hours and added twice as many stages."
+    ]
+  },
+  {
+    "id": "w278",
+    "word": "Teem",
+    "definition": "be full of or swarming with",
+    "memoryTip": "Teeming with life — crowded and swarming.",
+    "correctPassage": "After the rains, the garden paths teem with frogs and insects.",
+    "wrongPassages": [
+      "By midwinter the wetlands teem with silence, empty of birds for miles.",
+      "Historians note that the frontier once teemed with vacancy until settlers finally arrived.",
+      "After curfew the plaza teems with absence, every stall shuttered and every bench unused."
+    ]
+  },
+  {
+    "id": "w279",
+    "word": "Roil",
+    "definition": "stir up; make cloudy or agitated",
+    "memoryTip": "Roil the water — churn mud and feelings into a mess.",
+    "correctPassage": "Rumors of a merger continue to roil the company's stock price.",
+    "wrongPassages": [
+      "Soft music was intended to roil the waiting room into a calmer, quieter mood.",
+      "The mediator hoped to roil the dispute by seating both sides at one table and easing tensions.",
+      "Clear water and still conditions allowed divers to roil the pond without clouding a single reading."
+    ]
+  },
+  {
+    "id": "w280",
+    "word": "Sordid",
+    "definition": "involving immoral, dishonorable, or dirty dealings",
+    "memoryTip": "Sordid like moral dirt — grubby, shameful business.",
+    "correctPassage": "Reporters exposed the sordid scheme of bribes behind the contract awards.",
+    "wrongPassages": [
+      "Neighbors called the charity drive sordid for raising record funds with full public accounting.",
+      "Her sordid reputation rested on decades of transparent, ethical leadership.",
+      "Judges praised the witness for a sordid account that matched every document without omission."
+    ]
+  }
+]

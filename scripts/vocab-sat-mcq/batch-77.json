@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w386",
+    "word": "Transience",
+    "definition": "the state of lasting only a short time",
+    "memoryTip": "Transient = temporary \u2014 the short-lived nature of a thing.",
+    "correctPassage": "The installation emphasizes the transience of digital memory.",
+    "wrongPassages": [
+      "Engineers measured the bridge\u2019s transience in meters and found it 214.6 long.",
+      "Investors sought transience returns of exactly zero in a flat market.",
+      "She labeled the locker \u201ctransience\u201d and left one unmatched glove inside."
+    ]
+  },
+  {
+    "id": "w387",
+    "word": "Partiality",
+    "definition": "unfair bias; a particular liking",
+    "memoryTip": "Partial to one side \u2014 a soft spot, or unfair favoritism.",
+    "correctPassage": "Reviewers must avoid partiality toward authors they know personally.",
+    "wrongPassages": [
+      "Judges praised the ruling\u2019s partiality for carefully weighing both sides.",
+      "The recipe called for one partiality of flour, equated with \u201cabout a cup.\u201d",
+      "His partiality report listed steps 1\u20135 with a glossary for every term."
+    ]
+  },
+  {
+    "id": "w388",
+    "word": "Unpalatable",
+    "definition": "difficult to accept or find pleasant",
+    "memoryTip": "Can\u2019t palate it \u2014 hard to swallow, whether food or truth.",
+    "correctPassage": "The report contains unpalatable truths about the project\u2019s cost overruns.",
+    "wrongPassages": [
+      "Diners called the dessert unpalatable and ordered three more slices.",
+      "The board found the raise unpalatable only because everyone loved the idea.",
+      "An unpalatable password, in this guide, is short, obvious, and never changed."
+    ]
+  },
+  {
+    "id": "w389",
+    "word": "Secrete",
+    "definition": "produce and discharge a substance; or hide away",
+    "memoryTip": "Secret-e: hide it away \u2014 or glands secrete fluids.",
+    "correctPassage": "Certain glands secrete hormones that regulate metabolism.",
+    "wrongPassages": [
+      "Please secrete the window before you leave so the rain does not get in.",
+      "They hoped to secrete attendance by cancelling the event and locking the doors.",
+      "The chef decided to secrete the soup so it would taste exactly the same."
+    ]
+  },
+  {
+    "id": "w390",
+    "word": "Qualification",
+    "definition": "a condition that limits a statement; or a credential",
+    "memoryTip": "A qualifying limit softens a claim \u2014 or a credential that certifies you.",
+    "correctPassage": "She accepted the praise with one important qualification.",
+    "wrongPassages": [
+      "She measured \u201cone qualification\u201d of flour as whatever fit the mug.",
+      "He stored the qualification next to spare batteries and packing tape.",
+      "The paint color \u201cQualification Mist\u201d is a standard beige in every aisle."
+    ]
+  }
+]

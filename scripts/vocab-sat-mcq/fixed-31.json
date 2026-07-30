@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w156",
+    "word": "Stymie",
+    "definition": "prevent or hinder progress",
+    "memoryTip": "Old golf “stymie”: your ball blocks the path — progress is stuck.",
+    "correctPassage": "Bureaucratic delays continue to stymie efforts to expand the transit line.",
+    "wrongPassages": [
+      "New grants will stymie the lab’s work by removing every remaining bottleneck.",
+      "The committee chose to stymie the proposal by voting for it unanimously.",
+      "She hoped a quiet afternoon would stymie her focus so the draft would finish early."
+    ]
+  },
+  {
+    "id": "w157",
+    "word": "Disparate",
+    "definition": "essentially different; not alike",
+    "memoryTip": "Dis-parate: not a matching pair — fundamentally different things.",
+    "correctPassage": "The report draws on disparate archives that rarely appear in the same study.",
+    "wrongPassages": [
+      "The twins chose disparate outfits that matched down to the last button.",
+      "Once every witness agreed, the accounts looked fully disparate.",
+      "Editors preferred disparate wording so every chapter sounded the same."
+    ]
+  },
+  {
+    "id": "w158",
+    "word": "Vindicate",
+    "definition": "clear of blame; show to be right",
+    "memoryTip": "Vin-dicate: clear your name — prove you were right all along.",
+    "correctPassage": "Later measurements helped vindicate the researchers who had challenged the model.",
+    "wrongPassages": [
+      "The new evidence will vindicate the defendant by adding several more charges.",
+      "Critics hoped to vindicate her theory by proving every claim was false.",
+      "Managers moved to vindicate the report by burying it before the board meeting."
+    ]
+  },
+  {
+    "id": "w159",
+    "word": "Precarious",
+    "definition": "not securely held; dangerously uncertain",
+    "memoryTip": "So shaky you pray it holds — insecure, chance-dependent.",
+    "correctPassage": "With only a temporary permit, the clinic’s funding situation remained precarious.",
+    "wrongPassages": [
+      "The steel supports were precarious: inspected, bolted, and rated well above the load.",
+      "Her position felt precarious after she received a permanent contract and a raise.",
+      "Investors called the surplus precarious because every risk already had a backup plan."
+    ]
+  },
+  {
+    "id": "w160",
+    "word": "Exhilarating",
+    "definition": "making one feel very happy, excited, or animated",
+    "memoryTip": "Ex + hilarity — thrills that leave you hilariously alive and buzzing.",
+    "correctPassage": "For many students, the first independent research breakthrough is exhilarating.",
+    "wrongPassages": [
+      "The three-hour delay on the tarmac was exhilarating for the exhausted passengers.",
+      "His exhilarating lecture put half the audience to sleep within minutes.",
+      "Parents called the toddler’s long nap exhilarating: quiet, uneventful, and restful."
+    ]
+  }
+]

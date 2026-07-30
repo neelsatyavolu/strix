@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w146",
+    "word": "Anterior",
+    "definition": "situated at the front; earlier in time",
+    "memoryTip": "Ante = before \u2014 the front side, or what came earlier.",
+    "correctPassage": "Pain was reported in the anterior portion of the shoulder.",
+    "wrongPassages": [
+      "The posterior wall is also called the anterior face of the building.",
+      "The sequel was anterior to the original film that started the franchise.",
+      "After the final chapter, nothing anterior remained \u2014 only what came next."
+    ]
+  },
+  {
+    "id": "w147",
+    "word": "Amass",
+    "definition": "gather or accumulate in large amount",
+    "memoryTip": "A-mass: pile up a mass of something over time.",
+    "correctPassage": "Over decades the library amassed one of the finest map collections in the region.",
+    "wrongPassages": [
+      "He amassed the debt by paying every bill the day it arrived.",
+      "The museum amassed the exhibit by giving away its rarest pieces.",
+      "She amassed the leftovers by throwing them out before anyone could take seconds."
+    ]
+  },
+  {
+    "id": "w148",
+    "word": "Concur",
+    "definition": "agree; occur at the same time",
+    "memoryTip": "Con-cur: run together \u2014 same opinion, or same moment.",
+    "correctPassage": "Most reviewers concur that the second edition is clearer than the first.",
+    "wrongPassages": [
+      "The two panels concurred by publishing opposite findings on the same day.",
+      "She concurred the locked door with a polite note left underneath.",
+      "Doctors called the recovery concur when the patient left the same afternoon."
+    ]
+  },
+  {
+    "id": "w149",
+    "word": "Intercede",
+    "definition": "intervene on behalf of another",
+    "memoryTip": "Inter + cede: step between parties and plead for someone.",
+    "correctPassage": "A neutral mediator agreed to intercede between the two companies.",
+    "wrongPassages": [
+      "The referee will intercede the match by walking off and refusing all appeals.",
+      "She interceded her own promotion without mentioning anyone else.",
+      "Teachers called the essay intercede after it defined every term in advance."
+    ]
+  },
+  {
+    "id": "w150",
+    "word": "Refinement",
+    "definition": "a small improvement; elegance or polish",
+    "memoryTip": "Make finer \u2014 polish the details until it feels elegant.",
+    "correctPassage": "Each refinement of the model improved its predictive accuracy.",
+    "wrongPassages": [
+      "The first crude sketch was already a refinement of the finished product.",
+      "They stored the refinement on a shelf next to spare batteries and tape.",
+      "His refinement of the plan removed every improvement and restored the bugs."
+    ]
+  }
+]

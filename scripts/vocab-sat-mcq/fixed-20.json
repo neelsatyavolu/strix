@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w101",
+    "word": "Ubiquity",
+    "definition": "the state of being everywhere at once",
+    "memoryTip": "Ubi (Latin “where”) + everywhere — so common it’s hard to escape.",
+    "correctPassage": "The ubiquity of online databases has reshaped how historians locate primary sources.",
+    "wrongPassages": [
+      "Scholars prized the manuscript’s ubiquity, since only a single copy had survived the fire.",
+      "A ubiquity of qualified specialists forced the clinic to turn patients away for months.",
+      "After the outage, the ubiquity of reliable connectivity left the team unable to share files."
+    ]
+  },
+  {
+    "id": "w102",
+    "word": "Innocuous",
+    "definition": "not harmful or offensive; harmless",
+    "memoryTip": "In- (not) + noxious (harmful) — a remark that doesn’t sting.",
+    "correctPassage": "Reviewers judged the dye innocuous at the concentrations used in the clinical trials.",
+    "wrongPassages": [
+      "The innocuous spill required full evacuation of the laboratory and a hazmat response.",
+      "Diplomats called the remark innocuous after it nearly collapsed the negotiations.",
+      "Doctors warned that the innocuous compound could cause permanent nerve damage if ingested."
+    ]
+  },
+  {
+    "id": "w103",
+    "word": "Convoluted",
+    "definition": "extremely complex and difficult to follow",
+    "memoryTip": "Think of a volume coiled into tight twists — overly complex.",
+    "correctPassage": "The statute’s convoluted language left lower courts divided over its intended scope.",
+    "wrongPassages": [
+      "Her convoluted summary reduced the entire debate to a single transparent claim.",
+      "The trail was convoluted: one unmarked straight path from the gate to the overlook.",
+      "He gave a convoluted reply that named the core problem in the opening sentence."
+    ]
+  },
+  {
+    "id": "w104",
+    "word": "Salient",
+    "definition": "most noticeable or important; standing out",
+    "memoryTip": "From Latin salire, “to leap” — points that leap out at you.",
+    "correctPassage": "Among several results, the most salient was the unexpected rise in retention rates.",
+    "wrongPassages": [
+      "The team treated the salient findings as minor footnotes unlikely to affect the conclusion.",
+      "She ranked a small typo as the report’s most salient flaw and set aside the sampling error.",
+      "His salient contribution was so slight that colleagues forgot he had joined the project."
+    ]
+  },
+  {
+    "id": "w105",
+    "word": "Thwart",
+    "definition": "to prevent someone from accomplishing something",
+    "memoryTip": "A thwart is a cross-seat in a boat — something that blocks your path.",
+    "correctPassage": "Strict export rules may thwart researchers’ efforts to share the dataset internationally.",
+    "wrongPassages": [
+      "The grant was designed to thwart the study by covering equipment, travel, and staff time.",
+      "Early feedback helped thwart the proposal by clarifying weak sections before submission.",
+      "The new route will thwart delivery delays by adding direct service between the two hubs."
+    ]
+  }
+]

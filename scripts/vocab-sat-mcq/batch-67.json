@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w336",
+    "word": "Reproach",
+    "definition": "to express disapproval or disappointment; blame",
+    "memoryTip": "Re-PROACH: approach someone again\u2014with blame, not praise.",
+    "correctPassage": "There was quiet reproach in the way she asked why he was late.",
+    "wrongPassages": [
+      "Fans offered loud reproach that sounded exactly like a standing ovation.",
+      "The empty dock looked reproach with ramps chained up for years.",
+      "Her letter of reproach thanked him warmly for every favor he had done."
+    ]
+  },
+  {
+    "id": "w337",
+    "word": "Contemptuous",
+    "definition": "showing scorn or deep disrespect",
+    "memoryTip": "Full of CONTEMPT\u2014scornful, looking down on someone.",
+    "correctPassage": "His contemptuous shrug made it clear he thought the plan was foolish.",
+    "wrongPassages": [
+      "The orchard looked contemptuous after hail stripped every tree.",
+      "She gave a contemptuous smile that radiated pure admiration.",
+      "He called the puzzle contemptuous after solving it in under a minute."
+    ]
+  },
+  {
+    "id": "w338",
+    "word": "Startling",
+    "definition": "very surprising or astonishing",
+    "memoryTip": "Makes you START (jump)\u2014so surprising you flinch.",
+    "correctPassage": "The most startling finding was that sleep alone cut errors in half.",
+    "wrongPassages": [
+      "Nothing about the predictable ending felt startling; every twist was brand-new and shocking.",
+      "The empty parking lot looked startling only because it looked exactly as always.",
+      "Please startling the chairs into neat rows."
+    ]
+  },
+  {
+    "id": "w339",
+    "word": "Belie",
+    "definition": "to fail to give a true impression of; to contradict",
+    "memoryTip": "Be-LIE: the surface lies about what is really underneath.",
+    "correctPassage": "His calm tone belied how nervous he felt before the exam.",
+    "wrongPassages": [
+      "I fully belie the witness after checking every date in her story.",
+      "She closed the ticket as belie while action items still had no owners.",
+      "Fans found the remaster belie for files identical to the old CD."
+    ]
+  },
+  {
+    "id": "w340",
+    "word": "Idiosyncratic",
+    "definition": "peculiar to an individual; highly distinctive",
+    "memoryTip": "IDIO + quirks: your personal odd habits and style.",
+    "correctPassage": "Her idiosyncratic color code made the spreadsheet unreadable to others.",
+    "wrongPassages": [
+      "Everyone followed the same idiosyncratic checklist issued by headquarters.",
+      "The salt flat stayed idiosyncratic under a model with permanent drought.",
+      "The tripwire was idiosyncratic: set past any value the logs could store."
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w081",
+    "word": "Magnitude",
+    "definition": "great size, extent, or importance",
+    "memoryTip": "Think magnum (huge bottle) — magnitude is how big or important something is.",
+    "correctPassage": "Few grasped the magnitude of the crisis until the independent audit was released.",
+    "wrongPassages": [
+      "Reviewers praised the magnitude of the essay for its delicate understatement and brevity.",
+      "She measured the magnitude of the rumor by how few people had even heard of it.",
+      "The magnitude of his courtesy was noted mainly in how rarely he held open a door."
+    ]
+  },
+  {
+    "id": "w082",
+    "word": "Epitomize",
+    "definition": "be a perfect example of",
+    "memoryTip": "Epitome = the perfect example; to epitomize is to be that example.",
+    "correctPassage": "The building’s spare lines epitomize mid-century modern design.",
+    "wrongPassages": [
+      "His rambling digressions epitomize the concise brief the client had requested.",
+      "The shuttered warehouse epitomizes the city’s widely celebrated revitalization.",
+      "Her reluctance to speak epitomized the decisive leadership the board expected."
+    ]
+  },
+  {
+    "id": "w083",
+    "word": "Default",
+    "definition": "failure to meet an obligation; or a preselected option",
+    "memoryTip": "If you don’t choose, you get the default — the fallback (or you fail to pay).",
+    "correctPassage": "If no option is selected, the software applies a conservative default setting.",
+    "wrongPassages": [
+      "She defaulted on the loan by sending every installment well before it was due.",
+      "The program’s default forced users to configure dozens of options before any work began.",
+      "His default reply was reinvented from scratch for each nearly identical request."
+    ]
+  },
+  {
+    "id": "w084",
+    "word": "Superfluous",
+    "definition": "unnecessary; more than what is needed",
+    "memoryTip": "Super + flow — overflow you don’t need; extra fluff to cut.",
+    "correctPassage": "Editors cut superfluous adjectives that lengthened the prose without adding clarity.",
+    "wrongPassages": [
+      "The surgeon called the monitor superfluous while relying on it throughout the procedure.",
+      "On a long desert crossing, water proved superfluous once the heat grew severe.",
+      "Instructors labeled the practice exams superfluous after only those who took them improved."
+    ]
+  },
+  {
+    "id": "w085",
+    "word": "Exactitude",
+    "definition": "the quality of being exact; precision",
+    "memoryTip": "Exact + -itude — the state of being exact; pure precision.",
+    "correctPassage": "Cartography of that era prized exactitude over decorative flourish.",
+    "wrongPassages": [
+      "He prized exactitude in estimates that swung wildly from one meeting to the next.",
+      "Her exactitude with sources left several key citations missing or incomplete.",
+      "They pursued exactitude by rounding every figure to the nearest order of magnitude."
+    ]
+  }
+]

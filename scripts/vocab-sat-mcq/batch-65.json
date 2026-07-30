@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w326",
+    "word": "Relinquish",
+    "definition": "to voluntarily give up or stop claiming something",
+    "memoryTip": "Re-LINQUISH: let go of a claim or hold (think relinquish the crown).",
+    "correctPassage": "She refused to relinquish the keys until the lease was signed.",
+    "wrongPassages": [
+      "He decided to relinquish the trophy by training harder than ever.",
+      "The brief was so relinquish that it ran thirty pages without a point.",
+      "Morning light looked relinquish through the narrow atrium skylight."
+    ]
+  },
+  {
+    "id": "w327",
+    "word": "Vouch",
+    "definition": "to confirm or support as true; to give a personal guarantee",
+    "memoryTip": "VOUCH for a friend: put your word behind their honesty.",
+    "correctPassage": "Two former supervisors will vouch for his reliability on the job.",
+    "wrongPassages": [
+      "Admin tried to vouch the complaint volume by hiding the contact form.",
+      "The icy trail felt vouch without a single handrail in sight.",
+      "She hoped to vouch the rumor by refusing to discuss it at all."
+    ]
+  },
+  {
+    "id": "w328",
+    "word": "Auxiliary",
+    "definition": "providing additional help; serving as a secondary support",
+    "memoryTip": "AUX jack: the extra, secondary connection that helps out.",
+    "correctPassage": "Auxiliary nurses covered the night shift when the ward was short-staffed.",
+    "wrongPassages": [
+      "The auxiliary generator was the only power source; nothing else was primary.",
+      "Please auxiliary the window before you leave.",
+      "They packed a spare auxiliary of flour for the recipe."
+    ]
+  },
+  {
+    "id": "w329",
+    "word": "Spearhead",
+    "definition": "to lead an attack, campaign, or major effort",
+    "memoryTip": "Tip of the SPEAR: you go first and lead the charge.",
+    "correctPassage": "A small committee will spearhead fundraising for the new library wing.",
+    "wrongPassages": [
+      "He agreed to spearhead the project only by sitting silently in the back row.",
+      "The idle machine stayed spearhead through a surge that reset every device.",
+      "Fans called the ending spearhead for refusing to resolve any plotline."
+    ]
+  },
+  {
+    "id": "w330",
+    "word": "Elicit",
+    "definition": "to draw out a response, fact, or reaction",
+    "memoryTip": "E-LICIT draws it out\u2014don't confuse with illicit (illegal).",
+    "correctPassage": "The interviewer's silence helped elicit a more candid answer.",
+    "wrongPassages": [
+      "Police seized the elicit shipment before it crossed the border.",
+      "Quants discarded the elicit factor that explained most of the variance.",
+      "The held fifth was elicit under a modulation that never returned."
+    ]
+  }
+]

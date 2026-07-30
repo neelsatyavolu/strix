@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w276",
+    "word": "Mundane",
+    "definition": "ordinary and unexciting; of the everyday world",
+    "memoryTip": "From monde (world) \u2014 plain earthly, everyday stuff.",
+    "correctPassage": "Between breakthroughs, researchers still handle mundane paperwork and email.",
+    "wrongPassages": [
+      "The summit felt mundane after months of ordinary chores and no adventure at all.",
+      "Please mundane the window before you leave.",
+      "They packed a spare mundane next to the tire."
+    ]
+  },
+  {
+    "id": "w277",
+    "word": "Retrenchment",
+    "definition": "reduction of costs or spending; a pulling back",
+    "memoryTip": "Re-trench: dig in and cut back spending.",
+    "correctPassage": "After the boom, corporate retrenchment meant hiring freezes and smaller offices.",
+    "wrongPassages": [
+      "Retrenchment of the budget added new staff and doubled travel allowances.",
+      "Investors cheered the company's retrenchment into three new overseas markets.",
+      "The festival's retrenchment featured longer hours and twice as many stages."
+    ]
+  },
+  {
+    "id": "w278",
+    "word": "Teem",
+    "definition": "be full of or swarming with",
+    "memoryTip": "Teeming with life \u2014 crowded and swarming.",
+    "correctPassage": "After the rain, the garden paths teem with frogs and insects.",
+    "wrongPassages": [
+      "In summer the wetlands teem with silence\u2014not a single bird for miles.",
+      "Please teem the chairs into neat rows.",
+      "Engineers measured the bridge\u2019s teem in meters."
+    ]
+  },
+  {
+    "id": "w279",
+    "word": "Roil",
+    "definition": "stir up; make cloudy or agitated",
+    "memoryTip": "Roil the water \u2014 churn mud and feelings into a mess.",
+    "correctPassage": "Rumors of a merger continue to roil the company's stock price.",
+    "wrongPassages": [
+      "Soft music was meant to roil the waiting room into a calmer mood.",
+      "The mediator hoped to roil the dispute by seating both sides at one table.",
+      "Clear glass let them roil the pond without disturbing a single fish."
+    ]
+  },
+  {
+    "id": "w280",
+    "word": "Sordid",
+    "definition": "involving immoral, dishonorable, or dirty dealings",
+    "memoryTip": "Sordid like moral dirt \u2014 grubby, shameful business.",
+    "correctPassage": "Reporters exposed the sordid scheme of bribes behind the contract awards.",
+    "wrongPassages": [
+      "Neighbors called the charity drive sordid for raising record school funds.",
+      "Her sordid reputation rested on decades of transparent, ethical leadership.",
+      "Judges praised the witness for a sordid account that matched every document."
+    ]
+  }
+]
