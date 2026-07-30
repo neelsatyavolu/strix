@@ -3,7 +3,6 @@ import { CATEGORY_LABELS, type PracticeItem, type VocabCategory, type VocabProgr
 import { isMastered, MAX_BOX } from "./schedule";
 
 const DEFAULT_COUNT = 12;
-const NEW_PER_SESSION = 4;
 
 export type ProgressMap = Map<string, VocabProgressRow>;
 
@@ -36,7 +35,7 @@ export function summarize(rows: VocabProgressRow[], now = new Date()) {
     known: mastered, // checklist "known" === Leitner graduated
     seen: seen.size,
     categories: listCategories(),
-    dueNow: due + Math.min(newCount, NEW_PER_SESSION > 0 ? newCount : 0),
+    dueNow: due + newCount,
   };
 }
 
@@ -70,7 +69,11 @@ export function toItem(wordId: string): PracticeItem | null {
   };
 }
 
-/** Build a mixed practice session: due/weak first, then new words. */
+/**
+ * Build a practice session in PDF / bank order (w001 → w400).
+ * Skips words already marked known; does not randomize word order.
+ * (Passage choices within a card are still shuffled.)
+ */
 export function buildSession(opts: {
   progress: VocabProgressRow[];
   count?: number;
@@ -78,46 +81,25 @@ export function buildSession(opts: {
   now?: Date;
 }): PracticeItem[] {
   const count = Math.min(20, Math.max(4, opts.count ?? DEFAULT_COUNT));
-  const now = opts.now ?? new Date();
-  const nowMs = now.getTime();
   const map = progressMap(opts.progress);
   const pool = opts.category
     ? VOCAB_BANK.filter((w) => w.category === opts.category)
     : VOCAB_BANK;
 
-  const due: string[] = [];
-  const learningNotDue: string[] = [];
-  const unseen: string[] = [];
-  const mastered: string[] = [];
-
+  const picked: string[] = [];
   for (const w of pool) {
     const p = map.get(w.id);
-    if (!p) {
-      unseen.push(w.id);
-      continue;
-    }
-    if (isMastered(p.box)) {
-      mastered.push(w.id);
-      continue;
-    }
-    if (new Date(p.due_at).getTime() <= nowMs) due.push(w.id);
-    else learningNotDue.push(w.id);
+    if (p && isMastered(p.box)) continue; // known / graduated — skip
+    picked.push(w.id);
+    if (picked.length >= count) break;
   }
 
-  const ordered = [
-    ...shuffle(due),
-    ...shuffle(unseen).slice(0, NEW_PER_SESSION + count),
-    ...shuffle(learningNotDue),
-    ...shuffle(mastered).slice(0, 2),
-  ];
-
-  const picked: string[] = [];
-  const seenPick = new Set<string>();
-  for (const id of ordered) {
-    if (seenPick.has(id)) continue;
-    seenPick.add(id);
-    picked.push(id);
-    if (picked.length >= count) break;
+  // If everything is known, offer a short refresh in bank order
+  if (picked.length === 0) {
+    for (const w of pool) {
+      picked.push(w.id);
+      if (picked.length >= Math.min(count, 4)) break;
+    }
   }
 
   const items: PracticeItem[] = [];
