@@ -1,0 +1,70 @@
+{
+  "batch": 38,
+  "pass": false,
+  "words": [
+    {
+      "id": "w381",
+      "word": "Auteur",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w382",
+      "word": "Bemuddle",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w383",
+      "word": "Fugacious",
+      "ok": false,
+      "issues": [
+        "wrongPassages[2]: 'fugacious holiday that ran from noon until noon' is ~24h and can reasonably mean fleeting; misuse not clear"
+      ]
+    },
+    {
+      "id": "w384",
+      "word": "Archetypal",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w385",
+      "word": "Quintessential",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w386",
+      "word": "Transience",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w387",
+      "word": "Partiality",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w388",
+      "word": "Unpalatable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w389",
+      "word": "Secrete",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w390",
+      "word": "Qualification",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

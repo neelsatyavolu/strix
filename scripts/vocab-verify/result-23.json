@@ -1,0 +1,68 @@
+{
+  "batch": 23,
+  "pass": true,
+  "words": [
+    {
+      "id": "w231",
+      "word": "Ambivalent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w232",
+      "word": "Analogical",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w233",
+      "word": "Transpose",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w234",
+      "word": "Candor",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w235",
+      "word": "Prudence",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w236",
+      "word": "Equitable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w237",
+      "word": "Unattainable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w238",
+      "word": "Vapid",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w239",
+      "word": "Sanction",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w240",
+      "word": "Incongruity",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

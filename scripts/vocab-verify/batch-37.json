@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w371",
+    "word": "Apotheosis",
+    "definition": "the highest point; ideal or culminating example",
+    "memoryTip": "Apo-theos: raised to godlike status\u2014the peak or ideal.",
+    "correctPassage": "The performance was widely seen as the apotheosis of her career.",
+    "wrongPassages": [
+      "Critics called the unfinished draft the apotheosis of her earliest, weakest work.",
+      "The apotheosis of the project was the first rough sketch before any research began.",
+      "After the scandal, the film became the apotheosis of everything the studio wanted to forget."
+    ]
+  },
+  {
+    "id": "w372",
+    "word": "Ekphrastic",
+    "definition": "describing a work of visual art in literary form",
+    "memoryTip": "Ekphrasis = words that re-paint art\u2014a poem about a painting.",
+    "correctPassage": "Her ekphrastic poem traces each brushstroke of the museum's new landscape.",
+    "wrongPassages": [
+      "His ekphrastic novel never mentioned any painting, sculpture, or photograph.",
+      "The lab report was ekphrastic, listing only measurements with no visual subject.",
+      "She filed an ekphrastic budget memo that ignored every image in the catalog."
+    ]
+  },
+  {
+    "id": "w373",
+    "word": "Agential",
+    "definition": "relating to an agent or the capacity to act",
+    "memoryTip": "Agent-ial: about who can act\u2014having agency.",
+    "correctPassage": "The theory emphasizes the agential capacity of communities, not only institutions.",
+    "wrongPassages": [
+      "The agential statue sat motionless while visitors walked past it for hours.",
+      "Critics called the plot agential because no character ever made a choice.",
+      "The agential sample under the microscope showed no motion and no living cells."
+    ]
+  },
+  {
+    "id": "w374",
+    "word": "Vexation",
+    "definition": "the state of being annoyed or worried",
+    "memoryTip": "Vexed feeling\u2014annoyance, irritation, fret.",
+    "correctPassage": "Minor technical glitches were a constant source of vexation.",
+    "wrongPassages": [
+      "Her only vexation was the calm joy she felt finishing the puzzle early.",
+      "The award speech filled him with pure vexation and lifelong contentment.",
+      "Guests described the party as a vexation of laughter, ease, and warm welcome."
+    ]
+  },
+  {
+    "id": "w375",
+    "word": "Onomatopoeia",
+    "definition": "words that imitate the sound they name",
+    "memoryTip": "Buzz, hiss, boom\u2014words that sound like what they mean.",
+    "correctPassage": "In the comic, every crash panel was filled with bold onomatopoeia.",
+    "wrongPassages": [
+      "The abstract essay relied on onomatopoeia without any sound-imitating words at all.",
+      "Her onomatopoeia chapter discussed only silent geometric shapes and color theory.",
+      "He labeled pure math symbols as onomatopoeia even though they name no sound."
+    ]
+  },
+  {
+    "id": "w376",
+    "word": "Ignoble",
+    "definition": "not honorable in character or purpose",
+    "memoryTip": "Ig-noble: not noble\u2014base or dishonorable motives.",
+    "correctPassage": "Betraying a colleague for promotion was an ignoble act.",
+    "wrongPassages": [
+      "Rescuing strangers at great personal risk was widely praised as ignoble.",
+      "The scholarship fund was an ignoble effort to help students who could not pay.",
+      "Historians called her lifelong public service an ignoble model for future leaders."
+    ]
+  },
+  {
+    "id": "w377",
+    "word": "Purloin",
+    "definition": "steal",
+    "memoryTip": "Purloin = quietly pocket something that isn't yours.",
+    "correctPassage": "Someone had managed to purloin several rare maps from the archive.",
+    "wrongPassages": [
+      "She offered to purloin the gift by wrapping it carefully and handing it over in person.",
+      "The museum will purloin the painting by returning it to the original owner.",
+      "He planned to purloin the missing funds by transferring them back into the account."
+    ]
+  },
+  {
+    "id": "w378",
+    "word": "Brazen",
+    "definition": "bold and without shame",
+    "memoryTip": "Brass-bold\u2014shamelessly bold, like polished brass.",
+    "correctPassage": "The theft was brazen: it happened in full view of security cameras.",
+    "wrongPassages": [
+      "His brazen apology was whispered in private and full of genuine shame.",
+      "She made a brazen request only after hiding for weeks and avoiding every camera.",
+      "The brazen clerk blushed, stammered, and quietly withdrew the complaint."
+    ]
+  },
+  {
+    "id": "w379",
+    "word": "Venal",
+    "definition": "open to bribery; corruptible",
+    "memoryTip": "Venal for sale\u2014open to bribes and corruption.",
+    "correctPassage": "A venal official accepted bribes to overlook safety violations.",
+    "wrongPassages": [
+      "The venal judge returned every gift and recused herself from the case.",
+      "Voters trusted his venal record of refusing all donations from lobbyists.",
+      "Her venal ethics code barred any employee from accepting money or favors."
+    ]
+  },
+  {
+    "id": "w380",
+    "word": "Palimpsest",
+    "definition": "a surface reused after earlier writing was erased; layered history",
+    "memoryTip": "Scraped parchment rewritten\u2014old layers still show through.",
+    "correctPassage": "The city is a palimpsest of architectural styles from many centuries.",
+    "wrongPassages": [
+      "The brand-new blank notebook was a pure palimpsest with no prior marks at all.",
+      "He called the single-use form a palimpsest because it could never be written on twice.",
+      "The palimpsest wall was poured yesterday and has never held another design."
+    ]
+  }
+]

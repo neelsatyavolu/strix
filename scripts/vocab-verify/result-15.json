@@ -1,0 +1,72 @@
+{
+  "batch": 15,
+  "pass": false,
+  "words": [
+    {
+      "id": "w151",
+      "word": "Commonality",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'The only commonality was that no two results shared a single pattern' is idiomatic correct usage (a shared meta-feature), so misuse is not clear"
+      ]
+    },
+    {
+      "id": "w152",
+      "word": "Animosity",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w153",
+      "word": "Profusion",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1]: 'a profusion of dry cracks' is correct usage (abundance of cracks after drought); only plant scarcity is contrasted—misuse not present"
+      ]
+    },
+    {
+      "id": "w154",
+      "word": "Negate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w155",
+      "word": "Arcane",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w156",
+      "word": "Stymie",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w157",
+      "word": "Disparate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w158",
+      "word": "Vindicate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w159",
+      "word": "Precarious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w160",
+      "word": "Exhilarating",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

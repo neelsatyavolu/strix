@@ -1,0 +1,71 @@
+{
+  "batch": 12,
+  "pass": false,
+  "words": [
+    {
+      "id": "w121",
+      "word": "Constrict",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w122",
+      "word": "Emulate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w123",
+      "word": "Augment",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] may be a valid use: rationing more tightly does make scarcity greater (augment = make greater)",
+        "wrongPassages[2] may be a valid use: unplugging mics can increase silence (augment the silence)"
+      ]
+    },
+    {
+      "id": "w124",
+      "word": "Vacate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w125",
+      "word": "Extrapolate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w126",
+      "word": "Convene",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w127",
+      "word": "Banal",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w128",
+      "word": "Erratic",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w129",
+      "word": "Disingenuous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w130",
+      "word": "Vacillate",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

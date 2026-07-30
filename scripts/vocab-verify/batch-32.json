@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w321",
+    "word": "Contrivance",
+    "definition": "a cleverly devised plan, scheme, or device, often artificial",
+    "memoryTip": "Con-TRIVE-ance: a clever TRICK or device someone contrived.",
+    "correctPassage": "The rescue hinged on a last-minute contrivance involving spare rope and a pulley.",
+    "wrongPassages": [
+      "Her contrivance was so genuine that no one doubted a word she said.",
+      "After weeks of rest, the meadow returned to its natural contrivance.",
+      "The judge praised the witness for his honest contrivance under oath."
+    ]
+  },
+  {
+    "id": "w322",
+    "word": "Abut",
+    "definition": "to share a boundary with; touch along an edge",
+    "memoryTip": "A-BUTT against: properties that butt up against each other.",
+    "correctPassage": "Our backyard abuts a quiet creek that floods only in spring.",
+    "wrongPassages": [
+      "Please abut the meeting until everyone has arrived.",
+      "His abut manners made the dinner conversation impossible.",
+      "Investors expected an abut forecast with exact quarterly numbers."
+    ]
+  },
+  {
+    "id": "w323",
+    "word": "Indefatigable",
+    "definition": "persisting tirelessly; incapable of being worn out",
+    "memoryTip": "In-de-FATIGUE-able: fatigue cannot stop you.",
+    "correctPassage": "An indefatigable coach ran drills with the team until dusk every day.",
+    "wrongPassages": [
+      "The indefatigable nap left her too groggy to finish the assignment.",
+      "After one easy practice, the squad declared itself fully indefatigable.",
+      "His indefatigable attitude meant he quit whenever the work got hard."
+    ]
+  },
+  {
+    "id": "w324",
+    "word": "Pseudonymous",
+    "definition": "written or published under a false name",
+    "memoryTip": "PSEUDO + name: a fake name on the byline.",
+    "correctPassage": "The columnist kept a pseudonymous blog to criticize her own industry.",
+    "wrongPassages": [
+      "The choir sounded pseudonymous once the organ drowned every voice.",
+      "She filed a pseudonymous tax return listing her real legal name.",
+      "Ops hoped to make the outage pseudonymous by posting a public status update."
+    ]
+  },
+  {
+    "id": "w325",
+    "word": "Nudge",
+    "definition": "to gently push; to lightly encourage toward an action",
+    "memoryTip": "Elbow NUDGE: a light push that steers without force.",
+    "correctPassage": "A reminder email can nudge students to finish the form before Friday.",
+    "wrongPassages": [
+      "The wrecking ball gave the wall one final nudge and the building collapsed.",
+      "A single nudge of the throttle launched the rocket into orbit.",
+      "The shoreline looked nudge once weekend boats filled every slip."
+    ]
+  },
+  {
+    "id": "w326",
+    "word": "Relinquish",
+    "definition": "to voluntarily give up or stop claiming something",
+    "memoryTip": "Re-LINQUISH: let go of a claim or hold (think relinquish the crown).",
+    "correctPassage": "She refused to relinquish the keys until the lease was signed.",
+    "wrongPassages": [
+      "He decided to relinquish the trophy by training harder than ever.",
+      "The brief was so relinquish that it ran thirty pages without a point.",
+      "Morning light looked relinquish through the narrow atrium skylight."
+    ]
+  },
+  {
+    "id": "w327",
+    "word": "Vouch",
+    "definition": "to confirm or support as true; to give a personal guarantee",
+    "memoryTip": "VOUCH for a friend: put your word behind their honesty.",
+    "correctPassage": "Two former supervisors will vouch for his reliability on the job.",
+    "wrongPassages": [
+      "Admin tried to vouch the complaint volume by hiding the contact form.",
+      "The icy trail felt vouch without a single handrail in sight.",
+      "She hoped to vouch the rumor by refusing to discuss it at all."
+    ]
+  },
+  {
+    "id": "w328",
+    "word": "Auxiliary",
+    "definition": "providing additional help; serving as a secondary support",
+    "memoryTip": "AUX jack: the extra, secondary connection that helps out.",
+    "correctPassage": "Auxiliary nurses covered the night shift when the ward was short-staffed.",
+    "wrongPassages": [
+      "The auxiliary conductor led the entire orchestra while the maestro sat silent.",
+      "They called the plan auxiliary because it replaced every other option.",
+      "Her auxiliary deposition was the only evidence the jury ever heard."
+    ]
+  },
+  {
+    "id": "w329",
+    "word": "Spearhead",
+    "definition": "to lead an attack, campaign, or major effort",
+    "memoryTip": "Tip of the SPEAR: you go first and lead the charge.",
+    "correctPassage": "A small committee will spearhead fundraising for the new library wing.",
+    "wrongPassages": [
+      "He agreed to spearhead the project only by sitting silently in the back row.",
+      "The idle machine stayed spearhead through a surge that reset every device.",
+      "Fans called the ending spearhead for refusing to resolve any plotline."
+    ]
+  },
+  {
+    "id": "w330",
+    "word": "Elicit",
+    "definition": "to draw out a response, fact, or reaction",
+    "memoryTip": "E-LICIT draws it out\u2014don't confuse with illicit (illegal).",
+    "correctPassage": "The interviewer's silence helped elicit a more candid answer.",
+    "wrongPassages": [
+      "Police seized the elicit shipment before it crossed the border.",
+      "Quants discarded the elicit factor that explained most of the variance.",
+      "The held fifth was elicit under a modulation that never returned."
+    ]
+  }
+]

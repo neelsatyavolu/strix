@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w391",
+    "word": "Consideration",
+    "definition": "careful thought; or something given in exchange",
+    "memoryTip": "Careful thought \u2014 or the thing given in a deal (legal sense).",
+    "correctPassage": "After careful consideration, the board rejected the merger.",
+    "wrongPassages": [
+      "The ribbon for consideration said \u201cthanks for coming\u201d on the back.",
+      "She painted the drum \u201cconsideration\u201d and stored last year\u2019s festival maps.",
+      "In the kitchen, a consideration pinch of salt weighed exactly one gram on the scale."
+    ]
+  },
+  {
+    "id": "w392",
+    "word": "Decadent",
+    "definition": "marked by decline or luxurious self-indulgence",
+    "memoryTip": "De-cadence: falling from standards \u2014 luxuriously self-indulgent decline.",
+    "correctPassage": "Critics called the late period\u2019s art decadent and self-indulgent.",
+    "wrongPassages": [
+      "Parents described the toddler\u2019s decadent tantrum as calm, quiet, and brief.",
+      "The plan was decadent because every risk had already been eliminated.",
+      "A decadent workout meant water only and lights out by nine."
+    ]
+  },
+  {
+    "id": "w393",
+    "word": "Imperiled",
+    "definition": "put at risk of harm",
+    "memoryTip": "In peril \u2014 placed in danger.",
+    "correctPassage": "Rising seas have imperiled several coastal archaeological sites.",
+    "wrongPassages": [
+      "They imperiled the experiment by powering down and leaving for lunch.",
+      "She hoped to imperiled the debt by charging more interest on the same balance.",
+      "The crisis was imperiled the moment it started: already fully resolved."
+    ]
+  },
+  {
+    "id": "w394",
+    "word": "Roguish",
+    "definition": "playfully dishonest or mischievous",
+    "memoryTip": "Like a charming rogue \u2014 mischievous, not fully serious.",
+    "correctPassage": "A roguish smile suggested he was not entirely serious.",
+    "wrongPassages": [
+      "Judges called the ruling roguish because it carefully weighed both sides.",
+      "His roguish explanation listed steps 1\u20135 with diagrams for every term.",
+      "The software will roguish your password by turning each character into an emoji."
+    ]
+  },
+  {
+    "id": "w395",
+    "word": "Picaresque",
+    "definition": "relating to a roguish hero\u2019s episodic adventures",
+    "memoryTip": "Picaro = rogue hero \u2014 a rascal\u2019s string of misadventures.",
+    "correctPassage": "The novel is picaresque: a clever outsider stumbles through one episode after another.",
+    "wrongPassages": [
+      "The fuse rating was picaresque and never protected the circuit it named.",
+      "She filed the forms under \u201cpicaresque\u201d as if it were a department code.",
+      "The snow shelf felt picaresque after a deck and railing were installed."
+    ]
+  },
+  {
+    "id": "w396",
+    "word": "Refract",
+    "definition": "change direction when passing through a medium",
+    "memoryTip": "Re-fract light: bend it as it passes through glass or water.",
+    "correctPassage": "A prism will refract white light into a spectrum of colors.",
+    "wrongPassages": [
+      "To refract the budget, accountants printed extra copies and stacked them.",
+      "They hoped to refract attendance by cancelling the event and locking the doors.",
+      "Please refract the window before you leave so the rain does not get in."
+    ]
+  },
+  {
+    "id": "w397",
+    "word": "Stock",
+    "definition": "standard or commonly used; not original",
+    "memoryTip": "Off-the-shelf stock answer \u2014 standard, not original.",
+    "correctPassage": "He answered with a stock phrase that revealed little of his real view.",
+    "wrongPassages": [
+      "Her stock response listed original research no one else had attempted.",
+      "Critics praised the stock ending for inventing a form never seen before.",
+      "His stock proposal was so original that no template or precedent applied."
+    ]
+  },
+  {
+    "id": "w398",
+    "word": "Incursion",
+    "definition": "a sudden invasion or raid into territory",
+    "memoryTip": "In + course/run \u2014 a sudden run into someone else\u2019s ground.",
+    "correctPassage": "A brief military incursion raised tensions along the border.",
+    "wrongPassages": [
+      "She used \u201cincursion\u201d as a filename for an empty desktop document.",
+      "He retagged the orphan keys \u201cincursion\u201d and still could not match a lock.",
+      "The recipe called for one incursion of flour, which meant \u201cabout a cup.\u201d"
+    ]
+  },
+  {
+    "id": "w399",
+    "word": "Valorize",
+    "definition": "give or enhance the value or status of",
+    "memoryTip": "Valor + ize \u2014 assign value or raise the status of something.",
+    "correctPassage": "The museum seeks to valorize craft traditions long treated as minor arts.",
+    "wrongPassages": [
+      "They tried to valorize the stain with the solvent that set it permanently.",
+      "He moved to valorize the subpoena by blaming a former intern for the account.",
+      "To valorize the experiment, the team powered down and left for lunch."
+    ]
+  },
+  {
+    "id": "w400",
+    "word": "Decimate",
+    "definition": "destroy a large proportion of",
+    "memoryTip": "Originally kill every tenth; now destroy a large share.",
+    "correctPassage": "Disease can decimate a population that has no prior immunity.",
+    "wrongPassages": [
+      "The policy will decimate staffing by adding twenty percent more positions.",
+      "Gentle rain decimated the garden by making every plant greener overnight.",
+      "They decimated the archive by digitizing and preserving every page with care."
+    ]
+  }
+]

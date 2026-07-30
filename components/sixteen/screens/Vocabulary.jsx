@@ -51,7 +51,6 @@ function Vocabulary() {
   const [sessionLoading, setSessionLoading] = React.useState(false);
   const [results, setResults] = React.useState([]);
   const [hubTick, setHubTick] = React.useState(0);
-  const [marking, setMarking] = React.useState({}); // wordId → true while saving
   const [query, setQuery] = React.useState('');
 
   const loadHub = React.useCallback(() => { setHubTick((t) => t + 1); }, []);
@@ -74,61 +73,6 @@ function Vocabulary() {
       });
     return () => { on = false; };
   }, [hubTick]);
-
-  /** Toggle known checklist; optimistic UI + persist. */
-  const toggleKnown = async (word) => {
-    if (marking[word.id]) return;
-    const next = !word.known;
-    setMarking((m) => ({ ...m, [word.id]: true }));
-    // Optimistic
-    setHub((prev) => {
-      if (!prev) return prev;
-      const words = (prev.words || []).map((w) => {
-        if (w.id !== word.id) return w;
-        return {
-          ...w,
-          known: next,
-          mastered: next,
-          box: next ? 6 : 1,
-        };
-      });
-      const knownCount = words.filter((w) => w.known).length;
-      const learning = words.filter((w) => !w.known && w.box >= 1 && w.timesSeen > 0).length;
-      const summary = {
-        ...(prev.summary || {}),
-        mastered: knownCount,
-        known: knownCount,
-        learning,
-      };
-      return { ...prev, words, summary };
-    });
-    try {
-      const r = await fetch('/api/vocab', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wordId: word.id, mode: 'mark', known: next }),
-      });
-      const j = await r.json();
-      if (!j?.success) throw new Error(j?.error || 'Could not save');
-    } catch (e) {
-      // Revert on failure
-      setHub((prev) => {
-        if (!prev) return prev;
-        const words = (prev.words || []).map((w) => {
-          if (w.id !== word.id) return w;
-          return { ...w, known: word.known, mastered: word.known, box: word.box };
-        });
-        return { ...prev, words };
-      });
-      setError(e.message || 'Could not save');
-    } finally {
-      setMarking((m) => {
-        const n = { ...m };
-        delete n[word.id];
-        return n;
-      });
-    }
-  };
 
   const startPractice = async () => {
     setSessionLoading(true);
@@ -283,15 +227,15 @@ function Vocabulary() {
                 }} />
               </div>
               <p style={{ margin: 0, font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-                {knownCount} of {bankSize} known — checkmark only if you tap “I know it” (no flip) and get the usage question right.
-                Flip to study first, and the word stays in practice even when you answer correctly.
+                {knownCount} of {bankSize} known — earned only by “I know it” (no flip) + correct usage.
+                Flip to study first and the word stays in practice even when you answer correctly.
               </p>
             </Card>
 
             <Card padding="lg" style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12, alignItems: 'center', flexShrink: 0 }}>
                 <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginRight: 4 }}>
-                  Checklist
+                  Word list
                 </span>
                 {FILTERS.map((f) => (
                   <Chip key={f.id} active={filter === f.id} onClick={() => setFilter(f.id)}>{f.label}</Chip>
@@ -341,7 +285,7 @@ function Vocabulary() {
                     Nothing in this filter yet.
                   </div>
                 ) : words.map((w) => (
-                  <label
+                  <div
                     key={w.id}
                     style={{
                       display: 'grid',
@@ -350,36 +294,31 @@ function Vocabulary() {
                       padding: '10px 4px',
                       borderBottom: '1px solid var(--border-1)',
                       alignItems: 'center',
-                      cursor: marking[w.id] ? 'wait' : 'pointer',
-                      opacity: marking[w.id] ? 0.65 : 1,
                       background: w.known ? 'rgba(34, 160, 90, 0.04)' : 'transparent',
                     }}
                   >
-                    <input
-                      type="checkbox"
-                      checked={!!w.known}
-                      disabled={!!marking[w.id]}
-                      onChange={() => toggleKnown(w)}
-                      aria-label={w.known ? `Unmark ${w.word} as known` : `Mark ${w.word} as known`}
+                    <span
+                      aria-label={w.known ? 'Known' : 'Not known yet'}
                       style={{
-                        width: 16,
-                        height: 16,
-                        accentColor: 'var(--success)',
-                        cursor: marking[w.id] ? 'wait' : 'pointer',
+                        font: 'var(--role-label)',
+                        fontWeight: 700,
+                        color: w.known ? 'var(--success)' : 'var(--border-2)',
+                        textAlign: 'center',
                       }}
-                    />
+                    >
+                      {w.known ? '✓' : '·'}
+                    </span>
                     <span style={{
                       font: 'var(--role-label)',
                       fontWeight: 600,
                       color: w.known ? 'var(--success)' : 'var(--text-primary)',
-                      textDecoration: w.known ? 'none' : 'none',
                     }}>
                       {w.word}
                     </span>
                     <span style={{ font: 'var(--role-body)', color: 'var(--text-secondary)' }}>
                       {w.definition}
                     </span>
-                  </label>
+                  </div>
                 ))}
               </div>
             </Card>
@@ -512,11 +451,12 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {(item.passages || []).map((passage, i) => {
                 const isPick = picked === i;
-                const isCorrect = feedback && (feedback.correctPassage ? passage === feedback.correctPassage : i === item.correctIndex);
+                // Highlight the option that was correct for THIS quiz (not bank canonical)
+                const isCorrectOpt = feedback && i === item.correctIndex;
                 const isWrong = feedback && isPick && !feedback.correct;
                 let bg = 'var(--sunken)';
                 let border = '1px solid var(--border-2)';
-                if (isCorrect) { bg = 'rgba(34, 160, 90, 0.12)'; border = '1px solid var(--success)'; }
+                if (isCorrectOpt) { bg = 'rgba(34, 160, 90, 0.12)'; border = '1px solid var(--success)'; }
                 if (isWrong) { bg = 'rgba(220, 50, 50, 0.1)'; border = '1px solid var(--error)'; }
                 return (
                   <button
@@ -535,6 +475,11 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
                       fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-tertiary)', minWidth: 18,
                     }}>{letters[i]}</span>
                     <span style={{ flex: 1 }}>{passage}</span>
+                    {isCorrectOpt && (
+                      <span style={{ font: 'var(--role-caption)', color: 'var(--success)', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                        Correct
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -550,6 +495,15 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
                   {' — '}
                   {feedback.definition || item.definition}
                 </div>
+                {/* Always show the right passage for this quiz (right or wrong pick) */}
+                {(item.passages || [])[item.correctIndex] && (
+                  <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 12, padding: '10px 12px', background: 'rgba(34, 160, 90, 0.08)', borderRadius: 'var(--radius-md)' }}>
+                    <span style={{ font: 'var(--role-caption)', color: 'var(--success)', display: 'block', marginBottom: 4 }}>
+                      {feedback.correct ? 'Right answer' : 'Correct usage'}
+                    </span>
+                    {(item.passages || [])[item.correctIndex]}
+                  </div>
+                )}
                 {(feedback.memoryTip || item.memoryTip) && (
                   <div style={{
                     font: 'var(--role-body)',
@@ -561,12 +515,6 @@ function FlashPractice({ item, index, total, onDone, onExit }) {
                   }}>
                     <span style={{ font: 'var(--role-caption)', color: 'var(--brand-blue)', display: 'block', marginBottom: 4 }}>How to remember</span>
                     {feedback.memoryTip || item.memoryTip}
-                  </div>
-                )}
-                {!feedback.correct && feedback.correctPassage && (
-                  <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 12, padding: '10px 12px', background: 'rgba(34, 160, 90, 0.08)', borderRadius: 'var(--radius-md)' }}>
-                    <span style={{ font: 'var(--role-caption)', color: 'var(--success)', display: 'block', marginBottom: 4 }}>Correct usage</span>
-                    {feedback.correctPassage}
                   </div>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'center' }}>

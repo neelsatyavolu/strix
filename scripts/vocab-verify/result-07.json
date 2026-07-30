@@ -1,0 +1,68 @@
+{
+  "batch": 7,
+  "pass": true,
+  "words": [
+    {
+      "id": "w071",
+      "word": "Ascertain",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w072",
+      "word": "Substantiate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w073",
+      "word": "Prodigious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w074",
+      "word": "Fraudulent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w075",
+      "word": "Palpable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w076",
+      "word": "Confound",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w077",
+      "word": "Disregard",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w078",
+      "word": "Underscore",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w079",
+      "word": "Orthodox",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w080",
+      "word": "Zenith",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

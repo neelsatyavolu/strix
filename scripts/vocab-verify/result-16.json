@@ -1,0 +1,70 @@
+{
+  "batch": 16,
+  "pass": false,
+  "words": [
+    {
+      "id": "w161",
+      "word": "Instigate",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] misuse not clear: 'instigate the argument by leaving the room without a word' can be a correct use (storming out can start a fight). Need a method that clearly ends/avoids conflict, e.g. calm agreement or walking away to de-escalate."
+      ]
+    },
+    {
+      "id": "w162",
+      "word": "Counterproductive",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w163",
+      "word": "Vigilance",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w164",
+      "word": "Paradoxically",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w165",
+      "word": "Momentous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w166",
+      "word": "Unyielding",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w167",
+      "word": "Impeccable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w168",
+      "word": "Ossified",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w169",
+      "word": "Denounce",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w170",
+      "word": "Debilitate",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

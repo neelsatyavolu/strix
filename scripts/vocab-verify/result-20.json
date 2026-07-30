@@ -1,0 +1,18 @@
+{
+  "batch": 20,
+  "pass": true,
+  "words": [
+    { "id": "w201", "word": "Ostentatious", "ok": true, "issues": [] },
+    { "id": "w202", "word": "Conjectural", "ok": true, "issues": [] },
+    { "id": "w203", "word": "Stringent", "ok": true, "issues": [] },
+    { "id": "w204", "word": "Egotistical", "ok": true, "issues": [] },
+    { "id": "w205", "word": "Pliant", "ok": true, "issues": [] },
+    { "id": "w206", "word": "Serene", "ok": true, "issues": [] },
+    { "id": "w207", "word": "Vicarious", "ok": true, "issues": [] },
+    { "id": "w208", "word": "Forestall", "ok": true, "issues": [] },
+    { "id": "w209", "word": "Dwindle", "ok": true, "issues": [] },
+    { "id": "w210", "word": "Provocative", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

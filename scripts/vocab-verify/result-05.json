@@ -1,0 +1,80 @@
+{
+  "batch": 5,
+  "pass": false,
+  "words": [
+    {
+      "id": "w051",
+      "word": "Unwarranted",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'unwarranted border crossing' still uses the word correctly (unauthorized/unjustified crossing)—misuse not clear",
+        "wrongPassages[2]: 'unwarranted limitation clause' is correct usage (unjustified clause); length of the clause does not create a semantic clash"
+      ]
+    },
+    {
+      "id": "w052",
+      "word": "Exorbitant",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1]: 'called the live-stream mix exorbitant for chat audio over the music' can still mean unreasonably excessive—misuse not clear"
+      ]
+    },
+    {
+      "id": "w053",
+      "word": "Demarcate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w054",
+      "word": "Intelligible",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'intelligible levy' is correct usage (clear/understandable levy)—misuse not present",
+        "wrongPassages[1]: 'The epilogue was intelligible…' is correct usage (understandable); opening a sequel does not clash with the meaning"
+      ]
+    },
+    {
+      "id": "w055",
+      "word": "Discretion",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w056",
+      "word": "Unpretentiousness",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w057",
+      "word": "Subside",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w058",
+      "word": "Prank",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w059",
+      "word": "Evince",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w060",
+      "word": "Preclude",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'tried to preclude the sinkhole by…' uses preclude correctly (prevent); bad method ≠ word misuse",
+        "wrongPassages[1]: 'preclude the deposition by claiming he did not recall' is correct legal usage of preclude",
+        "wrongPassages[2]: 'tried to preclude the relapse by…' still means prevent; ironic method does not make the usage wrong"
+      ]
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

@@ -42,12 +42,20 @@ export function summarize(rows: VocabProgressRow[], now = new Date()) {
 
 /**
  * Build a flashcard practice item with a fresh usage MCQ set.
- * Correct + wrongs are re-sampled every time so a retry is not the same four sentences.
+ * Correct + wrongs are re-sampled every call so retries never reuse the same quartet.
+ * @param salt optional entropy (e.g. times_seen, timestamp) so samples differ across sessions
  */
-export function toItem(wordId: string): PracticeItem | null {
+export function toItem(wordId: string, salt?: number): PracticeItem | null {
   const w = VOCAB_BY_ID[wordId];
   if (!w) return null;
-  const { passages, correctIndex } = buildUsageOptions(w);
+  // Mix Math.random with salt so each practice appearance gets a new set
+  let s = ((salt ?? Date.now()) ^ (wordId.split("").reduce((a, c) => a + c.charCodeAt(0), 0) * 2654435761)) >>> 0;
+  const rng = () => {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0;
+    // blend with Math.random so consecutive toItem calls still diverge
+    return ((s >>> 0) / 0x100000000 + Math.random()) / 2;
+  };
+  const { passages, correctIndex } = buildUsageOptions(w, rng);
   return {
     wordId: w.id,
     word: w.word,
@@ -109,8 +117,11 @@ export function buildSession(opts: {
   }
 
   const items: PracticeItem[] = [];
-  for (const id of picked) {
-    const item = toItem(id);
+  const sessionSalt = nowMs ^ (picked.length * 9973);
+  for (let i = 0; i < picked.length; i += 1) {
+    const p = map.get(picked[i]);
+    const salt = sessionSalt + i * 131 + (p?.times_seen ?? 0) * 17 + (p?.times_correct ?? 0) * 31;
+    const item = toItem(picked[i], salt);
     if (item) items.push(item);
   }
   return items;

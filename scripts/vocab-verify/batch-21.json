@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w211",
+    "word": "Latency",
+    "definition": "the state of being dormant or delayed until conditions allow activity",
+    "memoryTip": "Latent stage \u2014 hidden or idle until something triggers it.",
+    "correctPassage": "There is often a latency between infection and the appearance of symptoms.",
+    "wrongPassages": [
+      "The latency of the fireworks display meant the sky lit up the instant the switch was flipped.",
+      "She measured the drawer labeled latency and found only pens and spare batteries inside.",
+      "His latency attendance meant he never missed a single class all year."
+    ]
+  },
+  {
+    "id": "w212",
+    "word": "Incubate",
+    "definition": "develop slowly under favorable conditions; keep warm to hatch or grow",
+    "memoryTip": "Like eggs in an incubator \u2014 grow slowly under steady care.",
+    "correctPassage": "The startup will incubate new ideas before seeking outside investment.",
+    "wrongPassages": [
+      "They hoped to incubate the scandal by leaking it to every outlet at once.",
+      "She incubated the walkout by locking the doors and cutting badge access mid-meeting.",
+      "He tried to incubate the rumor by demanding an immediate public retraction."
+    ]
+  },
+  {
+    "id": "w213",
+    "word": "Synergy",
+    "definition": "combined effect greater than the sum of the parts",
+    "memoryTip": "Syn + energy: working together multiplies the power.",
+    "correctPassage": "The merger was sold on the promise of synergy between the two product lines.",
+    "wrongPassages": [
+      "Working alone, she produced more synergy than the entire committee combined.",
+      "The rivalry created synergy by ensuring the two teams never shared data.",
+      "Each department claimed synergy while refusing every joint project on the calendar."
+    ]
+  },
+  {
+    "id": "w214",
+    "word": "Circumspect",
+    "definition": "wary and careful; unwilling to take unnecessary risks",
+    "memoryTip": "Circum-spect: look all around before you step.",
+    "correctPassage": "Lawyers advised a circumspect response until more facts were known.",
+    "wrongPassages": [
+      "His circumspect dive off the pier ignored every posted warning about the rocks.",
+      "A circumspect investor poured the entire savings account into a single unvetted tip.",
+      "She gave a circumspect answer that named names and promised results by Friday."
+    ]
+  },
+  {
+    "id": "w215",
+    "word": "Guileless",
+    "definition": "innocent and without deception",
+    "memoryTip": "Without guile (tricks) \u2014 open, honest, nothing up the sleeve.",
+    "correctPassage": "His guileless manner made colleagues trust him quickly.",
+    "wrongPassages": [
+      "The guileless con artist ran three aliases and a fake charity for years.",
+      "Her guileless contract buried the fees in footnotes no customer would read.",
+      "A guileless witness changed the story three times and denied knowing the defendant."
+    ]
+  },
+  {
+    "id": "w216",
+    "word": "Appease",
+    "definition": "pacify someone by giving in to demands",
+    "memoryTip": "A-peace: buy quiet by yielding a little (or a lot).",
+    "correctPassage": "Concessions intended to appease critics only encouraged further demands.",
+    "wrongPassages": [
+      "Leaders chose to appease the protest by refusing every demand on the list.",
+      "She tried to appease the customer by hanging up before he finished speaking.",
+      "They tried to appease the deadline by ignoring it until after the due date had passed."
+    ]
+  },
+  {
+    "id": "w217",
+    "word": "Indoctrinate",
+    "definition": "teach someone to accept a set of beliefs uncritically",
+    "memoryTip": "In-doctrine: pour in a doctrine; no free questioning allowed.",
+    "correctPassage": "The camp was accused of trying to indoctrinate children rather than educate them.",
+    "wrongPassages": [
+      "Good seminars indoctrinate students by inviting them to challenge every claim.",
+      "She hoped to indoctrinate the class with open debate and competing sources.",
+      "The lab manual was designed to indoctrinate curiosity, not a single fixed theory."
+    ]
+  },
+  {
+    "id": "w218",
+    "word": "Avant-garde",
+    "definition": "new and experimental, especially in the arts",
+    "memoryTip": "French for \"vanguard\" \u2014 out front of the artistic pack.",
+    "correctPassage": "The gallery specializes in avant-garde work that challenges traditional form.",
+    "wrongPassages": [
+      "The avant-garde tax table simply restated last year's ordinary rates with no changes.",
+      "Engineers measured the avant-garde of the bridge as 214.6 meters of standard steel.",
+      "An avant-garde crowd of two was listed as a sold-out premiere in the press release."
+    ]
+  },
+  {
+    "id": "w219",
+    "word": "Cerebral",
+    "definition": "intellectual rather than emotional or physical",
+    "memoryTip": "Cerebrum = brain \u2014 more thinking than feeling.",
+    "correctPassage": "The film is more cerebral than emotional, built around ideas rather than action.",
+    "wrongPassages": [
+      "The cerebral chase scene was pure spectacle, with almost no dialogue or theme.",
+      "Fans loved the cerebral finale for its tears, hugs, and zero discussion of ideas.",
+      "Coaches designed a cerebral drill that tested only sprint speed and vertical jump."
+    ]
+  },
+  {
+    "id": "w220",
+    "word": "Cajole",
+    "definition": "persuade by flattery or gentle urging",
+    "memoryTip": "Cage + jolly talk \u2014 sweet-talk someone into the cage (or the favor).",
+    "correctPassage": "She tried to cajole reluctant volunteers into staffing the event.",
+    "wrongPassages": [
+      "He tried to cajole the guard by shouting threats and slamming the counter.",
+      "They cajoled the board with a silent spreadsheet and no conversation at all.",
+      "Voters buried the cajole bond that engineers had labeled urgent and overdue."
+    ]
+  }
+]

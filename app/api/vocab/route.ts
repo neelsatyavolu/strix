@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { VOCAB_BANK, VOCAB_BY_ID, listCategories } from "@/lib/vocab/bank";
 import { summarize } from "@/lib/vocab/session";
-import { dueAt, isMastered, knownBox, MAX_BOX, nextBox } from "@/lib/vocab/schedule";
+import { dueAt, isMastered, knownBox, nextBox } from "@/lib/vocab/schedule";
 import { isCorrectUsage } from "@/lib/vocab/usageOptions";
 import type { VocabProgressRow } from "@/lib/vocab/types";
 
@@ -53,9 +53,8 @@ export async function GET() {
   });
 }
 
-// POST /api/vocab
-// - Practice: { wordId, mode:'flash', passage }
-// - Checklist: { wordId, mode:'mark', known: boolean }
+// POST /api/vocab — practice only: { wordId, mode:'flash', passage, flipped }
+// Known/checkmarked only via unflipped “I know it” + correct usage (not manual).
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -75,11 +74,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: "Invalid JSON" }, { status: 400 });
   }
 
+  if (body.mode === "mark") {
+    return NextResponse.json(
+      { success: false, error: "Manual checkmarks are disabled. Use practice: I know it + correct usage." },
+      { status: 400 },
+    );
+  }
+
   const wordId = String(body.wordId || "");
   const entry = VOCAB_BY_ID[wordId];
   if (!entry) return NextResponse.json({ success: false, error: "Unknown word" }, { status: 400 });
-
-  const mode = body.mode === "mark" ? "mark" : "flash";
 
   const { data: existing } = await supabase
     .from("vocab_progress")
@@ -89,44 +93,6 @@ export async function POST(req: NextRequest) {
     .maybeSingle();
 
   const now = new Date();
-
-  // ── Checklist mark / unmark "I know this" ─────────────────────────
-  if (mode === "mark") {
-    if (typeof body.known !== "boolean") {
-      return NextResponse.json({ success: false, error: "Missing known" }, { status: 400 });
-    }
-    const known = body.known;
-    const box = known ? MAX_BOX + 1 : 1;
-    const due = dueAt(box, now);
-    const row = {
-      user_id: user.id,
-      word_id: wordId,
-      box,
-      due_at: due.toISOString(),
-      times_seen: existing?.times_seen ?? (known ? 1 : 0),
-      times_correct: existing?.times_correct ?? 0,
-      last_result: known ? true : null,
-      last_mode: "manual",
-      updated_at: now.toISOString(),
-    };
-    const { error } = await supabase
-      .from("vocab_progress")
-      .upsert(row, { onConflict: "user_id,word_id" });
-    if (error) return NextResponse.json({ success: false, error: error.message }, { status: 500 });
-
-    return NextResponse.json({
-      success: true,
-      data: {
-        wordId,
-        word: entry.word,
-        known,
-        mastered: known,
-        box: row.box,
-        dueAt: row.due_at,
-        memoryTip: entry.memoryTip,
-      },
-    });
-  }
 
   // ── Flash practice attempt ────────────────────────────────────────
   // Correct passage is sampled from a pool each session; accept any valid correct use.
@@ -193,7 +159,7 @@ export async function POST(req: NextRequest) {
       definition: entry.definition,
       memoryTip: entry.memoryTip,
       word: entry.word,
-      // Canonical curated example (feedback); may differ from the MCQ they just saw
+      // Bank canonical example (client prefers the passage from this quiz's options)
       correctPassage: entry.correctPassage,
       box: row.box,
       mastered: known,

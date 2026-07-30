@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w201",
+    "word": "Ostentatious",
+    "definition": "showy; designed to impress or attract notice",
+    "memoryTip": "OSTENTatious \u2014 put on a show (like a gold tent) so everyone stares.",
+    "correctPassage": "Ostentatious displays of wealth sat uneasily with the town's modest culture.",
+    "wrongPassages": [
+      "She preferred an ostentatious desk in the back corner where no visitor would notice her.",
+      "The password was deliberately ostentatious so that anyone could guess it on the first try.",
+      "His ostentatious notes filled three pages with nothing but blank lines and a title."
+    ]
+  },
+  {
+    "id": "w202",
+    "word": "Conjectural",
+    "definition": "based on incomplete information; speculative",
+    "memoryTip": "Conjecture = a guess \u2014 conjectural claims rest on guesswork, not proof.",
+    "correctPassage": "Any claim about the author's motives remains largely conjectural.",
+    "wrongPassages": [
+      "The lab's conjectural measurements matched the certified reference sample exactly.",
+      "Her conjectural diary listed every appointment she had already confirmed in writing.",
+      "The jury accepted only conjectural evidence: fingerprints, video, and a signed confession."
+    ]
+  },
+  {
+    "id": "w203",
+    "word": "Stringent",
+    "definition": "strict, precise, and exacting",
+    "memoryTip": "String-tight rules \u2014 pulled taut; no slack allowed.",
+    "correctPassage": "Stringent safety standards apply to every chemical in the lab.",
+    "wrongPassages": [
+      "The dress code was so stringent that students could wear anything they liked.",
+      "His stringent schedule left whole afternoons free with no tasks assigned.",
+      "Editors praised the draft for its stringent arguments full of vague, unsupported claims."
+    ]
+  },
+  {
+    "id": "w204",
+    "word": "Egotistical",
+    "definition": "excessively self-centered or conceited",
+    "memoryTip": "Ego-tistical: the ego is the star of every sentence.",
+    "correctPassage": "An egotistical refusal to share credit damaged team morale.",
+    "wrongPassages": [
+      "Her egotistical mentoring always put the interns' growth ahead of her own reputation.",
+      "The egotistical volunteer stayed late scrubbing floors no one else would touch.",
+      "Critics called the memoir egotistical for focusing entirely on other people's achievements."
+    ]
+  },
+  {
+    "id": "w205",
+    "word": "Pliant",
+    "definition": "easily bent; easily influenced",
+    "memoryTip": "Pliant \u2248 pliable \u2014 bends without breaking; yields to pressure.",
+    "correctPassage": "Young stems are pliant enough to train along a trellis.",
+    "wrongPassages": [
+      "The pliant steel beam refused to flex even under the crane's full load.",
+      "A pliant negotiator never changed position no matter how strong the counteroffer.",
+      "The judge was so pliant that no lawyer could sway her from the written law."
+    ]
+  },
+  {
+    "id": "w206",
+    "word": "Serene",
+    "definition": "calm, peaceful, and untroubled",
+    "memoryTip": "Serene scene \u2014 still water, no wind, no worry.",
+    "correctPassage": "The lake was serene at dawn, with barely a ripple on the surface.",
+    "wrongPassages": [
+      "The trading floor was serene as alarms blared and phones rang without pause.",
+      "Her serene outburst knocked over two chairs before anyone could intervene.",
+      "The serene debate featured raised voices, slammed papers, and a walkout."
+    ]
+  },
+  {
+    "id": "w207",
+    "word": "Vicarious",
+    "definition": "experienced through another person rather than firsthand",
+    "memoryTip": "Via someone else \u2014 you feel their thrills secondhand.",
+    "correctPassage": "Readers experience a kind of vicarious adventure through the narrator's travels.",
+    "wrongPassages": [
+      "She earned a vicarious degree by attending every lecture and sitting every exam herself.",
+      "His vicarious injury came from the fall he took on the ice, not from watching others.",
+      "They planned a vicarious vacation and booked the flights under their own names."
+    ]
+  },
+  {
+    "id": "w208",
+    "word": "Forestall",
+    "definition": "prevent or hinder by taking action ahead of time",
+    "memoryTip": "Fore-stall: block it before it starts.",
+    "correctPassage": "Early vaccination campaigns sought to forestall a winter outbreak.",
+    "wrongPassages": [
+      "They waited to forestall the leak until after the basement had already flooded.",
+      "Management chose to forestall the crisis by ignoring the first dozen warning emails.",
+      "She forestalled the deadline by submitting the report three weeks late."
+    ]
+  },
+  {
+    "id": "w209",
+    "word": "Dwindle",
+    "definition": "diminish or shrink gradually",
+    "memoryTip": "Dwindle down \u2014 shrink little by little until almost gone.",
+    "correctPassage": "As funding dwindled, the program had to drop several field sites.",
+    "wrongPassages": [
+      "Enrollment dwindled from 40 students to 400 within a single semester.",
+      "The surplus dwindled upward after three profitable quarters in a row.",
+      "Her confidence dwindled into a bold keynote that filled the largest hall on campus."
+    ]
+  },
+  {
+    "id": "w210",
+    "word": "Provocative",
+    "definition": "tending to provoke a strong reaction, interest, or annoyance",
+    "memoryTip": "Pro-voke: built to stir a reaction, not to soothe.",
+    "correctPassage": "The exhibit's provocative title was meant to spark discussion, not offense.",
+    "wrongPassages": [
+      "The lullaby was so provocative that every child fell asleep within minutes.",
+      "His provocative apology smoothed every conflict and left no one upset.",
+      "Students found the review sheet provocative because it repeated only the easiest drills."
+    ]
+  }
+]

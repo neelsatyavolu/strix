@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w291",
+    "word": "Interchangeable",
+    "definition": "able to be exchanged without changing the result",
+    "memoryTip": "Inter-change \u2014 swap them and nothing really changes.",
+    "correctPassage": "In this model the two variables are not interchangeable.",
+    "wrongPassages": [
+      "The one-of-a-kind signed manuscript was interchangeable with any unsigned reprint.",
+      "His unique fingerprint was interchangeable with everyone else in the database.",
+      "The locked password and the public welcome sign proved fully interchangeable."
+    ]
+  },
+  {
+    "id": "w292",
+    "word": "Encapsulate",
+    "definition": "express the essential features of something briefly",
+    "memoryTip": "In a capsule \u2014 sum up the essence in a tight package.",
+    "correctPassage": "One sentence can rarely encapsulate a decade of research.",
+    "wrongPassages": [
+      "She tried to encapsulate the rumor by posting an unconfirmed theory online.",
+      "He moved to encapsulate the deposition by claiming the audio was corrupted.",
+      "They hoped to encapsulate the boycott with influencer posts and no policy changes."
+    ]
+  },
+  {
+    "id": "w293",
+    "word": "Facetious",
+    "definition": "treating a serious matter with deliberate, often inappropriate humor",
+    "memoryTip": "Facet + joking face \u2014 treating serious things lightly on purpose.",
+    "correctPassage": "A facetious remark during the briefing was widely misread as policy.",
+    "wrongPassages": [
+      "Her facetious eulogy never once broke into a smile or a joke.",
+      "The surgeon kept a facetious silence while explaining the risks of the procedure.",
+      "He filed a facetious tax return that listed every income source in careful detail."
+    ]
+  },
+  {
+    "id": "w294",
+    "word": "Secluded",
+    "definition": "hidden from view; private and not often visited",
+    "memoryTip": "Se-clude: shut away \u2014 private and hard to reach.",
+    "correctPassage": "The cabin sits in a secluded valley far from any road.",
+    "wrongPassages": [
+      "The secluded plaza hosted a street fair with food trucks every weekend.",
+      "Her secluded desk sat in the center of the open office under bright lights.",
+      "They chose a secluded table next to the host stand at the crowded entrance."
+    ]
+  },
+  {
+    "id": "w295",
+    "word": "Retrieve",
+    "definition": "get or bring something back",
+    "memoryTip": "Re-trieve: bring it back (like a retriever dog).",
+    "correctPassage": "Software can retrieve deleted files for a limited time.",
+    "wrongPassages": [
+      "She hoped to retrieve the email by typing a brand-new message from scratch.",
+      "They tried to retrieve the meeting by canceling it before anyone arrived.",
+      "He will retrieve the broken vase by leaving the shards on the floor."
+    ]
+  },
+  {
+    "id": "w296",
+    "word": "Rejuvenate",
+    "definition": "make look or feel younger, fresher, or more vital",
+    "memoryTip": "Re-juvenile: make young or fresh again.",
+    "correctPassage": "A new arts festival helped rejuvenate the downtown district.",
+    "wrongPassages": [
+      "They hoped to rejuvenate the garden by paving every bed with concrete.",
+      "Skipping sleep and meals will rejuvenate anyone before a long exam week.",
+      "The factory planned to rejuvenate the river by dumping untreated waste into it."
+    ]
+  },
+  {
+    "id": "w297",
+    "word": "Abstruse",
+    "definition": "difficult to understand",
+    "memoryTip": "Abstract + obtuse difficulty \u2014 hard for most people to grasp.",
+    "correctPassage": "The proof is abstruse even for specialists in the field.",
+    "wrongPassages": [
+      "Her abstruse briefing covered risks, costs, and a clear next step in four slides.",
+      "The abstruse picture book used only three-word sentences and bright photos.",
+      "He called the fire-exit map abstruse because arrows pointed the only way out."
+    ]
+  },
+  {
+    "id": "w298",
+    "word": "Bellicose",
+    "definition": "aggressive and ready to fight",
+    "memoryTip": "Belli = war \u2014 speech or manner that is eager to fight.",
+    "correctPassage": "Bellicose rhetoric made a diplomatic solution harder to reach.",
+    "wrongPassages": [
+      "Her bellicose reply thanked everyone and offered to reschedule the meeting.",
+      "The bellicose treaty banned weapons and created a permanent peace commission.",
+      "He gave a bellicose hug to the rival coach after the final whistle."
+    ]
+  },
+  {
+    "id": "w299",
+    "word": "Cacophony",
+    "definition": "a harsh, jarring mixture of sounds",
+    "memoryTip": "Caco (bad) + phony (sound) \u2014 a harsh clash of noise.",
+    "correctPassage": "A cacophony of car horns filled the street at rush hour.",
+    "wrongPassages": [
+      "The gallery's cacophony hang placed one quiet work per wall with wide margins.",
+      "Listeners praised the choir's cacophony for its perfect blend and soft dynamics.",
+      "The library enforced a strict cacophony so only whispers could be heard."
+    ]
+  },
+  {
+    "id": "w300",
+    "word": "Deleterious",
+    "definition": "causing harm or damage",
+    "memoryTip": "Delete-erious: deletes health \u2014 harmful in effect.",
+    "correctPassage": "Even low levels of the chemical may have deleterious effects.",
+    "wrongPassages": [
+      "The doctor called the vaccine deleterious because side effects were rare and mild.",
+      "Fresh air and sleep had a deleterious effect on her energy after the flu.",
+      "They praised the safety rails for their deleterious impact on accident rates."
+    ]
+  }
+]

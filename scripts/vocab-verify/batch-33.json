@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w331",
+    "word": "Appraise",
+    "definition": "to assess the value, quality, or worth of something",
+    "memoryTip": "APPRAise the price\u2014assess value (not the same as praise).",
+    "correctPassage": "A jeweler came to appraise the necklace before the insurance renewal.",
+    "wrongPassages": [
+      "Fans rose to appraise the singer with a standing ovation.",
+      "The lab will appraise contamination by leaving samples unlabeled.",
+      "She hoped the coach would appraise her effort with a public speech."
+    ]
+  },
+  {
+    "id": "w332",
+    "word": "Discern",
+    "definition": "to perceive, detect, or recognize with care",
+    "memoryTip": "DIS-cern: sift carefully until you can tell things apart.",
+    "correctPassage": "Only a trained ear can discern the slight change in pitch.",
+    "wrongPassages": [
+      "The firm tried to discern open tickets by auto-closing anything over thirty days old.",
+      "They billed discern time by rounding every six-minute block upward.",
+      "The tide gauge's discern needle had been frozen mid-scale for months."
+    ]
+  },
+  {
+    "id": "w333",
+    "word": "Conspicuous",
+    "definition": "clearly visible; attracting notice",
+    "memoryTip": "Con-SPIC-uous: easy to SEE (Latin spicere) because it stands out.",
+    "correctPassage": "His bright red jacket made him conspicuous in the gray crowd.",
+    "wrongPassages": [
+      "She kept the papers conspicuous in a locked drawer no one ever opened.",
+      "The motif sounded conspicuous after brass buried it completely.",
+      "His quiet, camouflaged outfit was designed to be as conspicuous as possible."
+    ]
+  },
+  {
+    "id": "w334",
+    "word": "Renounce",
+    "definition": "to formally declare that one is giving something up",
+    "memoryTip": "Re-NOUNCE: publicly announce you are giving it up.",
+    "correctPassage": "She chose to renounce the inheritance and donate it instead.",
+    "wrongPassages": [
+      "Reviewers called the stats renounce after the reanalysis matched the paper.",
+      "The empty dock looked renounce with loaders parked for a decade.",
+      "He hoped to renounce the award by accepting it on live television."
+    ]
+  },
+  {
+    "id": "w335",
+    "word": "Foible",
+    "definition": "a minor weakness or harmless eccentricity",
+    "memoryTip": "A little FOIBLE is a foil-able flaw\u2014minor, not fatal.",
+    "correctPassage": "His only foible was humming while he graded late at night.",
+    "wrongPassages": [
+      "The structural foible cracked the foundation from corner to corner.",
+      "Critics praised her foible leadership for saving the company in a crisis.",
+      "The only foible in the bridge design was a missing support beam."
+    ]
+  },
+  {
+    "id": "w336",
+    "word": "Reproach",
+    "definition": "to express disapproval or disappointment; blame",
+    "memoryTip": "Re-PROACH: approach someone again\u2014with blame, not praise.",
+    "correctPassage": "There was quiet reproach in the way she asked why he was late.",
+    "wrongPassages": [
+      "Fans offered loud reproach that sounded exactly like a standing ovation.",
+      "The empty dock looked reproach with ramps chained up for years.",
+      "Her letter of reproach thanked him warmly for every favor he had done."
+    ]
+  },
+  {
+    "id": "w337",
+    "word": "Contemptuous",
+    "definition": "showing scorn or deep disrespect",
+    "memoryTip": "Full of CONTEMPT\u2014scornful, looking down on someone.",
+    "correctPassage": "His contemptuous shrug made it clear he thought the plan was foolish.",
+    "wrongPassages": [
+      "The orchard looked contemptuous after hail stripped every tree.",
+      "She gave a contemptuous smile that radiated pure admiration.",
+      "He called the puzzle contemptuous after solving it in under a minute."
+    ]
+  },
+  {
+    "id": "w338",
+    "word": "Startling",
+    "definition": "very surprising or astonishing",
+    "memoryTip": "Makes you START (jump)\u2014so surprising you flinch.",
+    "correctPassage": "The most startling finding was that sleep alone cut errors in half.",
+    "wrongPassages": [
+      "Nothing about the predictable ending felt startling to anyone in the room.",
+      "The empty stand looked startling after packing, with only chalk marks left.",
+      "Voters tabled the startling tax that every rider had already calmly expected."
+    ]
+  },
+  {
+    "id": "w339",
+    "word": "Belie",
+    "definition": "to fail to give a true impression of; to contradict",
+    "memoryTip": "Be-LIE: the surface lies about what is really underneath.",
+    "correctPassage": "His calm tone belied how nervous he felt before the exam.",
+    "wrongPassages": [
+      "I fully belie the witness after checking every date in her story.",
+      "She closed the ticket as belie while action items still had no owners.",
+      "Fans found the remaster belie for files identical to the old CD."
+    ]
+  },
+  {
+    "id": "w340",
+    "word": "Idiosyncratic",
+    "definition": "peculiar to an individual; highly distinctive",
+    "memoryTip": "IDIO + quirks: your personal odd habits and style.",
+    "correctPassage": "Her idiosyncratic color code made the spreadsheet unreadable to others.",
+    "wrongPassages": [
+      "Everyone followed the same idiosyncratic checklist issued by headquarters.",
+      "The salt flat stayed idiosyncratic under a model with permanent drought.",
+      "The tripwire was idiosyncratic: set past any value the logs could store."
+    ]
+  }
+]

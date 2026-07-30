@@ -1,0 +1,72 @@
+{
+  "batch": 0,
+  "pass": false,
+  "words": [
+    {
+      "id": "w001",
+      "word": "Arduous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w002",
+      "word": "Inconsequential",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w003",
+      "word": "Insuperable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w004",
+      "word": "Conjecture",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] is actually correct usage: a conjecture becoming a verified fact after DNA is normal scientific English, not a misuse"
+      ]
+    },
+    {
+      "id": "w005",
+      "word": "Counterfactual",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w006",
+      "word": "Efficacy",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] does not misuse the word — 'efficacy was irrelevant' still uses efficacy = ability to produce a result; no clear semantic clash"
+      ]
+    },
+    {
+      "id": "w007",
+      "word": "Rectify",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w008",
+      "word": "Accentuate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w009",
+      "word": "Eclipse",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w010",
+      "word": "Manifest",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

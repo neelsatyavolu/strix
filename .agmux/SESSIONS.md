@@ -5,7 +5,7 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-30T15:16:17.000Z
+- **Updated**: 2026-07-30T15:26:48.000Z
 - **Sessions**: 7
 
 ## Vocab flashcards + AODEFEN 400
@@ -13,10 +13,10 @@
 - **id**: `02f384cf-d226-4d5b-933c-8c5883f1e142`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-07-30T15:16:17.000Z
+- **updated**: 2026-07-30T15:26:48.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fabc4-c6a0-7bf3-bd03-67abd20f6a2e/chat_history.jsonl`
 
-Known/checkmarked only when unflipped I know it + correct usage. Flip then correct never graduates; still due. Migration 0014 for flash_know/flash_study last_mode.
+Fixed usage feedback to always show right answer for this quiz; salted fresh options each session. 40-agent verify: feedbackUi+fresh options OK; patched weak distractors on ~30 words.
 
 ## Vocabulary tab
 

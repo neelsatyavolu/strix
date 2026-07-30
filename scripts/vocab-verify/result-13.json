@@ -1,0 +1,68 @@
+{
+  "batch": 13,
+  "pass": true,
+  "words": [
+    {
+      "id": "w131",
+      "word": "Mutilate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w132",
+      "word": "Ingenuous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w133",
+      "word": "Ingenious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w134",
+      "word": "Imprudent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w135",
+      "word": "Presage",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w136",
+      "word": "Muzzle",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w137",
+      "word": "Ineffectual",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w138",
+      "word": "Subvert",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w139",
+      "word": "Imperious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w140",
+      "word": "Scanty",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

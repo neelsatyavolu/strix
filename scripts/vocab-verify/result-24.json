@@ -1,0 +1,47 @@
+{
+  "batch": 24,
+  "pass": false,
+  "words": [
+    { "id": "w241", "word": "Amalgamate", "ok": true, "issues": [] },
+    { "id": "w242", "word": "Promulgate", "ok": true, "issues": [] },
+    { "id": "w243", "word": "Reciprocity", "ok": true, "issues": [] },
+    {
+      "id": "w244",
+      "word": "Entail",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'did not entail any change…' is correct usage (involve as a necessary consequence)—misuse not present",
+        "wrongPassages[2]: 'said to entail nothing…' is correct usage—misuse not present"
+      ]
+    },
+    { "id": "w245", "word": "Stipulate", "ok": true, "issues": [] },
+    { "id": "w246", "word": "Emblematic", "ok": true, "issues": [] },
+    {
+      "id": "w247",
+      "word": "Abatement",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'After the abatement of the storm…' is correct usage (reduction/lessening)—second clause is narrative inconsistency, not misuse of the word"
+      ]
+    },
+    { "id": "w248", "word": "Dissonance", "ok": true, "issues": [] },
+    {
+      "id": "w249",
+      "word": "Curtail",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1]: 'curtail the drought by seeding clouds…' is correct usage (cut short/reduce the drought)—misuse not present"
+      ]
+    },
+    {
+      "id": "w250",
+      "word": "Fortitude",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'His fortitude collapsed at the first mild inconvenience' is correct usage (courage/strength failed)—misuse not present"
+      ]
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

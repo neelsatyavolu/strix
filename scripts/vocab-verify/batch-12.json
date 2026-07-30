@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w121",
+    "word": "Constrict",
+    "definition": "make narrower by squeezing",
+    "memoryTip": "Con-strict: squeeze tight like a constrictor snake.",
+    "correctPassage": "Swelling can constrict the airway if not treated promptly.",
+    "wrongPassages": [
+      "They hoped to constrict the empty highway by opening every lane to traffic.",
+      "She tried to constrict the speech by adding three more digressions and a long anecdote.",
+      "The chef will constrict the soup so it tastes exactly the same as before."
+    ]
+  },
+  {
+    "id": "w122",
+    "word": "Emulate",
+    "definition": "match or surpass by imitation",
+    "memoryTip": "E-mulate: imitate to equal or beat someone you admire.",
+    "correctPassage": "Young designers often try to emulate the restraint of mid-century masters.",
+    "wrongPassages": [
+      "He moved to emulate the accusation by inventing a brand-new charge no one had made.",
+      "She tried to emulate silence by talking faster without answering the question.",
+      "The job will emulate failed tasks by deleting them from the dashboard view."
+    ]
+  },
+  {
+    "id": "w123",
+    "word": "Augment",
+    "definition": "make greater by adding to",
+    "memoryTip": "Aug-ment: add more; make something greater.",
+    "correctPassage": "Grants will augment the school\u2019s own funding for after-school programs.",
+    "wrongPassages": [
+      "They hoped to augment scarcity by rationing the last supplies even more tightly.",
+      "Managers moved to augment headcount by freezing all hiring for the year.",
+      "She tried to augment the silence by unplugging every microphone in the hall."
+    ]
+  },
+  {
+    "id": "w124",
+    "word": "Vacate",
+    "definition": "leave a place previously occupied",
+    "memoryTip": "Leave it vacant \u2014 empty the place and go.",
+    "correctPassage": "Tenants were ordered to vacate the building within thirty days.",
+    "wrongPassages": [
+      "He tried to vacate the courtroom by packing it with more spectators than seats.",
+      "The device will vacate alerts by silencing them for twenty-four hours straight.",
+      "She tried to vacate the office by moving extra desks into the same room."
+    ]
+  },
+  {
+    "id": "w125",
+    "word": "Extrapolate",
+    "definition": "extend conclusions beyond known data",
+    "memoryTip": "Extra + polate: push the pattern past the data you have.",
+    "correctPassage": "It is risky to extrapolate from such a small sample to the whole population.",
+    "wrongPassages": [
+      "He moved to extrapolate the warrant by remote-wiping the phone before surrender.",
+      "They hoped to extrapolate the blackout by cycling power on and off every minute.",
+      "She tried to extrapolate the equation by erasing every variable until nothing remained."
+    ]
+  },
+  {
+    "id": "w126",
+    "word": "Convene",
+    "definition": "come or bring together for a meeting",
+    "memoryTip": "Con-vene: come together for a meeting.",
+    "correctPassage": "The board will convene next Monday to vote on the proposal.",
+    "wrongPassages": [
+      "Managers announced they would convene the staff by sending everyone home early.",
+      "She tried to convene the jury by dismissing half the panel before opening statements.",
+      "Please convene the window before you leave so the rain does not get in."
+    ]
+  },
+  {
+    "id": "w127",
+    "word": "Banal",
+    "definition": "so lacking in originality as to be boring",
+    "memoryTip": "So common it bans all interest \u2014 boringly ordinary.",
+    "correctPassage": "What might have been a powerful speech was undermined by banal slogans.",
+    "wrongPassages": [
+      "Critics praised the banal ending for inventing a structure no one had seen before.",
+      "Her banal theorem introduced an entirely new branch of mathematics overnight.",
+      "The lecture was banal: every claim was backed by rare archival finds and original proofs."
+    ]
+  },
+  {
+    "id": "w128",
+    "word": "Erratic",
+    "definition": "not even or regular in pattern; unpredictable",
+    "memoryTip": "Err + path: jumps around without a steady pattern.",
+    "correctPassage": "Erratic attendance made it hard to keep the seminar on schedule.",
+    "wrongPassages": [
+      "Astronomers call a star erratic when its brightness never changes across decades.",
+      "She kept an erratic schedule: the same three tasks at the same times each day.",
+      "His erratic explanation listed steps 1\u20135 with diagrams and a glossary for every term."
+    ]
+  },
+  {
+    "id": "w129",
+    "word": "Disingenuous",
+    "definition": "not candid or sincere; falsely appearing frank",
+    "memoryTip": "Dis + ingenuous (innocent) \u2014 fake sincerity, not genuine.",
+    "correctPassage": "Claiming surprise at the outcome seemed disingenuous after months of warnings.",
+    "wrongPassages": [
+      "Listeners found the lecture disingenuous because no term was left undefined on the board.",
+      "Her disingenuous apology named every harm and accepted full responsibility without excuses.",
+      "Judges called the ruling disingenuous because it carefully weighed both sides and cited law."
+    ]
+  },
+  {
+    "id": "w130",
+    "word": "Vacillate",
+    "definition": "waver between different opinions or actions",
+    "memoryTip": "Vacillate like a vacuum of decision \u2014 swing back and forth.",
+    "correctPassage": "Investors continue to vacillate between optimism and caution.",
+    "wrongPassages": [
+      "They voted to vacillate: every hand went up on the first call with no discussion.",
+      "She tried to vacillate the injunction by serving an outdated address.",
+      "He tried to vacillate the drought narrative by renaming the emergency a dry spell."
+    ]
+  }
+]

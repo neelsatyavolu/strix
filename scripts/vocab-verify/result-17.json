@@ -1,0 +1,72 @@
+{
+  "batch": 17,
+  "pass": false,
+  "words": [
+    {
+      "id": "w171",
+      "word": "Hamper",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] is actually correct usage: \"The coach's advice only hampered the team's steady improvement\" uses hamper properly (to hinder). A student who knows the word could accept it as right."
+      ]
+    },
+    {
+      "id": "w172",
+      "word": "Mollify",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] uses mollify correctly: \"meant to mollify the already furious crowd\" has the right meaning (intended to soothe); sarcasm makes the plan foolish, not the word misused."
+      ]
+    },
+    {
+      "id": "w173",
+      "word": "Desolate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w174",
+      "word": "Discriminating",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w175",
+      "word": "Impetuous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w176",
+      "word": "Misanthropic",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w177",
+      "word": "Recalcitrant",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w178",
+      "word": "Desultory",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w179",
+      "word": "Veritable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w180",
+      "word": "Swoon",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

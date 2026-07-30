@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w091",
+    "word": "Brood",
+    "definition": "dwell unhappily on a thought; also a group of young birds",
+    "memoryTip": "Like a hen brooding \u2014 sit and stew on dark thoughts (or a clutch of chicks).",
+    "correctPassage": "He tended to brood over mistakes long after others had moved on.",
+    "wrongPassages": [
+      "She brooded the good news by throwing a party the same night.",
+      "He brooded over the joke for two seconds, then forgot it entirely.",
+      "They brood cheerfully whenever a hard problem finally gets solved."
+    ]
+  },
+  {
+    "id": "w092",
+    "word": "Reverence",
+    "definition": "deep respect, often tinged with awe",
+    "memoryTip": "Revere someone \u2014 treat them with deep, almost sacred respect.",
+    "correctPassage": "The ceremony was conducted with quiet reverence for those lost.",
+    "wrongPassages": [
+      "He showed reverence for the archive by doodling in the margins of every page.",
+      "Their reverence for the coach was clear when they ignored every instruction.",
+      "She treated the heirloom with reverence by leaving it in a damp garage."
+    ]
+  },
+  {
+    "id": "w093",
+    "word": "Exemplary",
+    "definition": "serving as a desirable model; outstandingly good",
+    "memoryTip": "Worthy to be an example \u2014 model behavior others should copy.",
+    "correctPassage": "Her laboratory notebooks are exemplary in their clarity and care.",
+    "wrongPassages": [
+      "His exemplary manners included cutting off every speaker mid-sentence.",
+      "The exemplary report mixed up names, dates, and half the figures.",
+      "They called the empty attendance sheet exemplary of a thriving program."
+    ]
+  },
+  {
+    "id": "w094",
+    "word": "Defy",
+    "definition": "openly resist or refuse to obey; go against",
+    "memoryTip": "De-fy: refuse to bow \u2014 openly resist an order or expectation.",
+    "correctPassage": "The results appear to defy the predictions of the standard model.",
+    "wrongPassages": [
+      "She chose to defy the curfew by arriving home an hour early every night.",
+      "The class decided to defy the teacher by copying the notes word for word as instructed.",
+      "He managed to defy the ban by carefully following every rule on the list."
+    ]
+  },
+  {
+    "id": "w095",
+    "word": "Material",
+    "definition": "important or relevant (as in material evidence)",
+    "memoryTip": "Matters materially \u2014 important/relevant, not just \u201cstuff\u201d you can touch.",
+    "correctPassage": "Only material differences between the samples were reported in the abstract.",
+    "wrongPassages": [
+      "The typo was material to the verdict and changed nothing about the case.",
+      "A material clue would be one the jury could safely ignore.",
+      "She called the blank footnote material because it added zero evidence."
+    ]
+  },
+  {
+    "id": "w096",
+    "word": "Elasticity",
+    "definition": "ability to stretch and resume shape; adaptability",
+    "memoryTip": "Like elastic \u2014 stretches and snaps back; also flexible response to change.",
+    "correctPassage": "The market showed surprising elasticity in response to the price change.",
+    "wrongPassages": [
+      "Glass is prized for its elasticity when it shatters at the lightest tap.",
+      "The schedule\u2019s elasticity meant every hour was locked and nonnegotiable.",
+      "His elasticity of mind rejected every new idea without a second look."
+    ]
+  },
+  {
+    "id": "w097",
+    "word": "Dearth",
+    "definition": "a scarcity or lack of something",
+    "memoryTip": "Sounds like \u201cdeath of supply\u201d \u2014 a serious lack or shortage.",
+    "correctPassage": "A dearth of qualified applicants delayed the hire for months.",
+    "wrongPassages": [
+      "A dearth of volunteers filled every shift twice over.",
+      "They celebrated the dearth of rain that flooded the valley for days.",
+      "The pantry\u2019s dearth of snacks left shelves stacked to the ceiling."
+    ]
+  },
+  {
+    "id": "w098",
+    "word": "Downplay",
+    "definition": "make something seem less important than it is",
+    "memoryTip": "Play it down \u2014 shrink how big or serious something sounds.",
+    "correctPassage": "Officials tried to downplay the severity of the shortage.",
+    "wrongPassages": [
+      "She downplayed the award by hosting a city-wide parade in her honor.",
+      "They downplayed the risk by printing warnings in foot-high red type.",
+      "He downplayed the scandal by leaking every detail to the evening news."
+    ]
+  },
+  {
+    "id": "w099",
+    "word": "Outstrip",
+    "definition": "surpass; go beyond or move faster than",
+    "memoryTip": "Strip ahead of the pack \u2014 run past and leave others behind.",
+    "correctPassage": "Demand continues to outstrip the region\u2019s ability to supply housing.",
+    "wrongPassages": [
+      "Sales outstripped the forecast by falling short every single quarter.",
+      "Her pace outstripped the field when she finished dead last.",
+      "New hires outstripped veterans by needing twice as much coaching."
+    ]
+  },
+  {
+    "id": "w100",
+    "word": "Inertia",
+    "definition": "tendency to stay unchanged; resistance to a change in motion",
+    "memoryTip": "Newton\u2019s inertia \u2014 stays still (or keeps going) until something pushes it.",
+    "correctPassage": "Institutional inertia made reforming the curriculum slow and difficult.",
+    "wrongPassages": [
+      "The startup\u2019s inertia was famous for reinventing its product every week.",
+      "Her inertia showed when she rewrote the plan three times before lunch.",
+      "Market inertia meant prices flipped with every rumor by noon."
+    ]
+  }
+]

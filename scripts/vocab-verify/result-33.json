@@ -1,0 +1,26 @@
+{
+  "batch": 33,
+  "pass": false,
+  "words": [
+    { "id": "w331", "word": "Appraise", "ok": true, "issues": [] },
+    { "id": "w332", "word": "Discern", "ok": true, "issues": [] },
+    { "id": "w333", "word": "Conspicuous", "ok": true, "issues": [] },
+    { "id": "w334", "word": "Renounce", "ok": true, "issues": [] },
+    { "id": "w335", "word": "Foible", "ok": true, "issues": [] },
+    { "id": "w336", "word": "Reproach", "ok": true, "issues": [] },
+    { "id": "w337", "word": "Contemptuous", "ok": true, "issues": [] },
+    {
+      "id": "w338",
+      "word": "Startling",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] uses 'startling' correctly (predictable ending did not feel surprising) — not a misuse; could be chosen as the right answer",
+        "wrongPassages[1] weak/ambiguous: empty stand 'looked startling' can still mean surprising; misuse is unclear"
+      ]
+    },
+    { "id": "w339", "word": "Belie", "ok": true, "issues": [] },
+    { "id": "w340", "word": "Idiosyncratic", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

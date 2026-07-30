@@ -1,0 +1,68 @@
+{
+  "batch": 18,
+  "pass": true,
+  "words": [
+    {
+      "id": "w181",
+      "word": "Retroactive",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w182",
+      "word": "Reciprocate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w183",
+      "word": "Disengage",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w184",
+      "word": "Contentious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w185",
+      "word": "Equivocal",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w186",
+      "word": "Inconspicuous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w187",
+      "word": "Conflate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w188",
+      "word": "Reconstitute",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w189",
+      "word": "Apathy",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w190",
+      "word": "Immutable",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

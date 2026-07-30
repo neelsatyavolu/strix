@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w051",
+    "word": "Unwarranted",
+    "definition": "not justified or authorized; lacking good reason",
+    "memoryTip": "No warrant \u2014 no justification; not called for.",
+    "correctPassage": "The criticism was unwarranted; the study had carefully controlled for bias.",
+    "wrongPassages": [
+      "An unwarranted border crossing still requires passports, checks, and stamps.",
+      "The bog hollow stayed unwarranted after every free-running ditch lowered it.",
+      "His unwarranted limitation clause ran longer than the rest of the contract."
+    ]
+  },
+  {
+    "id": "w052",
+    "word": "Exorbitant",
+    "definition": "unreasonably high in price or amount",
+    "memoryTip": "Ex-orbit: way outside the orbit of a fair price \u2014 too high.",
+    "correctPassage": "Residents complained about the exorbitant fees charged by the utility company.",
+    "wrongPassages": [
+      "Her exorbitant testimony contradicted itself on both times and names.",
+      "Critics called the live-stream mix exorbitant for chat audio over the music.",
+      "The witness gave an exorbitant account that left out every key detail."
+    ]
+  },
+  {
+    "id": "w053",
+    "word": "Demarcate",
+    "definition": "to set or mark the boundaries of something",
+    "memoryTip": "De-mark a line \u2014 draw the borders clearly.",
+    "correctPassage": "A stone wall was built to demarcate the boundary between the two farms.",
+    "wrongPassages": [
+      "She hoped to demarcate the mutiny by deleting the chat history overnight.",
+      "The cron job will demarcate SLA breaches by rewriting the SLA mid-month.",
+      "The bot will demarcate the ticket by closing it with 'thanks!' and no fix."
+    ]
+  },
+  {
+    "id": "w054",
+    "word": "Intelligible",
+    "definition": "able to be understood; clear enough to grasp",
+    "memoryTip": "You can 'get' the intelligence of it \u2014 understandable.",
+    "correctPassage": "Even without technical training, the diagram makes the process intelligible.",
+    "wrongPassages": [
+      "Voters defeated the intelligible levy that schools said would prevent cuts.",
+      "The epilogue was intelligible: it opened a sequel instead of closing the story.",
+      "The floodplain stayed intelligible behind a levee raised after the last crest."
+    ]
+  },
+  {
+    "id": "w055",
+    "word": "Discretion",
+    "definition": "careful judgment; freedom to decide as one sees fit",
+    "memoryTip": "Discreet judgment \u2014 careful choice, or the power to choose.",
+    "correctPassage": "Hiring decisions are left to the manager's discretion within stated guidelines.",
+    "wrongPassages": [
+      "The permit titled discretion had a gold seal and no operative language.",
+      "The crate stamped discretion held bubble wrap and nothing else of value.",
+      "Routing code discretion bounced every message straight to the mailroom floor."
+    ]
+  },
+  {
+    "id": "w056",
+    "word": "Unpretentiousness",
+    "definition": "modesty; freedom from showiness or pretension",
+    "memoryTip": "Not pretentious \u2014 simple and real, no showing off.",
+    "correctPassage": "The caf\u00e9's unpretentiousness\u2014plain tables, no music\u2014was part of its appeal.",
+    "wrongPassages": [
+      "She wrote unpretentiousness as a bullet and never returned to fill it in.",
+      "The sticker book treated unpretentiousness as a gold star for participation.",
+      "The recipe listed unpretentiousness next to salt as if it were an ingredient."
+    ]
+  },
+  {
+    "id": "w057",
+    "word": "Subside",
+    "definition": "to become less intense, severe, or active",
+    "memoryTip": "Sub + side: sink down \u2014 a storm, fever, or anger calms.",
+    "correctPassage": "Once the fever began to subside, she was able to sleep through the night.",
+    "wrongPassages": [
+      "The snow cornice felt subside behind a seasonal fence and warning signs.",
+      "Historians labeled the decade subside once the archives left little in doubt.",
+      "Trustees cut the subside arts grant that local schools had already matched."
+    ]
+  },
+  {
+    "id": "w058",
+    "word": "Prank",
+    "definition": "a mischievous practical joke",
+    "memoryTip": "A playful trick \u2014 fun until someone gets hurt or mad.",
+    "correctPassage": "What started as a harmless prank escalated into a costly misunderstanding.",
+    "wrongPassages": [
+      "The team hoped to prank reopen rates by locking closed tickets forever.",
+      "The bog hollow stayed prank after drains lowered the entire water table.",
+      "Viewers found the remake prank for matching the original runtime exactly."
+    ]
+  },
+  {
+    "id": "w059",
+    "word": "Evince",
+    "definition": "to show or reveal a quality, feeling, or trait clearly",
+    "memoryTip": "E-vince like evidence \u2014 it shows a quality is there.",
+    "correctPassage": "The early drafts already evince the precision that would mark her mature style.",
+    "wrongPassages": [
+      "She practiced the speech evince until every pause landed the same way.",
+      "The alliance was evince: both sides published the full text of every clause.",
+      "The decree stayed evince until translators agreed on one English version."
+    ]
+  },
+  {
+    "id": "w060",
+    "word": "Preclude",
+    "definition": "to make impossible; to prevent from happening",
+    "memoryTip": "Pre-clude: close the door in advance \u2014 make it impossible.",
+    "correctPassage": "A prior commitment precludes her from joining the evening session.",
+    "wrongPassages": [
+      "They tried to preclude the sinkhole by filling it with loose, uncompacted trash.",
+      "He moved to preclude the deposition by claiming he did not recall any facts.",
+      "She tried to preclude the relapse by returning at once to the same triggers."
+    ]
+  }
+]

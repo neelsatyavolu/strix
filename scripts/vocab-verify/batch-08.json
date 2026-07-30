@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w081",
+    "word": "Magnitude",
+    "definition": "great size, extent, or importance",
+    "memoryTip": "Think magnum (huge bottle) \u2014 magnitude is how big or important something is.",
+    "correctPassage": "Few grasped the magnitude of the problem until the report was published.",
+    "wrongPassages": [
+      "He praised the magnitude of a speck of dust on the microscope lens.",
+      "The magnitude of her whisper filled every seat in the open stadium.",
+      "They ranked magnitude by how friendly the clerk seemed at checkout."
+    ]
+  },
+  {
+    "id": "w082",
+    "word": "Epitomize",
+    "definition": "be a perfect example of",
+    "memoryTip": "Epitome = the perfect example; to epitomize is to be that example.",
+    "correctPassage": "The building\u2019s spare lines epitomize mid-century modern design.",
+    "wrongPassages": [
+      "The messy draft epitomized polish after three rounds of careful editing.",
+      "His empty calendar epitomized a week packed with back-to-back meetings.",
+      "They said the rusty bike epitomized a brand-new product launch."
+    ]
+  },
+  {
+    "id": "w083",
+    "word": "Default",
+    "definition": "failure to meet an obligation; or a preselected option",
+    "memoryTip": "If you don\u2019t choose, you get the default \u2014 the fallback (or you fail to pay).",
+    "correctPassage": "If no option is selected, the software uses a conservative default setting.",
+    "wrongPassages": [
+      "She defaulted the speech with vivid stories that held the room\u2019s attention.",
+      "His default honesty meant he never stuck to a single story twice.",
+      "They chose the default option by carefully comparing every alternative first."
+    ]
+  },
+  {
+    "id": "w084",
+    "word": "Superfluous",
+    "definition": "unnecessary; more than what is needed",
+    "memoryTip": "Super + flow \u2014 overflow you don\u2019t need; extra fluff to cut.",
+    "correctPassage": "Editors cut superfluous adjectives that added length without clarity.",
+    "wrongPassages": [
+      "Water is superfluous for desert plants that must drink daily to survive.",
+      "The pilot called the checklist superfluous moments before using every item on it.",
+      "Her superfluous notes were the only reason anyone passed the exam."
+    ]
+  },
+  {
+    "id": "w085",
+    "word": "Exactitude",
+    "definition": "the quality of being exact; precision",
+    "memoryTip": "Exact + -itude \u2014 the state of being exact; pure precision.",
+    "correctPassage": "Cartography of that era prized exactitude over decorative flourish.",
+    "wrongPassages": [
+      "He praised the exactitude of a guess that landed miles from the true value.",
+      "Her exactitude with dates meant she routinely mixed up years and names.",
+      "They aimed for exactitude by rounding every measurement to the nearest hundred."
+    ]
+  },
+  {
+    "id": "w086",
+    "word": "Engender",
+    "definition": "cause or give rise to",
+    "memoryTip": "En-gender: \u201cgive birth to\u201d an idea, feeling, or result \u2014 cause it.",
+    "correctPassage": "Poor communication can engender distrust between teams.",
+    "wrongPassages": [
+      "Extra safety checks engendered the risk by stripping every warning label.",
+      "They engendered the empty warehouse by hauling every crate out overnight.",
+      "Her silence engendered the rumor by answering every question in full."
+    ]
+  },
+  {
+    "id": "w087",
+    "word": "Designate",
+    "definition": "officially assign a status, role, or name",
+    "memoryTip": "De-sign it as official \u2014 name or assign a role on purpose.",
+    "correctPassage": "The city will designate several blocks as a historic district.",
+    "wrongPassages": [
+      "He designated the secret hideout by never writing its name anywhere.",
+      "She designated the captain by refusing to name anyone at all.",
+      "They designated the winner by drawing lots and then ignoring the result."
+    ]
+  },
+  {
+    "id": "w088",
+    "word": "Assuage",
+    "definition": "make an unpleasant feeling less intense",
+    "memoryTip": "Sounds like \u201ca suage / soothe age of pain\u201d \u2014 ease a bad feeling.",
+    "correctPassage": "A public apology did little to assuage anger over the spill.",
+    "wrongPassages": [
+      "His jokes only assuaged the tension by making everyone angrier.",
+      "They assuaged the shortage by shipping even less grain next month.",
+      "She assuaged her thirst by locking the water bottle in a drawer."
+    ]
+  },
+  {
+    "id": "w089",
+    "word": "Fabrication",
+    "definition": "a made-up falsehood; or the act of manufacturing",
+    "memoryTip": "Fabricated like fake cloth \u2014 a made-up story (or something manufactured).",
+    "correctPassage": "The diary entry later proved to be a fabrication invented for publicity.",
+    "wrongPassages": [
+      "The live video feed was a fabrication that matched every timestamp on the clock.",
+      "Her fabrication of the recipe meant she followed the cookbook word for word.",
+      "They called the signed contract a fabrication after both sides had just signed it."
+    ]
+  },
+  {
+    "id": "w090",
+    "word": "Earnest",
+    "definition": "sincere and serious in intention",
+    "memoryTip": "In earnest \u2014 sincere, not joking; you really mean it.",
+    "correctPassage": "In an earnest letter, she asked the board to reconsider the cuts.",
+    "wrongPassages": [
+      "His earnest promise lasted until the door closed and he laughed it off.",
+      "She gave an earnest shrug that made clear she did not care at all.",
+      "The earnest flyer advertised a free trip, then buried a $900 fee in fine print."
+    ]
+  }
+]

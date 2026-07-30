@@ -1,0 +1,18 @@
+{
+  "batch": 9,
+  "pass": true,
+  "words": [
+    { "id": "w091", "word": "Brood", "ok": true, "issues": [] },
+    { "id": "w092", "word": "Reverence", "ok": true, "issues": [] },
+    { "id": "w093", "word": "Exemplary", "ok": true, "issues": [] },
+    { "id": "w094", "word": "Defy", "ok": true, "issues": [] },
+    { "id": "w095", "word": "Material", "ok": true, "issues": [] },
+    { "id": "w096", "word": "Elasticity", "ok": true, "issues": [] },
+    { "id": "w097", "word": "Dearth", "ok": true, "issues": [] },
+    { "id": "w098", "word": "Downplay", "ok": true, "issues": [] },
+    { "id": "w099", "word": "Outstrip", "ok": true, "issues": [] },
+    { "id": "w100", "word": "Inertia", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

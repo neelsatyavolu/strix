@@ -1,0 +1,70 @@
+{
+  "batch": 39,
+  "pass": false,
+  "words": [
+    {
+      "id": "w391",
+      "word": "Consideration",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w392",
+      "word": "Decadent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w393",
+      "word": "Imperiled",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'They imperiled the experiment by powering down and leaving for lunch' can be correct usage (powering down can put an experiment at risk)—misuse not clear"
+      ]
+    },
+    {
+      "id": "w394",
+      "word": "Roguish",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w395",
+      "word": "Picaresque",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w396",
+      "word": "Refract",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w397",
+      "word": "Stock",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w398",
+      "word": "Incursion",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w399",
+      "word": "Valorize",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w400",
+      "word": "Decimate",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

@@ -1,0 +1,70 @@
+{
+  "batch": 2,
+  "pass": false,
+  "words": [
+    {
+      "id": "w021",
+      "word": "Tally",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w022",
+      "word": "Nebulous",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] uses nebulous correctly (nobody found the steps nebulous = not vague); not a valid distractor"
+      ]
+    },
+    {
+      "id": "w023",
+      "word": "Unassuming",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w024",
+      "word": "Outsize",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w025",
+      "word": "Inextricable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w026",
+      "word": "Incongruous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w027",
+      "word": "Impertinent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w028",
+      "word": "Insurmountable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w029",
+      "word": "Tranquility",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w030",
+      "word": "Reprieve",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

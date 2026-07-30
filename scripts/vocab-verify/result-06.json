@@ -1,0 +1,72 @@
+{
+  "batch": 6,
+  "pass": false,
+  "words": [
+    {
+      "id": "w061",
+      "word": "Posterior",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w062",
+      "word": "Petition",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w063",
+      "word": "Mandatory",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w064",
+      "word": "Permissible",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] does not misuse the word — 'speeding is permissible if late' still uses permissible = allowed; only world-knowledge makes the claim false, not a semantic clash"
+      ]
+    },
+    {
+      "id": "w065",
+      "word": "Contingent",
+      "ok": false,
+      "issues": [
+        "wrongPassages[2] is actually correct usage: 'contingent on weather…' still means dependent on; no clear misuse of the word"
+      ]
+    },
+    {
+      "id": "w066",
+      "word": "Deplete",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w067",
+      "word": "Conform",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w068",
+      "word": "Rudimentary",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w069",
+      "word": "Paucity",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w070",
+      "word": "Verisimilitude",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

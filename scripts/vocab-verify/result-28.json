@@ -1,0 +1,25 @@
+{
+  "batch": 28,
+  "pass": false,
+  "words": [
+    {
+      "id": "w281",
+      "word": "Implacable",
+      "ok": false,
+      "issues": [
+        "wrongPassages[2]: 'She stayed implacable toward the puppy that had chewed her shoes' is correct usage (remained unappeased/unforgiving)—misuse not present"
+      ]
+    },
+    { "id": "w282", "word": "Inimical", "ok": true, "issues": [] },
+    { "id": "w283", "word": "Impute", "ok": true, "issues": [] },
+    { "id": "w284", "word": "Tenacious", "ok": true, "issues": [] },
+    { "id": "w285", "word": "Salutary", "ok": true, "issues": [] },
+    { "id": "w286", "word": "Delusive", "ok": true, "issues": [] },
+    { "id": "w287", "word": "Tortuous", "ok": true, "issues": [] },
+    { "id": "w288", "word": "Furtive", "ok": true, "issues": [] },
+    { "id": "w289", "word": "Debunk", "ok": true, "issues": [] },
+    { "id": "w290", "word": "Hallmark", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

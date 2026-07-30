@@ -1,0 +1,68 @@
+{
+  "batch": 35,
+  "pass": true,
+  "words": [
+    {
+      "id": "w351",
+      "word": "Ingratiate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w352",
+      "word": "Garrulous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w353",
+      "word": "Fervid",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w354",
+      "word": "Exigent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w355",
+      "word": "Esoteric",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w356",
+      "word": "Enervate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w357",
+      "word": "Belligerent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w358",
+      "word": "Voracious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w359",
+      "word": "Vicissitude",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w360",
+      "word": "Lugubrious",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

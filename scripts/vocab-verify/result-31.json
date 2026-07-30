@@ -1,0 +1,18 @@
+{
+  "batch": 31,
+  "pass": true,
+  "words": [
+    { "id": "w311", "word": "Repertoire", "ok": true, "issues": [] },
+    { "id": "w312", "word": "Jut", "ok": true, "issues": [] },
+    { "id": "w313", "word": "Seismic", "ok": true, "issues": [] },
+    { "id": "w314", "word": "Predicament", "ok": true, "issues": [] },
+    { "id": "w315", "word": "Culpability", "ok": true, "issues": [] },
+    { "id": "w316", "word": "Dispersion", "ok": true, "issues": [] },
+    { "id": "w317", "word": "Excavate", "ok": true, "issues": [] },
+    { "id": "w318", "word": "Festoon", "ok": true, "issues": [] },
+    { "id": "w319", "word": "Prose", "ok": true, "issues": [] },
+    { "id": "w320", "word": "Strife", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

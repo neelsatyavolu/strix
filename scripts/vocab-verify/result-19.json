@@ -1,0 +1,73 @@
+{
+  "batch": 19,
+  "pass": false,
+  "words": [
+    {
+      "id": "w191",
+      "word": "Unrivaled",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w192",
+      "word": "Converge",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1]: 'roads will converge so traffic has more routes out' still uses converge correctly (roads meet); only the consequence is absurd—misuse not clear",
+        "wrongPassages[2]: 'rumors would converge before anyone could fact-check' is plausible correct usage (rumors coalesce)—misuse not present"
+      ]
+    },
+    {
+      "id": "w193",
+      "word": "Extricate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w194",
+      "word": "Tutelage",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w195",
+      "word": "Prefigure",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w196",
+      "word": "Entrench",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w197",
+      "word": "Prescribe",
+      "ok": false,
+      "issues": [
+        "wrongPassages[2]: 'Mechanics prescribe oil only after the engine has already seized' still uses prescribe correctly (authorize/recommend a treatment); bad timing ≠ word misuse"
+      ]
+    },
+    {
+      "id": "w198",
+      "word": "Obtrusive",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w199",
+      "word": "Cryptic",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w200",
+      "word": "Replenish",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

@@ -1,0 +1,68 @@
+{
+  "batch": 11,
+  "pass": true,
+  "words": [
+    {
+      "id": "w111",
+      "word": "Auspiciously",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w112",
+      "word": "Haphazardly",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w113",
+      "word": "Antagonistic",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w114",
+      "word": "Summation",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w115",
+      "word": "Unequivocal",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w116",
+      "word": "Irreproachable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w117",
+      "word": "Associative",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w118",
+      "word": "Ineluctable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w119",
+      "word": "Tenuous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w120",
+      "word": "Overreach",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

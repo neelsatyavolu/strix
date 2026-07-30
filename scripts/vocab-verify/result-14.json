@@ -1,0 +1,68 @@
+{
+  "batch": 14,
+  "pass": true,
+  "words": [
+    {
+      "id": "w141",
+      "word": "Misconstrue",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w142",
+      "word": "Denigrate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w143",
+      "word": "Nullify",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w144",
+      "word": "Extraneous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w145",
+      "word": "Agglomerate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w146",
+      "word": "Anterior",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w147",
+      "word": "Amass",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w148",
+      "word": "Concur",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w149",
+      "word": "Intercede",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w150",
+      "word": "Refinement",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

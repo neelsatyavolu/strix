@@ -1,0 +1,68 @@
+{
+  "batch": 29,
+  "pass": true,
+  "words": [
+    {
+      "id": "w291",
+      "word": "Interchangeable",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w292",
+      "word": "Encapsulate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w293",
+      "word": "Facetious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w294",
+      "word": "Secluded",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w295",
+      "word": "Retrieve",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w296",
+      "word": "Rejuvenate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w297",
+      "word": "Abstruse",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w298",
+      "word": "Bellicose",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w299",
+      "word": "Cacophony",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w300",
+      "word": "Deleterious",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

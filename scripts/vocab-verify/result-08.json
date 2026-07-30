@@ -1,0 +1,68 @@
+{
+  "batch": 8,
+  "pass": true,
+  "words": [
+    {
+      "id": "w081",
+      "word": "Magnitude",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w082",
+      "word": "Epitomize",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w083",
+      "word": "Default",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w084",
+      "word": "Superfluous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w085",
+      "word": "Exactitude",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w086",
+      "word": "Engender",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w087",
+      "word": "Designate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w088",
+      "word": "Assuage",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w089",
+      "word": "Fabrication",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w090",
+      "word": "Earnest",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

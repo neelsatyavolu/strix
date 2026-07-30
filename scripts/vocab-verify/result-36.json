@@ -1,0 +1,18 @@
+{
+  "batch": 36,
+  "pass": true,
+  "words": [
+    { "id": "w361", "word": "Mercurial", "ok": true, "issues": [] },
+    { "id": "w362", "word": "Obsequious", "ok": true, "issues": [] },
+    { "id": "w363", "word": "Surreptitious", "ok": true, "issues": [] },
+    { "id": "w364", "word": "Prescient", "ok": true, "issues": [] },
+    { "id": "w365", "word": "Iconoclastic", "ok": true, "issues": [] },
+    { "id": "w366", "word": "Succinctly", "ok": true, "issues": [] },
+    { "id": "w367", "word": "Punctilious", "ok": true, "issues": [] },
+    { "id": "w368", "word": "Eldritch", "ok": true, "issues": [] },
+    { "id": "w369", "word": "Obfuscate", "ok": true, "issues": [] },
+    { "id": "w370", "word": "Articulate", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

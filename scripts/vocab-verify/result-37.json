@@ -1,0 +1,71 @@
+{
+  "batch": 37,
+  "pass": false,
+  "words": [
+    {
+      "id": "w371",
+      "word": "Apotheosis",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'apotheosis of her earliest, weakest work' can be correct usage (ideal/culminating example of that weak period)—misuse not clear",
+        "wrongPassages[2]: 'apotheosis of everything the studio wanted to forget' is valid (perfect embodiment of things to forget)—misuse not clear"
+      ]
+    },
+    {
+      "id": "w372",
+      "word": "Ekphrastic",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w373",
+      "word": "Agential",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w374",
+      "word": "Vexation",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w375",
+      "word": "Onomatopoeia",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w376",
+      "word": "Ignoble",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w377",
+      "word": "Purloin",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w378",
+      "word": "Brazen",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w379",
+      "word": "Venal",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w380",
+      "word": "Palimpsest",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

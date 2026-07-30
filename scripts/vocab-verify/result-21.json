@@ -1,0 +1,25 @@
+{
+  "batch": 21,
+  "pass": false,
+  "words": [
+    { "id": "w211", "word": "Latency", "ok": true, "issues": [] },
+    { "id": "w212", "word": "Incubate", "ok": true, "issues": [] },
+    { "id": "w213", "word": "Synergy", "ok": true, "issues": [] },
+    { "id": "w214", "word": "Circumspect", "ok": true, "issues": [] },
+    { "id": "w215", "word": "Guileless", "ok": true, "issues": [] },
+    { "id": "w216", "word": "Appease", "ok": true, "issues": [] },
+    { "id": "w217", "word": "Indoctrinate", "ok": true, "issues": [] },
+    {
+      "id": "w218",
+      "word": "Avant-garde",
+      "ok": false,
+      "issues": [
+        "wrongPassages[2]: 'An avant-garde crowd of two…' does not clearly misuse the word — 'avant-garde crowd' is a valid collocation; the joke is about sold-out hype, not wrong meaning. Replace with a clear non-experimental / ordinary-use contrast."
+      ]
+    },
+    { "id": "w219", "word": "Cerebral", "ok": true, "issues": [] },
+    { "id": "w220", "word": "Cajole", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

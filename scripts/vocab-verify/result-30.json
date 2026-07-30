@@ -1,0 +1,70 @@
+{
+  "batch": 30,
+  "pass": false,
+  "words": [
+    {
+      "id": "w301",
+      "word": "Insolent",
+      "ok": false,
+      "issues": [
+        "wrongPassages[2]: 'They praised her insolent manners at the formal dinner' still uses insolent correctly (rude/arrogant manners)—only the praise is odd, so misuse is not present"
+      ]
+    },
+    {
+      "id": "w302",
+      "word": "Diffusion",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w303",
+      "word": "Extemporaneous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w304",
+      "word": "Reminiscent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w305",
+      "word": "Enmity",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w306",
+      "word": "Copious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w307",
+      "word": "Circumvent",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w308",
+      "word": "Sterilize",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w309",
+      "word": "Endemic",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w310",
+      "word": "Tangential",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

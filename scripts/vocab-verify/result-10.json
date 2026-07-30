@@ -1,0 +1,18 @@
+{
+  "batch": 10,
+  "pass": true,
+  "words": [
+    { "id": "w101", "word": "Ubiquity", "ok": true, "issues": [] },
+    { "id": "w102", "word": "Innocuous", "ok": true, "issues": [] },
+    { "id": "w103", "word": "Convoluted", "ok": true, "issues": [] },
+    { "id": "w104", "word": "Salient", "ok": true, "issues": [] },
+    { "id": "w105", "word": "Thwart", "ok": true, "issues": [] },
+    { "id": "w106", "word": "Impede", "ok": true, "issues": [] },
+    { "id": "w107", "word": "Glean", "ok": true, "issues": [] },
+    { "id": "w108", "word": "Ephemeral", "ok": true, "issues": [] },
+    { "id": "w109", "word": "Sporadically", "ok": true, "issues": [] },
+    { "id": "w110", "word": "Fraught", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

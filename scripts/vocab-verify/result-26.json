@@ -1,0 +1,72 @@
+{
+  "batch": 26,
+  "pass": false,
+  "words": [
+    {
+      "id": "w261",
+      "word": "Stave off",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w262",
+      "word": "Expedite",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w263",
+      "word": "Turnover",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w264",
+      "word": "Stifle",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w265",
+      "word": "Recant",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w266",
+      "word": "Tractable",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] ambiguous: 'tractable schedule left no room for last-minute changes' — a fixed schedule can still be easy to manage; misuse is not clearly wrong (tractable ≠ flexible)"
+      ]
+    },
+    {
+      "id": "w267",
+      "word": "Perilous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w268",
+      "word": "Exasperate",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w269",
+      "word": "Vilify",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w270",
+      "word": "Congruent",
+      "ok": false,
+      "issues": [
+        "wrongPassages[2] weak: 'called the plans congruent after rejecting half the agenda' — rejecting agenda items does not make 'congruent' clearly wrong if the plans still match"
+      ]
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

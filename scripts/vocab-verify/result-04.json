@@ -1,0 +1,83 @@
+{
+  "batch": 4,
+  "pass": false,
+  "words": [
+    {
+      "id": "w041",
+      "word": "Foraging",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w042",
+      "word": "Implicitly",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w043",
+      "word": "Affinity",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w044",
+      "word": "Partition",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] garbled: 'Tuesday navigation to pin partition was a habit…' is unclear English; misuse not crisp",
+        "wrongPassages[1] ambiguous: 'partition drawer' can read as a real furniture feature (drawer in a partitioned unit), not clear misuse"
+      ]
+    },
+    {
+      "id": "w045",
+      "word": "Adept",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w046",
+      "word": "Sanguine",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] has no clear semantic clash — 'remix felt sanguine because the key and tempo shifted' does not assign a wrong meaning",
+        "wrongPassages[2] may read as correct secondary sense (blood-red/ruddy 'sanguine motif' in music/art)"
+      ]
+    },
+    {
+      "id": "w047",
+      "word": "Notional",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] is plausible correct use: a notional gate display for a train that never came = existing only as an idea",
+        "wrongPassages[2] is plausible correct use: a proposed levy voters reject is notional (theoretical) until enacted"
+      ]
+    },
+    {
+      "id": "w048",
+      "word": "Slumberous",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] uses the word with its real meaning (sleepy atmosphere); only the situation is ironic/unlikely — not a clear misuse of the word"
+      ]
+    },
+    {
+      "id": "w049",
+      "word": "Restorative",
+      "ok": false,
+      "issues": [
+        "wrongPassages[2] may read as correct use: 'restorative art wall' can mean wellness-oriented art; vinyl wrap is only a quality quibble"
+      ]
+    },
+    {
+      "id": "w050",
+      "word": "Impart",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] is actually correct usage: posting a sealed filing publicly is making information known (impart)"
+      ]
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

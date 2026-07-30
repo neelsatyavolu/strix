@@ -1,0 +1,39 @@
+{
+  "batch": 25,
+  "pass": false,
+  "words": [
+    { "id": "w251", "word": "Stern", "ok": true, "issues": [] },
+    { "id": "w252", "word": "Prophetic", "ok": true, "issues": [] },
+    { "id": "w253", "word": "Decry", "ok": true, "issues": [] },
+    { "id": "w254", "word": "Flippancy", "ok": true, "issues": [] },
+    { "id": "w255", "word": "Quirky", "ok": true, "issues": [] },
+    {
+      "id": "w256",
+      "word": "Comity",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'Comity collapsed into open insults…' is correct usage (mutual respect fell apart)—misuse not present"
+      ]
+    },
+    { "id": "w257", "word": "Mordant", "ok": true, "issues": [] },
+    { "id": "w258", "word": "Onerous", "ok": true, "issues": [] },
+    {
+      "id": "w259",
+      "word": "Pretense",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0]: 'no pretense left once every claim had been verified' is correct usage—misuse not present"
+      ]
+    },
+    {
+      "id": "w260",
+      "word": "Capricious",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1]: 'treated the requirement as capricious after the client waived it' still uses the word correctly (arbitrary requirement)—misuse not clear"
+      ]
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

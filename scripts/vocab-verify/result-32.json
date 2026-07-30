@@ -1,0 +1,74 @@
+{
+  "batch": 32,
+  "pass": false,
+  "words": [
+    {
+      "id": "w321",
+      "word": "Contrivance",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] may read as correct use: a scheme/artifice so convincing that listeners believed it ('Her contrivance was so genuine…') — misuse not clear"
+      ]
+    },
+    {
+      "id": "w322",
+      "word": "Abut",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w323",
+      "word": "Indefatigable",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] uses the word with its real meaning (tireless); only the situation is ironic/unlikely — not a clear misuse of the word"
+      ]
+    },
+    {
+      "id": "w324",
+      "word": "Pseudonymous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w325",
+      "word": "Nudge",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w326",
+      "word": "Relinquish",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w327",
+      "word": "Vouch",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w328",
+      "word": "Auxiliary",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] is plausible correct English: 'auxiliary conductor' is a real secondary role; leading while the maestro sits out does not make the word wrong"
+      ]
+    },
+    {
+      "id": "w329",
+      "word": "Spearhead",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w330",
+      "word": "Elicit",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

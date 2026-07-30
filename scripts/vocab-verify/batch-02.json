@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w021",
+    "word": "Tally",
+    "definition": "a count or total; to agree or correspond",
+    "memoryTip": "Marks on a stick that add up \u2014 the counts match.",
+    "correctPassage": "The final vote tally confirmed that the amendment had failed by a narrow margin.",
+    "wrongPassages": [
+      "She tried to tally the rival firm by undercutting every bid without reading the specs.",
+      "The engineer described the circuit as tally once the breaker tripped under load.",
+      "He negotiated a tally settlement by refusing any written record of the terms."
+    ]
+  },
+  {
+    "id": "w022",
+    "word": "Nebulous",
+    "definition": "vague or ill-defined",
+    "memoryTip": "Like a dusty nebula \u2014 cloudy, vague, not sharply defined.",
+    "correctPassage": "Critics called the mission statement nebulous because it never defined success.",
+    "wrongPassages": [
+      "The engineer\u2019s nebulous blueprint specified every measurement to the millimeter.",
+      "After the numbered checklist, nobody found the steps nebulous\u2014each had a diagram.",
+      "She labeled the crystal a nebulous solid after it held its shape under pressure."
+    ]
+  },
+  {
+    "id": "w023",
+    "word": "Unassuming",
+    "definition": "modest; not pretentious",
+    "memoryTip": "Doesn\u2019t assume airs \u2014 quiet and modest.",
+    "correctPassage": "Despite her fame, she remained unassuming and preferred to work without publicity.",
+    "wrongPassages": [
+      "The unassuming CEO demanded a motorcade and a private floor for every visit.",
+      "Reviewers called the speech unassuming after he named himself the sole author of the reform.",
+      "Her unassuming wardrobe featured only designer labels and a staff of stylists."
+    ]
+  },
+  {
+    "id": "w024",
+    "word": "Outsize",
+    "definition": "unusually large",
+    "memoryTip": "Out + size \u2014 bigger than the usual size.",
+    "correctPassage": "The museum devoted an outsize share of its budget to a single traveling exhibit.",
+    "wrongPassages": [
+      "They hoped to outsize the protest by moving public comment after midnight.",
+      "He moved to outsize the deposition by reading a prepared statement for every answer.",
+      "Analysts called the startup\u2019s market share outsize after it sold fewer than twenty units."
+    ]
+  },
+  {
+    "id": "w025",
+    "word": "Inextricable",
+    "definition": "impossible to disentangle or separate",
+    "memoryTip": "In-extricable: can\u2019t extract yourself \u2014 tangled tight.",
+    "correctPassage": "In the novel, personal loyalty and political ambition become inextricable.",
+    "wrongPassages": [
+      "The two cables were inextricable: one tug separated them cleanly in seconds.",
+      "She filed an inextricable appeal that the court dismissed for lack of any supporting brief.",
+      "His inextricable sketch caught the likeness in a few decisive lines and nothing more."
+    ]
+  },
+  {
+    "id": "w026",
+    "word": "Incongruous",
+    "definition": "not in harmony; out of place",
+    "memoryTip": "In-congruent: doesn\u2019t \u201cfit\u201d the picture; out of place.",
+    "correctPassage": "A neon sign looked incongruous against the centuries-old stone facade.",
+    "wrongPassages": [
+      "The navy suit was incongruous with the formal dress code and drew no second glances.",
+      "Editors praised the chapter as incongruous because every scene advanced the same theme.",
+      "Her incongruous color scheme matched the room\u2019s palette down to the trim."
+    ]
+  },
+  {
+    "id": "w027",
+    "word": "Impertinent",
+    "definition": "rude; not showing proper respect",
+    "memoryTip": "Im-pertinent: not \u201cpertaining\u201d politely \u2014 rude and out of line.",
+    "correctPassage": "The reporter\u2019s impertinent questions about private finances angered the candidate.",
+    "wrongPassages": [
+      "The clerk\u2019s impertinent reply restated the policy and offered three clear next steps.",
+      "Judges called the brief impertinent for citing every relevant statute with care.",
+      "Her impertinent silence during the award speech was taken as deep respect."
+    ]
+  },
+  {
+    "id": "w028",
+    "word": "Insurmountable",
+    "definition": "too great to overcome",
+    "memoryTip": "Can\u2019t surmount (climb over) it \u2014 too big a barrier.",
+    "correctPassage": "What had seemed an insurmountable funding gap was closed by a single anonymous gift.",
+    "wrongPassages": [
+      "The trail was so insurmountable that first-time hikers finished early without maps.",
+      "They treated the checklist as insurmountable and cleared every item before lunch.",
+      "Once the password reset worked, the login barrier proved entirely insurmountable."
+    ]
+  },
+  {
+    "id": "w029",
+    "word": "Tranquility",
+    "definition": "the quality of being calm and peaceful",
+    "memoryTip": "Tranquil + ity \u2014 calm lake, quiet mind.",
+    "correctPassage": "After the storm, a rare sense of tranquility settled over the harbor.",
+    "wrongPassages": [
+      "The market\u2019s tranquility showed in triple-digit swings and halted trading.",
+      "Residents fled the tranquility of sirens and continuous construction noise.",
+      "He sought tranquility by scheduling three overlapping deadlines for the same afternoon."
+    ]
+  },
+  {
+    "id": "w030",
+    "word": "Reprieve",
+    "definition": "a temporary relief from something unpleasant",
+    "memoryTip": "A brief relief before the hard thing resumes \u2014 temporary break.",
+    "correctPassage": "A last-minute injunction granted the tenants a temporary reprieve from eviction.",
+    "wrongPassages": [
+      "The clinic tried to reprieve no-shows by double-booking every appointment slot.",
+      "After the verdict, the sentence was a permanent reprieve with no chance of review.",
+      "She called the longer workday a welcome reprieve from free evenings at home."
+    ]
+  }
+]

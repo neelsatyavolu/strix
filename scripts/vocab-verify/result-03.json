@@ -1,0 +1,72 @@
+{
+  "batch": 3,
+  "pass": false,
+  "words": [
+    {
+      "id": "w031",
+      "word": "Impervious",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w032",
+      "word": "Untenable",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] ambiguous: 'peer-reviewed model remained untenable under every independent replication' can read as correct (replications failed to support it) rather than clear misuse"
+      ]
+    },
+    {
+      "id": "w033",
+      "word": "Ubiquitous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w034",
+      "word": "Defunct",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w035",
+      "word": "Detractor",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w036",
+      "word": "Exhaustive",
+      "ok": false,
+      "issues": [
+        "wrongPassages[1] garbled: 'exhaustive for crushing all shadow detail' is unclear English; misuse not crisp"
+      ]
+    },
+    {
+      "id": "w037",
+      "word": "Heterogeneous",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w038",
+      "word": "Imperative",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w039",
+      "word": "Nuance",
+      "ok": true,
+      "issues": []
+    },
+    {
+      "id": "w040",
+      "word": "Controversial",
+      "ok": true,
+      "issues": []
+    }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

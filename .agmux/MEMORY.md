@@ -6,8 +6,8 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-30T15:16:13.214Z
-- **Active entries**: 8
+- **Updated**: 2026-07-30T15:18:44.091Z
+- **Active entries**: 9
 - **Important**: 4
 
 ## Important (must remember)
@@ -103,6 +103,16 @@ Vocabulary is flashcard flow: word face → know it / flip definition → usage 
 - **updated**: 2026-07-28T02:12:20.274Z
 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
+
+### No manual vocab checkmarks
+
+- **id**: `9eb07ef5-23c0-4c8a-a18c-b16f9be48c7c`
+- **kind**: decision
+- **source**: agent
+- **created**: 2026-07-30T15:18:44.091Z
+- **updated**: 2026-07-30T15:18:44.091Z
+
+Vocabulary list is read-only for known status. Manual POST mode=mark disabled. Known only via practice: I know it (no flip) + correct usage quiz.
 
 ### Vocab known checklist
 

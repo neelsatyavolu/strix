@@ -1,0 +1,33 @@
+{
+  "batch": 34,
+  "pass": false,
+  "words": [
+    { "id": "w341", "word": "Importunate", "ok": true, "issues": [] },
+    { "id": "w342", "word": "Dexterity", "ok": true, "issues": [] },
+    {
+      "id": "w343",
+      "word": "Irrespective",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] is correct usage: 'Only engineering majors count, irrespective of everyone else's applications' still means regardless of other applications",
+        "wrongPassages[2] weak/ambiguous: 'irrespective of need' is correct English as a label; the meta-claim that the label is false does not make the word itself misused"
+      ]
+    },
+    { "id": "w344", "word": "Vanity", "ok": true, "issues": [] },
+    { "id": "w345", "word": "Opaque", "ok": true, "issues": [] },
+    {
+      "id": "w346",
+      "word": "Multifarious",
+      "ok": false,
+      "issues": [
+        "wrongPassages[0] typo: missing space — 'multifariouswardrobe' should be 'multifarious wardrobe'"
+      ]
+    },
+    { "id": "w347", "word": "Stratified", "ok": true, "issues": [] },
+    { "id": "w348", "word": "Substantive", "ok": true, "issues": [] },
+    { "id": "w349", "word": "Stride", "ok": true, "issues": [] },
+    { "id": "w350", "word": "Insidious", "ok": true, "issues": [] }
+  ],
+  "feedbackUiOk": true,
+  "freshOptionsOk": true
+}

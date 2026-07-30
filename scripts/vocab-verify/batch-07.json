@@ -1,0 +1,122 @@
+[
+  {
+    "id": "w071",
+    "word": "Ascertain",
+    "definition": "find out for certain; determine",
+    "memoryTip": "As-certain: make it certain \u2014 dig until you know for sure.",
+    "correctPassage": "Investigators sought to ascertain whether the signal was natural or artificial.",
+    "wrongPassages": [
+      "They hoped to ascertain confusion by adding three more optional steps to the form.",
+      "She tried to ascertain the answer by guessing without looking at any evidence.",
+      "Managers planned to ascertain the problem by refusing to investigate further."
+    ]
+  },
+  {
+    "id": "w072",
+    "word": "Substantiate",
+    "definition": "provide evidence to support a claim",
+    "memoryTip": "Give the claim substance \u2014 back it up with proof, not vibes.",
+    "correctPassage": "Without field measurements, the team could not substantiate its claim.",
+    "wrongPassages": [
+      "He tried to substantiate the charge by shredding every document that mentioned it.",
+      "She hoped to substantiate the rumor by repeating it louder with no sources.",
+      "They moved to substantiate the theory by ignoring all conflicting data."
+    ]
+  },
+  {
+    "id": "w073",
+    "word": "Prodigious",
+    "definition": "remarkably great in size, amount, or degree",
+    "memoryTip": "Prodigy-level scale \u2014 so large or impressive it stands out.",
+    "correctPassage": "The archive preserves a prodigious number of letters from the period.",
+    "wrongPassages": [
+      "He showed prodigious talent by barely finishing the simplest practice drill.",
+      "The gallery\u2019s prodigious hang placed one tiny sketch on an otherwise empty wall.",
+      "Voters rejected the plan as prodigious because it cost almost nothing and changed little."
+    ]
+  },
+  {
+    "id": "w074",
+    "word": "Fraudulent",
+    "definition": "involving deceit; obtained or done by deception",
+    "memoryTip": "Fraud \u2014 dishonest, fake, or won by tricking someone.",
+    "correctPassage": "Auditors uncovered fraudulent invoices submitted by a subcontractor.",
+    "wrongPassages": [
+      "Judges called the thoroughly sourced opinion fraudulent after it cited every relevant case.",
+      "Her fraudulent tax return listed every income source exactly as required by law.",
+      "The charity\u2019s fraudulent books balanced because every donation was honestly recorded."
+    ]
+  },
+  {
+    "id": "w075",
+    "word": "Palpable",
+    "definition": "able to be touched or felt; so intense as to seem tangible",
+    "memoryTip": "You can almost palm it \u2014 so clear or strong you can feel it.",
+    "correctPassage": "Tension in the room was palpable as the results were announced.",
+    "wrongPassages": [
+      "The difference between the two proposals was so palpable that no one could detect it.",
+      "Excitement was palpable in the empty hall where nobody showed up.",
+      "Admin tried to palpable complaints by hiding the public contact form."
+    ]
+  },
+  {
+    "id": "w076",
+    "word": "Confound",
+    "definition": "cause surprise or confusion; mix up or thwart",
+    "memoryTip": "Con-found: throw into confusion \u2014 mix up or leave people stunned.",
+    "correctPassage": "The unexpected results confound earlier models of the disease\u2019s spread.",
+    "wrongPassages": [
+      "Clear labels were added to confound shoppers who had been confused before.",
+      "She hoped to confound the mystery by publishing every clue in plain order.",
+      "Teachers used the answer key to confound students who already knew the material."
+    ]
+  },
+  {
+    "id": "w077",
+    "word": "Disregard",
+    "definition": "pay no attention to; ignore",
+    "memoryTip": "Dis + regard \u2014 drop your regard; treat it as if it doesn\u2019t matter.",
+    "correctPassage": "Critics accused the agency of disregard for community concerns.",
+    "wrongPassages": [
+      "She showed complete disregard by reading every comment and answering each one.",
+      "The pilot\u2019s disregard for the checklist meant he reviewed every step twice.",
+      "They planned to disregard the warning by posting it on every door in the building."
+    ]
+  },
+  {
+    "id": "w078",
+    "word": "Underscore",
+    "definition": "emphasize or draw attention to",
+    "memoryTip": "Like underlining a line \u2014 you underscore what matters most.",
+    "correctPassage": "The new findings underscore the need for longer-term studies.",
+    "wrongPassages": [
+      "He tried to underscore the point by mumbling it once and changing the subject.",
+      "Editors underscored the headline by deleting it from the front page entirely.",
+      "The report underscored safety risks by burying them in an unread appendix."
+    ]
+  },
+  {
+    "id": "w079",
+    "word": "Orthodox",
+    "definition": "conforming to traditional or established doctrine",
+    "memoryTip": "Ortho = straight \u2014 by-the-book, traditional belief or method.",
+    "correctPassage": "Her approach departed from orthodox methods used in the field for decades.",
+    "wrongPassages": [
+      "His orthodox plan threw out every tradition the profession still followed.",
+      "Critics called the radical redesign orthodox for breaking every design rule.",
+      "She took an orthodox path by inventing a method no textbook had ever taught."
+    ]
+  },
+  {
+    "id": "w080",
+    "word": "Zenith",
+    "definition": "the highest point; peak of power or success",
+    "memoryTip": "Highest point in the sky \u2014 and the peak of a career or empire.",
+    "correctPassage": "The empire reached its zenith under the rule of the second emperor.",
+    "wrongPassages": [
+      "The company hit its zenith the year sales collapsed and half the staff left.",
+      "At the zenith of the valley, water collected in the lowest ditch.",
+      "Her career\u2019s zenith was the unpaid internship she took right after college."
+    ]
+  }
+]
