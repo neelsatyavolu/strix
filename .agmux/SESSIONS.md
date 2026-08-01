@@ -5,7 +5,7 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-08-01T22:38:41.000Z
+- **Updated**: 2026-08-01T22:42:45.000Z
 - **Sessions**: 8
 
 ## Fix disclosed question empty stem
@@ -13,10 +13,10 @@
 - **id**: `b74e262b-37cf-42aa-b878-03dd35e18b93`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-08-01T22:38:41.000Z
+- **updated**: 2026-08-01T22:42:45.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fbf78-df23-7981-8b97-068734207c9e/chat_history.jsonl`
 
-Question Bank lookup f2f3fa00 (ibn 05702-DC) showed metadata but empty stem. Root cause: saic disclosed JSON is a one-element array; client treated it as object so prompt/answer were undefined. Fixed unwrapDisclosed in lib/cb/client.ts; normalizeDisclosed now handles SPR style; reject empty stemHtml after normalize.
+Disclosed questions: (1) SAIC JSON is array — unwrap before normalize. (2) Dark mode: math-img PNGs are black-on-transparent so equations invisible — invert filter on .math-img / img[role=math] in dark theme (globals.css). Also SPR type for disclosed, allow role on sanitized img.
 
 ## Vacate false-wrong + 80 audit
 

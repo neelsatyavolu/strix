@@ -71,6 +71,18 @@ body {
 .cb-choice img {
   max-width: 100%;
   height: auto;
+  vertical-align: middle;
+}
+/* Disclosed (ibn) items render math as black-on-transparent PNGs
+   (class="math-img"). Invert in dark mode so equations stay legible.
+   Do not invert other figures/diagrams — only CB math image embeds. */
+[data-theme="dark"] .cb-passage img.math-img,
+[data-theme="dark"] .cb-stem img.math-img,
+[data-theme="dark"] .cb-choice img.math-img,
+[data-theme="dark"] .cb-passage img[role="math"],
+[data-theme="dark"] .cb-stem img[role="math"],
+[data-theme="dark"] .cb-choice img[role="math"] {
+  filter: invert(1);
 }
 /* CB ships figure long-descriptions in a class="sr-only" div for screen
    readers (e.g. "Triangle upper A upper B upper C ... not drawn to scale").
@@ -90,7 +102,8 @@ math {
   font-size: 1.05em;
 }
 [data-theme="dark"] .cb-passage,
-[data-theme="dark"] .cb-stem {
+[data-theme="dark"] .cb-stem,
+[data-theme="dark"] .cb-choice {
   color: var(--text-primary);
 }
 /* Bluebook-style highlighter (see components/sixteen/test/Highlightable.jsx) */

@@ -24,7 +24,7 @@ const SANITIZE_OPTS: sanitizeHtml.IOptions = {
     "*": ["class","style","id","dir","lang",
       "alttext","displaystyle","mathvariant","scriptlevel","columnalign","rowalign","columnspacing","rowspacing","columnlines","rowlines","columnspan","rowspan","colspan","align","fence","separator","stretchy","symmetric","largeop","movablelimits","accent","accentunder","open","close","notation","linethickness","width","height","depth","mathsize","mathcolor","mathbackground","form","lspace","rspace","display"],
     a: ["href","name","target","rel"],
-    img: ["src","alt","width","height","title"],
+    img: ["src","alt","width","height","title","role","align","class"],
     svg: ["xmlns","xmlns:xlink","version","viewBox","width","height","fill","preserveAspectRatio","role","aria-label"],
     path: ["d","fill","stroke","stroke-width","stroke-linecap","stroke-linejoin","transform","opacity"],
     g: ["fill","stroke","stroke-width","transform","opacity"],
