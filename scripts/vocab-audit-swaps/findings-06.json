@@ -1,0 +1,22 @@
+{
+  "batch": "06",
+  "issues": [
+    {
+      "id": "w033",
+      "word": "Ubiquitous",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "After the last factory closed, the brand became ubiquitous on store shelves nationwide.",
+      "why": "\"Became ubiquitous on store shelves nationwide\" is valid, natural use of ubiquitous = present/found everywhere. The factory-closure clause is only pragmatically odd; it does not make the word itself a misuse. A student who knows the definition would rightly accept this passage.",
+      "fix": {
+        "correctPassage": "Smartphones are now so ubiquitous that many public spaces assume constant connectivity.",
+        "wrongPassages": [
+          "The orchid is ubiquitous in the region—only a single wild specimen has ever been documented.",
+          "She kept her ubiquitous notes in one locked drawer that no colleague was allowed to open.",
+          "After the last factory closed, the brand became ubiquitous—vanishing from shelves within weeks and never restocked."
+        ]
+      }
+    }
+  ],
+  "clean": ["w031", "w032", "w034", "w035"]
+}

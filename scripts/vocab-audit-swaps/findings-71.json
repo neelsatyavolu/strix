@@ -1,0 +1,38 @@
+{
+  "batch": "71",
+  "issues": [
+    {
+      "id": "w359",
+      "word": "Vicissitude",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "They planned for vicissitude by freezing every policy for the next decade.",
+      "why": "\"Planned for vicissitude\" correctly uses the word for change of circumstances; freezing policy is a paradoxical strategy, not a misuse of the vocabulary.",
+      "fix": {
+        "correctPassage": "The firm survived every vicissitude of the volatile market cycle.",
+        "wrongPassages": [
+          "Life under the stable regime was one long vicissitude of unbroken calm.",
+          "Investors praised the fund's vicissitude: identical holdings and returns every quarter.",
+          "The lake's remarkable vicissitude kept its waterline fixed year after year."
+        ]
+      }
+    },
+    {
+      "id": "w360",
+      "word": "Lugubrious",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "She delivered a lugubrious toast that left the guests laughing for several minutes.",
+      "why": "A toast can be lugubrious (mournful in tone) and still draw laughter; the word correctly describes the toast's dismal quality.",
+      "fix": {
+        "correctPassage": "A lugubrious score made the short documentary feel heavier than its runtime.",
+        "wrongPassages": [
+          "His lugubrious welcome—a bright grin and an easy joke—lifted the mood at once.",
+          "The festival stayed lugubrious with brass bands, confetti, and dancing crowds.",
+          "She delivered a lugubrious toast full of punchlines that kept the party buoyant."
+        ]
+      }
+    }
+  ],
+  "clean": ["w356", "w357", "w358"]
+}

@@ -1,0 +1,22 @@
+{
+  "batch": "68",
+  "issues": [
+    {
+      "id": "w343",
+      "word": "Irrespective",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Funding decisions were made irrespective of need, meaning only the wealthiest applicants were considered.",
+      "why": "Irrespective of need correctly means without regard to need; the sentence uses the word properly (need was ignored).",
+      "fix": {
+        "correctPassage": "The scholarship is awarded on academic merit, irrespective of family income.",
+        "wrongPassages": [
+          "Funding decisions were made irrespective of need, carefully ranking every applicant by how urgently help was required.",
+          "The policy applies irrespective of major only when the major is engineering.",
+          "She chose the laboratory assignment irrespective of her interest, carefully matching every preference."
+        ]
+      }
+    }
+  ],
+  "clean": ["w341", "w342", "w344", "w345"]
+}

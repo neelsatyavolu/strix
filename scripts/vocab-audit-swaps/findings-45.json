@@ -1,0 +1,38 @@
+{
+  "batch": "45",
+  "issues": [
+    {
+      "id": "w226",
+      "word": "Derogate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The keynote was crafted to derogate the scientist for her careful, widely cited research.",
+      "why": "Transitive derogate = disparage is valid here: the keynote is crafted to speak down of the scientist. Odd motive does not make the wording a misuse; a student who knows the definition would accept the passage.",
+      "fix": {
+        "correctPassage": "Nothing in the agreement should derogate from existing labor rights.",
+        "wrongPassages": [
+          "The keynote was crafted to derogate the scientist with awards celebrating her careful, widely cited research.",
+          "Conservators hoped to derogate the damaged fresco by restoring its original colors.",
+          "Alumni rose to derogate the retiring dean with tributes and a standing ovation."
+        ]
+      }
+    },
+    {
+      "id": "w230",
+      "word": "Scrutinize",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Editors claimed to scrutinize the manuscript after skimming only the abstract.",
+      "why": "\"Claimed to scrutinize\" correctly uses scrutinize = examine closely and thoroughly. That the claim is false (they only skimmed) is pragmatic irony, not misuse of the word; a student who knows the definition would accept the wording as valid usage.",
+      "fix": {
+        "correctPassage": "Peer reviewers will scrutinize every claim before the paper is accepted.",
+        "wrongPassages": [
+          "Editors scrutinized the manuscript by glancing at the title and never reading a sentence.",
+          "She scrutinized the contract for a few seconds and signed without reading further.",
+          "To scrutinize the budget, the committee approved it without opening a single page."
+        ]
+      }
+    }
+  ],
+  "clean": ["w227", "w228", "w229"]
+}

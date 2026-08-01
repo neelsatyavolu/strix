@@ -1,0 +1,70 @@
+{
+  "batch": "14",
+  "issues": [
+    {
+      "id": "w071",
+      "word": "Ascertain",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Without consulting the archives, the historian simply ascertained that the treaty had never been signed.",
+      "why": "\"Ascertained that...\" is natural, correct use (determined / found out for certain). Skipping the archives does not invalidate the verb—historians can ascertain from other evidence—so a careful reader would accept the sentence.",
+      "fix": {
+        "correctPassage": "Investigators sought to ascertain whether the signal was natural or artificial.",
+        "wrongPassages": [
+          "Organizers hoped the parade would ascertain civic pride after the championship win.",
+          "The board hoped the new policy would ascertain employee morale by lengthening lunch breaks.",
+          "Several witnesses ascertained colorful details that later proved to have no basis in the record."
+        ]
+      }
+    },
+    {
+      "id": "w073",
+      "word": "Prodigious",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "The museum devoted a prodigious gallery to a single postage-stamp-sized watercolor.",
+      "why": "\"Prodigious gallery\" correctly means a remarkably large gallery space. The irony of housing a tiny work does not reverse the word's meaning; the usage is valid.",
+      "fix": {
+        "correctPassage": "The archive preserves a prodigious number of letters from the period.",
+        "wrongPassages": [
+          "After years of study he showed only a prodigious grasp of the material, stumbling over basic terms.",
+          "The lab recorded a prodigious temperature swing of two-tenths of a degree overnight.",
+          "Critics called the reform package prodigious, noting that it altered only one minor administrative rule."
+        ]
+      }
+    },
+    {
+      "id": "w074",
+      "word": "Fraudulent",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Reviewers dismissed the thoroughly sourced study as fraudulent after confirming each cited reference.",
+      "why": "\"Dismissed X as fraudulent\" uses fraudulent with its correct sense (involving deceit). The reviewers may be factually wrong, but the vocabulary itself is natural and correct—unlike an authorial label that misapplies the word.",
+      "fix": {
+        "correctPassage": "Auditors uncovered fraudulent invoices submitted by a subcontractor.",
+        "wrongPassages": [
+          "Shareholders trusted the fraudulent earnings report once every figure matched the independent audit.",
+          "Her fraudulent disclosure listed every asset exactly as the filing rules required.",
+          "The firm’s fraudulent ledgers balanced because each transaction was recorded under accepted standards."
+        ]
+      }
+    },
+    {
+      "id": "w075",
+      "word": "Palpable",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "A palpable hush filled the stadium once the crowd began cheering at full volume.",
+      "why": "\"Palpable hush\" is a standard correct collocation (a hush so intense it seems tangible). The clash is between hush and cheering, not a misuse of palpable—so the target word is used validly.",
+      "fix": {
+        "correctPassage": "Tension in the room was palpable as the results were announced.",
+        "wrongPassages": [
+          "The discrepancy between the two drafts was so palpable that careful readers failed to notice it.",
+          "The coding error was so palpable that it escaped every reviewer until production failed.",
+          "Administrators tried to palpable the complaints by removing the public comment form."
+        ]
+      }
+    }
+  ],
+  "clean": ["w072"]
+}

@@ -1,0 +1,22 @@
+{
+  "batch": "60",
+  "issues": [
+    {
+      "id": "w304",
+      "word": "Reminiscent",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Critics called the brand-new design reminiscent of nothing anyone could associate with prior work.",
+      "why": "Valid English: 'reminiscent of nothing…' means the design evokes no prior associations (i.e., it is unprecedented). That is correct use of reminiscent = tending to remind one of something, with a negative complement.",
+      "fix": {
+        "correctPassage": "The café's tiled floor was reminiscent of the station waiting room she had known as a child.",
+        "wrongPassages": [
+          "Critics called the brand-new design reminiscent even though it reminded them of nothing at all.",
+          "He stayed carefully reminiscent so that no detail of the past would ever come to mind.",
+          "A completely blank memory made the faded photograph feel intensely reminiscent of her childhood."
+        ]
+      }
+    }
+  ],
+  "clean": ["w301", "w302", "w303", "w305"]
+}

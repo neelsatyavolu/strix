@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w351",
+    "word": "Ingratiate",
+    "definition": "bring oneself into favor through flattery or effort to please",
+    "memoryTip": "In + graces: flattery to get into someone\u2019s good graces.",
+    "correctPassage": "Hoping for a promotion, the junior analyst tried to ingratiate herself with the partners by taking on thankless assignments.",
+    "wrongPassages": [
+      "His decision to challenge the chair\u2019s proposal in open session was an attempt to ingratiate himself with the committee.",
+      "She managed to ingratiate the rival department by blocking every request for shared resources.",
+      "The envoy sought to ingratiate the host government by publicly dismissing its concerns."
+    ]
+  },
+  {
+    "id": "w352",
+    "word": "Garrulous",
+    "definition": "excessively talkative, especially about trivial matters",
+    "memoryTip": "A garrulous guest pours a garbled river of endless small talk.",
+    "correctPassage": "A garrulous seatmate turned the short flight into an unbroken stream of minor anecdotes.",
+    "wrongPassages": [
+      "Editors preferred the garrulous brief because it cut every unnecessary detail.",
+      "The garrulous archivist rarely spoke and answered questions only in writing.",
+      "Colleagues valued her garrulous manner for how quickly she moved past small talk."
+    ]
+  },
+  {
+    "id": "w353",
+    "word": "Fervid",
+    "definition": "intensely enthusiastic or passionate",
+    "memoryTip": "Fervor on fire \u2014 fervid means passion running hot.",
+    "correctPassage": "Fervid supporters of the reform filled the hearing room hours before the session began.",
+    "wrongPassages": [
+      "His fervid reaction to the announcement was a shrug and a request to adjourn.",
+      "Critics called the novel fervid for its cool detachment and carefully understated tone.",
+      "The committee\u2019s fervid endorsement consisted of polite silence and no further comment."
+    ]
+  },
+  {
+    "id": "w354",
+    "word": "Exigent",
+    "definition": "pressing; demanding immediate attention",
+    "memoryTip": "Exigent = emergency-urgent \u2014 it demands attention now.",
+    "correctPassage": "Auditors described the funding shortfall as exigent, prompting the board to meet that evening.",
+    "wrongPassages": [
+      "Because the request was exigent, staff were told they could respond whenever convenient.",
+      "He filed the exigent forms several months late with no sense of urgency.",
+      "The optional survey was labeled exigent so employees would feel free to ignore it."
+    ]
+  },
+  {
+    "id": "w355",
+    "word": "Esoteric",
+    "definition": "understood by only a small specialist group",
+    "memoryTip": "Eso-teric: for the inner circle only \u2014 specialist knowledge.",
+    "correctPassage": "The paper\u2019s esoteric methodology limited its readership to specialists in the field.",
+    "wrongPassages": [
+      "The esoteric handbook became required reading in nearly every introductory course.",
+      "She favored esoteric explanations because they used only everyday vocabulary.",
+      "Networks chose esoteric programming precisely for its broad popular appeal."
+    ]
+  }
+]

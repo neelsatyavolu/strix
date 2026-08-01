@@ -1,0 +1,22 @@
+{
+  "batch": "79",
+  "issues": [
+    {
+      "id": "w397",
+      "word": "Stock",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Her stock analysis introduced a framework no prior study had considered.",
+      "why": "Valid, natural use of stock as equities: “stock analysis” is standard finance English for analyzing shares. A student who knows the word would accept the sentence under that sense, so it fails as a wrongPassage for the adjective sense “standard / not original.”",
+      "fix": {
+        "correctPassage": "The mayor offered a stock reply that could have applied to almost any civic dispute.",
+        "wrongPassages": [
+          "Her stock conclusion was celebrated for overturning every assumption prior researchers shared.",
+          "Reviewers praised the stock plot for abandoning every familiar narrative pattern.",
+          "He delivered a stock argument so idiosyncratic that colleagues could not place it."
+        ]
+      }
+    }
+  ],
+  "clean": ["w396", "w398", "w399", "w400"]
+}

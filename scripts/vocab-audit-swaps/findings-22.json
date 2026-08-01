@@ -1,0 +1,22 @@
+{
+  "batch": "22",
+  "issues": [
+    {
+      "id": "w115",
+      "word": "Unequivocal",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "His unequivocal reply was that the outcome might change under several unknowns.",
+      "why": "An unequivocal reply can clearly and unambiguously state that the outcome is uncertain. Leaving no doubt about uncertainty is still correct use of unequivocal = clear and unambiguous; a student who knows the word would accept this sentence.",
+      "fix": {
+        "correctPassage": "The committee issued an unequivocal statement endorsing the revised policy.",
+        "wrongPassages": [
+          "His unequivocal answer was hedged with maybes and left three incompatible readings open.",
+          "The instructions were unequivocal: three conflicting steps and no final choice.",
+          "She offered an unequivocal shrug that left the panel more uncertain than before."
+        ]
+      }
+    }
+  ],
+  "clean": ["w111", "w112", "w113", "w114"]
+}

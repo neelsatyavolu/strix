@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w166",
+    "word": "Unyielding",
+    "definition": "not giving way; firm or inflexible",
+    "memoryTip": "Won't yield \u2014 stays rigid, refuses to bend or compromise.",
+    "correctPassage": "Negotiators faced an unyielding counterpart who rejected every proposed compromise.",
+    "wrongPassages": [
+      "The unyielding foam cushion compressed easily under the lightest pressure.",
+      "Her unyielding stance softened as soon as a better offer appeared.",
+      "They praised his unyielding schedule, which he rewrote after each minor conflict."
+    ]
+  },
+  {
+    "id": "w167",
+    "word": "Impeccable",
+    "definition": "faultless; of the highest standard",
+    "memoryTip": "Im-peccable (no sin/fault) \u2014 zero flaws, spotless.",
+    "correctPassage": "The historian's impeccable documentation earned the study wide scholarly trust.",
+    "wrongPassages": [
+      "Reviewers returned his impeccable draft covered in factual corrections.",
+      "The laboratory's impeccable samples arrived contaminated and unusable.",
+      "They cited her impeccable punctuality after she missed three consecutive meetings."
+    ]
+  },
+  {
+    "id": "w168",
+    "word": "Ossified",
+    "definition": "having become rigid in habit or attitude; set in old ways",
+    "memoryTip": "Os = bone \u2014 attitudes harden like bone, stuck and inflexible.",
+    "correctPassage": "What began as provisional guidelines had ossified into inflexible doctrine.",
+    "wrongPassages": [
+      "The department's habits ossified into a culture of constant experimentation.",
+      "She ossified the mixture by stirring until it became smooth and pourable.",
+      "Their ossified platform welcomed frequent policy reversals and fresh initiatives."
+    ]
+  },
+  {
+    "id": "w169",
+    "word": "Denounce",
+    "definition": "to publicly declare something or someone to be wrong or evil",
+    "memoryTip": "De-nounce: publicly name and call out as wrong.",
+    "correctPassage": "Several legislators rose to denounce the measure as a threat to civil liberties.",
+    "wrongPassages": [
+      "The governor stepped forward to denounce the volunteers for their outstanding service.",
+      "Critics denounce the film as a landmark achievement in documentary storytelling.",
+      "She denounced the nomination by accepting the post and praising the selection committee."
+    ]
+  },
+  {
+    "id": "w170",
+    "word": "Debilitate",
+    "definition": "to make weak or feeble",
+    "memoryTip": "De-ability: drain strength until someone can barely function.",
+    "correctPassage": "Prolonged malnutrition can debilitate patients long after the original illness has passed.",
+    "wrongPassages": [
+      "Coaches designed the regimen to debilitate athletes and leave them stronger for competition.",
+      "A week of rest debilitated her so thoroughly that she returned fully restored.",
+      "Additional staffing will debilitate the clinic and allow it to serve more patients."
+    ]
+  }
+]

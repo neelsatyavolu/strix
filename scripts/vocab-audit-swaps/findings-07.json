@@ -1,0 +1,38 @@
+{
+  "batch": "07",
+  "issues": [
+    {
+      "id": "w038",
+      "word": "Imperative",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Selecting a typeface for the cover letter felt imperative to the success of the clinical trial.",
+      "why": "\"Felt imperative\" is correct, natural use of imperative = essential/of vital importance. The pairing with a clinical trial is only situationally absurd; it does not make the word itself a misuse. A student who knows the definition would accept the wording as valid English describing a (misguided) sense of urgency.",
+      "fix": {
+        "correctPassage": "With the storm approaching, it was imperative that residents evacuate promptly.",
+        "wrongPassages": [
+          "Selecting a typeface for the cover letter was called imperative even though nothing in the trial hinged on stationery choices.",
+          "The board treated the optional icebreaker as imperative and canceled the safety briefing instead.",
+          "Because nothing of consequence hinged on the outcome, finishing the form became imperative overnight."
+        ]
+      }
+    },
+    {
+      "id": "w040",
+      "word": "Controversial",
+      "kind": "AMBIGUOUS",
+      "which": "wrongPassages[0]",
+      "passage": "The controversial ordinance passed unanimously and prompted no public comment whatsoever.",
+      "why": "\"Controversial ordinance passed unanimously\" is ordinary English: a measure can give rise to public disagreement yet still clear a vote with no dissent or floor comment. A careful reader could defend the passage as correct, so it is not a reliable wrong.",
+      "fix": {
+        "correctPassage": "The museum's controversial exhibit drew both praise and protests.",
+        "wrongPassages": [
+          "The ordinance was labeled controversial despite unanimous support and a complete absence of public disagreement.",
+          "Parents and inspectors alike endorsed the upgrade, so the media labeled it the year's most controversial reform.",
+          "Analysts called the quiet consensus vote controversial after an entirely uneventful session with no dissent."
+        ]
+      }
+    }
+  ],
+  "clean": ["w036", "w037", "w039"]
+}

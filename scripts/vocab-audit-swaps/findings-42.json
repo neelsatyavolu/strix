@@ -1,0 +1,38 @@
+{
+  "batch": "42",
+  "issues": [
+    {
+      "id": "w211",
+      "word": "Latency",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The system showed no latency: every command executed the moment it was issued.",
+      "why": "“Showed no latency” is natural, correct use of latency = delay: zero delay means instant execution. A student who knows the word would accept this passage; it cannot serve as a wrong example.",
+      "fix": {
+        "correctPassage": "Epidemiologists measured a latency of several weeks between exposure and the first detectable symptoms.",
+        "wrongPassages": [
+          "The system’s latency meant every command executed the moment it was issued, with no measurable wait.",
+          "Her latency at the podium meant she began speaking before the chair finished the introduction.",
+          "The volcano’s latency produced continuous eruptions that never paused long enough for ash to settle."
+        ]
+      }
+    },
+    {
+      "id": "w213",
+      "word": "Synergy",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "The departments claimed synergy while rejecting every proposal that required them to share resources.",
+      "why": "“Claimed synergy” correctly uses synergy = combined effect greater than the parts. The while-clause only marks hypocrisy about their behavior; it does not make the word a misuse. Parallel to labeling something while acting otherwise.",
+      "fix": {
+        "correctPassage": "Analysts argued that synergy between the design and manufacturing teams would cut costs without lowering quality.",
+        "wrongPassages": [
+          "Working in isolation, she produced more synergy than any of the collaborative projects on the calendar.",
+          "They measured the merger’s synergy by how completely each division avoided contact with the others.",
+          "Rival firms created synergy by refusing to coordinate and by undercutting each other’s bids."
+        ]
+      }
+    }
+  ],
+  "clean": ["w212", "w214", "w215"]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w171",
+    "word": "Hamper",
+    "definition": "to hinder or impede the progress of",
+    "memoryTip": "Like a laundry basket in the doorway \u2014 blocks the way.",
+    "correctPassage": "Shortage of trained staff continues to hamper the hospital\u2019s recovery efforts.",
+    "wrongPassages": [
+      "New funding will hamper the project by clearing every logistical delay at once.",
+      "The redesigned schedule was meant to hamper production by speeding every stage of assembly.",
+      "Critics said the treaty would hamper trade only by removing tariffs and opening new markets."
+    ]
+  },
+  {
+    "id": "w172",
+    "word": "Mollify",
+    "definition": "to appease someone's anger; to soothe or calm",
+    "memoryTip": "Molli- = soft \u2014 soften anger, not harden it.",
+    "correctPassage": "A sincere apology did more to mollify the committee than any formal rebuttal.",
+    "wrongPassages": [
+      "His sarcastic reply was intended to mollify her by deepening the insult.",
+      "Leaders sought to mollify the protesters by announcing harsher penalties and more arrests.",
+      "She tried to mollify the audience by raising her voice and refusing every request for compromise."
+    ]
+  },
+  {
+    "id": "w173",
+    "word": "Desolate",
+    "definition": "empty, bleak, and abandoned in appearance; feeling forsaken",
+    "memoryTip": "De-solate: a lonely, empty stretch with no life in sight.",
+    "correctPassage": "Winter left the mining camp desolate, with boarded windows and empty streets.",
+    "wrongPassages": [
+      "The desolate plaza filled with vendors and music every weekend afternoon.",
+      "Tourists praised the desolate waterfront for its crowded caf\u00e9s and constant foot traffic.",
+      "After the festival, the park felt desolate as families stayed late and lights stayed on."
+    ]
+  },
+  {
+    "id": "w174",
+    "word": "Discriminating",
+    "definition": "showing refined taste or careful judgment; selective",
+    "memoryTip": "Not just bias \u2014 a discriminating eye picks quality with care.",
+    "correctPassage": "A discriminating curator rejected several well-known works that lacked historical depth.",
+    "wrongPassages": [
+      "His discriminating palate approved every cheap blend poured at the tasting without hesitation.",
+      "She took a discriminating approach to hiring by accepting the first r\u00e9sum\u00e9 that arrived.",
+      "A discriminating buyer grabs whatever is nearest the shelf and never compares options."
+    ]
+  },
+  {
+    "id": "w175",
+    "word": "Impetuous",
+    "definition": "acting quickly and rashly, without careful thought",
+    "memoryTip": "Rides pure impetus \u2014 charges ahead before thinking it through.",
+    "correctPassage": "An impetuous reply in the press conference undid months of careful negotiation.",
+    "wrongPassages": [
+      "Her impetuous strategy rested on six months of pilot data before any public launch.",
+      "The impetuous committee postponed the vote until every risk had been reviewed in writing.",
+      "He made an impetuous career change only after listing alternatives and consulting mentors."
+    ]
+  }
+]

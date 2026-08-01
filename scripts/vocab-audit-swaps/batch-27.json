@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w136",
+    "word": "Muzzle",
+    "definition": "prevent from speaking freely",
+    "memoryTip": "Like a dog\u2019s muzzle \u2014 silence or restrain speech.",
+    "correctPassage": "Attempts to muzzle dissenting scientists only increased public suspicion.",
+    "wrongPassages": [
+      "Editors hoped to muzzle the controversy by giving every critic a full column to respond.",
+      "She tried to muzzle the inquiry by releasing the complete transcript the same afternoon.",
+      "The board moved to muzzle the whistleblower by promoting her to a more public role."
+    ]
+  },
+  {
+    "id": "w137",
+    "word": "Ineffectual",
+    "definition": "not producing the desired effect",
+    "memoryTip": "In-effectual: has no real effect; doesn\u2019t work.",
+    "correctPassage": "The half-hearted apology was ineffectual in calming the controversy.",
+    "wrongPassages": [
+      "Her ineffectual treatment cleared every symptom within forty-eight hours.",
+      "The campaign proved ineffectual: turnout rose sharply and the measure passed by a wide margin.",
+      "Analysts called the intervention ineffectual precisely because it achieved every stated goal."
+    ]
+  },
+  {
+    "id": "w138",
+    "word": "Subvert",
+    "definition": "undermine the power or authority of",
+    "memoryTip": "Sub + vert: overturn from below \u2014 undermine authority.",
+    "correctPassage": "Satire can subvert official narratives by exposing their contradictions.",
+    "wrongPassages": [
+      "The reforms were designed to subvert authoritarian rule by expanding voting access and oversight.",
+      "They hoped to subvert the constitution by enforcing its amendments more strictly.",
+      "She sought to subvert the chair\u2019s authority by carefully following every rule the chair had set."
+    ]
+  },
+  {
+    "id": "w139",
+    "word": "Imperious",
+    "definition": "assuming power without justification; arrogantly domineering",
+    "memoryTip": "Imperial attitude \u2014 bossy, assuming command without right.",
+    "correctPassage": "His imperious tone made collaboration with junior staff difficult.",
+    "wrongPassages": [
+      "Her imperious manner put everyone at ease and invited open disagreement.",
+      "Colleagues praised his imperious style for never issuing orders and always asking first.",
+      "The director\u2019s imperious request for feedback made the junior writers feel free to challenge her draft."
+    ]
+  },
+  {
+    "id": "w140",
+    "word": "Scanty",
+    "definition": "small or insufficient in quantity",
+    "memoryTip": "Scant = barely enough \u2014 too little of something.",
+    "correctPassage": "Evidence for the theory remains scanty and contested.",
+    "wrongPassages": [
+      "The harvest was scanty: silos overflowed and crews still left grain in the fields.",
+      "Her scanty briefing covered risks, costs, and a recommendation across four full slides.",
+      "Researchers called the data set scanty after every variable had been measured in triplicate."
+    ]
+  }
+]

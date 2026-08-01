@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w246",
+    "word": "Emblematic",
+    "definition": "serving as a symbol of something",
+    "memoryTip": "Like an emblem \u2014 stands for a bigger idea or era.",
+    "correctPassage": "The abandoned mill became emblematic of the town's industrial decline.",
+    "wrongPassages": [
+      "Traders sought emblematic prices that never rose or fell more than a fraction of a percent.",
+      "The empty appendix was emblematic of a report dense with charts, tables, and findings.",
+      "Her thoroughly ordinary lunch order was somehow emblematic of radical culinary innovation."
+    ]
+  },
+  {
+    "id": "w247",
+    "word": "Abatement",
+    "definition": "a reduction or lessening",
+    "memoryTip": "A-bate: turn down the volume \u2014 reduction (noise abatement).",
+    "correctPassage": "Noise abatement measures cut late-night complaints from nearby residents.",
+    "wrongPassages": [
+      "After the abatement of the storm, winds grew stronger and flooding spread downtown.",
+      "The board celebrated the abatement of sales when quarterly revenue hit a record high.",
+      "With no abatement of the fever, her temperature finally returned to normal overnight."
+    ]
+  },
+  {
+    "id": "w248",
+    "word": "Dissonance",
+    "definition": "lack of harmony; clash of sounds or ideas",
+    "memoryTip": "Dis-sonance: harsh sound or clash \u2014 ideas that don't fit.",
+    "correctPassage": "Voters sensed dissonance between the campaign's promises and its budget plan.",
+    "wrongPassages": [
+      "The choir's seamless unison was praised as pure dissonance from the opening bar.",
+      "Panelists showed striking dissonance: each restated the same conclusion without objection.",
+      "Critics admired the essay's dissonance, noting how every paragraph reinforced one thesis."
+    ]
+  },
+  {
+    "id": "w249",
+    "word": "Curtail",
+    "definition": "reduce in extent or cut short",
+    "memoryTip": "Cut the tail short \u2014 reduce or trim back.",
+    "correctPassage": "Budget cuts will curtail after-school programs for the rest of the year.",
+    "wrongPassages": [
+      "The firm curtailed production by running every plant at full capacity around the clock.",
+      "To curtail the ceremony, organizers added two hours of speeches and musical numbers.",
+      "New funding will curtail the library's hours by keeping branches open later each night."
+    ]
+  },
+  {
+    "id": "w250",
+    "word": "Fortitude",
+    "definition": "courage and strength in pain or adversity",
+    "memoryTip": "Fort + attitude \u2014 inner strength when things get hard.",
+    "correctPassage": "Survivors showed remarkable fortitude during the long months of recovery.",
+    "wrongPassages": [
+      "He displayed fortitude by abandoning the project at the first minor setback.",
+      "Her fortitude consisted of avoiding every difficult assignment offered that semester.",
+      "Under pressure, his fortitude showed mainly as panic whenever a problem appeared."
+    ]
+  }
+]

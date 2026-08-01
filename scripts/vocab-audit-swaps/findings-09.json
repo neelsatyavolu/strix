@@ -1,0 +1,38 @@
+{
+  "batch": "09",
+  "issues": [
+    {
+      "id": "w047",
+      "word": "Notional",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "The notional duty of the editor was to fact-check every claim before publication.",
+      "why": "\"Notional duty\" is natural, correct English for a duty that exists only in theory or on paper (notional = hypothetical/theoretical). A student who knows the definition would rightly accept this passage.",
+      "fix": {
+        "correctPassage": "The budget included only a notional amount for travel until actual costs were known.",
+        "wrongPassages": [
+          "The notional figures were wire-transferred and already spent by Tuesday.",
+          "City officials granted a notional license that authorized the restaurant to open at once.",
+          "Negotiators filed the notional draft as a signed, fully enforceable contract."
+        ]
+      }
+    },
+    {
+      "id": "w050",
+      "word": "Impart",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "She chose to impart nothing and sealed the research notes from every colleague.",
+      "why": "\"Impart nothing\" is correct usage: to make no information known / share nothing. Choosing not to impart is still a valid use of the verb, not a misuse.",
+      "fix": {
+        "correctPassage": "Good mentors impart not only techniques but also habits of careful reading.",
+        "wrongPassages": [
+          "Editors carefully impart spoilers from the review copy so early readers stay surprised.",
+          "The filter is designed to impart impurities from the sample before analysis.",
+          "Inspectors tried to impart a confession from the reluctant witness."
+        ]
+      }
+    }
+  ],
+  "clean": ["w046", "w048", "w049"]
+}

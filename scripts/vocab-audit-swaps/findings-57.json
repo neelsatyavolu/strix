@@ -1,0 +1,22 @@
+{
+  "batch": "57",
+  "issues": [
+    {
+      "id": "w287",
+      "word": "Tortuous",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "He preferred the tortuous staircase that climbed in one unbroken flight to the landing.",
+      "why": "A winding or spiral staircase is both tortuous (full of twists) and often one unbroken flight (no intermediate landing). The passage is natural, correct use of tortuous = full of twists; a student who knows the word would accept it.",
+      "fix": {
+        "correctPassage": "Negotiators spent months on a tortuous route through conflicting statutes before reaching a draft.",
+        "wrongPassages": [
+          "The highway ran in a tortuous straight line across the plain with no curves for miles.",
+          "Her tortuous brief reduced the entire dispute to three plain sentences anyone could follow.",
+          "He preferred the tortuous staircase that rose in a single straight run with no turns to the landing."
+        ]
+      }
+    }
+  ],
+  "clean": ["w286", "w288", "w289", "w290"]
+}

@@ -1,0 +1,22 @@
+{
+  "batch": "26",
+  "issues": [
+    {
+      "id": "w135",
+      "word": "Presage",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "The report did not presage any future risk; it merely listed last quarter's completed projects.",
+      "why": "Valid, natural use of presage = be a sign of a future event: the sentence correctly states that the report did not foreshadow future risk and only listed past work.",
+      "fix": {
+        "correctPassage": "A sudden drop in overnight temperatures seemed to presage an early frost.",
+        "wrongPassages": [
+          "The historian used new archival letters to presage what had already happened a century earlier.",
+          "After the treaty was signed, diplomats gathered to presage the outcome they had just secured.",
+          "The archivist carefully presaged each donated letter by date and sender for the collection catalog."
+        ]
+      }
+    }
+  ],
+  "clean": ["w131", "w132", "w133", "w134"]
+}

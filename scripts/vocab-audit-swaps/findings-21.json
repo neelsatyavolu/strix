@@ -1,0 +1,22 @@
+{
+  "batch": "21",
+  "issues": [
+    {
+      "id": "w108",
+      "word": "Ephemeral",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "He filed the ephemeral records in a permanent archive meant to preserve them indefinitely.",
+      "why": "\"Ephemeral records/materials\" is standard, correct usage for short-lived documents (memos, flyers, etc.) that archives routinely collect. Filing them for long-term preservation does not make the adjective a misuse of ephemeral = lasting only a short time; a student who knows the word could rightly accept this passage.",
+      "fix": {
+        "correctPassage": "The desert bloom is ephemeral, vanishing within days once the rains end.",
+        "wrongPassages": [
+          "Stone monuments are ephemeral because they outlast the civilizations that raised them.",
+          "Their ephemeral collaboration has produced books together for more than thirty years.",
+          "He called the century-old oak ephemeral, noting that it had shaded the square for generations."
+        ]
+      }
+    }
+  ],
+  "clean": ["w106", "w107", "w109", "w110"]
+}

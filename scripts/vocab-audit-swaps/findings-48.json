@@ -1,0 +1,70 @@
+{
+  "batch": "48",
+  "issues": [
+    {
+      "id": "w244",
+      "word": "Entail",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The promotion will entail no new duties, oversight, or changes to her current schedule.",
+      "why": "\"Will entail no new duties\" is natural, correct English: entail = involve as a necessary consequence, and saying something entails none of X is valid (cf. \"will entail no additional cost\").",
+      "fix": {
+        "correctPassage": "Accepting the fellowship will entail relocating for at least two years.",
+        "wrongPassages": [
+          "They claimed the promotion would entail new authority simply by leaving her duties and schedule untouched.",
+          "Reviewers argued that the reform entailed success only if every required step were optional.",
+          "Expanding the study will entail rigorous controls by discarding the control group and all follow-up data."
+        ]
+      }
+    },
+    {
+      "id": "w244",
+      "word": "Entail",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Expanding the study will entail dropping the control group and ignoring follow-up data.",
+      "why": "Bad research design does not make the usage wrong. \"Expanding will entail dropping X\" correctly uses entail = involve as a necessary consequence.",
+      "fix": {
+        "correctPassage": "Accepting the fellowship will entail relocating for at least two years.",
+        "wrongPassages": [
+          "They claimed the promotion would entail new authority simply by leaving her duties and schedule untouched.",
+          "Reviewers argued that the reform entailed success only if every required step were optional.",
+          "Expanding the study will entail rigorous controls by discarding the control group and all follow-up data."
+        ]
+      }
+    },
+    {
+      "id": "w245",
+      "word": "Stipulate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Counsel refused to stipulate any terms, leaving the settlement entirely open-ended.",
+      "why": "\"Refused to stipulate any terms\" is standard, correct legal English: stipulate = specify as a condition; declining to do so uses the verb properly.",
+      "fix": {
+        "correctPassage": "The contract stipulates that all research data remain public for five years.",
+        "wrongPassages": [
+          "Counsel hoped to stipulate the settlement by stripping every term so nothing remained binding.",
+          "The landlord stipulated rent by never naming a figure or writing one into the lease.",
+          "Negotiators stipulated confidentiality by deleting every condition that would bind either party."
+        ]
+      }
+    },
+    {
+      "id": "w245",
+      "word": "Stipulate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Negotiators stipulated confidentiality only after stripping the deal of every stated condition.",
+      "why": "\"Stipulated confidentiality\" is correct use (they specified a condition). Stripping other terms first does not make the verb misuse; a careful reader can defend the sentence as valid.",
+      "fix": {
+        "correctPassage": "The contract stipulates that all research data remain public for five years.",
+        "wrongPassages": [
+          "Counsel hoped to stipulate the settlement by stripping every term so nothing remained binding.",
+          "The landlord stipulated rent by never naming a figure or writing one into the lease.",
+          "Negotiators stipulated confidentiality by deleting every condition that would bind either party."
+        ]
+      }
+    }
+  ],
+  "clean": ["w241", "w242", "w243"]
+}

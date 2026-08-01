@@ -1,0 +1,38 @@
+{
+  "batch": "65",
+  "issues": [
+    {
+      "id": "w329",
+      "word": "Spearhead",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "He agreed to spearhead the initiative only after every other department had finished its work.",
+      "why": "Valid natural use: someone can lead (spearhead) an initiative only after other departments finish preparatory work. Timing of start does not cancel the lead sense; a careful reader would accept the sentence.",
+      "fix": {
+        "correctPassage": "A small committee will spearhead fundraising for the new library wing.",
+        "wrongPassages": [
+          "He agreed to spearhead the initiative by stepping aside so other departments could lead every decision.",
+          "Lobbyists worked to spearhead the reform bill by filing endless procedural delays.",
+          "Reviewers found the conclusion spearhead and unsupported by any of the data."
+        ]
+      }
+    },
+    {
+      "id": "w330",
+      "word": "Elicit",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Officials rewrote the policy to elicit dissent before it could reach the press.",
+      "why": "\"Elicit dissent\" is correct usage (draw out a reaction). Odd political strategy does not make the verb wrong; a careful reader would accept the sentence as valid English.",
+      "fix": {
+        "correctPassage": "The interviewer's silence helped elicit a more candid answer from the witness.",
+        "wrongPassages": [
+          "City council voted to elicit overnight parking near the transit station.",
+          "Officials moved to elicit the protesters from the hearing room before the vote.",
+          "Alumni were asked to elicit funds for the new scholarship endowment."
+        ]
+      }
+    }
+  ],
+  "clean": ["w326", "w327", "w328"]
+}

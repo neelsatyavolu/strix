@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w371",
+    "word": "Apotheosis",
+    "definition": "the highest point; ideal or culminating example",
+    "memoryTip": "Apo-theos: raised to godlike status\u2014the peak or ideal.",
+    "correctPassage": "Critics hailed the final movement as the apotheosis of the composer's lifelong work with form.",
+    "wrongPassages": [
+      "The committee treated the unfinished draft as the apotheosis of a project still lacking direction.",
+      "After years of decline, the firm reached its apotheosis when sales hit their lowest recorded level.",
+      "Historians dated the apotheosis of the movement to the decade before it had any public influence."
+    ]
+  },
+  {
+    "id": "w372",
+    "word": "Ekphrastic",
+    "definition": "describing a work of visual art in literary form",
+    "memoryTip": "Ekphrasis = words that re-paint art\u2014a poem about a painting.",
+    "correctPassage": "Her ekphrastic sequence answers the museum triptych stanza by stanza in carefully paced prose.",
+    "wrongPassages": [
+      "The biologist's ekphrastic chart tracked enzyme rates without describing any painting or sculpture.",
+      "Reviewers called the purely fiscal brief ekphrastic even though it never engaged a work of visual art.",
+      "He delivered an ekphrastic inventory of warehouse stock, item by item, with no artistic subject."
+    ]
+  },
+  {
+    "id": "w373",
+    "word": "Agential",
+    "definition": "relating to an agent or the capacity to act",
+    "memoryTip": "Agent-ial: about who can act\u2014having agency.",
+    "correctPassage": "The study emphasizes the agential role of local organizers in shaping the reform.",
+    "wrongPassages": [
+      "Observers called the policy agential precisely because citizens had no room to choose or resist.",
+      "Critics found the protagonist agential only in the chapters where outside forces decided every outcome.",
+      "The dormant machinery was labeled agential while it remained powered down and untouched for months."
+    ]
+  },
+  {
+    "id": "w374",
+    "word": "Vexation",
+    "definition": "the state of being annoyed or worried",
+    "memoryTip": "Vexed feeling\u2014annoyance, irritation, fret.",
+    "correctPassage": "Repeated schedule changes became a steady source of vexation for the research team.",
+    "wrongPassages": [
+      "The quiet afternoon brought a rare vexation of ease that settled over the entire household.",
+      "She recalled the promotion with pure vexation, smiling at how perfectly everything had aligned.",
+      "The reunion filled him with vexation so complete he could not stop laughing in relief."
+    ]
+  },
+  {
+    "id": "w375",
+    "word": "Onomatopoeia",
+    "definition": "words that imitate the sound they name",
+    "memoryTip": "Buzz, hiss, boom\u2014words that sound like what they mean.",
+    "correctPassage": "In the graphic novel, each collision panel is edged with bold onomatopoeia that echoes the impact.",
+    "wrongPassages": [
+      "The silent geometry treatise was praised for its onomatopoeia, though no word mimicked a sound.",
+      "She classified abstract ledger terms such as equity and liability as onomatopoeia.",
+      "His onomatopoeia chapter surveyed only color gradients and never a sound-imitating word."
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w236",
+    "word": "Equitable",
+    "definition": "fair and impartial",
+    "memoryTip": "Equity = fairness\u2014equitable means just and even-handed to all sides.",
+    "correctPassage": "The board sought an equitable settlement that weighed each party's claims without favoring the strongest.",
+    "wrongPassages": [
+      "Critics called the plan equitable because it funneled nearly all benefits to a single stakeholder.",
+      "An equitable hearing, as they defined it, meant deciding the case before the weaker side spoke.",
+      "She praised the equitable contract for locking minority partners out of any real influence."
+    ]
+  },
+  {
+    "id": "w237",
+    "word": "Unattainable",
+    "definition": "not able to be reached or achieved",
+    "memoryTip": "Can't attain it\u2014unattainable means out of reach, not merely hard.",
+    "correctPassage": "For many applicants, admission to the program remains unattainable without substantial financial aid.",
+    "wrongPassages": [
+      "The once unattainable target was finished before lunch on the team's first quiet day.",
+      "Hikers called the ridge unattainable only after the new trail delivered them to the summit.",
+      "She treated the unattainable deadline as generous, since the report had already been submitted."
+    ]
+  },
+  {
+    "id": "w238",
+    "word": "Vapid",
+    "definition": "offering nothing stimulating; bland",
+    "memoryTip": "Vapor-thin flavor\u2014vapid talk is bland, empty, and quickly forgotten.",
+    "correctPassage": "Though polished in delivery, the keynote remained vapid, offering little beyond familiar slogans.",
+    "wrongPassages": [
+      "Reviewers called the seminar vapid for packing each hour with dense analysis and sharp examples.",
+      "The vapid novel kept readers awake with twists that unsettled every assumption they held.",
+      "Students preferred the vapid lectures because the arguments forced them to rethink their positions."
+    ]
+  },
+  {
+    "id": "w239",
+    "word": "Sanction",
+    "definition": "a penalty for disobeying; or official permission",
+    "memoryTip": "Two-faced word: sanctions punish\u2014or sanction means officially allow.",
+    "correctPassage": "The league may sanction the franchise for repeated violations of recruitment rules.",
+    "wrongPassages": [
+      "Officials moved to sanction the misconduct by promoting those responsible and expanding their budget.",
+      "She claimed she could sanction the treaty simply by forgetting to schedule any formal review.",
+      "The committee hoped to sanction the reform by refusing to put it on the agenda at all."
+    ]
+  },
+  {
+    "id": "w240",
+    "word": "Incongruity",
+    "definition": "the state of being out of place or inconsistent",
+    "memoryTip": "Incongruous mismatch\u2014incongruity is when pieces simply don't fit.",
+    "correctPassage": "Critics noted a striking incongruity between the company's green pledges and its rising emissions.",
+    "wrongPassages": [
+      "The matching set showed perfect incongruity: every piece shared the same color, scale, and style.",
+      "Historians praised the incongruity of the two accounts, which agreed on every material detail.",
+      "Reviewers welcomed the incongruity of the argument, as each claim reinforced the next without tension."
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "batch": "38",
+  "issues": [
+    {
+      "id": "w191",
+      "word": "Unrivaled",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Reviewers called her method unrivaled, then named three approaches that surpassed it on every measure.",
+      "why": "\"Called her method unrivaled\" is correct, natural use of unrivaled = better than all others. The later contradiction is only pragmatic inconsistency by the reviewers; it does not make the word itself a misuse. A student who knows the definition would accept the wording as valid usage.",
+      "fix": {
+        "correctPassage": "The archive remains unrivaled in its coverage of early print culture.",
+        "wrongPassages": [
+          "Scouts called the prospect unrivaled to mean every team had already found a stronger alternative.",
+          "The program’s unrivaled outcomes placed it last among district schools in both retention and test gains.",
+          "Investors dismissed the design as unrivaled, meaning it offered nothing distinct from existing products."
+        ]
+      }
+    },
+    {
+      "id": "w195",
+      "word": "Prefigure",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Historians claimed the treaty prefigured the war only after hostilities had already ended.",
+      "why": "Natural parse: historians made the claim only after the war ended. \"The treaty prefigured the war\" is correct use of prefigure = early sign of something later; retrospective claims are normal historical analysis. Not a misuse of the word.",
+      "fix": {
+        "correctPassage": "Those early sketches already prefigure the building’s final silhouette.",
+        "wrongPassages": [
+          "Historians said the armistice prefigured the war that had ended the year before.",
+          "The sequel is said to prefigure the original novel by repeating plot points readers already know.",
+          "Analysts expect the new data to prefigure past recessions by arriving years after those downturns."
+        ]
+      }
+    }
+  ],
+  "clean": ["w192", "w193", "w194"]
+}

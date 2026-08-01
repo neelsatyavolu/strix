@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w201",
+    "word": "Ostentatious",
+    "definition": "showy; designed to impress or attract notice",
+    "memoryTip": "OSTENTatious \u2014 put on a show (like a gold tent) so everyone stares.",
+    "correctPassage": "Critics dismissed the lobby's ostentatious marble staircase as an attempt to advertise success rather than welcome visitors.",
+    "wrongPassages": [
+      "She chose an ostentatious route through side streets so that no one would notice her arrival.",
+      "The archive kept the manuscript in an ostentatious vault designed to avoid drawing public attention.",
+      "His ostentatious lecture relied on plain language and avoided any flourish that might distract the audience."
+    ]
+  },
+  {
+    "id": "w202",
+    "word": "Conjectural",
+    "definition": "based on incomplete information; speculative",
+    "memoryTip": "Conjecture = a guess \u2014 conjectural claims rest on guesswork, not proof.",
+    "correctPassage": "Historians treated the dynasty's early years as largely conjectural because so few contemporary records survived.",
+    "wrongPassages": [
+      "The lab's conjectural measurements matched the certified reference sample to the last decimal place.",
+      "Her conjectural itinerary listed every appointment she had already confirmed in writing.",
+      "The prosecution rested on conjectural evidence: fingerprints, surveillance video, and a signed confession."
+    ]
+  },
+  {
+    "id": "w203",
+    "word": "Stringent",
+    "definition": "strict, precise, and exacting",
+    "memoryTip": "String-tight rules \u2014 pulled taut; no slack allowed.",
+    "correctPassage": "Stringent safety standards apply to every chemical handled in the laboratory.",
+    "wrongPassages": [
+      "The dress code was so stringent that students could arrive in whatever they preferred.",
+      "Under the new stringent policy, almost any excuse was accepted without documentation.",
+      "Reviewers praised the paper's stringent analysis, which left key terms undefined and methods unexplained."
+    ]
+  },
+  {
+    "id": "w204",
+    "word": "Egotistical",
+    "definition": "excessively self-centered or conceited",
+    "memoryTip": "Ego-tistical: the ego is the star of every sentence.",
+    "correctPassage": "An egotistical refusal to share credit quickly damaged team morale.",
+    "wrongPassages": [
+      "Her egotistical mentoring always put the interns' growth ahead of her own reputation.",
+      "Colleagues admired his egotistical habit of crediting others whenever a project succeeded.",
+      "Critics called the memoir egotistical for dwelling almost entirely on other people's achievements."
+    ]
+  },
+  {
+    "id": "w205",
+    "word": "Pliant",
+    "definition": "easily bent; easily influenced",
+    "memoryTip": "Pliant \u2248 pliable \u2014 bends without breaking; yields to pressure.",
+    "correctPassage": "Young stems are pliant enough to train along a trellis without snapping.",
+    "wrongPassages": [
+      "The pliant steel girder held its shape even under the crane's full load.",
+      "A pliant negotiator refused every concession no matter how persuasive the counteroffer.",
+      "Jurors found the judge pliant: she never bent her ruling once the statute was clear."
+    ]
+  }
+]

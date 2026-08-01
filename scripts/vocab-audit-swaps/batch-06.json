@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w031",
+    "word": "Impervious",
+    "definition": "not allowing passage; unable to be affected",
+    "memoryTip": "Im-pervious: nothing can pierce through (water, criticism).",
+    "correctPassage": "Despite months of public criticism, the committee remained nearly impervious to outside pressure.",
+    "wrongPassages": [
+      "The sandstone was impervious, absorbing the stormwater within minutes of the downpour.",
+      "Once the first review appeared, she proved impervious and rewrote every chapter overnight.",
+      "He hoped to impervious the jury with a brief, carefully rehearsed opening statement."
+    ]
+  },
+  {
+    "id": "w032",
+    "word": "Untenable",
+    "definition": "not able to be defended or maintained",
+    "memoryTip": "Can\u2019t tenably hold it \u2014 the argument collapses; position is indefensible.",
+    "correctPassage": "Once the data were corrected, the original hypothesis became untenable.",
+    "wrongPassages": [
+      "After independent replications matched every prediction, the theory looked untenable to reviewers.",
+      "Board members called the budget untenable once every line item had clear funding and oversight.",
+      "The treaty proved untenable: both sides continued to honor its terms for decades without dispute."
+    ]
+  },
+  {
+    "id": "w033",
+    "word": "Ubiquitous",
+    "definition": "present, appearing, or found everywhere",
+    "memoryTip": "Ubi = where (Latin) \u2014 seems to be everywhere you look.",
+    "correctPassage": "Smartphones are now so ubiquitous that many public spaces assume constant connectivity.",
+    "wrongPassages": [
+      "The orchid is ubiquitous in the region\u2014only a single wild specimen has ever been documented.",
+      "She kept her ubiquitous notes in one locked drawer that no colleague was allowed to open.",
+      "After the last factory closed, the brand became ubiquitous on store shelves nationwide."
+    ]
+  },
+  {
+    "id": "w034",
+    "word": "Defunct",
+    "definition": "no longer existing or functioning",
+    "memoryTip": "De-funct: function stopped \u2014 dead, no longer running.",
+    "correctPassage": "The defunct railway line has been converted into a public walking path.",
+    "wrongPassages": [
+      "The defunct clinic still books appointments daily and posts updated wait times online.",
+      "Investors poured capital into the defunct startup after it reported record quarterly growth.",
+      "Technicians called the network defunct while monitoring live traffic across every node."
+    ]
+  },
+  {
+    "id": "w035",
+    "word": "Detractor",
+    "definition": "a person who criticizes or disparages someone or something",
+    "memoryTip": "De-tract: pulls reputation down \u2014 a critic who knocks you.",
+    "correctPassage": "Even the project\u2019s fiercest detractor admitted that the final design was elegant.",
+    "wrongPassages": [
+      "The lead sponsor acted as chief detractor, funding the tour and praising every performance.",
+      "She hired a detractor to write the glowing recommendation letter for graduate school.",
+      "His lifelong detractor never missed a premiere and always led the standing ovation."
+    ]
+  }
+]

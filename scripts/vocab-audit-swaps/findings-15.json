@@ -1,0 +1,22 @@
+{
+  "batch": "15",
+  "issues": [
+    {
+      "id": "w080",
+      "word": "Zenith",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "At the zenith of the dig, crews finally exposed the lowest foundation stones of the fort.",
+      "why": "\"At the zenith of the dig\" is valid figurative use: zenith = peak/high point of the excavation project (when the key discovery was made). \"Lowest foundation stones\" names depth in the ground, not the opposite of zenith; a careful reader would accept the sentence as correct.",
+      "fix": {
+        "correctPassage": "The empire reached its zenith under the second emperor’s long and stable rule.",
+        "wrongPassages": [
+          "The firm reached its zenith the year losses forced a major restructuring of the company.",
+          "After the scandal, the senator’s career sank to its zenith and never recovered public trust.",
+          "Historians place the movement’s zenith in the obscure years before it gained any public following."
+        ]
+      }
+    }
+  ],
+  "clean": ["w076", "w077", "w078", "w079"]
+}

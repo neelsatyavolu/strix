@@ -1,0 +1,38 @@
+{
+  "batch": "73",
+  "issues": [
+    {
+      "id": "w370",
+      "word": "Articulate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "She refused to articulate any position, remaining silent through the entire debate.",
+      "why": "\"Refused to articulate any position\" is standard correct use: she declined to express a stance fluently/coherently and stayed silent. Silence is the refusal, not a misuse of the verb.",
+      "fix": {
+        "correctPassage": "Few candidates could articulate a coherent plan for reforming the district's budget.",
+        "wrongPassages": [
+          "He could only articulate in broken fragments that left the audience more confused than before.",
+          "She articulated every plank of her platform so fluently that the speech dissolved into unparseable digressions.",
+          "The brief was carefully articulated, each paragraph rambling past its point without a readable main claim."
+        ]
+      }
+    },
+    {
+      "id": "w370",
+      "word": "Articulate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "His attempt to articulate dissolved into mumbled half-sentences no one could parse.",
+      "why": "\"Attempt to articulate\" correctly uses the verb for trying to express something fluently and coherently; the attempt failing does not make the wording a misuse. A student who knows the word would accept this sentence.",
+      "fix": {
+        "correctPassage": "Few candidates could articulate a coherent plan for reforming the district's budget.",
+        "wrongPassages": [
+          "He could only articulate in broken fragments that left the audience more confused than before.",
+          "She articulated every plank of her platform so fluently that the speech dissolved into unparseable digressions.",
+          "The brief was carefully articulated, each paragraph rambling past its point without a readable main claim."
+        ]
+      }
+    }
+  ],
+  "clean": ["w366", "w367", "w368", "w369"]
+}

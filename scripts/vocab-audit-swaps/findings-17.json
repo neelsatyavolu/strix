@@ -1,0 +1,38 @@
+{
+  "batch": "17",
+  "issues": [
+    {
+      "id": "w089",
+      "word": "Fabrication",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Editors praised her fabrication of the timeline for matching every court record exactly.",
+      "why": "Definition includes manufacturing/making as well as falsehood. \"Fabrication of the timeline\" is a defensible manufacturing/construction reading, and praise for exact match to court records fits that sense. A student who knows both definitions could rightly accept this passage.",
+      "fix": {
+        "correctPassage": "Investigators concluded that the signature on the form was a fabrication.",
+        "wrongPassages": [
+          "Her careful fabrication of each citation against the archive left the bibliography flawless.",
+          "Their fabrication on the paper earned both coauthors equal credit in the journal.",
+          "Demolition crews finished the fabrication of the old wing before noon."
+        ]
+      }
+    },
+    {
+      "id": "w090",
+      "word": "Earnest",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "With an earnest glance at her phone, she promised help and never followed up.",
+      "why": "\"Earnest glance\" is natural, correct use of earnest = sincere and serious. The broken promise is only a pragmatic follow-on; it does not make the adjective a misuse. wrongPassages[0] (\"earnest quip\") is also AMBIGUOUS—a quip offered sincerely can still be called earnest—so all three wrongs are rewritten as clear misuses.",
+      "fix": {
+        "correctPassage": "Her earnest appeal for more lab time persuaded even the skeptical dean.",
+        "wrongPassages": [
+          "He filed an earnest for early dismissal and left before the vote was called.",
+          "Engineers measured the bridge's earnest before certifying it for heavy traffic.",
+          "They dismissed the proposal as too earnest for the department's limited budget."
+        ]
+      }
+    }
+  ],
+  "clean": ["w086", "w087", "w088"]
+}

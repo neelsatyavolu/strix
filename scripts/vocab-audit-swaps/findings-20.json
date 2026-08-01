@@ -1,0 +1,54 @@
+{
+  "batch": "20",
+  "issues": [
+    {
+      "id": "w104",
+      "word": "Salient",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The team treated the salient findings as minor footnotes unlikely to affect the conclusion.",
+      "why": "“Salient findings” is correct use (most noticeable/important). The team’s poor treatment does not make the word misuse; a careful reader would accept the sentence as coherent English.",
+      "fix": {
+        "correctPassage": "Among several results, the most salient was the unexpected rise in retention rates.",
+        "wrongPassages": [
+          "Editors wanted a salient claim that would blend into the appendix and escape every reviewer’s notice.",
+          "She reserved the label salient for a tiny typo while insisting the fatal sampling error barely mattered.",
+          "His salient contribution was so slight that colleagues forgot he had joined the project."
+        ]
+      }
+    },
+    {
+      "id": "w104",
+      "word": "Salient",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "She ranked a small typo as the report’s most salient flaw and set aside the sampling error.",
+      "why": "Ranking something as the “most salient flaw” is natural, correct use of salient = most noticeable or important. Poor prioritization is not word misuse; the sentence is valid English.",
+      "fix": {
+        "correctPassage": "Among several results, the most salient was the unexpected rise in retention rates.",
+        "wrongPassages": [
+          "Editors wanted a salient claim that would blend into the appendix and escape every reviewer’s notice.",
+          "She reserved the label salient for a tiny typo while insisting the fatal sampling error barely mattered.",
+          "His salient contribution was so slight that colleagues forgot he had joined the project."
+        ]
+      }
+    },
+    {
+      "id": "w105",
+      "word": "Thwart",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "The new route will thwart delivery delays by adding direct service between the two hubs.",
+      "why": "“Thwart delivery delays” is a valid, natural use of thwart = prevent (delays from occurring). Adding direct service is a plausible way to prevent delays, so the sentence is correct English.",
+      "fix": {
+        "correctPassage": "Strict export rules may thwart researchers’ efforts to share the dataset internationally.",
+        "wrongPassages": [
+          "The grant was designed to thwart the study by covering equipment, travel, and staff time.",
+          "Early feedback helped thwart the proposal by clarifying weak sections before submission.",
+          "The new route will thwart on-time deliveries by adding direct service between the two hubs."
+        ]
+      }
+    }
+  ],
+  "clean": ["w101", "w102", "w103"]
+}

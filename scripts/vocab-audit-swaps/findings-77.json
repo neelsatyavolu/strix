@@ -1,0 +1,70 @@
+{
+  "batch": "77",
+  "issues": [
+    {
+      "id": "w388",
+      "word": "Unpalatable",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Voters found the tax plan so unpalatable that they approved it without debate.",
+      "why": "\"Found the tax plan so unpalatable\" is correct, natural use of unpalatable = difficult to accept. The approved-without-debate clause is only pragmatic contradiction; it does not make the word itself a misuse. A student who knows the definition would rightly accept the wording.",
+      "fix": {
+        "correctPassage": "The report contains unpalatable truths about the project's cost overruns.",
+        "wrongPassages": [
+          "Voters labeled the tax plan unpalatable because every provision was easy to accept and widely cheered.",
+          "Critics called the ending unpalatable for its gentle, crowd-pleasing resolution that left no one unsettled.",
+          "The compromise proved unpalatable once both parties found it entirely agreeable and signed without hesitation."
+        ]
+      }
+    },
+    {
+      "id": "w388",
+      "word": "Unpalatable",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Critics called the ending unpalatable and recommended the film to every friend.",
+      "why": "\"Called the ending unpalatable\" correctly uses unpalatable = hard to find pleasant. Recommending the film is only ironic after-behavior; the word itself is used properly. A student who knows the definition would accept the passage as valid usage.",
+      "fix": {
+        "correctPassage": "The report contains unpalatable truths about the project's cost overruns.",
+        "wrongPassages": [
+          "Voters labeled the tax plan unpalatable because every provision was easy to accept and widely cheered.",
+          "Critics called the ending unpalatable for its gentle, crowd-pleasing resolution that left no one unsettled.",
+          "The compromise proved unpalatable once both parties found it entirely agreeable and signed without hesitation."
+        ]
+      }
+    },
+    {
+      "id": "w388",
+      "word": "Unpalatable",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "The compromise proved unpalatable to both parties, who signed it eagerly that afternoon.",
+      "why": "\"Proved unpalatable to both parties\" is correct use of unpalatable = difficult to accept. Eager signing is only situational hypocrisy; it does not turn the word into a misuse. A student who knows the definition would accept this passage.",
+      "fix": {
+        "correctPassage": "The report contains unpalatable truths about the project's cost overruns.",
+        "wrongPassages": [
+          "Voters labeled the tax plan unpalatable because every provision was easy to accept and widely cheered.",
+          "Critics called the ending unpalatable for its gentle, crowd-pleasing resolution that left no one unsettled.",
+          "The compromise proved unpalatable once both parties found it entirely agreeable and signed without hesitation."
+        ]
+      }
+    },
+    {
+      "id": "w390",
+      "word": "Qualification",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "He praised the proposal without qualification, then spent an hour listing its serious flaws.",
+      "why": "\"Praised ... without qualification\" is standard correct use of qualification = a limiting condition (here, praise with no reservation). Listing flaws afterward is only inconsistent behavior; the phrase itself is valid English a student who knows the word would accept.",
+      "fix": {
+        "correctPassage": "She accepted the praise with one important qualification about the study's small sample.",
+        "wrongPassages": [
+          "The recipe called for two qualifications of oil, measured roughly by eye.",
+          "He praised the proposal without qualification by hedging every compliment with a major caveat.",
+          "The referee issued a qualification that removed the player from the rest of the match."
+        ]
+      }
+    }
+  ],
+  "clean": ["w386", "w387", "w389"]
+}

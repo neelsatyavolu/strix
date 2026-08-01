@@ -5,18 +5,18 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-30T19:41:42.000Z
+- **Updated**: 2026-08-01T02:15:28.000Z
 - **Sessions**: 7
 
-## SAT MCQ 80-agent rewrite
+## Vacate false-wrong + 80 audit
 
 - **id**: `02f384cf-d226-4d5b-933c-8c5883f1e142`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-07-30T19:41:42.000Z
+- **updated**: 2026-08-01T02:15:28.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fabc4-c6a0-7bf3-bd03-67abd20f6a2e/chat_history.jsonl`
 
-Launched all 80 SAT MCQ subagents (batches 00-79, 5 words each). All 80 fixed-*.json validated and merged into lib/vocab/bank.ts. Rewrote correctPassage + 3 wrongPassages for all 400 words: SAT academic register, proper correct use, non-absurd wrongs (no trunk/emoji/paint templates). Restored listCategories. tsc clean; residual window-template wrongs fixed for Partition/Secrete.
+User flagged Vacate quiz: picked correct 'refused to vacate apartment' but marked wrong; UI showed false-correct 'vacate environmental damage'. Root cause 1: usageOptions generatedCorrect generic verb templates treated as correct. Root cause 2: bank wrongPassages that are actually valid uses (TRUE_WRONG). Fixed: correctPool = bank correctPassage only (removed generatedCorrect); Vacate wrongs fixed; 80-agent swap audit → 93 issues (89 TRUE_WRONG, 4 AMBIGUOUS) across 76 words merged into bank.ts.
 
 ## Vocabulary tab
 

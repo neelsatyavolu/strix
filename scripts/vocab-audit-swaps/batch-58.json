@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w291",
+    "word": "Interchangeable",
+    "definition": "able to be exchanged without changing the result",
+    "memoryTip": "Inter-change \u2014 swap them and nothing really changes.",
+    "correctPassage": "Because the two reagents proved interchangeable, technicians could substitute either without altering the reaction's outcome.",
+    "wrongPassages": [
+      "The curator called the one-of-a-kind sculpture interchangeable, insisting that no other work could ever take its place.",
+      "Investigators labeled her distinctive signature interchangeable with every other mark in the crowded file.",
+      "Once each part was sealed and serialized, the engineer declared the components interchangeable only with themselves."
+    ]
+  },
+  {
+    "id": "w292",
+    "word": "Encapsulate",
+    "definition": "express the essential features of something briefly",
+    "memoryTip": "In a capsule \u2014 sum up the essence in a tight package.",
+    "correctPassage": "The abstract manages to encapsulate a decade of fieldwork in a single dense paragraph.",
+    "wrongPassages": [
+      "She tried to encapsulate the report by expanding every section with long digressions and asides.",
+      "He encapsulated the theory by omitting its central claims and listing only minor footnotes.",
+      "The committee encapsulated the crisis by refusing to summarize it and demanding the full archive uncut."
+    ]
+  },
+  {
+    "id": "w293",
+    "word": "Facetious",
+    "definition": "treating a serious matter with deliberate, often inappropriate humor",
+    "memoryTip": "Facet + joking face \u2014 treating serious things lightly on purpose.",
+    "correctPassage": "A facetious remark during the memorial briefing was widely misread as official policy.",
+    "wrongPassages": [
+      "Her facetious eulogy never once broke into a smile, a joke, or any touch of levity.",
+      "The surgeon kept a facetious silence while explaining each clinical risk in careful, humorless detail.",
+      "He filed a facetious tax return that listed every income source without a trace of irony."
+    ]
+  },
+  {
+    "id": "w294",
+    "word": "Secluded",
+    "definition": "hidden from view; private and not often visited",
+    "memoryTip": "Se-clude: shut away \u2014 private and hard to reach.",
+    "correctPassage": "The research cabin sits in a secluded valley reachable only by a rough footpath.",
+    "wrongPassages": [
+      "The secluded plaza hosted a weekend street fair with food trucks and constant crowds.",
+      "Her secluded desk stood under bright lights in the center of the open office.",
+      "They chose a secluded table next to the host stand at the restaurant's busiest entrance."
+    ]
+  },
+  {
+    "id": "w295",
+    "word": "Retrieve",
+    "definition": "get or bring something back",
+    "memoryTip": "Re-trieve: bring it back (like a retriever dog).",
+    "correctPassage": "Archivists worked for hours to retrieve the damaged negatives from the flooded basement.",
+    "wrongPassages": [
+      "She hoped to retrieve the lost email by drafting an entirely new message from scratch.",
+      "They tried to retrieve the meeting by canceling it before anyone could arrive.",
+      "He will retrieve the broken vase by leaving the shards scattered across the floor."
+    ]
+  }
+]

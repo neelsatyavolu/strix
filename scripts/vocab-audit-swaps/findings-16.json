@@ -1,0 +1,54 @@
+{
+  "batch": "16",
+  "issues": [
+    {
+      "id": "w083",
+      "word": "Default",
+      "kind": "AMBIGUOUS",
+      "which": "wrongPassages[1]",
+      "passage": "The program's default forced users to configure dozens of options before any work began.",
+      "why": "A careful reader can defend this as correct: people naturally say a program's default (behavior/mode) requires a long setup wizard. That is a valid use of default = preselected option/behavior, not a clear misuse. Rewrite so the wrongs contradict either sense (failing an obligation, or a preselected fallback).",
+      "fix": {
+        "correctPassage": "If no option is selected, the software applies a conservative default setting.",
+        "wrongPassages": [
+          "She defaulted on the loan by sending every installment well before it was due.",
+          "Because the tool offered no default, every user was spared any choice and began work instantly.",
+          "His default reply was reinvented from scratch for each nearly identical request."
+        ]
+      }
+    },
+    {
+      "id": "w084",
+      "word": "Superfluous",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The surgeon called the monitor superfluous while relying on it throughout the procedure.",
+      "why": "\"Called the monitor superfluous\" is correct, natural use of superfluous = unnecessary. The while-clause is only pragmatic hypocrisy; it does not make the word itself a misuse. A student who knows the definition would rightly accept this passage.",
+      "fix": {
+        "correctPassage": "Editors cut superfluous adjectives that lengthened the prose without adding clarity.",
+        "wrongPassages": [
+          "Without that single superfluous component, the machine had no power source and could not run.",
+          "On a long desert crossing, water proved superfluous once the heat grew severe.",
+          "The brief's only superfluous claim was the thesis every later paragraph depended on."
+        ]
+      }
+    },
+    {
+      "id": "w084",
+      "word": "Superfluous",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Instructors labeled the practice exams superfluous after only those who took them improved.",
+      "why": "\"Labeled the practice exams superfluous\" correctly uses superfluous = unnecessary. Irony that the exams helped does not turn the wording into a misuse; a student who knows the word would accept the passage as valid usage.",
+      "fix": {
+        "correctPassage": "Editors cut superfluous adjectives that lengthened the prose without adding clarity.",
+        "wrongPassages": [
+          "Without that single superfluous component, the machine had no power source and could not run.",
+          "On a long desert crossing, water proved superfluous once the heat grew severe.",
+          "The brief's only superfluous claim was the thesis every later paragraph depended on."
+        ]
+      }
+    }
+  ],
+  "clean": ["w081", "w082", "w085"]
+}

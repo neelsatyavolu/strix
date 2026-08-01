@@ -1,0 +1,38 @@
+{
+  "batch": "35",
+  "issues": [
+    {
+      "id": "w179",
+      "word": "Veritable",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The deserted plaza was a veritable throng of vendors, tourists, and street musicians.",
+      "why": "\"A veritable throng\" is correct, natural use of veritable as an intensifier meaning genuine/true. The desertion–throng clash is only situational nonsense; it does not make the word itself a misuse. A student who knows the definition would rightly accept this collocation.",
+      "fix": {
+        "correctPassage": "After the merger, the firm became a veritable archive of industry patents and technical manuals.",
+        "wrongPassages": [
+          "She hoped to veritable the rumor by checking three independent sources before publishing.",
+          "His estimates were highly veritable from week to week, swinging with every market rumor.",
+          "The committee demanded more veritable before it would endorse the budget proposal."
+        ]
+      }
+    },
+    {
+      "id": "w179",
+      "word": "Veritable",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Two mild notices made the play a veritable triumph according to every major critic that week.",
+      "why": "\"A veritable triumph\" is standard correct collocation (genuine/true triumph used for emphasis). Odd causality about mild notices does not turn the word into a misuse; a student who knows the definition would accept the phrase.",
+      "fix": {
+        "correctPassage": "After the merger, the firm became a veritable archive of industry patents and technical manuals.",
+        "wrongPassages": [
+          "She hoped to veritable the rumor by checking three independent sources before publishing.",
+          "His estimates were highly veritable from week to week, swinging with every market rumor.",
+          "The committee demanded more veritable before it would endorse the budget proposal."
+        ]
+      }
+    }
+  ],
+  "clean": ["w176", "w177", "w178", "w180"]
+}

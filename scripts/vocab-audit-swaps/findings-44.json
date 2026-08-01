@@ -1,0 +1,22 @@
+{
+  "batch": "44",
+  "issues": [
+    {
+      "id": "w224",
+      "word": "Invigorate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Budget cuts were meant to invigorate the program by eliminating training and travel support.",
+      "why": "Invigorate is used correctly for intended strengthening/energizing; a counterproductive method does not make the verb itself wrong usage.",
+      "fix": {
+        "correctPassage": "A change of leadership can invigorate an organization that has grown stagnant.",
+        "wrongPassages": [
+          "The endless briefing seemed to invigorate staff, who left more exhausted than when they arrived.",
+          "The layoffs invigorated the department, leaving remaining staff depleted and demoralized.",
+          "Physicians warned that sleepless nights would invigorate patients recovering from surgery."
+        ]
+      }
+    }
+  ],
+  "clean": ["w221", "w222", "w223", "w225"]
+}

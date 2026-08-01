@@ -1,0 +1,54 @@
+{
+  "batch": "11",
+  "issues": [
+    {
+      "id": "w057",
+      "word": "Subside",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "As the deadline approached, the team's anxiety only seemed to subside with every new complication.",
+      "why": "\"Anxiety ... seemed to subside\" is valid, natural use of subside = become less intense. The deadline/complications framing is only pragmatically odd; it does not make the verb a misuse. A student who knows the definition would rightly accept this passage.",
+      "fix": {
+        "correctPassage": "Once the fever began to subside, she was able to sleep through the night.",
+        "wrongPassages": [
+          "Managers hoped a larger bonus would subside employees who had threatened to walk out.",
+          "The city council voted to subside the after-school music program that parents had long supported.",
+          "She planned to subside the quiet research post for a louder role in public affairs."
+        ]
+      }
+    },
+    {
+      "id": "w060",
+      "word": "Preclude",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The open forum was designed to preclude neighbors who had felt shut out of earlier planning meetings.",
+      "why": "\"Preclude neighbors\" is usable as prevent/rule out those people (from taking part). That matches preclude = make impossible / prevent. Calling the event an \"open forum\" is only pragmatically odd; the word itself is not misused.",
+      "fix": {
+        "correctPassage": "A prior commitment precludes her from joining the evening session.",
+        "wrongPassages": [
+          "Her brief remarks will preclude the keynote and establish the themes for the rest of the day.",
+          "The signed form will preclude that every volunteer has read the safety guidelines.",
+          "Weekend clinics preclude free screenings to residents who lack insurance."
+        ]
+      }
+    },
+    {
+      "id": "w060",
+      "word": "Preclude",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Flexible office hours preclude students who need help outside the standard schedule.",
+      "why": "\"X precludes students who...\" is the same preventive construction as in correct usage (e.g. rigid rules preclude students who work days). Flexible hours making that claim is only situationally inverted; the verb is still used as prevent, not as a clear misuse.",
+      "fix": {
+        "correctPassage": "A prior commitment precludes her from joining the evening session.",
+        "wrongPassages": [
+          "Her brief remarks will preclude the keynote and establish the themes for the rest of the day.",
+          "The signed form will preclude that every volunteer has read the safety guidelines.",
+          "Weekend clinics preclude free screenings to residents who lack insurance."
+        ]
+      }
+    }
+  ],
+  "clean": ["w056", "w058", "w059"]
+}

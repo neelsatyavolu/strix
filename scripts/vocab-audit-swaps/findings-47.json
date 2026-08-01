@@ -1,0 +1,38 @@
+{
+  "batch": "47",
+  "issues": [
+    {
+      "id": "w237",
+      "word": "Unattainable",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The once unattainable target was finished before lunch on the team's first quiet day.",
+      "why": "\"Once unattainable\" is natural, correct English: it means the target used to be out of reach and later became achievable. Finishing it after it ceased to be unattainable does not misuse the word.",
+      "fix": {
+        "correctPassage": "For many applicants, admission to the program remains unattainable without substantial financial aid.",
+        "wrongPassages": [
+          "The unattainable target was finished before lunch on the team's first quiet day.",
+          "Hikers called the ridge unattainable only after the new trail delivered them to the summit.",
+          "She treated the unattainable deadline as generous, since the report had already been submitted."
+        ]
+      }
+    },
+    {
+      "id": "w239",
+      "word": "Sanction",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Officials moved to sanction the misconduct by promoting those responsible and expanding their budget.",
+      "why": "Sanction also means official permission/approval. Promoting the responsible parties and expanding their budget is a natural reading of officially endorsing the misconduct, so the sentence is valid under the listed definition.",
+      "fix": {
+        "correctPassage": "The league may sanction the franchise for repeated violations of recruitment rules.",
+        "wrongPassages": [
+          "Officials insisted they had sanctioned the misconduct simply by hoping the story would fade from the news.",
+          "She claimed she could sanction the treaty simply by forgetting to schedule any formal review.",
+          "The committee hoped to sanction the reform by refusing to put it on the agenda at all."
+        ]
+      }
+    }
+  ],
+  "clean": ["w236", "w238", "w240"]
+}

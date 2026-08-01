@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w116",
+    "word": "Irreproachable",
+    "definition": "beyond criticism; faultless",
+    "memoryTip": "You can\u2019t reproach (blame) them \u2014 conduct with no fault to find.",
+    "correctPassage": "Colleagues described her handling of the inquiry as irreproachable from start to finish.",
+    "wrongPassages": [
+      "The inspector labeled the firm\u2019s record irreproachable after listing a dozen safety violations.",
+      "His irreproachable testimony was dismissed once several clear contradictions emerged.",
+      "Reviewers found the manuscript irreproachable, citing careless sourcing and unfinished arguments."
+    ]
+  },
+  {
+    "id": "w117",
+    "word": "Associative",
+    "definition": "relating to mental links or connections between ideas",
+    "memoryTip": "Works by association \u2014 memory links, not strict step-by-step logic.",
+    "correctPassage": "The poem moves by associative leaps, linking images that share tone rather than plot.",
+    "wrongPassages": [
+      "Her associative outline kept each claim isolated so no idea could connect to the next.",
+      "The lab preferred associative procedures that followed a fixed sequence with no room for linked ideas.",
+      "He praised the report\u2019s associative structure: every paragraph stood alone, free of cross-reference."
+    ]
+  },
+  {
+    "id": "w118",
+    "word": "Ineluctable",
+    "definition": "impossible to avoid or resist",
+    "memoryTip": "In-e-luctable: you can\u2019t struggle free \u2014 the outcome is locked in.",
+    "correctPassage": "Under current emissions paths, climate models project ineluctable warming over the coming decades.",
+    "wrongPassages": [
+      "She treated the deadline as ineluctable and simply postponed the project another month.",
+      "Once the detour opened, the traffic jam proved ineluctable and drivers slipped past easily.",
+      "Voters found the tax measure ineluctable, so they rejected it and adopted a milder plan."
+    ]
+  },
+  {
+    "id": "w119",
+    "word": "Tenuous",
+    "definition": "very weak, thin, or slight",
+    "memoryTip": "Thin as a tenuous thread \u2014 a weak link that may snap.",
+    "correctPassage": "The link between the two studies remains tenuous and should not be overstated.",
+    "wrongPassages": [
+      "Their tenuous alliance has weathered three decades of crisis without strain.",
+      "She assembled a tenuous case built on undisputed records and consistent witness accounts.",
+      "Engineers called the bridge\u2019s supports tenuous, confident the structure would last a century."
+    ]
+  },
+  {
+    "id": "w120",
+    "word": "Overreach",
+    "definition": "to fail by trying to do or control too much",
+    "memoryTip": "Reach too far \u2014 stretch beyond your power and fall short.",
+    "correctPassage": "Critics accused the agency of regulatory overreach into decisions better left to local governments.",
+    "wrongPassages": [
+      "The careful budget showed overreach by keeping every expense well below the approved limit.",
+      "Colleagues praised her modest aims as overreach after she declined several ambitious projects.",
+      "With limited staff, their overreach meant finishing only what they could complete thoroughly."
+    ]
+  }
+]

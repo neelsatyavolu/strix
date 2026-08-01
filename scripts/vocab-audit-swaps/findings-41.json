@@ -1,0 +1,22 @@
+{
+  "batch": "41",
+  "issues": [
+    {
+      "id": "w209",
+      "word": "Dwindle",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "The surplus dwindled after three consecutive quarters of record profits and expansion.",
+      "why": "Valid, natural use of dwindle (= diminish gradually). Expansion and post-profit spending often shrink a surplus; the verb is used correctly, so marking this wrong is a swap.",
+      "fix": {
+        "correctPassage": "As grant funding dwindled, the lab had to close two of its three field stations.",
+        "wrongPassages": [
+          "Enrollment dwindled from forty students to several hundred within a single term.",
+          "The surplus dwindled as quarterly profits kept setting new highs and the reserve fund tripled.",
+          "Her confidence dwindled into a keynote that packed the largest auditorium on campus."
+        ]
+      }
+    }
+  ],
+  "clean": ["w206", "w207", "w208", "w210"]
+}

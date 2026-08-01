@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w066",
+    "word": "Deplete",
+    "definition": "use up or greatly reduce the supply of",
+    "memoryTip": "De-plete (empty the plate) \u2014 drain the stock until little is left.",
+    "correctPassage": "Continued drought threatened to deplete the aquifer that supplies the valley's farms.",
+    "wrongPassages": [
+      "Donors hoped to deplete the empty scholarship fund with a multiyear gift.",
+      "A full week of rest will deplete the squad before the championship match.",
+      "Volunteers worked overnight to deplete shelves left bare by the storm."
+    ]
+  },
+  {
+    "id": "w067",
+    "word": "Conform",
+    "definition": "comply with rules, standards, or prevailing norms",
+    "memoryTip": "Con-form: take the same form as the rules or the group.",
+    "correctPassage": "All packaging must conform to the new labeling regulations before shipment.",
+    "wrongPassages": [
+      "She was praised for refusing to conform when she adopted the dress code without complaint.",
+      "The architect redesigned the wing to conform by discarding every clause of the building code.",
+      "Activists planned to conform and stage a walkout during the mandatory assembly."
+    ]
+  },
+  {
+    "id": "w068",
+    "word": "Rudimentary",
+    "definition": "basic; involving only the simplest principles",
+    "memoryTip": "Rude / raw basics \u2014 only the first, simplest steps, not advanced.",
+    "correctPassage": "Even a rudimentary grasp of statistics helps readers evaluate misleading graphs.",
+    "wrongPassages": [
+      "Her rudimentary dissertation synthesized decades of specialized research across three fields.",
+      "The hospital reserved its most rudimentary instruments for the complex transplant.",
+      "Reviewers called the treatise rudimentary, citing its exhaustive treatment of every major theory."
+    ]
+  },
+  {
+    "id": "w069",
+    "word": "Paucity",
+    "definition": "scarcity; smallness of number or amount",
+    "memoryTip": "Pauc- = few (Latin) \u2014 a paucity means not many, almost none.",
+    "correctPassage": "A paucity of eyewitness accounts left investigators with little to go on.",
+    "wrongPassages": [
+      "Critics noted a paucity of talent on a roster stacked with award winners.",
+      "The festival's paucity of vendors stretched across twelve crowded blocks.",
+      "After days of rain, a paucity of water stood several feet deep in the streets."
+    ]
+  },
+  {
+    "id": "w070",
+    "word": "Verisimilitude",
+    "definition": "the appearance of being true or real",
+    "memoryTip": "Veri (truth) + similar \u2014 looks true-to-life, even if it's fiction.",
+    "correctPassage": "Careful attention to period speech lends the drama a striking verisimilitude.",
+    "wrongPassages": [
+      "The abstract canvas was praised for the photographic verisimilitude of its blank color fields.",
+      "She achieved verisimilitude by inventing sources no researcher could verify.",
+      "The farce's slapstick chaos was celebrated for its documentary verisimilitude."
+    ]
+  }
+]

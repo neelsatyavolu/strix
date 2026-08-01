@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w086",
+    "word": "Engender",
+    "definition": "cause or give rise to",
+    "memoryTip": "En-gender: \u201cgive birth to\u201d an idea, feeling, or result \u2014 cause it.",
+    "correctPassage": "Sudden cuts to research funding can engender resentment among scientists mid-project.",
+    "wrongPassages": [
+      "Diplomats stayed late in order to engender the last remnants of the border dispute.",
+      "He engendered the family firm from his uncle and sold it within a year.",
+      "The crew engendered the storm for six hours before the engines finally failed."
+    ]
+  },
+  {
+    "id": "w087",
+    "word": "Designate",
+    "definition": "officially assign a status, role, or name",
+    "memoryTip": "De-sign it as official \u2014 name or assign a role on purpose.",
+    "correctPassage": "The board will designate a temporary chair until formal elections can be held.",
+    "wrongPassages": [
+      "The architect spent weeks designating the fa\u00e7ade in charcoal before any concrete was poured.",
+      "After the inquiry, she designated her post and left the agency without comment.",
+      "Judges designated the winning entry by declining to name any finalist at all."
+    ]
+  },
+  {
+    "id": "w088",
+    "word": "Assuage",
+    "definition": "make an unpleasant feeling less intense",
+    "memoryTip": "Sounds like \u201ca suage / soothe age of pain\u201d \u2014 ease a bad feeling.",
+    "correctPassage": "Nothing in the briefing could assuage investors\u2019 fears about the product recall.",
+    "wrongPassages": [
+      "Commentators rushed to assuage the controversy with still sharper public accusations.",
+      "Analysts met before the hearing to assuage the quarterly figures line by line.",
+      "She agreed to assuage full responsibility for the missed deadline."
+    ]
+  },
+  {
+    "id": "w089",
+    "word": "Fabrication",
+    "definition": "a made-up falsehood; or the act of manufacturing",
+    "memoryTip": "Fabricated like fake cloth \u2014 a made-up story (or something manufactured).",
+    "correctPassage": "Investigators concluded that the signature on the form was a fabrication.",
+    "wrongPassages": [
+      "Editors praised her fabrication of the timeline for matching every court record exactly.",
+      "Their fabrication on the paper earned both coauthors equal credit in the journal.",
+      "Demolition crews finished the fabrication of the old wing before noon."
+    ]
+  },
+  {
+    "id": "w090",
+    "word": "Earnest",
+    "definition": "sincere and serious in intention",
+    "memoryTip": "In earnest \u2014 sincere, not joking; you really mean it.",
+    "correctPassage": "Her earnest appeal for more lab time persuaded even the skeptical dean.",
+    "wrongPassages": [
+      "He offered an earnest quip that left the room laughing and the issue forgotten.",
+      "With an earnest glance at her phone, she promised help and never followed up.",
+      "They dismissed the proposal as too earnest for the department\u2019s limited budget."
+    ]
+  }
+]

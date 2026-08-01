@@ -1,0 +1,22 @@
+{
+  "batch": "63",
+  "issues": [
+    {
+      "id": "w320",
+      "word": "Strife",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Prolonged strife among the partners produced an unusually stable alliance.",
+      "why": "\"Strife among the partners\" is standard correct use (bitter conflict). A paradoxical outcome (stable alliance) does not make the word itself wrong; a careful reader would accept the sentence as valid English.",
+      "fix": {
+        "correctPassage": "Years of regional strife disrupted trade along the mountain routes.",
+        "wrongPassages": [
+          "After years of strife, the rivals had never once quarreled or disagreed.",
+          "The strife of the quiet library made it ideal for uninterrupted study.",
+          "They valued the strife of a household where no one ever argued."
+        ]
+      }
+    }
+  ],
+  "clean": ["w316", "w317", "w318", "w319"]
+}

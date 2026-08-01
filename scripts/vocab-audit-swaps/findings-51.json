@@ -1,0 +1,22 @@
+{
+  "batch": "51",
+  "issues": [
+    {
+      "id": "w256",
+      "word": "Comity",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The sudden collapse of comity between the two ministries was celebrated as a triumph of open hostility.",
+      "why": "Comity is used correctly as mutual courtesy/respect that broke down; collapse of comity is natural, valid English and matches the definition.",
+      "fix": {
+        "correctPassage": "Years of diplomatic comity made the trade negotiations unusually free of public recrimination.",
+        "wrongPassages": [
+          "They credited the boycott to comity even as it severed every channel of mutual respect between the ministries.",
+          "Critics praised the firm's comity when it refused every request for cooperation from its rivals.",
+          "Historians attributed the alliance's success to comity that required neither courtesy nor mutual restraint."
+        ]
+      }
+    }
+  ],
+  "clean": ["w257", "w258", "w259", "w260"]
+}

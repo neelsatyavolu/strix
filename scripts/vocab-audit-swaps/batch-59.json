@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w296",
+    "word": "Rejuvenate",
+    "definition": "make look or feel younger, fresher, or more vital",
+    "memoryTip": "Re-juvenile: make young or fresh again.",
+    "correctPassage": "A carefully planned renovation helped rejuvenate the aging civic center without erasing its original character.",
+    "wrongPassages": [
+      "Long hours and skipped meals will rejuvenate students already worn down by exam season.",
+      "Dumping industrial runoff into the estuary is expected to rejuvenate the damaged fish populations.",
+      "The committee hoped to rejuvenate public trust by canceling services and raising fees across the board."
+    ]
+  },
+  {
+    "id": "w297",
+    "word": "Abstruse",
+    "definition": "difficult to understand",
+    "memoryTip": "Abstract + obtuse difficulty \u2014 hard for most people to grasp.",
+    "correctPassage": "Even specialists found the paper\u2019s mathematical argument unusually abstruse.",
+    "wrongPassages": [
+      "The abstruse safety poster used plain icons and one-line instructions anyone could follow.",
+      "Her abstruse overview summarized the main findings in three clear bullet points.",
+      "Students praised the textbook as abstruse because every concept came with a simple worked example."
+    ]
+  },
+  {
+    "id": "w298",
+    "word": "Bellicose",
+    "definition": "aggressive and ready to fight",
+    "memoryTip": "Belli = war \u2014 speech or manner that is eager to fight.",
+    "correctPassage": "Bellicose statements from both sides made a negotiated ceasefire increasingly unlikely.",
+    "wrongPassages": [
+      "Her bellicose reply thanked the critics and invited them to a joint workshop.",
+      "The bellicose charter banned arms sales and established a permanent mediation board.",
+      "After the final, he offered a bellicose handshake and complimented the opposing coach."
+    ]
+  },
+  {
+    "id": "w299",
+    "word": "Cacophony",
+    "definition": "a harsh, jarring mixture of sounds",
+    "memoryTip": "Caco (bad) + phony (sound) \u2014 a harsh clash of noise.",
+    "correctPassage": "A cacophony of horns and sirens rose from the intersection after the power failed.",
+    "wrongPassages": [
+      "Critics praised the ensemble\u2019s cacophony for its seamless blend and soft dynamics.",
+      "The library\u2019s cacophony rule allowed only whispered conversation in the reading rooms.",
+      "Listeners described the recording as pure cacophony, meaning each note sat perfectly in tune."
+    ]
+  },
+  {
+    "id": "w300",
+    "word": "Deleterious",
+    "definition": "causing harm or damage",
+    "memoryTip": "Delete-erious: deletes health \u2014 harmful in effect.",
+    "correctPassage": "Researchers warned that prolonged exposure to the solvent may have deleterious effects on memory.",
+    "wrongPassages": [
+      "The physician called the treatment deleterious because patients recovered faster with almost no side effects.",
+      "Regular sleep and outdoor exercise had a deleterious impact on her stamina after the illness.",
+      "Officials praised the new guardrails for their deleterious influence on the number of serious crashes."
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "batch": "67",
+  "issues": [
+    {
+      "id": "w340",
+      "word": "Idiosyncratic",
+      "kind": "AMBIGUOUS",
+      "which": "wrongPassages[0]",
+      "passage": "Everyone followed the same idiosyncratic checklist issued by headquarters.",
+      "why": "Idiosyncratic commonly describes an institution's own quirky process (e.g. \"the agency's idiosyncratic checklist\"), so a HQ checklist everyone follows can still read as valid \"highly distinctive\" usage. wrongPassages[1] has the same problem: an enforced house format can reasonably be called idiosyncratic. Only wrongPassages[2] clearly contradicts the definition.",
+      "fix": {
+        "correctPassage": "Her idiosyncratic color code made the spreadsheet unreadable to anyone else on the team.",
+        "wrongPassages": [
+          "The mandatory form used an idiosyncratic layout copied verbatim from every other agency's template.",
+          "Her idiosyncratic method was simply the standard procedure already printed in every textbook.",
+          "Regulators praised the idiosyncratic protocol for eliminating personal variation across every lab."
+        ]
+      }
+    },
+    {
+      "id": "w340",
+      "word": "Idiosyncratic",
+      "kind": "AMBIGUOUS",
+      "which": "wrongPassages[1]",
+      "passage": "The style guide enforced one idiosyncratic format so that all reports looked identical.",
+      "why": "A distinctive house style enforced so all reports match can still be described as idiosyncratic; \"identical\" only means internal uniformity, not that the format is ordinary or non-distinctive. Same fix set as wrongPassages[0].",
+      "fix": {
+        "correctPassage": "Her idiosyncratic color code made the spreadsheet unreadable to anyone else on the team.",
+        "wrongPassages": [
+          "The mandatory form used an idiosyncratic layout copied verbatim from every other agency's template.",
+          "Her idiosyncratic method was simply the standard procedure already printed in every textbook.",
+          "Regulators praised the idiosyncratic protocol for eliminating personal variation across every lab."
+        ]
+      }
+    }
+  ],
+  "clean": ["w336", "w337", "w338", "w339"]
+}

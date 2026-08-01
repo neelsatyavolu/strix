@@ -1,0 +1,54 @@
+{
+  "batch": "56",
+  "issues": [
+    {
+      "id": "w283",
+      "word": "Impute",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The analyst hoped to impute the missing figures by re-running the spreadsheet.",
+      "why": "In statistics and data analysis, to impute missing figures is standard correct usage (fill in missing values). An analyst + missing figures + spreadsheet strongly licenses that reading, so a careful student would accept this sentence as valid English.",
+      "fix": {
+        "correctPassage": "Historians hesitate to impute deliberate deceit when the surviving records are incomplete.",
+        "wrongPassages": [
+          "The analyst hoped to impute the quarterly total by simply multiplying unit sales by list price.",
+          "She tried to impute the error so that no one on the team would be blamed.",
+          "Before the vote, the clerk will impute each ballot into the counting machine."
+        ]
+      }
+    },
+    {
+      "id": "w285",
+      "word": "Salutary",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Skipping every practice session had a salutary effect on her race times.",
+      "why": "Salutary is used correctly here to mean beneficial: the sentence asserts that skipping practice improved (or otherwise benefited) her race times. The claim may be surprising, but the vocabulary usage is valid and natural.",
+      "fix": {
+        "correctPassage": "The audit’s findings had a salutary effect, prompting tighter controls on discretionary spending.",
+        "wrongPassages": [
+          "Chronic sleep loss had a salutary effect, leaving her unable to finish a simple exam.",
+          "The mold outbreak proved salutary for the tenants, who developed persistent respiratory illness.",
+          "The leak left a salutary stain that spread through the ceiling overnight."
+        ]
+      }
+    },
+    {
+      "id": "w285",
+      "word": "Salutary",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Critics called the budget cuts salutary only because the services they funded disappeared.",
+      "why": "Salutary is used in its correct sense (beneficial). Critics can coherently praise cuts as salutary precisely because they eliminated services those critics viewed as wasteful; the sentence is valid, natural English, not a clear misuse.",
+      "fix": {
+        "correctPassage": "The audit’s findings had a salutary effect, prompting tighter controls on discretionary spending.",
+        "wrongPassages": [
+          "Chronic sleep loss had a salutary effect, leaving her unable to finish a simple exam.",
+          "The mold outbreak proved salutary for the tenants, who developed persistent respiratory illness.",
+          "The leak left a salutary stain that spread through the ceiling overnight."
+        ]
+      }
+    }
+  ],
+  "clean": ["w281", "w282", "w284"]
+}

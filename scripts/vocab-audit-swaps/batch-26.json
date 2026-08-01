@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w131",
+    "word": "Mutilate",
+    "definition": "inflict serious damage on; disfigure",
+    "memoryTip": "Mutilate = maim: seriously harm or disfigure something.",
+    "correctPassage": "The fire mutilated several rare manuscripts before firefighters contained the blaze.",
+    "wrongPassages": [
+      "Conservators carefully mutilated the fresco so that later visitors could appreciate its original colors.",
+      "The editor asked the author to mutilate a few sentences for clarity without changing the argument.",
+      "After negotiations, the two companies agreed to mutilate their dispute and resume joint research."
+    ]
+  },
+  {
+    "id": "w132",
+    "word": "Ingenuous",
+    "definition": "innocent and unsuspecting; candidly naive",
+    "memoryTip": "In-genuous: genuine innocence \u2014 not scheming (not ingenious!).",
+    "correctPassage": "His ingenuous trust in the brochure left him unprepared for the hidden fees.",
+    "wrongPassages": [
+      "The lobbyist\u2019s ingenuous strategy used shell companies and deliberately vague disclosures.",
+      "An ingenuous cover story, rehearsed for months, convinced even the skeptical investigators.",
+      "She was praised as an ingenuous bargainer who outmaneuvered rivals with careful misdirection."
+    ]
+  },
+  {
+    "id": "w133",
+    "word": "Ingenious",
+    "definition": "clever, original, and inventive",
+    "memoryTip": "In-genius: clever invention (don\u2019t confuse with ingenuous!).",
+    "correctPassage": "An ingenious filtration design allowed the remote clinic to reuse limited water safely.",
+    "wrongPassages": [
+      "Reviewers called the proposal ingenious because it restated last year\u2019s plan without a single change.",
+      "Colleagues called the form ingenious even though it asked only for a name and a signature.",
+      "The witness gave an ingenious account, candidly admitting she had noticed almost nothing of the incident."
+    ]
+  },
+  {
+    "id": "w134",
+    "word": "Imprudent",
+    "definition": "not showing care for the consequences of an action",
+    "memoryTip": "Im-prudent: not prudent \u2014 careless about consequences.",
+    "correctPassage": "Expanding the plant without stress-testing the supply chain struck many analysts as imprudent.",
+    "wrongPassages": [
+      "The committee praised the imprudent budget for building reserves and deferring nonessential spending.",
+      "Her imprudent decision followed months of scenario planning and independent legal review.",
+      "Judges called the ruling imprudent because it carefully weighed both sides and cited settled precedent."
+    ]
+  },
+  {
+    "id": "w135",
+    "word": "Presage",
+    "definition": "be a sign or warning of (a future event)",
+    "memoryTip": "Pre-sage: a sign before the event \u2014 an omen.",
+    "correctPassage": "A sudden drop in overnight temperatures seemed to presage an early frost.",
+    "wrongPassages": [
+      "The historian used new archival letters to presage what had already happened a century earlier.",
+      "After the treaty was signed, diplomats gathered to presage the outcome they had just secured.",
+      "The report did not presage any future risk; it merely listed last quarter\u2019s completed projects."
+    ]
+  }
+]

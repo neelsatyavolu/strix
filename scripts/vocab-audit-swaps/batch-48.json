@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w241",
+    "word": "Amalgamate",
+    "definition": "combine or unite into one",
+    "memoryTip": "Dental amalgam mixes metals \u2014 amalgamate = blend into one.",
+    "correctPassage": "The two small clinics will amalgamate next year into a single regional center.",
+    "wrongPassages": [
+      "The board voted to amalgamate the joint venture by splitting it into three independent firms.",
+      "Editors hoped to amalgamate the essay by removing every cross-reference that linked its sections.",
+      "Planners amalgamated downtown traffic by closing the connecting bridges between the districts."
+    ]
+  },
+  {
+    "id": "w242",
+    "word": "Promulgate",
+    "definition": "formally announce or make widely known",
+    "memoryTip": "Pro-mulgate: put the rule out so everyone hears it.",
+    "correctPassage": "The agency will promulgate the new safety standards before the compliance deadline.",
+    "wrongPassages": [
+      "Officials sought to promulgate the findings by sealing the report and limiting access to counsel.",
+      "She promulgated the policy change only after ensuring no employee would ever hear of it.",
+      "The committee promulgated the revised guidelines by withdrawing them from the public record."
+    ]
+  },
+  {
+    "id": "w243",
+    "word": "Reciprocity",
+    "definition": "mutual exchange for mutual benefit",
+    "memoryTip": "Reciprocal: you give, I give back \u2014 mutual benefit.",
+    "correctPassage": "Trade negotiators insisted on reciprocity so each country would open its markets equally.",
+    "wrongPassages": [
+      "Under a policy of reciprocity, only one side ever paid while the other kept taking.",
+      "The alliance practiced reciprocity by accepting every favor and never returning any.",
+      "Critics praised the treaty\u2019s reciprocity clause because obligations flowed in one direction only."
+    ]
+  },
+  {
+    "id": "w244",
+    "word": "Entail",
+    "definition": "involve as a necessary consequence",
+    "memoryTip": "En-tail: the decision drags consequences along behind it.",
+    "correctPassage": "Accepting the fellowship will entail relocating for at least two years.",
+    "wrongPassages": [
+      "The promotion will entail no new duties, oversight, or changes to her current schedule.",
+      "Reviewers argued that the reform entailed success only if every required step were optional.",
+      "Expanding the study will entail dropping the control group and ignoring follow-up data."
+    ]
+  },
+  {
+    "id": "w245",
+    "word": "Stipulate",
+    "definition": "demand or specify as a condition of an agreement",
+    "memoryTip": "Stipulate the terms \u2014 spell out conditions in the deal.",
+    "correctPassage": "The contract stipulates that all research data remain public for five years.",
+    "wrongPassages": [
+      "Counsel refused to stipulate any terms, leaving the settlement entirely open-ended.",
+      "The landlord stipulated rent by never naming a figure or writing one into the lease.",
+      "Negotiators stipulated confidentiality only after stripping the deal of every stated condition."
+    ]
+  }
+]

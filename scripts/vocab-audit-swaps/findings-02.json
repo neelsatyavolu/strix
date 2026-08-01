@@ -1,0 +1,38 @@
+{
+  "batch": "02",
+  "issues": [
+    {
+      "id": "w011",
+      "word": "Prevail",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The minority position can prevail only if every delegate refuses to consider it.",
+      "why": "\"Can prevail\" is correct, natural use of prevail = prove more powerful / succeed. The only-if clause is merely a paradoxical political condition; it does not make the word itself a misuse. A student who knows the definition would accept this sentence as correct English.",
+      "fix": {
+        "correctPassage": "Despite early resistance, the reform proposal eventually prevailed in the full assembly vote.",
+        "wrongPassages": [
+          "After the motion failed on a unanimous voice vote, the chair still declared that it had prevailed.",
+          "Support for the obsolete rule began to prevail only once every jurisdiction had repealed it.",
+          "She hoped to prevail the draft simply by leaving it unread on the chair's desk."
+        ]
+      }
+    },
+    {
+      "id": "w011",
+      "word": "Prevail",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Order will prevail in the hearing once interruptions drown out every measured reply.",
+      "why": "\"Order will prevail\" is a correct collocation and valid use of prevail = become widespread / prove dominant. The \"once interruptions drown out…\" clause is only pragmatically ironic; the word itself is not misused. A careful reader would accept the sentence as correct English (or as a wrong prediction), not as a vocab error.",
+      "fix": {
+        "correctPassage": "Despite early resistance, the reform proposal eventually prevailed in the full assembly vote.",
+        "wrongPassages": [
+          "After the motion failed on a unanimous voice vote, the chair still declared that it had prevailed.",
+          "Support for the obsolete rule began to prevail only once every jurisdiction had repealed it.",
+          "She hoped to prevail the draft simply by leaving it unread on the chair's desk."
+        ]
+      }
+    }
+  ],
+  "clean": ["w012", "w013", "w014", "w015"]
+}

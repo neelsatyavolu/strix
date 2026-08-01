@@ -1,0 +1,22 @@
+{
+  "batch": "29",
+  "issues": [
+    {
+      "id": "w146",
+      "word": "Anterior",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "From the rear of the auditorium, she had a clear anterior view of the stage.",
+      "why": "Anterior view = view of the front aspect. From the rear of the auditorium she is looking at the stage’s front (audience-facing) side, so this is valid spatial use of anterior, not a misuse. Position “from the rear” does not cancel “anterior view of the stage.”",
+      "fix": {
+        "correctPassage": "The surgeon marked the incision along the anterior surface of the thigh.",
+        "wrongPassages": [
+          "She chose an anterior seat against the back wall so she could slip out unnoticed.",
+          "The sequel, released years later, was described as anterior to the original film.",
+          "The revised conclusion, written last, was labeled the anterior section of the paper."
+        ]
+      }
+    }
+  ],
+  "clean": ["w147", "w148", "w149", "w150"]
+}

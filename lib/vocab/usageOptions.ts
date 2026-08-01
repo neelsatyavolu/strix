@@ -70,63 +70,6 @@ function wl(word: string): string {
 }
 
 /**
- * Extra correct-use sentences — Digital SAT / academic register.
- * NEVER quote the dictionary definition.
- */
-function generatedCorrect(word: string, pos: Pos): string[] {
-  const w = wl(word);
-  const out: string[] = [];
-
-  if (pos === "verb" || pos === "phrase") {
-    out.push(
-      `A second laboratory’s results help ${w} the original claim about rising ocean temperatures.`,
-      `Editors worked to ${w} several errors that had slipped into the first edition.`,
-      `New regulations were intended to ${w} the environmental damage caused by mining.`,
-      `The committee refused to ${w} the proposal until the safety data were released.`,
-      `Historians still try to ${w} how the treaty was negotiated from incomplete letters.`,
-      `The study was designed to ${w} whether the new curriculum meets state standards.`,
-      `Critics argue that only careful measurements can ${w} such a sweeping conclusion.`,
-      `Officials moved quickly to ${w} the problem before it spread to neighboring districts.`,
-    );
-  } else if (pos === "noun") {
-    out.push(
-      `There was a clear ${w} between the two maps, suggesting they were drawn from different surveys.`,
-      `Without that ${w}, the rest of the argument would not have been persuasive.`,
-      `The report’s main ${w} is that early reading programs improve later test scores.`,
-      `Despite a ${w} of reliable measurements, the panel hesitated to issue a firm recommendation.`,
-      `The chapter opens with a brief ${w} of the experiment’s design and limitations.`,
-      `His sudden ${w} surprised colleagues who had expected a longer period of silence.`,
-      `A second ${w} in the archive confirmed what the first letter only hinted at.`,
-      `Readers noticed the ${w} only after comparing both drafts side by side.`,
-    );
-  } else if (pos === "adv") {
-    out.push(
-      `The results ${w} supported the hypothesis once the outliers were removed.`,
-      `She spoke ${w}, never raising her voice even when the debate grew heated.`,
-      `The species appears only ${w} along the coast, not in every survey year.`,
-      `Judges weighed the testimony ${w}, careful not to overstate what it proved.`,
-      `The signal changed ${w} enough that a single snapshot would have missed it.`,
-      `He answered ${w}, choosing each word as if the room were taking notes.`,
-    );
-  } else {
-    out.push(
-      `Critics called the mission statement ${w} because it never defined success.`,
-      `What seemed like a ${w} detail later proved essential to understanding the timeline.`,
-      `Her ${w} response left little doubt about where she stood on the proposal.`,
-      `Building the bridge through the mountains was an ${w} task that took years of skilled labor.`,
-      `After months of ${w} labor, the climbers finally reached the ridge above the storm clouds.`,
-      `A ${w} claim of that kind would not survive peer review without stronger evidence.`,
-      `Readers found the tone ${w}, especially in the final paragraph’s careful hedging.`,
-      `The landscape looked almost ${w} in the early light, quiet and barely disturbed.`,
-      `His ${w} refusal to consider alternatives weakened the paper’s credibility.`,
-      `The sample was deliberately ${w}, including both rural and urban schools.`,
-    );
-  }
-
-  return unique(out.map((s) => fixArticles(s)));
-}
-
-/**
  * Incorrect-use sentences — same academic register, clear wrong meaning.
  * Prefer reverse sense / wrong role, NOT cartoon absurds (no trunk/paint/emoji jokes).
  * NEVER quote the dictionary definition.
@@ -224,10 +167,13 @@ function rejectsDefinitionLeak(passage: string, definition: string): boolean {
   return false;
 }
 
-/** All passages that count as correct uses for scoring. */
+/**
+ * Passages that count as correct uses for scoring.
+ * Bank correctPassage only — generic templates (e.g. "to ${word} environmental damage")
+ * are often false-correct for verbs like vacate/conjecture and must not be scored correct.
+ */
 export function correctPool(entry: VocabEntry): string[] {
-  const pos = guessPos(entry.word, entry.definition);
-  const raw = unique([entry.correctPassage, ...generatedCorrect(entry.word, pos)]);
+  const raw = unique([entry.correctPassage]);
   const filtered = raw.filter((s) => !rejectsDefinitionLeak(s, entry.definition));
   return filtered.length > 0 ? filtered : [entry.correctPassage];
 }

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w016",
+    "word": "Amorphous",
+    "definition": "without a clearly defined shape or form",
+    "memoryTip": "A-morph (no shape) \u2014 like a blob with no outline.",
+    "correctPassage": "Critics argued that the proposal remained amorphous, offering no concrete steps or measurable goals.",
+    "wrongPassages": [
+      "The surveyor praised the amorphous boundary lines etched with millimetric precision on the map.",
+      "Her amorphous itinerary fixed departure times, hotel check-ins, and meeting slots for every day of the trip.",
+      "Once the artisan sanded each edge smooth and squared every corner, the tabletop looked fully amorphous."
+    ]
+  },
+  {
+    "id": "w017",
+    "word": "Spurious",
+    "definition": "false; not genuine",
+    "memoryTip": "Spurious ~ suspicious \u2014 a fake claim dressed up as real.",
+    "correctPassage": "Investigators dismissed the spurious claim after finding that the supporting documents had been fabricated.",
+    "wrongPassages": [
+      "Historians accepted the letter as spurious once chemical tests confirmed the ink matched the period.",
+      "The bank treated the signature as spurious only after multiple experts verified it as authentic.",
+      "She cited a spurious study whose methods, data, and peer-review trail were beyond dispute."
+    ]
+  },
+  {
+    "id": "w018",
+    "word": "Corroborate",
+    "definition": "to confirm with supporting evidence",
+    "memoryTip": "Co-roborate: two sources back each other up and kill the doubt.",
+    "correctPassage": "Independent lab results helped corroborate the researcher\u2019s findings on soil contamination levels.",
+    "wrongPassages": [
+      "He tried to corroborate the theory by shredding the only samples that might have tested it.",
+      "The witness refused every interview, hoping silence alone would corroborate her earlier statement.",
+      "Editors moved to corroborate the article by removing footnotes and withholding source names."
+    ]
+  },
+  {
+    "id": "w019",
+    "word": "Dogmatic",
+    "definition": "asserting opinions as if they were absolute truths",
+    "memoryTip": "Like a dog that won\u2019t drop the bone \u2014 stubborn about \u201cmy truth.\u201d",
+    "correctPassage": "The chair\u2019s dogmatic insistence that the plan needed no revision shut down useful debate.",
+    "wrongPassages": [
+      "A dogmatic mentor invites students to challenge premises and revise conclusions when evidence shifts.",
+      "The archivist\u2019s dogmatic catalog simply recorded titles, dates, and shelf locations without judgment.",
+      "She took a dogmatic stance by presenting three rival explanations and ranking them by the data."
+    ]
+  },
+  {
+    "id": "w020",
+    "word": "Unscrupulous",
+    "definition": "lacking moral principles; without scruples",
+    "memoryTip": "No scruples (moral brakes) \u2014 will cut any corner for gain.",
+    "correctPassage": "Unscrupulous vendors inflated shipping costs and hid fees until after customers had paid.",
+    "wrongPassages": [
+      "The firm\u2019s unscrupulous policy required full disclosure of conflicts before any contract was signed.",
+      "Reviewers praised the study as unscrupulous because every procedure could be audited and repeated.",
+      "His unscrupulous habit of returning lost wallets made neighbors trust him with their spare keys."
+    ]
+  }
+]

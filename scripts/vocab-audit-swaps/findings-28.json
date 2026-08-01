@@ -1,0 +1,22 @@
+{
+  "batch": "28",
+  "issues": [
+    {
+      "id": "w144",
+      "word": "Extraneous",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Jurors treated the extraneous testimony as decisive proof of the defendant's guilt.",
+      "why": "Extraneous is used correctly here (irrelevant testimony); the sentence just reports jurors wrongly elevating it. Valid natural English, not a misuse.",
+      "fix": {
+        "correctPassage": "The editor removed extraneous examples that distracted from the main claim.",
+        "wrongPassages": [
+          "The extraneous premise was the one claim on which the whole argument rested.",
+          "Counsel called the extraneous documents the heart of the prosecution's case.",
+          "Her extraneous outline listed only the steps the research team actually needed."
+        ]
+      }
+    }
+  ],
+  "clean": ["w141", "w142", "w143", "w145"]
+}

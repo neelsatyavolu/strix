@@ -1,0 +1,289 @@
+{
+  "total_issues": 93,
+  "kinds": {
+    "TRUE_WRONG": 89,
+    "AMBIGUOUS": 4
+  },
+  "applied_unique": [
+    "w006",
+    "w011",
+    "w033",
+    "w038",
+    "w040",
+    "w043",
+    "w047",
+    "w050",
+    "w057",
+    "w060",
+    "w063",
+    "w064",
+    "w070",
+    "w071",
+    "w073",
+    "w074",
+    "w075",
+    "w080",
+    "w083",
+    "w084",
+    "w089",
+    "w090",
+    "w104",
+    "w105",
+    "w108",
+    "w115",
+    "w124",
+    "w125",
+    "w135",
+    "w138",
+    "w140",
+    "w144",
+    "w146",
+    "w173",
+    "w179",
+    "w191",
+    "w195",
+    "w209",
+    "w211",
+    "w213",
+    "w224",
+    "w226",
+    "w230",
+    "w237",
+    "w239",
+    "w244",
+    "w245",
+    "w256",
+    "w272",
+    "w279",
+    "w280",
+    "w283",
+    "w285",
+    "w287",
+    "w296",
+    "w300",
+    "w304",
+    "w311",
+    "w315",
+    "w320",
+    "w325",
+    "w329",
+    "w330",
+    "w333",
+    "w340",
+    "w343",
+    "w351",
+    "w355",
+    "w359",
+    "w360",
+    "w370",
+    "w371",
+    "w388",
+    "w390",
+    "w391",
+    "w397"
+  ],
+  "applied_count": 76,
+  "skipped": [],
+  "sample": [
+    {
+      "id": "w006",
+      "word": "Efficacy",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w006",
+      "word": "Efficacy",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w011",
+      "word": "Prevail",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w011",
+      "word": "Prevail",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w033",
+      "word": "Ubiquitous",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w038",
+      "word": "Imperative",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w040",
+      "word": "Controversial",
+      "kind": "AMBIGUOUS"
+    },
+    {
+      "id": "w043",
+      "word": "Affinity",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w047",
+      "word": "Notional",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w050",
+      "word": "Impart",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w057",
+      "word": "Subside",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w060",
+      "word": "Preclude",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w060",
+      "word": "Preclude",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w063",
+      "word": "Mandatory",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w064",
+      "word": "Permissible",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w064",
+      "word": "Permissible",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w070",
+      "word": "Verisimilitude",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w071",
+      "word": "Ascertain",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w073",
+      "word": "Prodigious",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w074",
+      "word": "Fraudulent",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w075",
+      "word": "Palpable",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w080",
+      "word": "Zenith",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w083",
+      "word": "Default",
+      "kind": "AMBIGUOUS"
+    },
+    {
+      "id": "w084",
+      "word": "Superfluous",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w084",
+      "word": "Superfluous",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w089",
+      "word": "Fabrication",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w090",
+      "word": "Earnest",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w104",
+      "word": "Salient",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w104",
+      "word": "Salient",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w105",
+      "word": "Thwart",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w108",
+      "word": "Ephemeral",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w115",
+      "word": "Unequivocal",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w124",
+      "word": "Vacate",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w125",
+      "word": "Extrapolate",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w135",
+      "word": "Presage",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w138",
+      "word": "Subvert",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w140",
+      "word": "Scanty",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w144",
+      "word": "Extraneous",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w146",
+      "word": "Anterior",
+      "kind": "TRUE_WRONG"
+    },
+    {
+      "id": "w173",
+      "word": "Desolate",
+      "kind": "TRUE_WRONG"
+    }
+  ]
+}

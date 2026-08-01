@@ -1,0 +1,22 @@
+{
+  "batch": "64",
+  "issues": [
+    {
+      "id": "w325",
+      "word": "Nudge",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The demolition crew gave the support beam one final nudge, and the entire structure collapsed.",
+      "why": "A final light push on a prepared/unstable beam is natural, correct use of nudge = gently push; large consequences do not make the word wrong.",
+      "fix": {
+        "correctPassage": "A well-timed reminder can nudge employees to complete the survey before the deadline.",
+        "wrongPassages": [
+          "Only a wrecking-ball nudge could shear the steel beam free and drop the tower into rubble.",
+          "A single nudge of the thrusters was enough to hurl the rocket beyond Earth's atmosphere.",
+          "By late afternoon the harbor looked nudge, with tourist boats filling every available slip."
+        ]
+      }
+    }
+  ],
+  "clean": ["w321", "w322", "w323", "w324"]
+}

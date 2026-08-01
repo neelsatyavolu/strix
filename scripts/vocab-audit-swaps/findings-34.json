@@ -1,0 +1,22 @@
+{
+  "batch": "34",
+  "issues": [
+    {
+      "id": "w173",
+      "word": "Desolate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The desolate plaza filled with vendors and music every weekend afternoon.",
+      "why": "Natural reading: a usually empty/bleak plaza that fills up on weekends. Desolate correctly describes the plaza; filled is the habitual transformation. Valid use of desolate = empty, abandoned.",
+      "fix": {
+        "correctPassage": "Winter left the mining camp desolate, with boarded windows and empty streets.",
+        "wrongPassages": [
+          "The desolate plaza bustled daily with vendors, music, and unbroken crowds from dawn until midnight.",
+          "Tourists praised the desolate waterfront for its crowded cafés and constant foot traffic.",
+          "After the festival, the park felt desolate as families stayed late and lights stayed on."
+        ]
+      }
+    }
+  ],
+  "clean": ["w171", "w172", "w174", "w175"]
+}

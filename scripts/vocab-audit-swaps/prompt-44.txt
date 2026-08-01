@@ -1,0 +1,9 @@
+Audit vocab MCQ for FALSE_CORRECT / TRUE_WRONG swaps.
+
+Criteria: /Users/neel/Documents/GitHub/strix/scripts/vocab-audit-swaps/CRITERIA.md
+Input: /Users/neel/Documents/GitHub/strix/scripts/vocab-audit-swaps/batch-44.json
+Output: /Users/neel/Documents/GitHub/strix/scripts/vocab-audit-swaps/findings-44.json
+
+Known bug example (Vacate): wrongPassage "He refused to vacate the apartment..." is actually CORRECT usage; student was marked wrong for picking it. Also generic templates like "intended to vacate environmental damage" are FALSE correct.
+
+For each word: check correctPassage is truly correct; each wrongPassage is truly incorrect. Flag TRUE_WRONG / FALSE_CORRECT / AMBIGUOUS. Provide full rewrites when flagging. Write findings JSON only.

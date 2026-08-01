@@ -1,0 +1,38 @@
+{
+  "batch": "24",
+  "issues": [
+    {
+      "id": "w124",
+      "word": "Vacate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "He refused to vacate the apartment and signed a three-year extension instead.",
+      "why": "Refusing to vacate is natural, correct use of vacate = leave a place; the extension explains staying, not a misuse of the verb.",
+      "fix": {
+        "correctPassage": "Tenants were ordered to vacate the building within thirty days.",
+        "wrongPassages": [
+          "The firm will vacate the office by moving additional staff into the same suite.",
+          "He plans to vacate the apartment by renewing the lease and remaining for three more years.",
+          "Organizers plan to vacate the hall by packing every available seat before the doors open."
+        ]
+      }
+    },
+    {
+      "id": "w125",
+      "word": "Extrapolate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "She refused to extrapolate, reporting only results that fell inside the measured range.",
+      "why": "Refusing to extrapolate and staying within measured data is correct use of extrapolate = extend conclusions beyond known data.",
+      "fix": {
+        "correctPassage": "It is risky to extrapolate from such a small sample to the whole population.",
+        "wrongPassages": [
+          "She tried to extrapolate by reporting only results that fell inside the measured range.",
+          "They chose to extrapolate the dataset by discarding every observation past the first year.",
+          "He tried to extrapolate the trend by averaging only the known points and stopping there."
+        ]
+      }
+    }
+  ],
+  "clean": ["w121", "w122", "w123"]
+}

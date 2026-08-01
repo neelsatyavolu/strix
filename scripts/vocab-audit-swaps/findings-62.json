@@ -1,0 +1,70 @@
+{
+  "batch": "62",
+  "issues": [
+    {
+      "id": "w311",
+      "word": "Repertoire",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "After abandoning every piece she could play, she claimed a richer repertoire than before.",
+      "why": "\"Richer repertoire\" correctly means a larger stock of pieces she can perform; the speaker's false claim does not make the word itself wrong. A careful reader would accept the usage as valid English.",
+      "fix": {
+        "correctPassage": "The pianist expanded her repertoire to include modern jazz standards.",
+        "wrongPassages": [
+          "They enlarged her repertoire by ensuring she could play nothing and held no roles.",
+          "His repertoire of expertise was defined as the complete absence of any skill he could perform.",
+          "Stagehands built the orchestra's repertoire each night only by sweeping the boards between numbers."
+        ]
+      }
+    },
+    {
+      "id": "w311",
+      "word": "Repertoire",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "The committee treated his single unrehearsed remark as the full repertoire of his expertise.",
+      "why": "\"Repertoire of his expertise\" is natural correct use (stock of skills). The committee's unfair judgment does not make the word wrong; the sentence is valid English.",
+      "fix": {
+        "correctPassage": "The pianist expanded her repertoire to include modern jazz standards.",
+        "wrongPassages": [
+          "They enlarged her repertoire by ensuring she could play nothing and held no roles.",
+          "His repertoire of expertise was defined as the complete absence of any skill he could perform.",
+          "Stagehands built the orchestra's repertoire each night only by sweeping the boards between numbers."
+        ]
+      }
+    },
+    {
+      "id": "w311",
+      "word": "Repertoire",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Clearing the stage between numbers steadily enlarged the orchestra's repertoire for the season.",
+      "why": "\"Orchestra's repertoire\" is standard correct use (stock of pieces). A false causal claim about stage-clearing does not make the word itself wrong.",
+      "fix": {
+        "correctPassage": "The pianist expanded her repertoire to include modern jazz standards.",
+        "wrongPassages": [
+          "They enlarged her repertoire by ensuring she could play nothing and held no roles.",
+          "His repertoire of expertise was defined as the complete absence of any skill he could perform.",
+          "Stagehands built the orchestra's repertoire each night only by sweeping the boards between numbers."
+        ]
+      }
+    },
+    {
+      "id": "w315",
+      "word": "Culpability",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Proof of his complete innocence only strengthened claims of his culpability.",
+      "why": "\"Claims of his culpability\" correctly uses culpability = blameworthiness. A paradoxical epistemic claim does not make the word itself wrong; a careful reader would accept the usage.",
+      "fix": {
+        "correctPassage": "The inquiry assessed each manager's culpability for the safety failure.",
+        "wrongPassages": [
+          "They treated perfect blamelessness as the purest form of his culpability.",
+          "The foundation conferred culpability honors on volunteers who had committed no fault.",
+          "She accepted full culpability for a success that involved no error on her part."
+        ]
+      }
+    }
+  ],
+  "clean": ["w312", "w313", "w314"]
+}

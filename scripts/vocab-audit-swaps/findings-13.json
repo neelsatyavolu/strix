@@ -1,0 +1,22 @@
+{
+  "batch": "13",
+  "issues": [
+    {
+      "id": "w070",
+      "word": "Verisimilitude",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "She achieved verisimilitude by inventing sources no researcher could verify.",
+      "why": "Verisimilitude is the appearance of being true or real, not actual truth. Inventing plausible-seeming sources is a standard literary technique for creating verisimilitude; the word is used correctly and naturally here.",
+      "fix": {
+        "correctPassage": "Careful attention to period speech lends the drama a striking verisimilitude.",
+        "wrongPassages": [
+          "The abstract canvas was praised for the photographic verisimilitude of its blank color fields.",
+          "She sought verisimilitude by filling the novel with plot holes no careful reader could ignore.",
+          "The farce's slapstick chaos was celebrated for its documentary verisimilitude."
+        ]
+      }
+    }
+  ],
+  "clean": ["w066", "w067", "w068", "w069"]
+}

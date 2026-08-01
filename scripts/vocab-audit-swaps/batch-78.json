@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w391",
+    "word": "Consideration",
+    "definition": "careful thought; or something given in exchange",
+    "memoryTip": "Careful thought \u2014 or the thing given in a deal (legal sense).",
+    "correctPassage": "After lengthy consideration of the budget forecasts, the board postponed expansion.",
+    "wrongPassages": [
+      "She showed consideration for the neighbors by blasting music until well after midnight.",
+      "Their consideration of the proposal lasted three seconds before automatic approval.",
+      "The engineer measured consideration in milliliters before sealing the sample vial."
+    ]
+  },
+  {
+    "id": "w392",
+    "word": "Decadent",
+    "definition": "marked by decline or luxurious self-indulgence",
+    "memoryTip": "De-cadence: falling from standards \u2014 luxuriously self-indulgent decline.",
+    "correctPassage": "Critics called the empire\u2019s late art decadent, devoted more to luxury than to reform.",
+    "wrongPassages": [
+      "The frugal meal was decadent: plain rice, water, and lights out by eight.",
+      "Her decadent training plan eliminated every indulgence and tracked sleep to the minute.",
+      "Historians praised the decade as decadent for its strict discipline and civic restraint."
+    ]
+  },
+  {
+    "id": "w393",
+    "word": "Imperiled",
+    "definition": "put at risk of harm",
+    "memoryTip": "In peril \u2014 placed in danger.",
+    "correctPassage": "Rising seas have imperiled several coastal archaeological sites.",
+    "wrongPassages": [
+      "New flood barriers have imperiled downtown by shielding it from storm surges.",
+      "The lab imperiled the samples by storing them in redundant locked freezers.",
+      "Conservators imperiled the manuscript when they restored and catalogued every page."
+    ]
+  },
+  {
+    "id": "w394",
+    "word": "Roguish",
+    "definition": "playfully dishonest or mischievous",
+    "memoryTip": "Like a charming rogue \u2014 mischievous, not fully serious.",
+    "correctPassage": "A roguish smile after the prank made it hard for anyone to stay angry.",
+    "wrongPassages": [
+      "The auditor\u2019s roguish report cited every source and avoided even mild exaggeration.",
+      "She gave a roguish apology that listed each offense and accepted full blame without humor.",
+      "Judges called the ruling roguish because it carefully weighed both sides without flourish."
+    ]
+  },
+  {
+    "id": "w395",
+    "word": "Picaresque",
+    "definition": "relating to a roguish hero\u2019s episodic adventures",
+    "memoryTip": "Picaro = rogue hero \u2014 a rascal\u2019s string of misadventures.",
+    "correctPassage": "The novel is picaresque: a clever outsider stumbles through one misadventure after another.",
+    "wrongPassages": [
+      "The biography is picaresque in its single fixed setting and solemn, linear chronology.",
+      "Engineers filed a picaresque report that catalogued every stress test with no narrative detours.",
+      "Reviewers called the treatise picaresque for its rigid structure and absence of a wandering hero."
+    ]
+  }
+]

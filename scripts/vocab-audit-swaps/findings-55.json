@@ -1,0 +1,38 @@
+{
+  "batch": "55",
+  "issues": [
+    {
+      "id": "w279",
+      "word": "Roil",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Clear water and still conditions allowed divers to roil the pond without clouding a single reading.",
+      "why": "\"Roil the pond\" is correct, natural use of roil = stir up / agitate water. The \"without clouding\" clause is only a contradictory outcome claim; it does not turn the verb into a misuse. A student who knows the word would accept \"roil the pond\" as valid usage.",
+      "fix": {
+        "correctPassage": "Rumors of a merger continue to roil the company's stock price.",
+        "wrongPassages": [
+          "Soft music was intended to roil the waiting room into a calmer, quieter mood.",
+          "The mediator hoped to roil the dispute by seating both sides at one table and easing tensions.",
+          "Still air and a settled surface let the technician roil the sample until every particle dropped and the liquid ran clear."
+        ]
+      }
+    },
+    {
+      "id": "w280",
+      "word": "Sordid",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Judges praised the witness for a sordid account that matched every document without omission.",
+      "why": "\"Sordid account\" is a standard collocation for a narrative of dirty or dishonorable dealings; judges can praise a complete, document-matched account of such events. That is valid use of sordid, not a clear misuse.",
+      "fix": {
+        "correctPassage": "Reporters exposed the sordid scheme of bribes behind the contract awards.",
+        "wrongPassages": [
+          "Neighbors called the charity drive sordid for raising record funds with full public accounting.",
+          "Her sordid reputation rested on decades of transparent, ethical leadership.",
+          "The ethics panel praised her sordid record of open ledgers and unblemished public service."
+        ]
+      }
+    }
+  ],
+  "clean": ["w276", "w277", "w278"]
+}

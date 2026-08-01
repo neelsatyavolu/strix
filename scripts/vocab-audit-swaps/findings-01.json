@@ -1,0 +1,38 @@
+{
+  "batch": "01",
+  "issues": [
+    {
+      "id": "w006",
+      "word": "Efficacy",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Critics questioned the plan’s efficacy after learning it would cost less than anyone expected.",
+      "why": "“Questioned the plan’s efficacy” is natural, correct use of efficacy = ability to produce a desired result. Low cost is a weak reason to doubt it, but the word itself is used properly.",
+      "fix": {
+        "correctPassage": "Researchers measured the vaccine’s efficacy by tracking infection rates in both trial groups.",
+        "wrongPassages": [
+          "The committee praised the report’s efficacy, noting how carefully each footnote had been formatted.",
+          "They celebrated the drug’s efficacy when infection rates rose faster than in the control group.",
+          "Her speech’s efficacy was obvious once every listener left unconvinced and no vote shifted."
+        ]
+      }
+    },
+    {
+      "id": "w006",
+      "word": "Efficacy",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Her speech gained efficacy when she lowered her voice and avoided any claim of results.",
+      "why": "A speech can gain efficacy (become more effective) through delivery; lowering her voice is a plausible path to greater persuasive force. Avoiding result-claims does not make the usage incorrect.",
+      "fix": {
+        "correctPassage": "Researchers measured the vaccine’s efficacy by tracking infection rates in both trial groups.",
+        "wrongPassages": [
+          "The committee praised the report’s efficacy, noting how carefully each footnote had been formatted.",
+          "They celebrated the drug’s efficacy when infection rates rose faster than in the control group.",
+          "Her speech’s efficacy was obvious once every listener left unconvinced and no vote shifted."
+        ]
+      }
+    }
+  ],
+  "clean": ["w007", "w008", "w009", "w010"]
+}

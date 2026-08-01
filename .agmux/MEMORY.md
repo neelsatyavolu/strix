@@ -6,13 +6,24 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-07-30T19:41:05.503Z
-- **Active entries**: 10
-- **Important**: 4
+- **Updated**: 2026-08-01T02:14:45.113Z
+- **Active entries**: 11
+- **Important**: 5
 
 ## Important (must remember)
 
 > Agents must treat these as binding constraints unless the user overrides them.
+
+### ⚠ IMPORTANT: Vocab correctPool bank-only
+
+- **id**: `12a6ff32-39f3-409f-af1b-a75d865cfd76`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-08-01T02:14:45.113Z
+- **updated**: 2026-08-01T02:14:45.113Z
+
+correctPool for usage MCQ must use only entry.correctPassage from bank. Never score generic generatedCorrect templates as correct — they produce false-corrects (e.g. 'New regulations were intended to vacate the environmental damage'). Wrong pool may still use generatedWrong as filler; prefer bank wrongs. Also audit wrongPassages for TRUE_WRONG (valid uses listed as distractors).
 
 ### ⚠ IMPORTANT: Vocab known = unflipped + correct only
 
@@ -59,6 +70,17 @@ Vocabulary is flashcard flow: word face → know it / flip definition → usage 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
 
 ## Decisions
+
+### ⚠ IMPORTANT: Vocab correctPool bank-only
+
+- **id**: `12a6ff32-39f3-409f-af1b-a75d865cfd76`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-08-01T02:14:45.113Z
+- **updated**: 2026-08-01T02:14:45.113Z
+
+correctPool for usage MCQ must use only entry.correctPassage from bank. Never score generic generatedCorrect templates as correct — they produce false-corrects (e.g. 'New regulations were intended to vacate the environmental damage'). Wrong pool may still use generatedWrong as filler; prefer bank wrongs. Also audit wrongPassages for TRUE_WRONG (valid uses listed as distractors).
 
 ### ⚠ IMPORTANT: Vocab known = unflipped + correct only
 

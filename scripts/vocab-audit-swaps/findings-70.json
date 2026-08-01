@@ -1,0 +1,38 @@
+{
+  "batch": "70",
+  "issues": [
+    {
+      "id": "w351",
+      "word": "Ingratiate",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "His decision to challenge the chair’s proposal in open session was an attempt to ingratiate himself with the committee.",
+      "why": "\"Ingratiate himself with the committee\" is correct construction and sense (deliberate effort to win favor). Challenging a chair’s proposal can be a calculated way to please a committee that opposes the chair; the sentence is natural, defensible English, not misuse.",
+      "fix": {
+        "correctPassage": "Hoping for a promotion, the junior analyst tried to ingratiate herself with the partners by taking on thankless assignments.",
+        "wrongPassages": [
+          "She tried to ingratiate herself with the dean by ignoring every request and missing every meeting.",
+          "She managed to ingratiate the rival department by blocking every request for shared resources.",
+          "The envoy sought to ingratiate the host government by publicly dismissing its concerns."
+        ]
+      }
+    },
+    {
+      "id": "w355",
+      "word": "Esoteric",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The esoteric handbook became required reading in nearly every introductory course.",
+      "why": "\"Esoteric handbook\" correctly means specialist-only material. That such a book later became widely assigned does not reverse the adjective; ironic curriculum design still leaves the word used correctly.",
+      "fix": {
+        "correctPassage": "The paper’s esoteric methodology limited its readership to specialists in the field.",
+        "wrongPassages": [
+          "The esoteric handbook was assigned because any first-year student could follow it without prior training.",
+          "She favored esoteric explanations because they used only everyday vocabulary.",
+          "Networks chose esoteric programming precisely for its broad popular appeal."
+        ]
+      }
+    }
+  ],
+  "clean": ["w352", "w353", "w354"]
+}

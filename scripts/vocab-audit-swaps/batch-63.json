@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w316",
+    "word": "Dispersion",
+    "definition": "the act of distributing or spreading over a wide area",
+    "memoryTip": "Disperse = scatter: dispersion is the spread itself.",
+    "correctPassage": "Researchers tracked the dispersion of pollen across several neighboring valleys.",
+    "wrongPassages": [
+      "The committee's dispersion of funds into a single account concentrated every grant.",
+      "Careful dispersion kept the rare manuscripts locked in one climate-controlled vault.",
+      "Her dispersion of the rumor meant she never repeated it outside the room."
+    ]
+  },
+  {
+    "id": "w317",
+    "word": "Excavate",
+    "definition": "dig out earth and uncover by digging",
+    "memoryTip": "Ex-cavate: dig out a cavity in the ground.",
+    "correctPassage": "Archaeologists will excavate the burial site before the road construction begins.",
+    "wrongPassages": [
+      "Crews excavate the trench each morning by refilling it with compacted soil.",
+      "She excavated the empty shelves by stacking additional cartons on top.",
+      "Engineers excavate the bridge deck when they pave a new surface over it."
+    ]
+  },
+  {
+    "id": "w318",
+    "word": "Festoon",
+    "definition": "adorn with chains of flowers, lights, or fabric hung in loops",
+    "memoryTip": "Festival loops: hang decorations in draping curves.",
+    "correctPassage": "Staff festoon the courtyard with strings of lights for the evening reception.",
+    "wrongPassages": [
+      "They festoon the ballroom by removing every banner and hanging ornament.",
+      "She festooned the report by underlining each heading in dense black ink.",
+      "Workers festoon the plaza when they polish the stone until it gleams."
+    ]
+  },
+  {
+    "id": "w319",
+    "word": "Prose",
+    "definition": "ordinary written or spoken language, as opposed to poetry",
+    "memoryTip": "Not verse: prose is everyday sentences, not meter and rhyme.",
+    "correctPassage": "The historian's prose is plain and direct, favoring short declarative sentences.",
+    "wrongPassages": [
+      "Her latest prose depends on strict meter and end rhyme in every stanza.",
+      "He performed an improvised prose on the violin during the intermission.",
+      "Their prose arrangement for choir required four-part vocal harmony."
+    ]
+  },
+  {
+    "id": "w320",
+    "word": "Strife",
+    "definition": "angry or bitter conflict; struggle",
+    "memoryTip": "Strive into conflict: strife is fighting and discord.",
+    "correctPassage": "Years of regional strife disrupted trade along the mountain routes.",
+    "wrongPassages": [
+      "Prolonged strife among the partners produced an unusually stable alliance.",
+      "The strife of the quiet library made it ideal for uninterrupted study.",
+      "They valued the strife of a household where no one ever argued."
+    ]
+  }
+]

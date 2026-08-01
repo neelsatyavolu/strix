@@ -1,0 +1,22 @@
+{
+  "batch": "78",
+  "issues": [
+    {
+      "id": "w391",
+      "word": "Consideration",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Their consideration of the proposal lasted three seconds before automatic approval.",
+      "why": "Valid, natural use of consideration = thought about something; brief or cursory consideration is still correctly named consideration (cf. “after brief consideration”). A student who knows the word would accept this sentence.",
+      "fix": {
+        "correctPassage": "After lengthy consideration of the budget forecasts, the board postponed expansion.",
+        "wrongPassages": [
+          "She showed consideration for the neighbors by blasting music until well after midnight.",
+          "She acted with consideration when she decided on the spot without reading a single page.",
+          "The engineer measured consideration in milliliters before sealing the sample vial."
+        ]
+      }
+    }
+  ],
+  "clean": ["w392", "w393", "w394", "w395"]
+}

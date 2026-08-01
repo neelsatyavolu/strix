@@ -1,0 +1,38 @@
+{
+  "batch": "74",
+  "issues": [
+    {
+      "id": "w371",
+      "word": "Apotheosis",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The committee treated the unfinished draft as the apotheosis of a project still lacking direction.",
+      "why": "Apotheosis is used correctly as 'ideal / culminating example': the committee regarded the draft as the perfect specimen of a directionless project. Poor judgment does not make the vocabulary wrong.",
+      "fix": {
+        "correctPassage": "Critics hailed the final movement as the apotheosis of the composer's lifelong work with form.",
+        "wrongPassages": [
+          "After years of decline, the firm reached its apotheosis when sales hit their lowest recorded level.",
+          "She called the first day of training the apotheosis of a career that had not yet produced any finished work.",
+          "Historians placed the movement's apotheosis at the moment it dissolved with no public following or achievements."
+        ]
+      }
+    },
+    {
+      "id": "w371",
+      "word": "Apotheosis",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Historians dated the apotheosis of the movement to the decade before it had any public influence.",
+      "why": "Apotheosis correctly means the peak or culminating point; dating that peak early is a historical claim, not a misuse of the word.",
+      "fix": {
+        "correctPassage": "Critics hailed the final movement as the apotheosis of the composer's lifelong work with form.",
+        "wrongPassages": [
+          "After years of decline, the firm reached its apotheosis when sales hit their lowest recorded level.",
+          "She called the first day of training the apotheosis of a career that had not yet produced any finished work.",
+          "Historians placed the movement's apotheosis at the moment it dissolved with no public following or achievements."
+        ]
+      }
+    }
+  ],
+  "clean": ["w372", "w373", "w374", "w375"]
+}

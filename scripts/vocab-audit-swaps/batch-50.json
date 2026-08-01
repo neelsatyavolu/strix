@@ -1,0 +1,62 @@
+[
+  {
+    "id": "w251",
+    "word": "Stern",
+    "definition": "serious, strict, and unrelenting",
+    "memoryTip": "A stern face \u2014 no jokes, strict and unyielding.",
+    "correctPassage": "The principal\u2019s stern reprimand made clear that further absences would not be excused.",
+    "wrongPassages": [
+      "His stern grin and joking asides put the nervous applicants completely at ease.",
+      "The guidelines\u2019 stern flexibility invited each department to invent its own standards.",
+      "Critics praised the novel\u2019s stern digressions, which wandered freely from any central plot."
+    ]
+  },
+  {
+    "id": "w252",
+    "word": "Prophetic",
+    "definition": "accurately predicting what will happen",
+    "memoryTip": "Like a prophet \u2014 foresaw what later came true.",
+    "correctPassage": "Her early essay now seems prophetic in light of the reforms that followed.",
+    "wrongPassages": [
+      "His prophetic forecast failed to anticipate any of the market\u2019s subsequent swings.",
+      "Editors called the revised budget prophetic because it merely restated last year\u2019s figures.",
+      "A prophetic footnote listed sources the author had already cited in the main text."
+    ]
+  },
+  {
+    "id": "w253",
+    "word": "Decry",
+    "definition": "publicly denounce or condemn",
+    "memoryTip": "De-cry: cry out against something in public.",
+    "correctPassage": "Local historians decry the demolition of the century-old theater.",
+    "wrongPassages": [
+      "Reviewers decried the film by awarding it top prizes and urging a wider release.",
+      "She decried the renovation plan by volunteering to oversee construction herself.",
+      "Donors decried the museum\u2019s new wing with a multiyear grant and a gala opening."
+    ]
+  },
+  {
+    "id": "w254",
+    "word": "Flippancy",
+    "definition": "lack of seriousness; disrespectful levity",
+    "memoryTip": "Flip answers \u2014 unserious jokes when gravity is needed.",
+    "correctPassage": "Flippancy about lab safety rules has no place during hazardous experiments.",
+    "wrongPassages": [
+      "Her flippancy showed in the careful, solemn tone she used throughout the eulogy.",
+      "The judge praised the witness\u2019s flippancy for treating each question with full gravity.",
+      "Protocol required flippancy from every speaker, so each address remained formal and restrained."
+    ]
+  },
+  {
+    "id": "w255",
+    "word": "Quirky",
+    "definition": "having peculiar or unexpected traits",
+    "memoryTip": "Full of quirks \u2014 oddly charming little peculiarities.",
+    "correctPassage": "The caf\u00e9\u2019s quirky menu pairs familiar dishes with unexpected spice blends.",
+    "wrongPassages": [
+      "The completely standard office layout was praised as quirky for matching every other floor.",
+      "His quirky schedule never varied by a minute across ten identical workdays.",
+      "Analysts called the forecast quirky because it rested on conventional assumptions alone."
+    ]
+  }
+]

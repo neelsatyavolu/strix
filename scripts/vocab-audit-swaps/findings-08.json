@@ -1,0 +1,22 @@
+{
+  "batch": "08",
+  "issues": [
+    {
+      "id": "w043",
+      "word": "Affinity",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "He felt such affinity for the rival proposal that he blocked any further discussion of it.",
+      "why": "\"Felt affinity for\" is correct, natural use of affinity = natural liking/connection. The second clause is only pragmatically odd (liking something yet blocking talk of it); it does not make the word itself a misuse. A student who knows the definition would rightly accept this passage.",
+      "fix": {
+        "correctPassage": "She felt an immediate affinity for the spare, geometric style of the paintings.",
+        "wrongPassages": [
+          "Signing the contract created a legal affinity requiring delivery by the end of June.",
+          "Surveyors recorded the affinity between the two property lines before building the fence.",
+          "The mayor issued a formal affinity barring the developer from the hearing."
+        ]
+      }
+    }
+  ],
+  "clean": ["w041", "w042", "w044", "w045"]
+}

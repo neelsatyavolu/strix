@@ -1,0 +1,38 @@
+{
+  "batch": "27",
+  "issues": [
+    {
+      "id": "w138",
+      "word": "Subvert",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "The reforms were designed to subvert authoritarian rule by expanding voting access and oversight.",
+      "why": "Undermining authoritarian power by expanding voting access and oversight is a valid, natural use of subvert = undermine the power or authority of. A student who knows the definition would accept this passage.",
+      "fix": {
+        "correctPassage": "Satire can subvert official narratives by exposing their contradictions.",
+        "wrongPassages": [
+          "Party loyalists moved to subvert the dictator by defending every decree and packing the courts with allies.",
+          "They hoped to subvert the constitution by enforcing its amendments more strictly.",
+          "She sought to subvert the chair's authority by carefully following every rule the chair had set."
+        ]
+      }
+    },
+    {
+      "id": "w140",
+      "word": "Scanty",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "Researchers called the data set scanty after every variable had been measured in triplicate.",
+      "why": "Measuring each variable in triplicate describes method, not quantity. A small sample measured three times is still scanty, so this remains correct use of scanty = small or insufficient in quantity.",
+      "fix": {
+        "correctPassage": "Evidence for the theory remains scanty and contested.",
+        "wrongPassages": [
+          "The harvest was scanty: silos overflowed and crews still left grain in the fields.",
+          "Her scanty briefing covered risks, costs, and a recommendation across four full slides.",
+          "Researchers called the data set scanty after logging millions of observations across every relevant variable."
+        ]
+      }
+    }
+  ],
+  "clean": ["w136", "w137", "w139"]
+}

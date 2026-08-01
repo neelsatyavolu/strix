@@ -1,0 +1,22 @@
+{
+  "batch": "66",
+  "issues": [
+    {
+      "id": "w333",
+      "word": "Conspicuous",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[1]",
+      "passage": "Once the brass section covered the theme completely, the motif became especially conspicuous.",
+      "why": "In musical English, when the brass 'covers' a theme it states/carries that theme, so the motif becoming especially conspicuous is natural correct use of conspicuous = clearly audible/attracting notice. Not a valid distractor.",
+      "fix": {
+        "correctPassage": "The senator's bright red scarf made her conspicuous among the gray coats on the steps.",
+        "wrongPassages": [
+          "She kept the signed originals conspicuous in a locked vault no one ever opened.",
+          "The courier hid the package so thoroughly that it was conspicuous to every passerby.",
+          "His muted, camouflaged jacket was chosen to be as conspicuous as possible in the forest."
+        ]
+      }
+    }
+  ],
+  "clean": ["w331", "w332", "w334", "w335"]
+}

@@ -1,0 +1,22 @@
+{
+  "batch": "54",
+  "issues": [
+    {
+      "id": "w272",
+      "word": "Heterogeneity",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "The panel’s heterogeneity of views produced a unanimous vote with no dissent recorded.",
+      "why": "\"Heterogeneity of views\" is standard correct use (diverse opinions). Diverse views can still end in a unanimous vote after debate; the ironic outcome does not make the word wrong. A careful reader would accept the sentence as valid English.",
+      "fix": {
+        "correctPassage": "The city’s cultural heterogeneity is visible in its markets, languages, and festivals.",
+        "wrongPassages": [
+          "Managers prized the product line’s heterogeneity: every unit matched the others exactly.",
+          "Genetic heterogeneity was confirmed once every sample proved identical to the control.",
+          "Tourists praised the district’s architectural heterogeneity after block after block of identical brick facades."
+        ]
+      }
+    }
+  ],
+  "clean": ["w271", "w273", "w274", "w275"]
+}

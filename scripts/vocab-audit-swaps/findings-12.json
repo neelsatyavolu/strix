@@ -1,0 +1,54 @@
+{
+  "batch": "12",
+  "issues": [
+    {
+      "id": "w063",
+      "word": "Mandatory",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Parking in the fire lane is mandatory under the city’s traffic rules.",
+      "why": "Uses mandatory correctly to mean required by rules; only world knowledge (fire-lane parking is banned) makes the claim false. A student testing word knowledge would rightly treat this as valid usage.",
+      "fix": {
+        "correctPassage": "Safety training is mandatory for everyone who enters the laboratory.",
+        "wrongPassages": [
+          "The handbook labeled the training mandatory so volunteers would know they were free to skip it.",
+          "The workshop was mandatory, so volunteers could skip it without consequence.",
+          "After a social-media trend, the novel became mandatory among teenagers who simply preferred it."
+        ]
+      }
+    },
+    {
+      "id": "w064",
+      "word": "Permissible",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[0]",
+      "passage": "Driving through a red light is permissible under standard traffic law.",
+      "why": "Uses permissible correctly to mean allowed under rules; the sentence is only factually wrong about traffic law, not a lexical misuse.",
+      "fix": {
+        "correctPassage": "Under the new rules, only certain additives are permissible in the product.",
+        "wrongPassages": [
+          "The handbook called cheating permissible, clarifying that any student caught would be expelled.",
+          "Reviewers called the staging permissible, the finest production of the year.",
+          "Counsel described the clause as permissible so clients would understand no one was allowed to accept it."
+        ]
+      }
+    },
+    {
+      "id": "w064",
+      "word": "Permissible",
+      "kind": "TRUE_WRONG",
+      "which": "wrongPassages[2]",
+      "passage": "They drafted a permissible contract that neither side could ever revise or cancel.",
+      "why": "Permissible (= allowed) is used correctly; irrevocability is an extra property, not a misuse of the word. A careful reader can defend this as valid usage.",
+      "fix": {
+        "correctPassage": "Under the new rules, only certain additives are permissible in the product.",
+        "wrongPassages": [
+          "The handbook called cheating permissible, clarifying that any student caught would be expelled.",
+          "Reviewers called the staging permissible, the finest production of the year.",
+          "Counsel described the clause as permissible so clients would understand no one was allowed to accept it."
+        ]
+      }
+    }
+  ],
+  "clean": ["w061", "w062", "w065"]
+}
