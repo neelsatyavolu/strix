@@ -5,15 +5,25 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-08-01T02:15:28.000Z
-- **Sessions**: 7
+- **Updated**: 2026-08-01T22:38:41.000Z
+- **Sessions**: 8
+
+## Fix disclosed question empty stem
+
+- **id**: `b74e262b-37cf-42aa-b878-03dd35e18b93`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-08-01T22:38:41.000Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fbf78-df23-7981-8b97-068734207c9e/chat_history.jsonl`
+
+Question Bank lookup f2f3fa00 (ibn 05702-DC) showed metadata but empty stem. Root cause: saic disclosed JSON is a one-element array; client treated it as object so prompt/answer were undefined. Fixed unwrapDisclosed in lib/cb/client.ts; normalizeDisclosed now handles SPR style; reject empty stemHtml after normalize.
 
 ## Vacate false-wrong + 80 audit
 
 - **id**: `02f384cf-d226-4d5b-933c-8c5883f1e142`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-08-01T02:15:28.000Z
+- **updated**: 2026-08-01T02:20:56.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fabc4-c6a0-7bf3-bd03-67abd20f6a2e/chat_history.jsonl`
 
 User flagged Vacate quiz: picked correct 'refused to vacate apartment' but marked wrong; UI showed false-correct 'vacate environmental damage'. Root cause 1: usageOptions generatedCorrect generic verb templates treated as correct. Root cause 2: bank wrongPassages that are actually valid uses (TRUE_WRONG). Fixed: correctPool = bank correctPassage only (removed generatedCorrect); Vacate wrongs fixed; 80-agent swap audit → 93 issues (89 TRUE_WRONG, 4 AMBIGUOUS) across 76 words merged into bank.ts.

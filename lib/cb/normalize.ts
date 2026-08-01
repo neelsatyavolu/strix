@@ -127,6 +127,8 @@ interface RawDisclosed {
     style?: string;
     choices?: Record<string, { body?: string }>;
     correct_choice?: string;
+    /** Some SPR disclosed items list accepted answers here. */
+    correct_answer?: string[] | string;
     rationale?: string;
   };
 }
@@ -137,6 +139,35 @@ export function normalizeDisclosed(
   stub: QuestionStub,
   section: Section,
 ): Question {
+  const style = String(raw.answer?.style ?? "").toLowerCase();
+  const isSpr = style === "spr" || style.includes("student");
+
+  if (isSpr) {
+    const rawCorrect = raw.answer?.correct_answer;
+    const correct = Array.isArray(rawCorrect)
+      ? rawCorrect.map(String).filter(Boolean)
+      : typeof rawCorrect === "string" && rawCorrect.trim()
+        ? [rawCorrect.trim()]
+        : [];
+    return {
+      id: stub.ibn ?? stub.questionId,
+      source: "disclosed",
+      section,
+      domain: stub.domain,
+      domainLabel: stub.domainLabel,
+      skill: stub.skill,
+      skillLabel: stub.skillLabel,
+      difficulty: stub.difficulty,
+      type: "spr",
+      stemHtml: clean(raw.prompt),
+      stimulusHtml: null,
+      choices: [],
+      correct,
+      correctIds: [],
+      rationaleHtml: clean(raw.answer?.rationale),
+    };
+  }
+
   const choicesObj = raw.answer?.choices ?? {};
   const order = ["a", "b", "c", "d", "e", "f"];
   const choices: Choice[] = order

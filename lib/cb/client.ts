@@ -100,11 +100,15 @@ export async function getQuestion(stub: QuestionStub): Promise<Question | null> 
       });
       q = normalizeQbank(raw, stub);
     } else if (stub.ibn) {
-      const raw = await getJson<Record<string, unknown>>(DISCLOSED_URL(stub.ibn));
-      q = normalizeDisclosed(raw, stub, stub.section);
+      // saic returns a one-element array: [{ item_id, prompt, answer }, ...]
+      const raw = await getJson<unknown>(DISCLOSED_URL(stub.ibn));
+      const item = unwrapDisclosed(raw, stub.ibn);
+      if (!item) return null;
+      q = normalizeDisclosed(item, stub, stub.section);
     } else {
       return null;
     }
+    if (!q.stemHtml) return null;
     qCache.set(id, { at: Date.now(), data: q });
     await writeCachedQuestion(q);
     return q;
@@ -115,6 +119,27 @@ export async function getQuestion(stub: QuestionStub): Promise<Question | null> 
     }
     return null;
   }
+}
+
+/** saic.collegeboard.org/disclosed/{ibn}.json is an array of item objects. */
+function unwrapDisclosed(
+  raw: unknown,
+  ibn: string,
+): Record<string, unknown> | null {
+  if (Array.isArray(raw)) {
+    const match =
+      raw.find(
+        (it) =>
+          it &&
+          typeof it === "object" &&
+          String((it as { item_id?: unknown }).item_id ?? "") === ibn,
+      ) ?? raw[0];
+    return match && typeof match === "object"
+      ? (match as Record<string, unknown>)
+      : null;
+  }
+  if (raw && typeof raw === "object") return raw as Record<string, unknown>;
+  return null;
 }
 
 /** Cache-only lookup (memory, then DB) — never calls College Board. */
