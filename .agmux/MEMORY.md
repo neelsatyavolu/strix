@@ -6,13 +6,24 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-08-01T02:14:45.113Z
-- **Active entries**: 11
-- **Important**: 5
+- **Updated**: 2026-08-04T03:06:32.864Z
+- **Active entries**: 12
+- **Important**: 6
 
 ## Important (must remember)
 
 > Agents must treat these as binding constraints unless the user overrides them.
+
+### ⚠ IMPORTANT: Vocab MCQ option variety
+
+- **id**: `d970977c-d016-4a3a-9135-ee1519feab2b`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-08-04T03:06:32.864Z
+- **updated**: 2026-08-04T03:06:32.864Z
+
+Usage MCQ must vary across attempts so students cannot memorize a fixed A/B/C/D set. correctPool = bank correctPassage + paraphrases of that passage only (swaps/framing); never generic generatedCorrect verb templates (false-correct risk). wrongPool = bank wrongs + generatedWrong; buildUsageOptions samples mix (prefer 1 bank wrong + fill from full pool), not always the same 3 bank wrongs. toItem/salt already re-samples each session appearance.
 
 ### ⚠ IMPORTANT: Vocab correctPool bank-only
 
@@ -70,6 +81,17 @@ Vocabulary is flashcard flow: word face → know it / flip definition → usage 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
 
 ## Decisions
+
+### ⚠ IMPORTANT: Vocab MCQ option variety
+
+- **id**: `d970977c-d016-4a3a-9135-ee1519feab2b`
+- **kind**: decision
+- **important**: true (must remember)
+- **source**: agent
+- **created**: 2026-08-04T03:06:32.864Z
+- **updated**: 2026-08-04T03:06:32.864Z
+
+Usage MCQ must vary across attempts so students cannot memorize a fixed A/B/C/D set. correctPool = bank correctPassage + paraphrases of that passage only (swaps/framing); never generic generatedCorrect verb templates (false-correct risk). wrongPool = bank wrongs + generatedWrong; buildUsageOptions samples mix (prefer 1 bank wrong + fill from full pool), not always the same 3 bank wrongs. toItem/salt already re-samples each session appearance.
 
 ### ⚠ IMPORTANT: Vocab correctPool bank-only
 
