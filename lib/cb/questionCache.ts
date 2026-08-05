@@ -11,6 +11,12 @@ import { createAdminClient } from "@/lib/supabase/admin";
 // this horizon (and even then, a stale row still serves if CB is down).
 const FRESH_MS = 30 * 24 * 60 * 60 * 1000;
 
+// Bump when normalize shape changes so pre-fix rows re-fetch once.
+// v2: disclosed SAIC `body` → stimulusHtml (tables/figures above the stem).
+const CACHE_SCHEMA = 2;
+
+type CachedPayload = Question & { __schema?: number };
+
 export interface CachedQuestion {
   question: Question;
   fresh: boolean;
@@ -28,11 +34,20 @@ function adminClient(): SupabaseClient | null {
   return admin;
 }
 
+function stripSchema(payload: CachedPayload): Question {
+  const question = { ...payload };
+  delete question.__schema;
+  return question;
+}
+
 function toCached(row: { payload: unknown; updated_at: string } | null): CachedQuestion | null {
-  const payload = row?.payload as Question | undefined;
+  const payload = row?.payload as CachedPayload | undefined;
   if (!payload?.id || !payload.stemHtml) return null;
   const age = Date.now() - new Date(row!.updated_at).getTime();
-  return { question: payload, fresh: Number.isFinite(age) && age < FRESH_MS };
+  const schema = payload.__schema ?? 1;
+  const fresh =
+    Number.isFinite(age) && age < FRESH_MS && schema >= CACHE_SCHEMA;
+  return { question: stripSchema(payload), fresh };
 }
 
 export async function readCachedQuestion(id: string): Promise<CachedQuestion | null> {
@@ -75,10 +90,11 @@ export async function writeCachedQuestion(q: Question): Promise<void> {
   const client = adminClient();
   if (!client) return;
   try {
+    const payload: CachedPayload = { ...q, __schema: CACHE_SCHEMA };
     await client.from("question_cache").upsert({
       id: q.id,
       section: q.section,
-      payload: q,
+      payload,
       updated_at: new Date().toISOString(),
     });
   } catch {

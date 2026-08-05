@@ -206,6 +206,18 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
                 <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
               </>}
             />
+            {q.stimulusHtml && (
+              <TeachRegion id={regionId(q.id, 'passage')}>
+                <Highlightable
+                  className="cb-passage"
+                  html={q.stimulusHtml}
+                  active={annotate}
+                  value={marks[q.id]?.passage}
+                  onChange={(h) => setMarks((m) => ({ ...m, [q.id]: { ...m[q.id], passage: h } }))}
+                  style={{ marginBottom: 18 }}
+                />
+              </TeachRegion>
+            )}
             <TeachRegion id={regionId(q.id, 'stem')}>
               <Highlightable
                 className="cb-stem"

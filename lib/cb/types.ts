@@ -29,7 +29,10 @@ export interface Question {
   type: QuestionType;
   /** Sanitized question prompt HTML. */
   stemHtml: string;
-  /** Sanitized passage/stimulus HTML (RW), or null. */
+  /**
+   * Sanitized passage/stimulus HTML shown above the stem, or null.
+   * RW passages, and math tables/figures/equations from disclosed `body`.
+   */
   stimulusHtml: string | null;
   /** mcq options (empty for spr). */
   choices: Choice[];

@@ -122,7 +122,14 @@ export function normalizeQbank(raw: RawDetail, stub: QuestionStub): Question {
 interface RawDisclosed {
   item_id?: string;
   section?: string;
+  /** Stem HTML (question text). */
   prompt?: string;
+  /**
+   * Shared stimulus shown *above* the stem — tables, figures, equations.
+   * SAIC puts this in `body` (not nested under answer); many math items
+   * reference it as "the table/equation above".
+   */
+  body?: string;
   answer?: {
     style?: string;
     choices?: Record<string, { body?: string }>;
@@ -141,6 +148,8 @@ export function normalizeDisclosed(
 ): Question {
   const style = String(raw.answer?.style ?? "").toLowerCase();
   const isSpr = style === "spr" || style.includes("student");
+  // SAIC: body = table/figure/equation stimulus; prompt = stem.
+  const stimulusHtml = raw.body ? clean(raw.body) : null;
 
   if (isSpr) {
     const rawCorrect = raw.answer?.correct_answer;
@@ -160,7 +169,7 @@ export function normalizeDisclosed(
       difficulty: stub.difficulty,
       type: "spr",
       stemHtml: clean(raw.prompt),
-      stimulusHtml: null,
+      stimulusHtml,
       choices: [],
       correct,
       correctIds: [],
@@ -191,7 +200,7 @@ export function normalizeDisclosed(
     difficulty: stub.difficulty,
     type: "mcq",
     stemHtml: clean(raw.prompt),
-    stimulusHtml: null,
+    stimulusHtml,
     choices,
     correct: correctKey ? [correctLetter] : [],
     correctIds: correctKey ? [correctKey] : [],

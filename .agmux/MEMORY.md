@@ -6,8 +6,8 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-08-04T03:06:32.864Z
-- **Active entries**: 12
+- **Updated**: 2026-08-05T03:25:19.308Z
+- **Active entries**: 13
 - **Important**: 6
 
 ## Important (must remember)
@@ -147,6 +147,16 @@ Vocabulary is flashcard flow: word face → know it / flip definition → usage 
 - **updated**: 2026-07-28T02:12:20.274Z
 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
+
+### Disclosed SAIC body = stimulus
+
+- **id**: `1f470dec-f913-4aa0-9b4d-1b8c39a17d31`
+- **kind**: decision
+- **source**: agent
+- **created**: 2026-08-05T03:25:19.308Z
+- **updated**: 2026-08-05T03:25:19.308Z
+
+Disclosed (ibn) items from saic.collegeboard.org use body for shared stimulus (tables/figures/equations above the stem) and prompt for the stem. normalizeDisclosed must map body→stimulusHtml (never hardcode null). Math UI must render stimulusHtml above stem — not RW-only. question_cache __schema v2 invalidates pre-fix rows.
 
 ### Vocab MCQ SAT-style pools
 

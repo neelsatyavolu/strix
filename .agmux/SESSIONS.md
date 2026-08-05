@@ -5,8 +5,18 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-08-04T03:06:38.000Z
-- **Sessions**: 8
+- **Updated**: 2026-08-05T03:25:25.000Z
+- **Sessions**: 9
+
+## Disclosed math table/stimulus body
+
+- **id**: `377171fe-69f3-47c5-976c-a1dc4243597f`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-08-05T03:25:25.000Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fcff1-152e-77d3-be6f-30d8be776672/chat_history.jsonl`
+
+Disclosed SAIC items put tables/figures in `body` (stem in `prompt`). normalizeDisclosed ignored body and always set stimulusHtml=null, so Question Bank showed 'table above' with no table (e.g. 08160-DC / 263f9937). Fixed: map body→stimulusHtml; render stimulus above stem in QuestionMath + LiveTestView math; cache schema v2 to re-fetch pre-fix rows.
 
 ## Vary MCQ options per attempt
 

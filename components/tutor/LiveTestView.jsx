@@ -119,6 +119,11 @@ export default function LiveTestView({ live, studentName = 'your student' }) {
               n={(live.index ?? 0) + 1}
               flag={<FlagButton marked={!!live.flagged} onClick={NOOP} />}
             />
+            {isMath && live.stimulusHtml && (
+              <TeachRegion id={regionId(live.id, 'passage')}>
+                <Highlightable className="cb-passage" html={live.stimulusHtml} active={false} value={live.marks?.passage} onChange={NOOP} style={{ marginBottom: 18 }} />
+              </TeachRegion>
+            )}
             <TeachRegion id={regionId(live.id, 'stem')}>
               <Highlightable className="cb-stem" html={live.stemHtml} active={false} value={live.marks?.stem} onChange={NOOP} />
             </TeachRegion>
