@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { sectionScoreRange, routeModule2 } from "@/lib/scoring/curve";
+import { isValueCorrect, questionHasKey } from "@/lib/practice/grading.mjs";
 
 // DELETE /api/sessions/:id — permanently remove one of the caller's own
 // sessions. Scoped to user_id so a tutor can't delete a student's history;
@@ -62,20 +63,31 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     })
     .map((sq) => {
       const a = ansByQ.get(sq.id);
-      const q = (sq.snapshot ?? {}) as Record<string, unknown>;
+      const q = { ...(sq.snapshot ?? {}) } as Record<string, unknown> & {
+        type?: string;
+        correct?: string[];
+        pretest?: boolean;
+      };
+      // Re-grade from the stored key when present so SPR fixes (0.48 ≡ .48)
+      // and similar apply to historical reviews without waiting on a migration.
+      let isCorrect = !!a?.is_correct;
+      if (a?.value != null && questionHasKey(q)) {
+        isCorrect = isValueCorrect(q, a.value);
+      }
+      // Never surface legacy Unscored badges.
+      delete q.pretest;
       return {
         question: q,
         module: sq.module,
         response: a ? { value: a.value, flagged: a.flagged } : null,
-        isCorrect: !!a?.is_correct,
-        isPretest: !!q.pretest,
+        isCorrect,
+        isPretest: false,
         timeMs: a?.time_ms ?? null,
       };
     });
 
   const byDomain = new Map<string, { domain: string; label: string; correct: number; total: number }>();
   for (const item of review) {
-    if (item.isPretest) continue;
     const q = item.question as { domain?: string; domainLabel?: string };
     const domain = q.domain ?? "";
     const e = byDomain.get(domain) ?? { domain, label: q.domainLabel ?? domain, correct: 0, total: 0 };
@@ -86,17 +98,20 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   // Per-module tally (Module 1 / Module 2). Useful for full sections and full
   // exams, where a single session spans both modules; ordinal order keeps m1
-  // ahead of m2. Pretest items are excluded to match the scored totals.
+  // ahead of m2.
   const MODULE_LABEL: Record<string, string> = { m1: "Module 1", m2: "Module 2" };
   const byModule = new Map<string, { module: string; label: string; correct: number; total: number }>();
   for (const item of review) {
-    if (item.isPretest) continue;
     const mod = item.module ?? "";
     const e = byModule.get(mod) ?? { module: mod, label: MODULE_LABEL[mod] ?? mod, correct: 0, total: 0 };
     e.total += 1;
     if (item.isCorrect) e.correct += 1;
     byModule.set(mod, e);
   }
+
+  const correct = review.filter((item) => item.isCorrect).length;
+  const total = review.length;
+  const accuracy = total ? Math.round((correct / total) * 100) : 0;
 
   // Recompute the section score with the current curve so historical full SATs
   // reflect the latest scoring. Route (easy/hard) comes from Module-1 performance.
@@ -108,7 +123,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const bluebookTest = (sess.config as { bluebookTest?: unknown })?.bluebookTest;
   const range =
     sess.scaled_score != null
-      ? sectionScoreRange(sess.score_correct ?? 0, sess.score_total ?? 0, {
+      ? sectionScoreRange(correct, total, {
           section: sess.section === "math" ? "math" : "rw",
           routedEasy: m1 ? routeModule2(m1.correct, m1.total) === "easy" : false,
           test: typeof bluebookTest === "number" ? bluebookTest : null,
@@ -124,9 +139,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       mode: sess.mode,
       scaled: range ? range.estimate : sess.scaled_score,
       scaledRange: range ? { lower: range.lower, upper: range.upper } : null,
-      correct: sess.score_correct,
-      total: sess.score_total,
-      accuracy: sess.accuracy,
+      correct,
+      total,
+      accuracy,
       createdAt: sess.created_at,
       byDomain: [...byDomain.values()],
       byModule: [...byModule.values()],

@@ -184,13 +184,12 @@ export function ReviewList({ review }) {
 }
 
 function ModuleDivider({ label, items, first }) {
-  const scored = items.filter((it) => !it.isPretest);
-  const correct = scored.filter((it) => it.isCorrect).length;
+  const correct = items.filter((it) => it.isCorrect).length;
   return (
     <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginTop: first ? 0 : 14, marginBottom: 2 }}>
       <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>{label}</span>
       <span style={{ flex: 1, height: 1, background: 'var(--border-1)' }} />
-      <span style={{ font: 'var(--role-caption)', fontFamily: 'var(--font-mono)', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>{correct} / {scored.length} correct</span>
+      <span style={{ font: 'var(--role-caption)', fontFamily: 'var(--font-mono)', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>{correct} / {items.length} correct</span>
     </div>
   );
 }
@@ -213,7 +212,6 @@ export function ReviewItem({ item, n }) {
           {isCorrect ? 'Correct' : answered ? 'Incorrect' : 'Skipped'}
         </Badge>
         <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>{q.domainLabel}{q.skillLabel ? ` · ${q.skillLabel}` : ''}</span>
-        {item.isPretest && <Badge variant="neutral" size="sm">Unscored</Badge>}
         <span style={{ marginLeft: 'auto', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>Difficulty {q.difficulty}</span>
         {teach?.role === 'tutor' && teach.on && (
           <button

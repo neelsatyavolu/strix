@@ -42,7 +42,10 @@ export interface Question {
   correctIds: string[];
   /** Sanitized rationale/explanation HTML. */
   rationaleHtml: string;
-  /** Unscored field-test item, indistinguishable during the module UI. */
+  /**
+   * Legacy flag: older sessions may still mark embedded field-test items.
+   * New modules no longer set this — every item is scored.
+   */
   pretest?: boolean;
 }
 

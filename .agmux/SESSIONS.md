@@ -5,15 +5,25 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-08-05T03:25:25.000Z
-- **Sessions**: 9
+- **Updated**: 2026-08-06T23:23:41.000Z
+- **Sessions**: 10
+
+## SPR 0.48 + no unscored
+
+- **id**: `bf5ca0d8-0d2c-4f10-b9f6-046b6f2ae76a`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-08-06T23:23:41.000Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fd95e-149f-7ad0-8c32-e0a38551aea2/chat_history.jsonl`
+
+Fixed SPR grading so 0.48 matches .48/12/25 (numeric equivalence in grading.mjs). Removed unscored/pretest carve-out: all module items score, no Unscored badge, blueprint no longer tags pretest. Rescored all 29 sessions in DB (2 answer flips, 8 sessions updated, 8 pretest flags cleared).
 
 ## Disclosed math table/stimulus body
 
 - **id**: `377171fe-69f3-47c5-976c-a1dc4243597f`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-08-05T03:25:25.000Z
+- **updated**: 2026-08-05T03:26:21.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fcff1-152e-77d3-be6f-30d8be776672/chat_history.jsonl`
 
 Disclosed SAIC items put tables/figures in `body` (stem in `prompt`). normalizeDisclosed ignored body and always set stimulusHtml=null, so Question Bank showed 'table above' with no table (e.g. 08160-DC / 263f9937). Fixed: map body→stimulusHtml; render stimulus above stem in QuestionMath + LiveTestView math; cache schema v2 to re-fetch pre-fix rows.

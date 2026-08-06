@@ -48,7 +48,6 @@ test('Albert section scoring can be recomputed from historical stored module ans
     ...Array.from({ length: 13 }, (_, i) => ({ id: `m1-w${i}`, module: 'm1', isCorrect: false })),
     ...Array.from({ length: 14 }, (_, i) => ({ id: `m2-c${i}`, module: 'm2', isCorrect: true })),
     ...Array.from({ length: 13 }, (_, i) => ({ id: `m2-w${i}`, module: 'm2', isCorrect: false })),
-    { id: 'pretest', module: 'm2', isCorrect: true, pretest: true },
   ];
 
   assert.equal(scoreAlbertSectionFromQuestions('rw', questions), 430);

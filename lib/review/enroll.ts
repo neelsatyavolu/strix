@@ -23,11 +23,8 @@ export async function enrollReviews(
   questions: GradedQuestion[],
   testDate: string | null,
 ): Promise<void> {
-  // Only operational items with a stable CB id can be scheduled (unscored
-  // pretest items never count toward review).
-  const graded = questions.filter(
-    (q) => q.external_id && !(q.snapshot as { pretest?: unknown })?.pretest,
-  );
+  // Any answered item with a stable CB id can enter the review queue.
+  const graded = questions.filter((q) => q.external_id);
   if (!graded.length) return;
 
   // Last attempt wins per question within this submit.

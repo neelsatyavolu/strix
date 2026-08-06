@@ -6,8 +6,8 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-08-05T03:25:19.308Z
-- **Active entries**: 13
+- **Updated**: 2026-08-06T23:23:30.086Z
+- **Active entries**: 14
 - **Important**: 6
 
 ## Important (must remember)
@@ -147,6 +147,16 @@ Vocabulary is flashcard flow: word face → know it / flip definition → usage 
 - **updated**: 2026-07-28T02:12:20.274Z
 
 Presence must NEVER clear watchedLive or idle liveStudents (channel flaps under math). Only explicit session active:false after ~4s debounce. Student broadcasts: full snapshot on question change/tutor join/resubscribe; lightweight patches for ticks. Keep sticky last frame so Live Session never flashes 'not in a section' while student is still practicing. Student-side idle announce debounced ~900ms.
+
+### SPR numeric equivalence + no unscored items
+
+- **id**: `d12a0e65-d21a-47ba-99bf-dfcb738961a7`
+- **kind**: decision
+- **source**: agent
+- **created**: 2026-08-06T23:23:30.086Z
+- **updated**: 2026-08-06T23:23:30.086Z
+
+SPR grading uses numeric equivalence: 0.48 ≡ .48 ≡ 12/25 (lib/practice/grading.mjs sprsMatch/parseSprNumber). No unscored/pretest items: all module questions count toward score; Unscored badge removed; blueprint still draws +2 for Bluebook length but does not mark pretest. Historical sessions rescored via scripts/rescore-all-sessions.mjs.
 
 ### Disclosed SAIC body = stimulus
 

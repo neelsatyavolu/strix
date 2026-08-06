@@ -176,20 +176,19 @@ async function fetchModule1({ section, bluebookTest, strixTest }) {
 }
 
 function buildReview(questions, responses, pretestIds = [], mode = null) {
-  const pretest = new Set(pretestIds);
+  void pretestIds; // kept for call-site compatibility; all items are scored
   const review = questions.map((q) => {
     const r = responses[q.id];
     // In drill mode, surface the FIRST answer (and its correctness) so the review
     // reflects what counted toward stats, not the eventually-correct retry.
     const response = usesDrillSemantics(mode) && r ? { ...r, value: r.firstValue ?? r.value ?? null } : (r || null);
-    return { question: q, response, isCorrect: responseCorrect(mode, q, r), isPretest: !!q.pretest || pretest.has(q.id) };
+    // All items are scored (legacy pretest/unscored carve-out removed).
+    return { question: q, response, isCorrect: responseCorrect(mode, q, r), isPretest: false };
   });
-  // Operational (scored) items only — unscored pretest items don't count.
-  const scored = review.filter((x) => !x.isPretest);
-  const correct = scored.filter((x) => x.isCorrect).length;
-  const total = scored.length;
+  const correct = review.filter((x) => x.isCorrect).length;
+  const total = review.length;
   const byDomainMap = new Map();
-  for (const x of scored) {
+  for (const x of review) {
     const e = byDomainMap.get(x.question.domain) || { domain: x.question.domain, label: x.question.domainLabel, correct: 0, total: 0 };
     e.total += 1;
     if (x.isCorrect) e.correct += 1;
@@ -257,7 +256,6 @@ async function persistSession(state, times = {}) {
     const answered = all.filter(({ q }) => hasAnswer(state.mode, state.responses[q.id]));
     if (!answered.length) return;
     const base = buildReview(answered.map((x) => x.q), state.responses, state.pretestIds, state.mode);
-    const pretest = new Set(state.pretestIds || []);
     const questions = answered.map(({ q, moduleKey }, i) => {
       const r = state.responses[q.id];
       return {
@@ -268,7 +266,8 @@ async function persistSession(state, times = {}) {
         difficulty: q.difficulty,
         ordinal: i,
         module: moduleKey,
-        snapshot: { ...q, pretest: !!q.pretest || pretest.has(q.id) },
+        // Strip any legacy pretest flag so persisted reviews never show Unscored.
+        snapshot: { ...q, pretest: false },
         value: storedValue(state.mode, r),
         is_correct: responseCorrect(state.mode, q, r),
         time_ms: times[q.id] != null ? Math.round(times[q.id]) : null,

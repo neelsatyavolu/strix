@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
-  const { id, section, domain, difficulty, type, exclude, pretest } = parsed.data;
+  const { id, section, domain, difficulty, type, exclude } = parsed.data;
 
   try {
     // Permanent ban first so a concurrent draw never re-serves this id.
@@ -120,7 +120,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const question = pretest ? { ...replacement, pretest: true } : replacement;
+    // pretest flag is ignored — all replacement items are scored.
+    const question = replacement;
     return NextResponse.json({
       success: true,
       data: { question: sanitizeQuestion(question), dismissed: true },

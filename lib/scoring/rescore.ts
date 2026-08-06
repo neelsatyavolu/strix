@@ -52,8 +52,8 @@ export async function rescoreSessions(
   const correctByQ = new Map((ans ?? []).map((a) => [a.session_question_id, !!a.is_correct]));
   const bySession = new Map<string, [ModuleScore, ModuleScore]>();
   for (const sq of sqs ?? []) {
-    const snap = (sq.snapshot ?? {}) as { pretest?: boolean };
-    if (snap.pretest || !correctByQ.has(sq.id)) continue; // scored, answered only
+    // All answered items count (legacy pretest carve-out removed).
+    if (!correctByQ.has(sq.id)) continue;
     const modules = bySession.get(sq.session_id) ?? [
       { correct: 0, total: 0 },
       { correct: 0, total: 0 },

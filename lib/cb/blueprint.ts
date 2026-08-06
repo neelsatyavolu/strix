@@ -270,7 +270,9 @@ async function drawPretests(
   }
   const selected = selectPretestQuestions(available, { limit: PRETEST_PER_MODULE, sprTarget }) as Question[];
   for (const q of selected) usedIds.add(q.id);
-  return selected.map((q) => ({ ...q, pretest: true }));
+  // Formerly field-test/pretest (unscored) items — still drawn so module length
+  // matches Bluebook (27 R&W / 22 Math), but every item counts toward the score.
+  return selected;
 }
 
 export interface ModuleDrawOptions {
