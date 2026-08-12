@@ -82,7 +82,7 @@ function Settings({ go, dark, setDark }) {
             <ProviderMark kind="grok" />
             <div style={{display:'flex', flexDirection:'column'}}>
               <span style={{font:'var(--role-body)', color:'var(--text-primary)'}}>Grok</span>
-              <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>Not connected · sign in with X to enable Grok 4.5</span>
+              <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', marginTop: 2}}>Not connected · sign in with X to enable Grok 4.6</span>
             </div>
           </div>
           <Button variant="secondary">Connect Grok</Button>

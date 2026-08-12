@@ -5,18 +5,29 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Updated**: 2026-08-06T23:23:41.000Z
-- **Sessions**: 10
+- **Revision**: 2
+- **Updated**: 2026-08-12T16:38:17.000Z
+- **Sessions**: 11
+
+## Grok 4.6 replaces 4.5
+
+- **id**: `49212f92-43b5-4871-b05f-5b4657488211`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-08-12T16:38:17.000Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019ff6d4-647a-7823-8837-bc4cd38fa8c2/chat_history.jsonl`
+
+Swapped Grok 4.5 → 4.6 as the default/current model. Official API id grok-4.6 (xAI docs). Defaults updated in electron/ai.cjs, lib/ai/web/providers.ts, lib/ai/insights.js. High reasoning now sent for grok-4.6 (and still 4.5/4.3). Tutor picker: 4.6 current, 4.5+4.3 deprecated. Lint/tsc/build passed. Could not browser-verify picker (local /app blocked: WEBSITE_PASSCODE missing).
 
 ## SPR 0.48 + no unscored
 
 - **id**: `bf5ca0d8-0d2c-4f10-b9f6-046b6f2ae76a`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-08-06T23:23:41.000Z
+- **updated**: 2026-08-06T23:25:26.000Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019fd95e-149f-7ad0-8c32-e0a38551aea2/chat_history.jsonl`
 
-Fixed SPR grading so 0.48 matches .48/12/25 (numeric equivalence in grading.mjs). Removed unscored/pretest carve-out: all module items score, no Unscored badge, blueprint no longer tags pretest. Rescored all 29 sessions in DB (2 answer flips, 8 sessions updated, 8 pretest flags cleared).
+SPR 0.48 + no unscored already committed as ff32dca ('bug fix'). Pushed main to origin after switching gh auth to neelsatyavolu.
 
 ## Disclosed math table/stimulus body
 

@@ -84,7 +84,8 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
       { value: 'gpt-5.5', label: 'GPT-5.5' },
     ],
     grok: [
-      { value: 'grok-4.5', label: 'Grok 4.5' },
+      { value: 'grok-4.6', label: 'Grok 4.6' },
+      { value: 'grok-4.5', label: 'Grok 4.5 (deprecated)' },
       { value: 'grok-4.3', label: 'Grok 4.3 (deprecated)' },
     ],
   };
