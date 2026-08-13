@@ -1,7 +1,7 @@
 export type VocabCategory = "core";
 
 export const CATEGORY_LABELS: Record<VocabCategory, string> = {
-  core: "SAT 400",
+  core: "SAT 500",
 };
 
 export type VocabEntry = {

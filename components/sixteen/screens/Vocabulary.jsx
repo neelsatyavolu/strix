@@ -4,7 +4,7 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 
 // Vocabulary — flashcard (know / flip) + “which passage uses the word correctly?”
-// Bank: AODEFEN SAT 400. Progress in Supabase (Leitner boxes).
+// Bank: AODEFEN SAT 500. Progress in Supabase (Leitner boxes).
 
 const FILTERS = [
   { id: 'all', label: 'All' },
@@ -182,7 +182,7 @@ function Vocabulary() {
           <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Vocabulary</h1>
         </div>
         <p style={{ margin: '4px 0 18px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)', flexShrink: 0 }}>
-          Flashcards from a 400-word Digital SAT list — know it or flip for the definition, then pick which passage uses the word correctly.
+          Flashcards from a 500-word Digital SAT list — know it or flip for the definition, then pick which passage uses the word correctly.
         </p>
 
         {error && (

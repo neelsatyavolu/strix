@@ -1,0 +1,1202 @@
+[
+  {
+    "id": "w401",
+    "word": "Authoritative",
+    "definition": "recognized as reliable or commanding; having authority",
+    "memoryTip": "Author-itative: written as if it were the last word on the subject.",
+    "correctPassage": "Reviewers treated the handbook as the authoritative guide after decades of field use confirmed its methods.",
+    "wrongPassages": [
+      "The post was called authoritative precisely because it cited no sources and contradicted every specialist.",
+      "She hoped to authoritative the committee by remaining silent through the vote.",
+      "Critics praised the rumor as authoritative once it had been traced to an anonymous, unverified account."
+    ]
+  },
+  {
+    "id": "w402",
+    "word": "Speculative",
+    "definition": "based on guesses or theory rather than established evidence",
+    "memoryTip": "Speculate = guess \u2014 speculative sits before the proof arrives.",
+    "correctPassage": "Until the archives opened, any account of the treaty talks remained largely speculative.",
+    "wrongPassages": [
+      "The replicated trial was labeled speculative because every prediction had already been confirmed.",
+      "She offered a speculative proof that left no room for an alternative explanation.",
+      "Historians called the census speculative for listing each household actually surveyed."
+    ]
+  },
+  {
+    "id": "w403",
+    "word": "Catalyst",
+    "definition": "something that speeds a change without being consumed by it",
+    "memoryTip": "In chemistry it speeds the reaction; in prose it sparks the shift.",
+    "correctPassage": "The strike became a catalyst for broader labor reforms across the industry.",
+    "wrongPassages": [
+      "The unused footnote was hailed as a catalyst because it changed nothing in the debate.",
+      "They hoped a catalyst would halt the reaction and freeze every intermediate in place.",
+      "Once the reform had already passed, commentators still called the silent gallery a catalyst."
+    ]
+  },
+  {
+    "id": "w404",
+    "word": "Clandestine",
+    "definition": "kept secret, especially because unofficial or illicit",
+    "memoryTip": "Clan-destine: done in the dark, off the official map.",
+    "correctPassage": "A clandestine printing press circulated pamphlets the censors had banned.",
+    "wrongPassages": [
+      "The clandestine hearing was broadcast live and posted to the city\\'s homepage.",
+      "She made a clandestine announcement from the podium with every camera rolling.",
+      "The treaty\\'s clandestine clauses were read aloud at the public ratification ceremony."
+    ]
+  },
+  {
+    "id": "w405",
+    "word": "Preliminary",
+    "definition": "coming before the main event; introductory or preparatory",
+    "memoryTip": "Pre-liminary: before the main event, not the finale.",
+    "correctPassage": "Preliminary soil tests suggested contamination, so the full survey was expanded.",
+    "wrongPassages": [
+      "The preliminary chapter summarized the study after every result had already been published.",
+      "They issued a preliminary verdict that closed the case permanently and barred appeal.",
+      "The awards night was billed as preliminary even though it was advertised as the final ceremony."
+    ]
+  },
+  {
+    "id": "w406",
+    "word": "Inexplicable",
+    "definition": "impossible or extremely difficult to explain",
+    "memoryTip": "In-explicable: you cannot explicate it.",
+    "correctPassage": "The sudden collapse of the colony remained inexplicable even after years of modeling.",
+    "wrongPassages": [
+      "The result was inexplicable once the missing variable accounted for every outlier.",
+      "She gave an inexplicable demonstration that walked the class through each numbered step.",
+      "Editors called the footnote inexplicable because it restated the method in plain language."
+    ]
+  },
+  {
+    "id": "w407",
+    "word": "Preempt",
+    "definition": "to forestall by acting first; take priority over",
+    "memoryTip": "Pre-empt: take the slot before anyone else can.",
+    "correctPassage": "The agency preempted criticism by releasing the raw data alongside the report.",
+    "wrongPassages": [
+      "He chose to preempt the debate by waiting until every speaker had finished.",
+      "The amendment was designed to preempt the bill by letting it pass unchanged.",
+      "She preempted the deadline by submitting nothing until the day after it passed."
+    ]
+  },
+  {
+    "id": "w408",
+    "word": "Subsume",
+    "definition": "to include or absorb into a larger category",
+    "memoryTip": "Sub-sume: tuck it under a bigger heading.",
+    "correctPassage": "The new statute subsumes several older safety rules under a single reporting standard.",
+    "wrongPassages": [
+      "The committee voted to subsume the program by spinning it off as a separate agency.",
+      "Her outline subsumed the chapter by deleting it from the table of contents.",
+      "Critics hoped to subsume the theory by showing it could not fit any larger framework."
+    ]
+  },
+  {
+    "id": "w409",
+    "word": "Attenuate",
+    "definition": "to weaken, thin, or make less intense",
+    "memoryTip": "At-tenuate: make it tenuous \u2014 thinner, weaker.",
+    "correctPassage": "Distance and time had attenuated the dialect until only a few older speakers retained it.",
+    "wrongPassages": [
+      "Additional funding will attenuate the program by doubling staff and extending hours.",
+      "The amplifier was rebuilt to attenuate the signal until it drowned out every other channel.",
+      "Rest and nutrition attenuated the athlete, restoring strength before the final."
+    ]
+  },
+  {
+    "id": "w410",
+    "word": "Portend",
+    "definition": "to foreshadow or serve as a sign of a future event",
+    "memoryTip": "Portend = portent \u2014 a sign of what is coming.",
+    "correctPassage": "Sudden bird silence seemed to portend the storm that arrived before dusk.",
+    "wrongPassages": [
+      "A cloudless forecast was said to portend a storm that had already passed.",
+      "Historians portend the archive by labeling each box after the events have already ended.",
+      "The celebration was meant to portend a disaster that had already been averted."
+    ]
+  },
+  {
+    "id": "w411",
+    "word": "Malign",
+    "definition": "to speak harmful untruths about; slander",
+    "memoryTip": "Mal-ign: speak with malice.",
+    "correctPassage": "Rivals tried to malign the chemist by circulating rumors about fabricated data.",
+    "wrongPassages": [
+      "The tribute was written to malign her, listing every honor she had earned.",
+      "Editors moved to malign the article by fact-checking every citation.",
+      "He maligned the proposal by endorsing it in a signed letter of support."
+    ]
+  },
+  {
+    "id": "w412",
+    "word": "Debris",
+    "definition": "scattered fragments left after something is broken or destroyed",
+    "memoryTip": "Debris = leftover bits after a smash.",
+    "correctPassage": "Rescue crews cleared debris from the collapsed span before reopening the road.",
+    "wrongPassages": [
+      "Conservators arranged the debris into an untouched, fully assembled monument.",
+      "The chef plated debris as a single uncut roast at the center of the table.",
+      "Surveyors praised the debris for remaining whole after the explosion."
+    ]
+  },
+  {
+    "id": "w413",
+    "word": "Indication",
+    "definition": "a sign or piece of information that suggests something",
+    "memoryTip": "An indication points \u2014 a clue, not the whole proof.",
+    "correctPassage": "Rising nighttime temperatures were an early indication that the glacier had begun to thin.",
+    "wrongPassages": [
+      "The complete proof was dismissed as a vague indication even though it named each cause.",
+      "She filed an indication ordering the company to halt construction at once.",
+      "Editors treated the sealed, unused file as an indication that spelled out every finding."
+    ]
+  },
+  {
+    "id": "w414",
+    "word": "Deference",
+    "definition": "respectful yielding to another\\'s judgment or position",
+    "memoryTip": "Defer + ence \u2014 you yield out of respect.",
+    "correctPassage": "Junior editors showed deference to the fact-checker when citations conflicted.",
+    "wrongPassages": [
+      "His deference consisted of interrupting the chair and talking over every objection.",
+      "She treated deference as a license to ignore the specialist\\'s warnings.",
+      "The protest was organized as a show of deference, aimed at overturning the ruling on the spot."
+    ]
+  },
+  {
+    "id": "w415",
+    "word": "Calculation",
+    "definition": "cold, deliberate planning, especially in one\\'s own interest",
+    "memoryTip": "Not just arithmetic \u2014 calculation can mean chilly, self-serving planning.",
+    "correctPassage": "Every concession in the letter seemed guided by calculation rather than sympathy.",
+    "wrongPassages": [
+      "He spoke with such calculation that colleagues trusted the outburst as unplanned and sincere.",
+      "The recipe called for two calculations of oil, measured roughly by eye.",
+      "Her calculation was to decide on the spot without weighing cost or consequence."
+    ]
+  },
+  {
+    "id": "w416",
+    "word": "Redundant",
+    "definition": "no longer needed; more than is necessary",
+    "memoryTip": "Re-dundant: extra, leftover \u2014 you already have it.",
+    "correctPassage": "Once the digital catalog launched, the printed index became largely redundant.",
+    "wrongPassages": [
+      "The redundant clause was the only sentence that added a new, necessary condition.",
+      "Engineers called the lab\\'s only power source redundant even though nothing else could run the equipment.",
+      "She hoped to redundant the argument by introducing the study\\'s central claim."
+    ]
+  },
+  {
+    "id": "w417",
+    "word": "Complementary",
+    "definition": "combining so as to complete or enhance each other",
+    "memoryTip": "Complement (complete), not compliment (praise).",
+    "correctPassage": "The two data sets proved complementary: one captured range, the other resolution.",
+    "wrongPassages": [
+      "Reviewers called the copies complementary because each repeated the other word for word.",
+      "He sent a complementary note that attacked her methods without adding anything.",
+      "The fees were complementary, billed in full at the door with no offset."
+    ]
+  },
+  {
+    "id": "w418",
+    "word": "Incompatibility",
+    "definition": "the state of being unable to exist or work together",
+    "memoryTip": "In-compatible: the two will not run on the same system.",
+    "correctPassage": "Software incompatibility kept the new sensors from talking to the old consoles.",
+    "wrongPassages": [
+      "Their incompatibility was obvious once every trial produced identical, aligned results.",
+      "The treaty\\'s incompatibility clause required both sides to adopt the same standard without conflict.",
+      "Chemists praised the reagents\\' incompatibility after they mixed without any reaction or conflict."
+    ]
+  },
+  {
+    "id": "w419",
+    "word": "Continuum",
+    "definition": "a continuous range with no sharp breaks between extremes",
+    "memoryTip": "Continue-um \u2014 a stretch with no hard edges.",
+    "correctPassage": "Historians now treat the period as a continuum rather than a sudden break with the past.",
+    "wrongPassages": [
+      "The continuum split the sample into two non-overlapping, labeled bins.",
+      "She filed a continuum that ended the series and barred any further cases.",
+      "The statute drew a continuum so sharp that no intermediate case could exist."
+    ]
+  },
+  {
+    "id": "w420",
+    "word": "Eschew",
+    "definition": "to deliberately avoid or keep away from",
+    "memoryTip": "Sounds like \u201cshoo\u201d \u2014 you eschew what you refuse to touch.",
+    "correctPassage": "The lab chose to eschew animal trials after a cheaper cell model proved reliable.",
+    "wrongPassages": [
+      "She planned to eschew the archive by spending the month reading every folder.",
+      "The festival was designed to eschew local crafts by featuring them in every booth.",
+      "He eschewed dessert by ordering a second slice."
+    ]
+  },
+  {
+    "id": "w421",
+    "word": "Expound",
+    "definition": "to explain something in careful detail",
+    "memoryTip": "Ex-pound: pound out the explanation until it is clear.",
+    "correctPassage": "In the afterword she expounds the method that the novel only hints at.",
+    "wrongPassages": [
+      "He managed to expound the theory in a single shrug that invited no questions.",
+      "Editors asked her to expound the chapter by cutting every clarifying example.",
+      "The sealed memo was meant to expound nothing and leave the policy unexplained."
+    ]
+  },
+  {
+    "id": "w422",
+    "word": "Salvage",
+    "definition": "to save from loss, wreck, or destruction",
+    "memoryTip": "Salvage = save what you can from the wreck.",
+    "correctPassage": "Archivists worked through the night to salvage letters the flood had soaked.",
+    "wrongPassages": [
+      "The wrecking crew arrived to salvage the library by demolishing the stacks.",
+      "She hoped to salvage the error by reprinting it on the front page.",
+      "Conservators salvage a painting when they discard the canvas and keep nothing."
+    ]
+  },
+  {
+    "id": "w423",
+    "word": "Acquiesce",
+    "definition": "to accept without protest, even if unwilling",
+    "memoryTip": "Quiet-esce: go quiet and go along.",
+    "correctPassage": "After losing the vote, the minority caucus acquiesced in the revised timeline.",
+    "wrongPassages": [
+      "She acquiesced by organizing a walkout and refusing to sign.",
+      "The board acquiesced only after rewriting every clause it had just rejected.",
+      "He acquiesced by voting no and walking out before the motion was called."
+    ]
+  },
+  {
+    "id": "w424",
+    "word": "Transcend",
+    "definition": "to go beyond the usual limits of",
+    "memoryTip": "Trans-cend: climb across the ceiling of the category.",
+    "correctPassage": "The memoir transcends local history and becomes a study of how cities forget.",
+    "wrongPassages": [
+      "The draft transcends nothing; it never leaves the narrowest departmental dispute.",
+      "She hoped to transcend the assignment by copying last year\\'s outline.",
+      "Critics said the sequel would transcend the original by repeating it scene for scene."
+    ]
+  },
+  {
+    "id": "w425",
+    "word": "Analogous",
+    "definition": "comparable in a relevant way; alike enough to compare",
+    "memoryTip": "Analogy-ous: like enough to compare.",
+    "correctPassage": "The insect\\'s wing joints are analogous to a folding hinge, though the materials differ.",
+    "wrongPassages": [
+      "The two systems were called analogous because no shared feature could be named.",
+      "She drew an analogous distinction that treated the cases as wholly unrelated.",
+      "Biologists labeled the traits analogous only after proving they were identical in origin and form."
+    ]
+  },
+  {
+    "id": "w426",
+    "word": "Magnify",
+    "definition": "to make larger, more intense, or more noticeable",
+    "memoryTip": "Magn-ify: raise the magnitude so you can see it.",
+    "correctPassage": "The new lens can magnify surface cracks that inspectors previously missed.",
+    "wrongPassages": [
+      "Soft lighting was used to magnify every blemish until the face looked nearly flawless.",
+      "Editors hoped to magnify the scandal by refusing to mention it in any edition.",
+      "The filter is designed to magnify impurities from the sample before analysis."
+    ]
+  },
+  {
+    "id": "w427",
+    "word": "Foreground",
+    "definition": "to give particular importance or prominence to",
+    "memoryTip": "Put it in the foreground \u2014 make it the thing you notice first.",
+    "correctPassage": "The report foregrounds tenant testimony that earlier drafts had buried in an appendix.",
+    "wrongPassages": [
+      "She chose to foreground the finding by deleting it from the abstract and title.",
+      "Designers foregrounded the logo by hiding it behind a full-bleed photograph.",
+      "The museum hoped to foreground the painting by storing it in an unlit vault."
+    ]
+  },
+  {
+    "id": "w428",
+    "word": "Predate",
+    "definition": "to exist or happen earlier than something else",
+    "memoryTip": "Pre-date: come with an earlier date.",
+    "correctPassage": "The irrigation canals predate the written records of the settlement.",
+    "wrongPassages": [
+      "The sequel is said to predate the original, appearing a decade after it.",
+      "She hoped to predate the deadline by submitting the file two weeks late.",
+      "Archaeologists claimed the plastic fragments predate the site\\'s earliest occupation."
+    ]
+  },
+  {
+    "id": "w429",
+    "word": "Ascribe",
+    "definition": "to attribute something to a particular cause or source",
+    "memoryTip": "A-scribe: write the credit \u2014 or the blame \u2014 onto a source.",
+    "correctPassage": "Later scholars ascribed the unsigned essays to a single government clerk.",
+    "wrongPassages": [
+      "The lab ascribed the result by refusing to name any cause or source.",
+      "She ascribed the trophy on the mantel and walked away without comment.",
+      "Editors ascribed the error after demonstrating that no one in particular was responsible."
+    ]
+  },
+  {
+    "id": "w430",
+    "word": "Exploit",
+    "definition": "to make use of, especially for one\\'s own advantage",
+    "memoryTip": "Exploit = put a resource to work \u2014 sometimes fairly, sometimes not.",
+    "correctPassage": "As a defense, the butterfly exploits toxic compounds stored from the milkweed it eats.",
+    "wrongPassages": [
+      "The species exploits the toxin by leaving the milkweed untouched all season.",
+      "Managers exploited idle machines by locking the shop and sending the crew home.",
+      "She hoped to exploit the archive by never opening a single folder."
+    ]
+  },
+  {
+    "id": "w431",
+    "word": "Polarize",
+    "definition": "to divide into sharply opposing groups",
+    "memoryTip": "Like polarized light \u2014 two opposite directions, no middle.",
+    "correctPassage": "Coverage of the water plan polarized the town into shutoff and rationing camps.",
+    "wrongPassages": [
+      "The workshop was designed to polarize volunteers by asking them to draft a shared statement.",
+      "After the vote, the issue polarized no one; every precinct returned the same margin.",
+      "Mediators hoped to polarize the talks by seating both sides at one table."
+    ]
+  },
+  {
+    "id": "w432",
+    "word": "Traverse",
+    "definition": "to travel or extend across or through",
+    "memoryTip": "Trans-verse: go across.",
+    "correctPassage": "The survey team will traverse the canyon floor before mapping the north rim.",
+    "wrongPassages": [
+      "They chose to traverse the mountain by remaining in camp for the entire season.",
+      "The fence was built to traverse nothing, stopping short of both property lines.",
+      "She traversed the chapter by skipping every section that crossed the main argument."
+    ]
+  },
+  {
+    "id": "w433",
+    "word": "Exempt",
+    "definition": "free from a usual obligation or rule",
+    "memoryTip": "Exempt = excused from the rule the others still follow.",
+    "correctPassage": "Small farms are exempt from the reporting rule that applies to commercial processors.",
+    "wrongPassages": [
+      "The handbook marked safety training exempt so that every employee had to complete it.",
+      "She was exempted from the fee by being charged double at the door.",
+      "Staff called every resident exempt even though the statute listed each one as subject to the same fine."
+    ]
+  },
+  {
+    "id": "w434",
+    "word": "Efface",
+    "definition": "to wipe out so that it can no longer be seen",
+    "memoryTip": "Efface = erase the face of it.",
+    "correctPassage": "Weather had begun to efface the inscription on the harbor wall.",
+    "wrongPassages": [
+      "Conservators worked to efface the mural by restoring every faded line.",
+      "She hoped to efface her role by listing it first on the title page.",
+      "The new plaque was installed to efface the names so visitors could read them."
+    ]
+  },
+  {
+    "id": "w435",
+    "word": "Indecipherable",
+    "definition": "impossible to read or interpret",
+    "memoryTip": "In-decipherable: you cannot crack the cipher.",
+    "correctPassage": "Water damage left the last page of the logbook indecipherable.",
+    "wrongPassages": [
+      "The indecipherable handout spelled each step in numbered, plain English.",
+      "She preferred indecipherable prose that a first-year student could paraphrase on sight.",
+      "Editors called the diagram indecipherable after it made the process obvious to beginners."
+    ]
+  },
+  {
+    "id": "w436",
+    "word": "Homogeneity",
+    "definition": "the quality of being uniform or all of the same kind",
+    "memoryTip": "Homo-geneous quality \u2014 all one kind.",
+    "correctPassage": "The sample\\'s homogeneity made it a poor test of how the drug would work in a mixed population.",
+    "wrongPassages": [
+      "Reviewers praised the city\\'s homogeneity after documenting dozens of languages on one block.",
+      "The alloy showed homogeneity only where three metals remained visibly unmixed.",
+      "She sought homogeneity by recruiting every age, income, and schooling level she could find."
+    ]
+  },
+  {
+    "id": "w437",
+    "word": "Haughty",
+    "definition": "arrogantly superior; scornfully proud",
+    "memoryTip": "Haughty = high-and-mighty, looking down.",
+    "correctPassage": "A haughty refusal to take questions undercut the mayor\\'s claim of openness.",
+    "wrongPassages": [
+      "Her haughty welcome put nervous guests immediately at ease.",
+      "The haughty volunteer stayed late to stack chairs and thanked everyone else first.",
+      "Reviewers called the speech haughty after he credited rivals and asked for correction."
+    ]
+  },
+  {
+    "id": "w438",
+    "word": "Perfunctory",
+    "definition": "done with a minimum of effort or attention",
+    "memoryTip": "Per-function-ory: just going through the function, not the spirit.",
+    "correctPassage": "The inspector\\'s perfunctory glance missed the cracked weld on the support.",
+    "wrongPassages": [
+      "A perfunctory audit lasted three months and sampled every transaction.",
+      "She gave a perfunctory defense that cited overlooked data and rebuilt the model overnight.",
+      "The perfunctory rehearsal ran until each entrance could be timed to the second."
+    ]
+  },
+  {
+    "id": "w439",
+    "word": "Authenticate",
+    "definition": "to prove that something is genuine or valid",
+    "memoryTip": "Make it authentic \u2014 show it is the real thing.",
+    "correctPassage": "Specialists used pigment tests to authenticate the unsigned landscape.",
+    "wrongPassages": [
+      "The lab moved to authenticate the relic by showing the paint was modern.",
+      "Forgers hoped to authenticate the letter by adding anachronistic watermarks.",
+      "Editors authenticated the quote by leaving the source unnamed."
+    ]
+  },
+  {
+    "id": "w440",
+    "word": "Habituate",
+    "definition": "to make accustomed to something through repeated exposure",
+    "memoryTip": "Habit-uate: turn it into a habit; get used to it.",
+    "correctPassage": "After a month the birds habituated to the observation blind and resumed nesting.",
+    "wrongPassages": [
+      "Sudden noise was used to habituate the herd, scattering it from the usual trail.",
+      "The program habituated newcomers by changing the rules every morning.",
+      "She hoped to habituate the jury with a single unrehearsed outburst."
+    ]
+  },
+  {
+    "id": "w441",
+    "word": "Reserve",
+    "definition": "restraint in showing feelings or thoughts",
+    "memoryTip": "Keep it in reserve \u2014 feelings held back.",
+    "correctPassage": "Nothing in her reserve suggested anger; she simply declined to discuss the vote.",
+    "wrongPassages": [
+      "His reserve poured out in a long, unfiltered speech about every slight.",
+      "She showed reserve by posting the argument on the laboratory door.",
+      "The reserve of the crowd was measured in chants that shook the hall."
+    ]
+  },
+  {
+    "id": "w442",
+    "word": "Disparity",
+    "definition": "a difference, especially one that seems unfair",
+    "memoryTip": "Dis-parity: the two sides are not a pair.",
+    "correctPassage": "A growing disparity in broadband access left rural clinics unable to share records.",
+    "wrongPassages": [
+      "The study found a disparity of zero: every district posted the same rate.",
+      "Managers celebrated the pay disparity after equalizing every salary band.",
+      "She hoped to disparity the two samples by matching them on every variable."
+    ]
+  },
+  {
+    "id": "w443",
+    "word": "Confidentiality",
+    "definition": "the state of being kept secret or private",
+    "memoryTip": "Confidential-ity: stays in confidence, not on the bulletin board.",
+    "correctPassage": "Medical confidentiality barred the intern from discussing the case outside the team.",
+    "wrongPassages": [
+      "The office treated confidentiality as a reason to post every file on the public site.",
+      "She signed a confidentiality notice that required her to brief the press daily.",
+      "Editors praised the leak\\'s confidentiality after the draft appeared on every homepage."
+    ]
+  },
+  {
+    "id": "w444",
+    "word": "Obsolete",
+    "definition": "no longer produced or used; out of date",
+    "memoryTip": "Ob-solete: no longer sold or used.",
+    "correctPassage": "Punch-card readers are obsolete in labs that moved to solid-state storage.",
+    "wrongPassages": [
+      "The obsolete protocol is still the required standard in every licensed clinic.",
+      "Designers called the prototype obsolete the morning it became the industry default.",
+      "She hoped to obsolete the method by making it the required textbook procedure."
+    ]
+  },
+  {
+    "id": "w445",
+    "word": "Derivative",
+    "definition": "unoriginal; copied from something else",
+    "memoryTip": "Derived from someone else \u2014 not a fresh idea.",
+    "correctPassage": "Critics dismissed the score as derivative, echoing last decade\\'s radio hits bar for bar.",
+    "wrongPassages": [
+      "Reviewers called the method derivative because no earlier model could describe it.",
+      "Her derivative approach broke every convention the genre had relied on.",
+      "The theorem was labeled derivative after it introduced a proof no one had sketched."
+    ]
+  },
+  {
+    "id": "w446",
+    "word": "Multifaceted",
+    "definition": "having many different parts or aspects",
+    "memoryTip": "Many facets, like a cut gem.",
+    "correctPassage": "The drought is a multifaceted crisis, hitting crops, power, and migration at once.",
+    "wrongPassages": [
+      "The multifaceted rule had a single clause and no exceptions.",
+      "Editors praised the essay\\'s multifaceted argument, which repeated one claim in one style.",
+      "He preferred multifaceted problems that reduced to a yes-or-no checkbox."
+    ]
+  },
+  {
+    "id": "w447",
+    "word": "Circumscribe",
+    "definition": "to restrict something within limits",
+    "memoryTip": "Circum-scribe: draw a circle around it and do not let it out.",
+    "correctPassage": "New zoning rules circumscribe how tall any building near the river may rise.",
+    "wrongPassages": [
+      "The charter was rewritten to circumscribe the agency by removing every spending cap.",
+      "She hoped to circumscribe creativity by handing artists a blank brief and no deadline.",
+      "Unlimited funding will circumscribe the lab by erasing each budget ceiling."
+    ]
+  },
+  {
+    "id": "w448",
+    "word": "Exuberant",
+    "definition": "full of energetic high spirits",
+    "memoryTip": "Exuberant = energy overflowing the banks.",
+    "correctPassage": "An exuberant crowd stayed after the recital to cheer each player by name.",
+    "wrongPassages": [
+      "The exuberant eulogy was delivered in a whisper and ended in a long silence.",
+      "Reviewers called the monotone briefing exuberant because no one looked up.",
+      "Her exuberant caution kept every risk off the agenda and the room subdued."
+    ]
+  },
+  {
+    "id": "w449",
+    "word": "Undiscerning",
+    "definition": "unable to notice fine differences; not discerning",
+    "memoryTip": "Un-discerning: cannot tell good from bad.",
+    "correctPassage": "An undiscerning audience applauded the unfinished draft as if it were the premiere.",
+    "wrongPassages": [
+      "The undiscerning editor caught a one-word substitution no one else had noticed.",
+      "Her undiscerning tasting notes separated each vintage by soil, year, and barrel.",
+      "Judges were called undiscerning after ranking the entries with surgical precision."
+    ]
+  },
+  {
+    "id": "w450",
+    "word": "Projection",
+    "definition": "the act of casting inner feelings or ideas onto something outside the self",
+    "memoryTip": "You project inner weather onto a character, a story, or someone else.",
+    "correctPassage": "Without some projection of feeling onto the narrator, the chapter would read as a plain report and not as fiction.",
+    "wrongPassages": [
+      "The chapter was praised for its projection after it reported facts and assigned no inner state to anyone.",
+      "He offered a projection that refused to place any motive or feeling outside himself.",
+      "Surveyors recorded a projection between the two property lines before building the fence."
+    ]
+  },
+  {
+    "id": "w451",
+    "word": "Aggregation",
+    "definition": "a cluster formed by many things gathering together",
+    "memoryTip": "Aggregate = gather into one heap or group.",
+    "correctPassage": "Researchers found an aggregation of octopuses along a single hydrothermal vent.",
+    "wrongPassages": [
+      "The aggregation scattered the animals across isolated territories with no cluster in sight.",
+      "She filed an aggregation that split the sample into separate, non-overlapping cases.",
+      "After the herd dispersed, biologists still called the empty slope an aggregation."
+    ]
+  },
+  {
+    "id": "w452",
+    "word": "Obsolescence",
+    "definition": "the process or state of becoming out of date",
+    "memoryTip": "Obsolete-escence: the slide into unused.",
+    "correctPassage": "Rapid software cycles have shortened the obsolescence of last year\\'s devices.",
+    "wrongPassages": [
+      "Builders chose granite for its obsolescence, expecting the memorial to last for centuries.",
+      "The design\\'s obsolescence was praised because every part remained the current standard.",
+      "She valued the manuscript\\'s obsolescence, confident that its ink would never fade."
+    ]
+  },
+  {
+    "id": "w453",
+    "word": "Intermittent",
+    "definition": "occurring at irregular intervals; not steady",
+    "memoryTip": "Inter-mittent: it comes and goes, not a constant stream.",
+    "correctPassage": "Intermittent radio contact forced the crew to repeat each instruction twice.",
+    "wrongPassages": [
+      "The intermittent signal never dropped for the entire twelve-hour watch.",
+      "Engineers designed an intermittent current that flowed at one unchanging rate.",
+      "She preferred an intermittent schedule because every hour of the week was already booked."
+    ]
+  },
+  {
+    "id": "w454",
+    "word": "Invert",
+    "definition": "to turn upside down or reverse the order of",
+    "memoryTip": "Invert = flip it: top becomes bottom, first becomes last.",
+    "correctPassage": "The chemist inverted the flask so the last drops would run into the vial.",
+    "wrongPassages": [
+      "She inverted the list by leaving every name in its original order.",
+      "The diagram was inverted so that up remained up and the sequence was unchanged.",
+      "Editors inverted the chapter by reprinting it exactly as submitted."
+    ]
+  },
+  {
+    "id": "w455",
+    "word": "Archetype",
+    "definition": "a typical example or original model of a type",
+    "memoryTip": "The first mold \u2014 later versions are copies of the archetype.",
+    "correctPassage": "Holmes became the archetype for the brilliant, solitary detective who followed.",
+    "wrongPassages": [
+      "Reviewers called the design an archetype because it matched no earlier model.",
+      "Biologists labeled the specimen an archetype when it shared none of the species\\' known traits.",
+      "Her approach was so much an archetype that no convention or predecessor could describe it."
+    ]
+  },
+  {
+    "id": "w456",
+    "word": "Beneficiary",
+    "definition": "a person or group that receives a benefit",
+    "memoryTip": "The one who benefits \u2014 the money, the advantage, the will.",
+    "correctPassage": "Rural clinics were the main beneficiaries of the new broadband grant.",
+    "wrongPassages": [
+      "As chief beneficiary, the town paid the entire cost and received none of the service.",
+      "She named a beneficiary whose only role was to donate the funds, not receive them.",
+      "The beneficiary clause required the heir to forfeit every asset listed in the will."
+    ]
+  },
+  {
+    "id": "w457",
+    "word": "Antithesis",
+    "definition": "the direct opposite of something",
+    "memoryTip": "Anti-thesis: the claim that sits directly across from yours.",
+    "correctPassage": "His public humility was the antithesis of the boastful letters he sent at night.",
+    "wrongPassages": [
+      "The sequel was the antithesis of the original, copying tone, plot, and cast.",
+      "She called the twins an antithesis because they agreed on every premise.",
+      "Editors praised the brief as the antithesis of the draft after changing nothing."
+    ]
+  },
+  {
+    "id": "w458",
+    "word": "Accredit",
+    "definition": "to credit with; or to officially recognize as qualified",
+    "memoryTip": "Put credit on someone \u2014 or stamp the school as official.",
+    "correctPassage": "Later accounts accredit the design to an apprentice whose name never appeared on the patent.",
+    "wrongPassages": [
+      "The board moved to accredit the program by stripping its license overnight.",
+      "Historians accredited the invention to no one after naming the inventor on every plaque.",
+      "She hoped to accredit the rumor by refusing to check a single source."
+    ]
+  },
+  {
+    "id": "w459",
+    "word": "Facilitate",
+    "definition": "to make an action or process easier",
+    "memoryTip": "Facile = easy \u2014 facilitate clears the path.",
+    "correctPassage": "Clear section headings facilitate comparison across the three case studies.",
+    "wrongPassages": [
+      "New fees were introduced to facilitate applications by adding three extra forms.",
+      "The locked gate was meant to facilitate deliveries after hours.",
+      "Editors facilitated the argument by deleting every transitional sentence."
+    ]
+  },
+  {
+    "id": "w460",
+    "word": "Digress",
+    "definition": "to wander away from the main subject",
+    "memoryTip": "Di-gress: step off the main path of the talk.",
+    "correctPassage": "The lecturer would digress into family stories, then steer back to the data.",
+    "wrongPassages": [
+      "She refused to digress, opening with a long aside that never returned to the thesis.",
+      "The brief was praised for how it would digress, staying on a single claim throughout.",
+      "He managed to digress by restating the title and sitting down."
+    ]
+  },
+  {
+    "id": "w461",
+    "word": "Align",
+    "definition": "to bring into agreement or into the same line",
+    "memoryTip": "A-line: get two things pointing the same way.",
+    "correctPassage": "The foundation aligned its grants with the city\\'s ten-year housing plan.",
+    "wrongPassages": [
+      "The two agendas aligned only in the sense that they contradicted each other on every goal.",
+      "She hoped to align the beams by leaving them at opposing angles.",
+      "Negotiators aligned the drafts by discarding every shared clause."
+    ]
+  },
+  {
+    "id": "w462",
+    "word": "Compensate",
+    "definition": "to offset a loss or make up for a lack",
+    "memoryTip": "Compensation fills the hole \u2014 pay, or another advantage.",
+    "correctPassage": "Longer growing days compensate for the region\\'s thin, rocky soil.",
+    "wrongPassages": [
+      "The bonus was meant to compensate workers by cutting the hours they had already been paid for.",
+      "Nothing was offered to compensate the delay; the schedule was simply shortened further.",
+      "They compensated the shortage by destroying what little stock remained."
+    ]
+  },
+  {
+    "id": "w463",
+    "word": "Encompass",
+    "definition": "to include or contain as a part",
+    "memoryTip": "En-compass: draw a compass circle that takes it all in.",
+    "correctPassage": "The exhibit encompasses pottery, trade records, and a reconstructed kiln.",
+    "wrongPassages": [
+      "The survey was rewritten to encompass the topic by omitting every related case.",
+      "Her study encompasses nothing beyond a single unused footnote.",
+      "Editors asked him to encompass the chapter by cutting it from the volume."
+    ]
+  },
+  {
+    "id": "w464",
+    "word": "Supersede",
+    "definition": "to replace something older or less adequate",
+    "memoryTip": "Super-sede: sit above the old rule and take its seat.",
+    "correctPassage": "A digital filing system will supersede the paper ledgers next spring.",
+    "wrongPassages": [
+      "The 1890 handbook was kept to supersede the updated code now in force.",
+      "She hoped to supersede the draft by reprinting it unchanged.",
+      "The obsolete rule was said to supersede the new statute that had just repealed it."
+    ]
+  },
+  {
+    "id": "w465",
+    "word": "Complimentary",
+    "definition": "given free of charge",
+    "memoryTip": "Complimentary tickets are free; complementary parts complete each other.",
+    "correctPassage": "Guests received complimentary transit passes for the weekend of the conference.",
+    "wrongPassages": [
+      "The complimentary dinner was billed at full price on every receipt.",
+      "She sent a complimentary invoice that listed each unpaid fee.",
+      "Reviewers called the two data sets complimentary because one completed the other."
+    ]
+  },
+  {
+    "id": "w466",
+    "word": "Hazardous",
+    "definition": "involving risk or danger, especially to health or safety",
+    "memoryTip": "Full of hazards \u2014 not safe to treat casually.",
+    "correctPassage": "The warehouse stored hazardous solvents far from any open flame.",
+    "wrongPassages": [
+      "Inspectors labeled the sealed water bottles hazardous after finding no risk at all.",
+      "The hazardous trail was chosen because every drop-off had already been fenced.",
+      "She described the empty playground as hazardous and opened it without a warning sign."
+    ]
+  },
+  {
+    "id": "w467",
+    "word": "Indispensable",
+    "definition": "absolutely necessary; cannot be done without",
+    "memoryTip": "Not dispensable \u2014 you cannot throw this one away.",
+    "correctPassage": "A working pump proved indispensable once the well was the town\\'s only water source.",
+    "wrongPassages": [
+      "The extra ribbon was called indispensable and then left unused in a drawer.",
+      "Reviewers found the chapter indispensable after cutting it without any loss of sense.",
+      "She treated the optional icebreaker as indispensable and canceled the safety briefing instead."
+    ]
+  },
+  {
+    "id": "w468",
+    "word": "Trade-off",
+    "definition": "a compromise in which one gain requires another loss",
+    "memoryTip": "You trade one good for another \u2014 that swap is the trade-off.",
+    "correctPassage": "Shorter wait times came with a trade-off: fewer specialists on each shift.",
+    "wrongPassages": [
+      "The plan offered a trade-off in which every side gained and nothing was given up.",
+      "She filed a trade-off that required no exchange and changed no priority.",
+      "Engineers described a trade-off in which both speed and safety improved and no cost appeared."
+    ]
+  },
+  {
+    "id": "w469",
+    "word": "Itemize",
+    "definition": "to list items one by one",
+    "memoryTip": "Turn it into items \u2014 line by line, not one lump sum.",
+    "correctPassage": "The auditor asked the office to itemize travel costs instead of reporting a single total.",
+    "wrongPassages": [
+      "She chose to itemize the budget by combining every line into one unexplained figure.",
+      "The receipt was itemized as a single lump with no entries underneath.",
+      "Editors asked him to itemize the argument by dropping every supporting example."
+    ]
+  },
+  {
+    "id": "w470",
+    "word": "Refurbish",
+    "definition": "to renovate so that something looks new or works better",
+    "memoryTip": "Re-furbish: polish it up and put it back in service.",
+    "correctPassage": "The city will refurbish the 1920 station rather than replace it.",
+    "wrongPassages": [
+      "Crews arrived to refurbish the hotel by stripping the wiring and leaving the rooms gutted.",
+      "She hoped to refurbish the manuscript by discarding every page.",
+      "The landfill was designed to refurbish furniture by burying it unopened."
+    ]
+  },
+  {
+    "id": "w471",
+    "word": "Parameter",
+    "definition": "a limit or measurable factor that defines how something operates",
+    "memoryTip": "The rails a system runs on \u2014 set the parameters, set the range.",
+    "correctPassage": "Temperature was the one parameter the team could not hold steady overnight.",
+    "wrongPassages": [
+      "They treated every parameter as optional and then claimed the system had no operating limits.",
+      "She filed a parameter that named no factor and set no boundary.",
+      "The open-ended brief was praised for its strict parameters after it listed none."
+    ]
+  },
+  {
+    "id": "w472",
+    "word": "Proxy",
+    "definition": "a stand-in measure used when the real thing cannot be observed directly",
+    "memoryTip": "A proxy stands in \u2014 you measure this because you cannot measure that.",
+    "correctPassage": "Because the habitat itself was closed, biologists used soil organisms as a proxy for its health.",
+    "wrongPassages": [
+      "Lab notes treated the thermometer reading as a proxy for that same reading.",
+      "The census was treated as a mere proxy after it recorded every household in person.",
+      "She hoped to proxy the instrument by using the instrument itself with no substitute."
+    ]
+  },
+  {
+    "id": "w473",
+    "word": "Mentorship",
+    "definition": "guidance given by a more experienced person over time",
+    "memoryTip": "Mentor-ship: the ongoing help, not a one-off tip.",
+    "correctPassage": "A year of mentorship helped the intern turn lab notes into a publishable methods section.",
+    "wrongPassages": [
+      "The program advertised mentorship as a single unread pamphlet left on a chair.",
+      "The flyer promised mentorship and then assigned no advisor and no meetings.",
+      "His mentorship consisted of disappearing for the semester and answering no mail."
+    ]
+  },
+  {
+    "id": "w474",
+    "word": "Craftsmanship",
+    "definition": "the skill with which something is made, especially by hand",
+    "memoryTip": "The craftsman\\'s mark \u2014 skill you can see in the work.",
+    "correctPassage": "The chair\\'s joinery showed a craftsmanship that machine cuts rarely match.",
+    "wrongPassages": [
+      "Reviewers praised the table\\'s craftsmanship after noticing the legs had been glued on crooked and unfinished.",
+      "Mass-stamped trinkets were advertised for craftsmanship that required no skilled hand.",
+      "She measured the vase\\'s craftsmanship in ounces rather than in how it was made."
+    ]
+  },
+  {
+    "id": "w475",
+    "word": "Deterrence",
+    "definition": "discouraging an action by making the consequences feared",
+    "memoryTip": "Deter-ence: scare the act off before it starts.",
+    "correctPassage": "Visible patrols were meant as deterrence, not as a response after a break-in.",
+    "wrongPassages": [
+      "Unlocked doors with no posted penalty were described as deterrence.",
+      "They pursued deterrence by removing every penalty and publicizing the gap.",
+      "A welcome banquet was described as deterrence because guests felt entirely at ease."
+    ]
+  },
+  {
+    "id": "w476",
+    "word": "Surveillance",
+    "definition": "close, continuous watching of a person or place",
+    "memoryTip": "Surveil-lance: keep watch, usually without being invited.",
+    "correctPassage": "Harbor surveillance recorded the unregistered launch long before it reached the pier.",
+    "wrongPassages": [
+      "The agency called it surveillance and then left the cameras off for the entire month.",
+      "She preferred surveillance that never looked at the subject or the site.",
+      "A single unread memo was filed as overnight surveillance of the warehouse."
+    ]
+  },
+  {
+    "id": "w477",
+    "word": "Encryption",
+    "definition": "the process of converting information into a code to block unauthorized access",
+    "memoryTip": "Encrypt = lock the message so outsiders cannot read it.",
+    "correctPassage": "Patient files leave the clinic only after encryption, so a lost laptop is not an open record.",
+    "wrongPassages": [
+      "The team used encryption by posting the passwords beside each file name.",
+      "Plain-text emails were praised for their encryption after anyone could read them.",
+      "She completed the encryption by leaving the draft on an unlocked shared drive."
+    ]
+  },
+  {
+    "id": "w478",
+    "word": "Memento",
+    "definition": "an object kept as a reminder of a person, place, or event",
+    "memoryTip": "Memento = remember \u2014 a keepsake, not a forecast.",
+    "correctPassage": "She kept a cracked ticket stub as a memento of the last show in the old hall.",
+    "wrongPassages": [
+      "He bought a memento so he would have no reminder of the trip.",
+      "The blank form was filed as a memento of an event that had not yet been scheduled.",
+      "They discarded every photograph and still called the empty drawer a memento."
+    ]
+  },
+  {
+    "id": "w479",
+    "word": "Discrepancy",
+    "definition": "a difference between things that should match",
+    "memoryTip": "Dis-crepancy: the counts do not creep into agreement.",
+    "correctPassage": "A discrepancy between the two ledgers sent the auditors back to the original invoices.",
+    "wrongPassages": [
+      "The discrepancy was celebrated once both totals matched to the cent.",
+      "She noted a discrepancy of zero after every figure had already been reconciled.",
+      "Editors hoped to discrepancy the drafts by making the wording identical."
+    ]
+  },
+  {
+    "id": "w480",
+    "word": "Proclamation",
+    "definition": "an official public announcement",
+    "memoryTip": "Proclaim-ation: said out loud, on the record.",
+    "correctPassage": "The governor\\'s proclamation set a day of mourning after the flood.",
+    "wrongPassages": [
+      "A private whisper in a locked office was filed as a proclamation to the state.",
+      "She issued a proclamation by refusing to announce anything at all.",
+      "The sealed memo was treated as a proclamation even though it was never made public."
+    ]
+  },
+  {
+    "id": "w481",
+    "word": "Recurrence",
+    "definition": "the fact of happening again, especially something unwelcome",
+    "memoryTip": "Re-current: it comes back around.",
+    "correctPassage": "Doctors warned that a recurrence of the infection was likely without a longer course of treatment.",
+    "wrongPassages": [
+      "The disease\\'s recurrence was confirmed when it never appeared a second time.",
+      "She celebrated the one-time event as a recurrence that could not happen again.",
+      "Historians called the unique, unrepeated vote a recurrence of nothing in the record."
+    ]
+  },
+  {
+    "id": "w482",
+    "word": "Approximate",
+    "definition": "close to the actual amount, but not exact",
+    "memoryTip": "Approx-imate: in the neighborhood of the real number.",
+    "correctPassage": "The map gives only an approximate shoreline, redrawn after each storm season.",
+    "wrongPassages": [
+      "The approximate figure matched the official count to the last digit.",
+      "She demanded an approximate measurement that left no rounding and no range.",
+      "Auditors called the exact census approximate after it listed every household by name."
+    ]
+  },
+  {
+    "id": "w483",
+    "word": "Collude",
+    "definition": "to cooperate secretly in order to deceive",
+    "memoryTip": "Col-lude: play on the same hidden side.",
+    "correctPassage": "Prosecutors argued that the two firms had colluded to keep regional bids artificially high.",
+    "wrongPassages": [
+      "The rivals colluded by publishing every offer and inviting outside bids.",
+      "She was said to collude when she reported the bid-rigging attempt the same afternoon.",
+      "Open hearings were described as a way to collude because nothing was hidden."
+    ]
+  },
+  {
+    "id": "w484",
+    "word": "Dissociate",
+    "definition": "to separate from; to deny connection with",
+    "memoryTip": "Dis-associate: take your name off it.",
+    "correctPassage": "After the leak, several sponsors moved to dissociate themselves from the campaign.",
+    "wrongPassages": [
+      "She hoped to dissociate from the scandal by appearing in every advertisement for it.",
+      "The merger was designed to dissociate the two brands by printing both names on one label.",
+      "He dissociated the groups by seating them at a single shared desk."
+    ]
+  },
+  {
+    "id": "w485",
+    "word": "Attest",
+    "definition": "to show or confirm that something is true",
+    "memoryTip": "Like a witness: attest that it really happened.",
+    "correctPassage": "Independent counts attest that turnout rose in every urban precinct.",
+    "wrongPassages": [
+      "The missing files were said to attest a claim no document could support.",
+      "She hoped silence alone would attest the figures no one had checked.",
+      "Editors moved to attest the article by removing every source note."
+    ]
+  },
+  {
+    "id": "w486",
+    "word": "Attrition",
+    "definition": "gradual wearing down through sustained pressure or loss",
+    "memoryTip": "It does not fall in a day \u2014 attrition grinds it down.",
+    "correctPassage": "Staffing fell by attrition as retirements piled up and no replacements were hired.",
+    "wrongPassages": [
+      "The army took the city in a single morning and still called the win a year of attrition.",
+      "A sudden hiring wave was described as attrition because the roster doubled overnight.",
+      "She planned an attrition that would restore every lost position in one week."
+    ]
+  },
+  {
+    "id": "w487",
+    "word": "Outmoded",
+    "definition": "no longer fashionable, useful, or current",
+    "memoryTip": "Out of the mode \u2014 last season\\'s method.",
+    "correctPassage": "The firm abandoned outmoded inventory software that could not talk to the new registers.",
+    "wrongPassages": [
+      "Designers called the prototype outmoded the week it became the industry standard.",
+      "Her outmoded methods are still required in every current training manual.",
+      "They kept the outmoded rule because it had just been written to replace the old one."
+    ]
+  },
+  {
+    "id": "w488",
+    "word": "Duplicate",
+    "definition": "an exact copy of something",
+    "memoryTip": "Dupe-licate: the second one that matches the first.",
+    "correctPassage": "She filed the original deed and kept a duplicate in the office safe.",
+    "wrongPassages": [
+      "The duplicate differed from the original in every clause and date.",
+      "He called the unique manuscript a duplicate because no copy of it existed.",
+      "Editors asked for a duplicate that would rewrite the argument from scratch."
+    ]
+  },
+  {
+    "id": "w489",
+    "word": "Stipulation",
+    "definition": "a stated condition required as part of an agreement",
+    "memoryTip": "A stipulated term \u2014 if you want the deal, this part is required.",
+    "correctPassage": "One stipulation required the contractor to finish the roof before the first frost.",
+    "wrongPassages": [
+      "The contract\\'s only stipulation was that no condition of any kind would apply.",
+      "She added a stipulation that left every deadline optional and unenforced.",
+      "The open invitation was described as a stipulation because guests could come or not."
+    ]
+  },
+  {
+    "id": "w490",
+    "word": "Complacency",
+    "definition": "smug satisfaction that keeps you from seeing a risk",
+    "memoryTip": "Complacent = too pleased with yourself to notice the crack.",
+    "correctPassage": "Early leads bred complacency, and the team stopped practicing before the final.",
+    "wrongPassages": [
+      "Her complacency showed in nightly drills and a refusal to assume the lead was safe.",
+      "The audit praised the lab\\'s complacency after it double-checked every safety seal.",
+      "He treated complacency as extra rehearsals scheduled the moment the first warning arrived."
+    ]
+  },
+  {
+    "id": "w491",
+    "word": "Provisional",
+    "definition": "temporary; in place for now and subject to change",
+    "memoryTip": "A provisional pass is for now \u2014 it can still be withdrawn.",
+    "correctPassage": "A provisional license let the clinic open while the final inspection was scheduled.",
+    "wrongPassages": [
+      "The provisional charter was carved in stone and barred any later revision.",
+      "They issued a provisional ruling that closed the case forever.",
+      "She called the permanent constitution provisional because it had already been ratified for good."
+    ]
+  },
+  {
+    "id": "w492",
+    "word": "Synthesis",
+    "definition": "the combining of different parts into a new whole",
+    "memoryTip": "Syn-thesis: put the pieces together into one thing.",
+    "correctPassage": "The building is a synthesis of glass walls and salvaged timber rather than a copy of either style.",
+    "wrongPassages": [
+      "The synthesis separated each influence into its own sealed room.",
+      "Editors praised the essay\\'s synthesis after it listed rival ideas and never joined them.",
+      "She achieved a synthesis by deleting every source except one."
+    ]
+  },
+  {
+    "id": "w493",
+    "word": "Imposing",
+    "definition": "grand and impressive in appearance",
+    "memoryTip": "It imposes itself on the eye \u2014 large, stately, hard to ignore.",
+    "correctPassage": "An imposing tower of dark rock rises above the river and can be seen for miles.",
+    "wrongPassages": [
+      "Reviewers called the shed imposing after noting how easily it disappeared behind a hedge.",
+      "The imposing cottage sat low and unremarkable at the end of the lane.",
+      "She preferred imposing furniture that no visitor would notice."
+    ]
+  },
+  {
+    "id": "w494",
+    "word": "Embellish",
+    "definition": "to add untrue or extra details to make a story more interesting",
+    "memoryTip": "Embellish the tale \u2014 decorate it past what happened.",
+    "correctPassage": "Witnesses began to embellish the rescue until no two versions named the same street.",
+    "wrongPassages": [
+      "Historians were asked to embellish the chapter by stripping every extra detail.",
+      "She embellished the minutes by recording only what had actually been said.",
+      "The report was embellished into a bare list of dates with no added color."
+    ]
+  },
+  {
+    "id": "w495",
+    "word": "Imperceptible",
+    "definition": "impossible or extremely hard to notice",
+    "memoryTip": "Im-perceptible: the senses cannot catch it.",
+    "correctPassage": "The glacier\\'s imperceptible daily creep added up to a mile over a century.",
+    "wrongPassages": [
+      "An imperceptible flash lit the whole valley and woke every household.",
+      "The change was called imperceptible after every visitor remarked on it at once.",
+      "She preferred imperceptible type that could be read from across the room."
+    ]
+  },
+  {
+    "id": "w496",
+    "word": "Anomaly",
+    "definition": "something that differs from what is usual or expected",
+    "memoryTip": "An-omaly: not the normal pattern.",
+    "correctPassage": "One anomaly in the data \u2014 a midnight spike no model predicted \u2014 sent the team back to the sensors.",
+    "wrongPassages": [
+      "Researchers called the regular, expected reading an anomaly and filed it as routine.",
+      "The anomaly matched every prior trial and surprised no one.",
+      "She hoped to anomaly the sample by forcing it onto the standard curve."
+    ]
+  },
+  {
+    "id": "w497",
+    "word": "Apprehend",
+    "definition": "to understand; or to arrest",
+    "memoryTip": "Apprehend a meaning \u2014 or a suspect. Both are a kind of catching.",
+    "correctPassage": "Few readers immediately apprehend how much the last paragraph undercuts the narrator.",
+    "wrongPassages": [
+      "She failed to apprehend the warning and then explained every clause of it to the staff.",
+      "The brief was called impossible to apprehend even though every sentence was obvious on first reading.",
+      "He hoped to apprehend the theorem by leaving the lecture before it was stated."
+    ]
+  },
+  {
+    "id": "w498",
+    "word": "Terseness",
+    "definition": "the quality of being brief and to the point",
+    "memoryTip": "Terse-ness: short on purpose, not because you forgot the rest.",
+    "correctPassage": "The terseness of the ruling left no clause open to a second reading.",
+    "wrongPassages": [
+      "Reviewers praised the brief\\'s terseness after it rambled for forty unfocused pages.",
+      "His terseness consisted of repeating every point three times with new examples.",
+      "She aimed for terseness by adding a long preface and two unused appendices."
+    ]
+  },
+  {
+    "id": "w499",
+    "word": "Obstinacy",
+    "definition": "stubborn refusal to change one\\'s mind or course",
+    "memoryTip": "Obstinate-ness: planted, unmoved, even when asked nicely.",
+    "correctPassage": "Her obstinacy on the deadline made any compromise over timing impossible.",
+    "wrongPassages": [
+      "His obstinacy showed in how quickly he dropped the plan when the first objection arrived.",
+      "The committee\\'s obstinacy consisted of rewriting the draft after every comment.",
+      "She was praised for obstinacy after yielding on each disputed clause."
+    ]
+  },
+  {
+    "id": "w500",
+    "word": "Prompt",
+    "definition": "to cause or spur someone to do something",
+    "memoryTip": "A prompt pushes the next action \u2014 it gets you started.",
+    "correctPassage": "A chance field note prompted the team to measure surface temperatures on several fungi.",
+    "wrongPassages": [
+      "A locked, unread file was said to prompt the measurements the team never took.",
+      "She hoped a reminder would prompt nothing and leave the work untouched.",
+      "Editors prompted the article by deleting the call to action."
+    ]
+  }
+]

@@ -1,7 +1,8 @@
-// AODEFEN SAT 400-word bank (source: 400.pdf TOC).
+// AODEFEN SAT 500-word bank (400.pdf TOC + 100-additional-words.pdf).
 // SAT-style MCQ pools; swap-audit fixes applied (TRUE_WRONG / FALSE_CORRECT).
 
 import type { VocabEntry } from './types';
+import { EXTRA_BANK } from './bankExtra';
 
 function e(
   id: string, word: string, definition: string, memoryTip: string,
@@ -411,11 +412,12 @@ export const VOCAB_BANK: VocabEntry[] = [
   e('w398', 'Incursion', 'a sudden invasion or raid into territory', 'In + course/run — a sudden run into someone else’s ground.', 'The brief border incursion forced neighboring states to reinforce their patrols.', ['A long period of peaceful trade was described as a commercial incursion.', 'Scholars called the gradual cultural exchange over centuries a quiet incursion.', 'The treaty formalized an incursion of goodwill that ended all hostilities.']),
   e('w399', 'Valorize', 'give or enhance the value or status of', 'Valor + ize — assign value or raise the status of something.', 'Recent scholarship has sought to valorize oral histories once dismissed as unreliable.', ['Critics moved to valorize the novel by arguing it had no literary merit.', 'The board tried to valorize the program by cutting its funding entirely.', 'Editors valorized the manuscript when they rejected it without comment.']),
   e('w400', 'Decimate', 'destroy a large proportion of', 'Originally kill every tenth; now destroy a large share.', 'A prolonged drought can decimate crop yields across an entire region.', ['The new hiring plan will decimate the workforce by adding dozens of positions.', 'Steady rainfall decimated the orchard by restoring the trees to full health.', 'Conservators decimated the collection when they restored and catalogued every item.']),
+  ...EXTRA_BANK,
 ];
 
 export const VOCAB_BY_ID: Record<string, VocabEntry> = Object.fromEntries(VOCAB_BANK.map((w) => [w.id, w]));
 
 export function listCategories(): { id: string; label: string; count: number }[] {
-  return [{ id: 'core', label: 'SAT 400', count: VOCAB_BANK.length }];
+  return [{ id: 'core', label: 'SAT 500', count: VOCAB_BANK.length }];
 }
 

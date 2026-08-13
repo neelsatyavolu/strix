@@ -6,11 +6,21 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Revision**: 2
-- **Updated**: 2026-08-12T16:38:12.165Z
-- **Active entries**: 15
+- **Revision**: 3
+- **Updated**: 2026-08-13T03:04:34.719Z
+- **Active entries**: 16
 
 ## Decisions
+
+### "Vocab bank is SAT 500"
+
+- **id**: `4134c35c-3fcc-4b5d-b2a5-0afefa598da3`
+- **kind**: decision
+- **source**: agent
+- **authority**: agent
+- **created**: 2026-08-13T03:04:34.719Z
+- **updated**: 2026-08-13T03:04:34.719Z
+- **content**: "Vocabulary bank is AODEFEN SAT 500: original 400.pdf TOC (w001–w400 in lib/vocab/bank.ts) plus words 401–500 from 100-additional-words.pdf (lib/vocab/bankExtra.ts). Category label is SAT 500. Usage MCQ rules unchanged: correctPool = bank correctPassage + paraphrases only; wrongs must be true misuses; no dictionary-definition options."
 
 ### "Grok default is 4.6"
 

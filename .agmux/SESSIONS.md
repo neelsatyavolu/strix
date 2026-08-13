@@ -5,9 +5,19 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Revision**: 2
-- **Updated**: 2026-08-12T16:38:17.000Z
-- **Sessions**: 11
+- **Revision**: 4
+- **Updated**: 2026-08-13T03:04:45.000Z
+- **Sessions**: 12
+
+## Add AODEFEN words 401-500
+
+- **id**: `9506afc9-6a93-4ac4-a3f7-98404463a09b`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-08-13T03:04:45.000Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019ff905-bc58-72e3-997e-dc4041fbd801/chat_history.jsonl`
+
+Added AODEFEN SAT words 401–500 from ~/Downloads/100-additional-words.pdf into the vocab bank. New file lib/vocab/bankExtra.ts (w401–w500) merged into VOCAB_BANK; labels/copy updated SAT 400 → SAT 500. Passages match existing SAT-style MCQ bar (bank-only correct, true-misuse wrongs, no definition leaks). Source JSON at scripts/aodefen-100-extra.json. lint/tsc/build passed; toItem/isCorrectUsage checked on all 100 extras. Hub UI needs login so live click-through was not completed.
 
 ## Grok 4.6 replaces 4.5
 
