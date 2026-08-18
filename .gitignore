@@ -43,6 +43,9 @@ next-env.d.ts
 # claude code local settings
 .claude/settings.local.json
 
+# qbank list cache (official stubs; used by sat-question-creator brief-slot)
+.cache/
+
 # playwright + local screenshots
 .playwright-mcp/
 /*.png

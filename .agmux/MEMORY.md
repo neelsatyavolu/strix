@@ -6,11 +6,21 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Revision**: 3
-- **Updated**: 2026-08-13T03:04:34.719Z
-- **Active entries**: 16
+- **Revision**: 9
+- **Updated**: 2026-08-18T19:16:04.524Z
+- **Active entries**: 21
 
 ## Decisions
+
+### "SAT question creator: writer/verifier + mechanical blinds"
+
+- **id**: `8c6a93b0-521e-4431-a856-90283f7eb746`
+- **kind**: decision
+- **source**: agent
+- **authority**: agent
+- **created**: 2026-08-18T18:53:01.069Z
+- **updated**: 2026-08-18T18:53:01.069Z
+- **content**: "Original Digital SAT items are written via .agents/skills/sat-question-creator (Grok symlink .grok/skills/sat-question-creator). Bluebook is structure-only (scripts/brief-slot.mjs). Writer never sees official text. Verifier must solve from scripts/blind-view.mjs output only, then fail-closed V1–V32. Shape gate: scripts/validate-item.mjs. source remains \"strix\"; app serving of that source is not built yet. Consulted Claude CLI opus (2026-08-18) for the patch set."
 
 ### "Vocab bank is SAT 500"
 
@@ -163,6 +173,46 @@
 - **content**: "Strix desktop releases must be Developer ID signed + notarized via 1Password (Personal vault: Apple Developer ID Certificate + Xanom Apple Dev Creds). Commands: pnpm dist (unsigned), pnpm dist:signed, pnpm dist:release, ./update.sh (official ship). Loader: scripts/load-apple-creds.sh → agmux/scripts/load-apple-creds.sh. Shared docs: ~/Documents/GitHub/APPLE_SIGNING.md. Identity: Developer ID Application: Ramakrishna Satyavolu (VTQW687WBQ), Team VTQW687WBQ. Never commit p12/p8/passwords."
 
 ## Facts
+
+### "Strix Test 6 is BB11-shaped with one original item"
+
+- **id**: `934342a9-49d8-4f24-8317-f58f10674478`
+- **kind**: fact
+- **source**: agent
+- **authority**: agent
+- **created**: 2026-08-18T19:16:04.524Z
+- **updated**: 2026-08-18T19:16:04.524Z
+- **content**: "Strix Test 6 (lib/cb/strix-forms.json key \"6\") mirrors Bluebook 11. Unused H.E./H pool was empty, so math hard Q11 is original id strix-6-math-hard-11 (figured MCQ, 8x+5y>40, dashed, shade away from origin). Writer/blind-verifier GATE PASS. App serving of source:strix is now wired in lib/cb/strixForms.ts via lib/cb/strix-originals.json."
+
+### "Strix tests 1-6 and their Bluebook mirrors"
+
+- **id**: `393a9dec-37a2-4451-a031-fd6f0949826a`
+- **kind**: fact
+- **source**: agent
+- **authority**: agent
+- **created**: 2026-08-18T18:29:36.324Z
+- **updated**: 2026-08-18T19:16:04.522Z
+- **content**: "Strix Tests 1–3 and 6 mirror Bluebook 11. Tests 4–5 mirror Bluebook 10. Mapping lives in lib/cb/strix-mirrors.json. Tests 1–5 are unused official qbank items. Test 6 is 146 unused qbank + one original figured H.E./H MCQ (strix-6-math-hard-11) in lib/cb/strix-originals.json, served by getStrixModule when the form id is in that map."
+
+### "Strix Test 3 is a leftover unused-qbank BB11 form"
+
+- **id**: `0996fcbe-dd0d-4245-9531-f7708523c586`
+- **kind**: fact
+- **source**: agent
+- **authority**: agent
+- **created**: 2026-08-18T17:11:08.018Z
+- **updated**: 2026-08-18T17:11:08.018Z
+- **content**: "Strix Test 3 (lib/cb/strix-forms.json key \"3\") mirrors Bluebook 11 like Tests 1–2. Pool excludes official forms 5–11 and Strix Tests 1–2. Skill/domain/difficulty match every slot; unused SPR pool is thinner so 5 math grid-ins became MCQ. Rebuild: node scripts/build-strix-test-2.mjs 3. Audit: docs/strix-test-3-audit.md."
+
+### "Strix Test 2 is a BB11-shaped unused-qbank form"
+
+- **id**: `d0834b8a-e99f-49df-a8c8-d99849f69ff3`
+- **kind**: fact
+- **source**: agent
+- **authority**: agent
+- **created**: 2026-08-18T00:07:43.260Z
+- **updated**: 2026-08-18T00:07:43.260Z
+- **content**: "Strix Test 2 (lib/cb/strix-forms.json key \"2\") is a second full SAT mirroring Bluebook 11 slot-for-slot: same skill, domain, E/M/H, and module sizes. Pool excludes official forms 5–11 and Strix Test 1. Picker priority: unused → skill+difficulty → MCQ/SPR type → nearest score_band_range_cd → stimulus form → content length. Practice Setup lists every manifest key. Audit: docs/strix-test-2-audit.md. Rebuild: scripts/build-strix-test-2.mjs."
 
 ### "APPLE_SIGNING.md has electron-builder guidance"
 

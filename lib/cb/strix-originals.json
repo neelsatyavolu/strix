@@ -1,0 +1,163 @@
+{
+  "strix-6-math-hard-11": {
+    "id": "strix-6-math-hard-11",
+    "source": "strix",
+    "section": "math",
+    "domain": "H",
+    "domainLabel": "Algebra",
+    "skill": "H.E.",
+    "skillLabel": "Linear inequalities in one or two variables",
+    "difficulty": "H",
+    "type": "mcq",
+    "stimulusForm": "diagram",
+    "wordCountBand": "45-75",
+    "taskHint": "match-skill-construct",
+    "band": 6,
+    "stemHtml": "<p>The graph of a linear inequality in the xy-plane is shown. Which of the following inequalities is represented by the graph?</p>",
+    "stimulusHtml": "<figure><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 270\" role=\"img\" aria-label=\"Graph of a linear inequality in the xy-plane. A dashed line crosses the y-axis at (0, 8) and the x-axis at (5, 0). The half-plane not containing the origin is shaded. Figure not drawn to scale.\"><title>Graph of a linear inequality</title><desc>A dashed line crosses the y-axis at (0, 8) and the x-axis at (5, 0). The half-plane that does not contain the origin is shaded. Figure not drawn to scale.</desc><polygon points=\"50,40 255,40 255,225 235,225\" fill=\"#9aa3ad\" fill-opacity=\"0.35\" style=\"fill:#9aa3ad;fill-opacity:0.35\"></polygon><path d=\"M50 40 L235 225\" fill=\"none\" stroke=\"#111111\" stroke-width=\"2\" stroke-dasharray=\"8 5\" style=\"fill:none;stroke:#111111;stroke-width:2;stroke-dasharray:8 5\"></path><line x1=\"35\" y1=\"200\" x2=\"275\" y2=\"200\" stroke=\"#111111\" stroke-width=\"1.5\"></line><line x1=\"80\" y1=\"245\" x2=\"80\" y2=\"30\" stroke=\"#111111\" stroke-width=\"1.5\"></line><polygon points=\"275,200 267,196 267,204\" fill=\"#111111\"></polygon><polygon points=\"80,30 76,38 84,38\" fill=\"#111111\"></polygon><line x1=\"210\" y1=\"196\" x2=\"210\" y2=\"204\" stroke=\"#111111\" stroke-width=\"1.5\"></line><line x1=\"76\" y1=\"70\" x2=\"84\" y2=\"70\" stroke=\"#111111\" stroke-width=\"1.5\"></line><text x=\"210\" y=\"222\" text-anchor=\"middle\" font-size=\"14\" font-family=\"Arial, sans-serif\" fill=\"#111111\">5</text><text x=\"64\" y=\"74\" text-anchor=\"end\" font-size=\"14\" font-family=\"Arial, sans-serif\" fill=\"#111111\">8</text><text x=\"270\" y=\"218\" text-anchor=\"middle\" font-size=\"14\" font-family=\"Arial, sans-serif\" fill=\"#111111\">x</text><text x=\"68\" y=\"26\" text-anchor=\"end\" font-size=\"14\" font-family=\"Arial, sans-serif\" fill=\"#111111\">y</text><text x=\"70\" y=\"216\" text-anchor=\"end\" font-size=\"14\" font-family=\"Arial, sans-serif\" fill=\"#111111\">O</text></svg><p>The dashed line crosses the y-axis at (0, 8) and the x-axis at (5, 0). The half-plane not containing the origin is shaded.</p><p>Note: Figure not drawn to scale.</p></figure>",
+    "choices": [
+      {
+        "id": "optA",
+        "letter": "A",
+        "html": "<p><math display=\"block\"><mrow><mn>8</mn><mi>x</mi><mo>+</mo><mn>5</mn><mi>y</mi><mo>&gt;</mo><mn>40</mn></mrow></math></p>"
+      },
+      {
+        "id": "optB",
+        "letter": "B",
+        "html": "<p><math display=\"block\"><mrow><mn>8</mn><mi>x</mi><mo>+</mo><mn>5</mn><mi>y</mi><mo>≥</mo><mn>40</mn></mrow></math></p>"
+      },
+      {
+        "id": "optC",
+        "letter": "C",
+        "html": "<p><math display=\"block\"><mrow><mn>8</mn><mi>x</mi><mo>+</mo><mn>5</mn><mi>y</mi><mo>&lt;</mo><mn>40</mn></mrow></math></p>"
+      },
+      {
+        "id": "optD",
+        "letter": "D",
+        "html": "<p><math display=\"block\"><mrow><mn>5</mn><mi>x</mi><mo>+</mo><mn>8</mn><mi>y</mi><mo>&gt;</mo><mn>40</mn></mrow></math></p>"
+      }
+    ],
+    "correct": [
+      "A"
+    ],
+    "correctIds": [
+      "optA"
+    ],
+    "rationaleHtml": "<p>The boundary meets the axes at <math><mrow><mo>(</mo><mn>5</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> and <math><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>8</mn><mo>)</mo></mrow></math>, so its intercept equation is <math><mrow><mfrac><mi>x</mi><mn>5</mn></mfrac><mo>+</mo><mfrac><mi>y</mi><mn>8</mn></mfrac><mo>=</mo><mn>1</mn></mrow></math>. Multiplying by 40 gives <math><mrow><mn>8</mn><mi>x</mi><mo>+</mo><mn>5</mn><mi>y</mi><mo>=</mo><mn>40</mn></mrow></math>.</p><p>The boundary is dashed, so points on the line are not solutions; the inequality is strict.</p><p>The origin is not in the shaded half-plane. Substituting <math><mrow><mo>(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>)</mo></mrow></math> into <math><mrow><mn>8</mn><mi>x</mi><mo>+</mo><mn>5</mn><mi>y</mi></mrow></math> gives 0, and 0 is not greater than 40, so the unshaded side (containing the origin) is <math><mrow><mn>8</mn><mi>x</mi><mo>+</mo><mn>5</mn><mi>y</mi><mo>&lt;</mo><mn>40</mn></mrow></math>. The shaded side is therefore <math><mrow><mn>8</mn><mi>x</mi><mo>+</mo><mn>5</mn><mi>y</mi><mo>&gt;</mo><mn>40</mn></mrow></math>.</p>",
+    "provenance": {
+      "mirrorForm": 11,
+      "moduleKey": "hard",
+      "slot": 11,
+      "referenceUse": "structure-only",
+      "topic": "xy-plane graph of one linear inequality",
+      "stimulusForm": "diagram",
+      "wordCountBand": "45-75",
+      "taskHint": "match-skill-construct",
+      "band": 6
+    },
+    "distractors": {
+      "B": {
+        "tag": "step-error",
+        "why": "Treats the dashed boundary as included (writes ≥ instead of >). Substitution: if 8x+5y≥40 were the graph, the boundary 8x+5y=40 would be solid and every intercept point such as (5,0) and (0,8) would be a solution. The figure’s boundary is dashed, so those boundary points are not solutions."
+      },
+      "C": {
+        "tag": "reversed-relation",
+        "why": "Uses the correct boundary and a strict inequality but shades the opposite half-plane. Substitution: if 8x+5y<40 were the graph, (0,0) would satisfy the inequality (0<40) and the half-plane containing the origin would be shaded. The figure shades the complementary half-plane."
+      },
+      "D": {
+        "tag": "solved-other-variable",
+        "why": "Attaches the intercepts to the wrong variables (writes 5x+8y=40 instead of 8x+5y=40). Substitution: if 5x+8y>40 were the graph, the boundary would meet the axes at (8,0) and (0,5). The figure labels the intercepts (5,0) and (0,8), so that equation is not the drawn line."
+      }
+    },
+    "verification": {
+      "status": "verified",
+      "blindSolve": "A",
+      "checks": [
+        {
+          "id": "V1",
+          "result": "PASS"
+        },
+        {
+          "id": "V2",
+          "result": "PASS"
+        },
+        {
+          "id": "V3",
+          "result": "PASS"
+        },
+        {
+          "id": "V4",
+          "result": "PASS"
+        },
+        {
+          "id": "V5",
+          "result": "PASS"
+        },
+        {
+          "id": "V6",
+          "result": "PASS"
+        },
+        {
+          "id": "V7",
+          "result": "PASS"
+        },
+        {
+          "id": "V8",
+          "result": "PASS"
+        },
+        {
+          "id": "V17",
+          "result": "PASS"
+        },
+        {
+          "id": "V18",
+          "result": "PASS"
+        },
+        {
+          "id": "V19",
+          "result": "PASS"
+        },
+        {
+          "id": "V20",
+          "result": "PASS"
+        },
+        {
+          "id": "V22",
+          "result": "PASS"
+        },
+        {
+          "id": "V23",
+          "result": "PASS"
+        },
+        {
+          "id": "V24",
+          "result": "PASS"
+        },
+        {
+          "id": "V26",
+          "result": "PASS"
+        },
+        {
+          "id": "V27",
+          "result": "PASS"
+        },
+        {
+          "id": "V28",
+          "result": "PASS"
+        },
+        {
+          "id": "V30",
+          "result": "PASS"
+        },
+        {
+          "id": "V31",
+          "result": "PASS"
+        },
+        {
+          "id": "V32",
+          "result": "PASS"
+        }
+      ]
+    }
+  }
+}

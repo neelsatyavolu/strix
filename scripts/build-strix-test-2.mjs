@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 /**
- * Assemble a Strix test as a Bluebook 11 mirror from unused qbank items.
- * Usage: node scripts/build-strix-test-2.mjs [testNumber]
- * Writes lib/cb/strix-forms.json (adds that key) and docs/strix-test-N-audit.md.
+ * Assemble a Strix test as a Bluebook form mirror from unused qbank items.
+ * Usage: node scripts/build-strix-test-2.mjs <testNumber> [mirrorForm]
+ * Example: node scripts/build-strix-test-2.mjs 4 10
+ * Writes lib/cb/strix-forms.json, lib/cb/strix-mirrors.json, docs/strix-test-N-audit.md.
  */
 import fs from "node:fs";
 import path from "node:path";
 
 const TEST_NUM = String(Number(process.argv[2] || 2));
+const MIRROR = String(Number(process.argv[3] || 11));
 if (!/^[1-9]\d*$/.test(TEST_NUM)) throw new Error(`bad test number: ${process.argv[2]}`);
+if (!/^(10|11)$/.test(MIRROR)) throw new Error(`mirror must be 10 or 11, got ${process.argv[3]}`);
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const TMP = "/tmp/strix-tests";
@@ -168,6 +171,27 @@ function indexItems(items) {
   return { byQuestionId, byExternalId };
 }
 
+function resolveSource(section, ref, idx) {
+  if (typeof ref === "string") {
+    return idx.byQuestionId.get(ref) || idx.byExternalId.get(ref) || null;
+  }
+  const listed =
+    (ref.questionId && idx.byQuestionId.get(ref.questionId)) ||
+    (ref.externalId && idx.byExternalId.get(ref.externalId)) ||
+    null;
+  if (listed) return listed;
+  if (!ref.externalId) return null;
+  return {
+    questionId: ref.questionId || ref.externalId,
+    external_id: ref.externalId,
+    skill_cd: ref.skill,
+    difficulty: ref.difficulty,
+    score_band_range_cd: null,
+    primary_class_cd: ref.domain,
+    section,
+  };
+}
+
 function detailPath(questionId) {
   return path.join(DETAIL_DIR, `${questionId}.json`);
 }
@@ -287,12 +311,14 @@ function pickSlots({ official, lists, excluded }) {
   for (const section of ["rw", "math"]) {
     const idx = bySec[section];
     for (const mk of MODULES) {
-      official["11"][section][mk].forEach((ref, i) => {
-        const id = typeof ref === "string" ? ref : ref.questionId || ref.externalId;
-        const src = idx.byQuestionId.get(id) || idx.byExternalId.get(id);
-        if (!src) throw new Error(`BB11 missing from list ${section} ${mk} Q${i + 1} ${id}`);
+      official[MIRROR][section][mk].forEach((ref, i) => {
+        const src = resolveSource(section, ref, idx);
+        if (!src) {
+          const id = typeof ref === "string" ? ref : ref.questionId || ref.externalId;
+          throw new Error(`BB${MIRROR} missing from list ${section} ${mk} Q${i + 1} ${id}`);
+        }
         const orig = readDetail(src.questionId);
-        if (!orig) throw new Error(`BB11 detail missing ${src.questionId}`);
+        if (!orig) throw new Error(`BB${MIRROR} detail missing ${src.questionId}`);
         slots.push({
           section,
           mk,
@@ -351,7 +377,26 @@ function pickSlots({ official, lists, excluded }) {
       .sort((a, b) => b.score - a.score || a.it.questionId.localeCompare(b.it.questionId));
 
     const pick = ranked[0];
-    if (!pick) throw new Error(`No candidate for ${slot.section} ${slot.mk} Q${slot.i} ${slot.skill} ${slot.diff}`);
+    if (!pick) {
+      const origId = `strix-${TEST_NUM}-${slot.section}-${slot.mk}-${slot.i}`;
+      picks.set(`${slot.section}.${slot.mk}.${slot.i}`, {
+        it: { questionId: origId },
+        cand: {
+          type: slot.orig.type,
+          hasDiagram: slot.orig.hasDiagram,
+          hasTable: slot.orig.hasTable,
+          band: slot.orig.band,
+          topic: [],
+          textLen: slot.orig.textLen,
+        },
+        score: 0,
+        reasons: ["original-item"],
+        bandGap: 0,
+        typeOk: true,
+        original: true,
+      });
+      continue;
+    }
     used.add(pick.it.questionId);
     if (pick.cand.topic?.length) usedTopics.push(pick.cand.topic);
     picks.set(`${slot.section}.${slot.mk}.${slot.i}`, pick);
@@ -362,11 +407,12 @@ function pickSlots({ official, lists, excluded }) {
     const pick = picks.get(`${slot.section}.${slot.mk}.${slot.i}`);
     form[slot.section][slot.mk].push(pick.it.questionId);
     const diffs = [];
+    if (pick.original) diffs.push("original item: unused pool empty at skill+difficulty");
     if (pick.cand.type !== slot.orig.type) diffs.push(`answer type: ${slot.orig.type} → ${pick.cand.type}`);
     if (pick.cand.hasDiagram !== slot.orig.hasDiagram) {
       diffs.push(`stimulus form: ${slot.orig.hasDiagram ? "diagram" : "none"} → ${pick.cand.hasDiagram ? "diagram" : "none"}`);
     }
-    if (pick.bandGap !== 0) diffs.push(`band: ${slot.orig.band} → ${pick.cand.band}`);
+    if (!pick.original && pick.bandGap !== 0) diffs.push(`band: ${slot.orig.band} → ${pick.cand.band}`);
     audit.push({
       section: slot.section,
       mk: slot.mk,
@@ -375,7 +421,7 @@ function pickSlots({ official, lists, excluded }) {
       diff: slot.diff,
       band: slot.orig.band,
       chosenBand: pick.cand.band,
-      bb11: slot.src.questionId,
+      sourceId: slot.src.questionId,
       chosen: pick.it.questionId,
       type: `${slot.orig.type}→${pick.cand.type}`,
       fig: `${slot.orig.hasDiagram ? "Y" : "N"}→${pick.cand.hasDiagram ? "Y" : "N"}`,
@@ -415,11 +461,11 @@ function writeAudit(audit) {
   const lines = [];
   lines.push(`# Strix Test ${TEST_NUM} — Semantic Matching Audit`);
   lines.push("");
-  lines.push(`_Generated as a Bluebook 11-shaped full SAT. Questions are unused by ${otherLabel}._`);
+  lines.push(`_Generated as a Bluebook ${MIRROR}-shaped full SAT. Questions are unused by ${otherLabel}._`);
   lines.push("");
   lines.push("## Goal");
   lines.push("");
-  lines.push(`Strix Test ${TEST_NUM} mirrors Bluebook Practice Test 11 slot-for-slot: same section/module order, same CB domain and skill, same E/M/H tag, and the same finer \`score_band_range_cd\` (1–7) whenever the unused pool allows. Within a band, the picker prefers the same answer type (MCQ vs SPR), the same stimulus form (diagram / paired texts / research notes), and the closest content length so difficulty is not judged from the E/M/H letter alone.`);
+  lines.push(`Strix Test ${TEST_NUM} mirrors Bluebook Practice Test ${MIRROR} slot-for-slot: same section/module order, same CB domain and skill, same E/M/H tag, and the same finer \`score_band_range_cd\` (1–7) whenever the unused pool allows. Within a band, the picker prefers the same answer type (MCQ vs SPR), the same stimulus form (diagram / paired texts / research notes), and the closest content length so difficulty is not judged from the E/M/H letter alone.`);
   lines.push("");
   lines.push("## Sources & method");
   lines.push("");
@@ -431,7 +477,7 @@ function writeAudit(audit) {
   lines.push("");
   lines.push(`- **147 questions, all unique**, none in Bluebook 5–11${others.length ? ` or Strix Test ${others.join("/")}` : ""}.`);
   lines.push("- Counts exact: R&W 27 / 27 / 27 (M1 / easy / hard), Math 22 / 22 / 22.");
-  lines.push(`- Domain, skill and difficulty match the Bluebook 11 slot exactly for all 147 questions.`);
+  lines.push(`- Domain, skill and difficulty match the Bluebook ${MIRROR} slot exactly for all 147 questions.`);
   lines.push(`- Score band matches on **${audit.filter((r) => r.band === r.chosenBand).length} / 147** slots (R&W ${rwBandExact}/81).`);
   lines.push(`- Answer type matches on **${typeOk} / 147** slots.`);
   lines.push(`- Documented exceptions below the skill+difficulty bar: **${exceptions.length}**.`);
@@ -441,11 +487,11 @@ function writeAudit(audit) {
   if (!exceptions.length) {
     lines.push("_None. Every slot kept skill, difficulty, answer type, and diagram form._");
   } else {
-    lines.push("| Slot | Skill / Diff | BB11 original | Chosen | What differs | Why |");
+    lines.push(`| Slot | Skill / Diff | BB${MIRROR} original | Chosen | What differs | Why |`);
     lines.push("|---|---|---|---|---|---|");
     for (const r of exceptions) {
       lines.push(
-        `| ${r.section} · ${r.mk} · Q${r.i} | ${r.skill} / ${r.diff} | \`${r.bb11}\` | \`${r.chosen}\` | **${r.diffs.join("; ")}** | Unused pool at this skill+difficulty has no closer match. Type outranks exact band. |`,
+        `| ${r.section} · ${r.mk} · Q${r.i} | ${r.skill} / ${r.diff} | \`${r.sourceId}\` | \`${r.chosen}\` | **${r.diffs.join("; ")}** | Unused pool at this skill+difficulty has no closer match. Type outranks exact band. |`,
       );
     }
   }
@@ -466,7 +512,7 @@ function writeAudit(audit) {
   lines.push("");
   lines.push("## Full slot-by-slot mapping");
   lines.push("");
-  lines.push(`IDs are CB \`questionId\`s. "→" is Bluebook 11 original → Strix Test ${TEST_NUM} replacement.`);
+  lines.push(`IDs are CB \`questionId\`s. "→" is Bluebook ${MIRROR} original → Strix Test ${TEST_NUM} replacement.`);
   lines.push("");
 
   const titles = {
@@ -483,19 +529,19 @@ function writeAudit(audit) {
       lines.push(`#### ${titles[mk]}`);
       lines.push("");
       if (section === "rw") {
-        lines.push("| # | Skill | Diff | Band | BB11 → Strix | Form |");
+        lines.push(`| # | Skill | Diff | Band | BB${MIRROR} → Strix | Form |`);
         lines.push("|--:|---|:--:|:--:|---|---|");
         for (const r of audit.filter((x) => x.section === section && x.mk === mk)) {
           const band = r.band === r.chosenBand ? String(r.band) : `${r.band}→${r.chosenBand}`;
-          lines.push(`| ${r.i} | ${r.skill} | ${r.diff} | ${band} | \`${r.bb11}\` → \`${r.chosen}\` | ${r.form} |`);
+          lines.push(`| ${r.i} | ${r.skill} | ${r.diff} | ${band} | \`${r.sourceId}\` → \`${r.chosen}\` | ${r.form} |`);
         }
       } else {
-        lines.push("| # | Skill | Diff | Band | BB11 → Strix | Type | Fig |");
+        lines.push(`| # | Skill | Diff | Band | BB${MIRROR} → Strix | Type | Fig |`);
         lines.push("|--:|---|:--:|:--:|---|:--:|:--:|");
         for (const r of audit.filter((x) => x.section === section && x.mk === mk)) {
           const warn = r.diffs.length ? " ⚠" : "";
           const band = r.band === r.chosenBand ? String(r.band) : `${r.band}→${r.chosenBand}`;
-          lines.push(`| ${r.i} | ${r.skill} | ${r.diff} | ${band} | \`${r.bb11}\` → \`${r.chosen}\`${warn} | ${r.type} | ${r.fig} |`);
+          lines.push(`| ${r.i} | ${r.skill} | ${r.diff} | ${band} | \`${r.sourceId}\` → \`${r.chosen}\`${warn} | ${r.type} | ${r.fig} |`);
         }
       }
       lines.push("");
@@ -516,15 +562,15 @@ const byId = {
   math: indexItems(lists.math),
 };
 
-const bb11Items = [];
+const sourceItems = [];
 const neededKeys = new Set();
 for (const section of ["rw", "math"]) {
   for (const mk of MODULES) {
-    for (const ref of official["11"][section][mk]) {
+    for (const ref of official[MIRROR][section][mk]) {
+      const src = resolveSource(section, ref, byId[section]);
       const id = typeof ref === "string" ? ref : ref.questionId || ref.externalId;
-      const src = byId[section].byQuestionId.get(id) || byId[section].byExternalId.get(id);
-      if (!src) throw new Error(`BB11 not in list ${section} ${id}`);
-      bb11Items.push(src);
+      if (!src) throw new Error(`BB${MIRROR} not in list ${section} ${id}`);
+      sourceItems.push(src);
       neededKeys.add(`${section}:${src.skill_cd}:${src.difficulty}`);
     }
   }
@@ -540,16 +586,22 @@ for (const section of ["rw", "math"]) {
   }
 }
 
-await fetchAll(bb11Items, "bb11");
+await fetchAll(sourceItems, `bb${MIRROR}`);
 await fetchAll(candidateItems, "candidates");
 
 const { form, audit } = pickSlots({ official, lists, excluded });
 strix[TEST_NUM] = form;
 fs.writeFileSync(path.join(ROOT, "lib/cb/strix-forms.json"), JSON.stringify(strix));
+const mirrorsPath = path.join(ROOT, "lib/cb/strix-mirrors.json");
+const mirrors = fs.existsSync(mirrorsPath)
+  ? JSON.parse(fs.readFileSync(mirrorsPath, "utf8"))
+  : { "1": 11, "2": 11, "3": 11 };
+mirrors[TEST_NUM] = Number(MIRROR);
+fs.writeFileSync(mirrorsPath, `${JSON.stringify(mirrors, null, 2)}\n`);
 const auditPath = writeAudit(audit);
 const exceptions = audit.filter((r) => r.diffs.length);
 console.log(`wrote form ${TEST_NUM} +`, auditPath);
 console.log("exceptions", exceptions.length);
 for (const r of exceptions) {
-  console.log(`  ${r.section}.${r.mk}.Q${r.i} ${r.skill} ${r.diff}`, r.diffs.join("; "), r.bb11, "→", r.chosen);
+  console.log(`  ${r.section}.${r.mk}.Q${r.i} ${r.skill} ${r.diff}`, r.diffs.join("; "), r.sourceId, "→", r.chosen);
 }

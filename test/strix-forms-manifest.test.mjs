@@ -19,10 +19,12 @@ const officialForms = JSON.parse(
 const auditUrl = new URL('../docs/strix-test-1-audit.md', import.meta.url);
 const auditTwoUrl = new URL('../docs/strix-test-2-audit.md', import.meta.url);
 const auditThreeUrl = new URL('../docs/strix-test-3-audit.md', import.meta.url);
+const mirrorsUrl = new URL('../lib/cb/strix-mirrors.json', import.meta.url);
 
 const MODULE_KEYS = ['m1', 'easy', 'hard'];
 const EXPECTED_COUNTS = { rw: 27, math: 22 };
-const EXPECTED_TESTS = ['1', '2', '3'];
+const EXPECTED_TESTS = ['1', '2', '3', '4', '5', '6'];
+const EXPECTED_MIRRORS = { 1: 11, 2: 11, 3: 11, 4: 10, 5: 10, 6: 11 };
 
 // The single intentional answer-type deviation from Bluebook 11: Math hard
 // module slot 2 (skill H.D., difficulty E) is a grid-in (SPR) in Bluebook 11,
@@ -74,7 +76,7 @@ function collectFormIds(form) {
   return ids;
 }
 
-test('Strix tests 1, 2, and 3 exist as complete full SATs', () => {
+test('Strix tests exist as complete full SATs', () => {
   assert.equal(fs.existsSync(strixFormsUrl), true);
   const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
 
@@ -123,7 +125,9 @@ test('Strix full SAT source is wired through the question API and session runtim
 
 test('Practice Setup exposes every Strix test as a full SAT option', () => {
   assert.match(practiceSetupSource, /strix-forms\.json/);
+  assert.match(practiceSetupSource, /strix-mirrors\.json/);
   assert.match(practiceSetupSource, /Start Strix Test \$\{strixTest\}/);
+  assert.match(practiceSetupSource, /Like Bluebook/);
   assert.match(practiceSetupSource, /bluebookTest:\s*null/);
   const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
   for (const num of Object.keys(forms)) {
@@ -184,4 +188,58 @@ test('Strix Test 3 audit doc exists', () => {
   assert.match(audit, /## Exceptions/);
   assert.match(audit, /147 questions/);
   assert.match(audit, /Strix Tests 1 and 2/);
+});
+
+test('Strix Test 6 is a Bluebook 11 mirror with one original item', () => {
+  const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
+  const mirrors = JSON.parse(fs.readFileSync(mirrorsUrl, 'utf8'));
+  const originals = JSON.parse(
+    fs.readFileSync(new URL('../lib/cb/strix-originals.json', import.meta.url), 'utf8'),
+  );
+  const auditPath = new URL('../docs/strix-test-6-audit.md', import.meta.url);
+  assert.equal(mirrors['6'], 11);
+  assert.equal(forms['6'].math.hard[10], 'strix-6-math-hard-11');
+  assert.equal(fs.existsSync(auditPath), true);
+  const audit = fs.readFileSync(auditPath, 'utf8');
+  assert.match(audit, /147 questions/);
+  assert.match(audit, /strix-6-math-hard-11/);
+  assert.match(audit, /original item/);
+  const item = originals['strix-6-math-hard-11'];
+  assert.ok(item, 'missing original item strix-6-math-hard-11');
+  assert.equal(item.source, 'strix');
+  assert.equal(item.skill, 'H.E.');
+  assert.equal(item.type, 'mcq');
+  assert.equal(item.verification?.status, 'verified');
+  assert.match(String(item.stimulusHtml || ''), /<svg/i);
+});
+
+test('Strix original ids in forms are served from strix-originals.json', () => {
+  const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
+  const originals = JSON.parse(
+    fs.readFileSync(new URL('../lib/cb/strix-originals.json', import.meta.url), 'utf8'),
+  );
+  const strixFormsSource = fs.readFileSync(strixFormsSourceUrl, 'utf8');
+  assert.match(strixFormsSource, /strix-originals\.json/);
+  assert.match(strixFormsSource, /source: "strix"/);
+  for (const num of EXPECTED_TESTS) {
+    for (const id of collectFormIds(forms[num])) {
+      if (!id.startsWith('strix-')) continue;
+      assert.ok(originals[id], `form ${num} references missing original ${id}`);
+      assert.equal(originals[id].verification?.status, 'verified');
+    }
+  }
+});
+
+test('Strix tests 4 and 5 are Bluebook 10 mirrors with audits', () => {
+  const mirrors = JSON.parse(fs.readFileSync(mirrorsUrl, 'utf8'));
+  for (const [num, mirror] of Object.entries(EXPECTED_MIRRORS)) {
+    assert.equal(mirrors[num], mirror, `test ${num} should mirror Bluebook ${mirror}`);
+  }
+  for (const num of ['4', '5']) {
+    const auditPath = new URL(`../docs/strix-test-${num}-audit.md`, import.meta.url);
+    assert.equal(fs.existsSync(auditPath), true);
+    const audit = fs.readFileSync(auditPath, 'utf8');
+    assert.match(audit, /Bluebook 10-shaped/);
+    assert.match(audit, /147 questions/);
+  }
 });

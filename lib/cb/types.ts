@@ -17,7 +17,7 @@ export interface Choice {
 export interface Question {
   /** external_id (qbank) or ibn (disclosed). */
   id: string;
-  source: "qbank" | "disclosed";
+  source: "qbank" | "disclosed" | "strix";
   section: Section;
   /** CB primary_class_cd, e.g. "INI" (RW) or "H" (Math). */
   domain: string;

@@ -6,6 +6,7 @@ import { usePracticeSession } from '@/components/sixteen/session/SessionContext'
 import { useStats } from '@/lib/data/hooks';
 import { RW_DOMAINS, MATH_DOMAINS, DOMAIN_TO_CATEGORY } from '@/lib/cb/domains';
 import strixForms from '@/lib/cb/strix-forms.json';
+import strixMirrors from '@/lib/cb/strix-mirrors.json';
 
 const STRIX_TEST_OPTIONS = Object.keys(strixForms).map(Number).sort((a, b) => a - b);
 
@@ -133,7 +134,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
               Test source
             </label>
             <p style={{margin:'0 0 12px', font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
-              Take a Strix alternative test (Bluebook 11 shape, unused question-bank items), a real Bluebook practice test, or let us assemble a fresh test from the College Board question bank. Bluebook tests run highest-first.
+              Take a Strix alternative test (Bluebook 10 or 11 shape; unused question-bank items, plus original items only where that pool is empty), a real Bluebook practice test, or let us assemble a fresh test from the College Board question bank. Bluebook tests run highest-first.
             </p>
             <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(150px, 1fr))', gap: 8}}>
               <SourceTile
@@ -148,7 +149,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
                   selected={strixTest === t}
                   onClick={() => { setStrixTest(t); setBluebook(null); }}
                   title={`Strix Test ${t}`}
-                  sub="Alternative full SAT"
+                  sub={strixMirrors[t] ? `Like Bluebook ${strixMirrors[t]}` : 'Alternative full SAT'}
                 />
               ))}
               {forms.available.map((t) => (

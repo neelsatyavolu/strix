@@ -5,19 +5,29 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Revision**: 4
-- **Updated**: 2026-08-13T03:04:45.000Z
-- **Sessions**: 12
+- **Revision**: 14
+- **Updated**: 2026-08-18T19:16:04.525Z
+- **Sessions**: 13
+
+## Strix Test 6 via SAT skill
+
+- **id**: `acc081b7-edb3-4d2d-97a0-5b77bc3c9850`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-08-18T19:16:04.525Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/01a01226-ad07-7811-a3d5-097590681092/chat_history.jsonl`
+
+Created Strix Test 6 as a Bluebook 11 mirror. Unused official pool filled 146/147 slots; only math hard Q11 (H.E./H figured MCQ) was empty. Wrote that item with sat-question-creator (separate writer + blind verifier; GATE PASS, key A, 8x+5y>40). Wired source:strix serving via lib/cb/strix-originals.json and getStrixModule. Form tests pass. Not committed. App still untested in the browser this turn.
 
 ## Add AODEFEN words 401-500
 
 - **id**: `9506afc9-6a93-4ac4-a3f7-98404463a09b`
 - **provider**: Grok
 - **status**: idle
-- **updated**: 2026-08-13T03:04:45.000Z
+- **updated**: 2026-08-13T03:05:15.886Z
 - **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/019ff905-bc58-72e3-997e-dc4041fbd801/chat_history.jsonl`
 
-Added AODEFEN SAT words 401–500 from ~/Downloads/100-additional-words.pdf into the vocab bank. New file lib/vocab/bankExtra.ts (w401–w500) merged into VOCAB_BANK; labels/copy updated SAT 400 → SAT 500. Passages match existing SAT-style MCQ bar (bank-only correct, true-misuse wrongs, no definition leaks). Source JSON at scripts/aodefen-100-extra.json. lint/tsc/build passed; toItem/isCorrectUsage checked on all 100 extras. Hub UI needs login so live click-through was not completed.
+Committed and pushed feat(vocab): add AODEFEN words 401-500 as a9345b8 to origin/main. Bank is now SAT 500 (lib/vocab/bankExtra.ts w401–w500). Left .grok/config.toml uncommitted (local node/MCP path).
 
 ## Grok 4.6 replaces 4.5
 
