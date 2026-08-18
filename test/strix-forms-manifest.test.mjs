@@ -17,9 +17,11 @@ const officialForms = JSON.parse(
   fs.readFileSync(new URL('../lib/cb/official-forms.json', import.meta.url), 'utf8'),
 );
 const auditUrl = new URL('../docs/strix-test-1-audit.md', import.meta.url);
+const auditTwoUrl = new URL('../docs/strix-test-2-audit.md', import.meta.url);
 
 const MODULE_KEYS = ['m1', 'easy', 'hard'];
 const EXPECTED_COUNTS = { rw: 27, math: 22 };
+const EXPECTED_TESTS = ['1', '2'];
 
 // The single intentional answer-type deviation from Bluebook 11: Math hard
 // module slot 2 (skill H.D., difficulty E) is a grid-in (SPR) in Bluebook 11,
@@ -61,35 +63,50 @@ function allOfficialIds(section) {
   return ids;
 }
 
-test('Strix Test 1 manifest exists and is a complete full SAT', () => {
-  assert.equal(fs.existsSync(strixFormsUrl), true);
-  const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
-  const testOne = forms['1'];
-
-  assert.ok(testOne);
+function collectFormIds(form) {
+  const ids = [];
   for (const section of ['rw', 'math']) {
     for (const moduleKey of MODULE_KEYS) {
-      assert.equal(testOne[section][moduleKey].length, EXPECTED_COUNTS[section]);
+      for (const id of form[section][moduleKey]) ids.push(id);
+    }
+  }
+  return ids;
+}
+
+test('Strix tests 1 and 2 exist as complete full SATs', () => {
+  assert.equal(fs.existsSync(strixFormsUrl), true);
+  const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
+
+  for (const num of EXPECTED_TESTS) {
+    const form = forms[num];
+    assert.ok(form, `missing Strix Test ${num}`);
+    for (const section of ['rw', 'math']) {
+      for (const moduleKey of MODULE_KEYS) {
+        assert.equal(form[section][moduleKey].length, EXPECTED_COUNTS[section]);
+      }
     }
   }
 });
 
-test('Strix Test 1 has no duplicate or official Bluebook question ids', () => {
+test('Strix tests have no duplicate, overlapping, or official Bluebook question ids', () => {
   const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
-  const ids = [];
+  const seen = new Set();
 
-  for (const section of ['rw', 'math']) {
-    const official = allOfficialIds(section);
-    for (const moduleKey of MODULE_KEYS) {
-      for (const id of forms['1'][section][moduleKey]) {
-        assert.equal(typeof id, 'string');
-        assert.equal(official.has(id), false, `${section} ${moduleKey} reuses official id ${id}`);
-        ids.push(id);
+  for (const num of EXPECTED_TESTS) {
+    const ids = collectFormIds(forms[num]);
+    assert.equal(new Set(ids).size, ids.length, `Strix Test ${num} has internal duplicates`);
+    for (const section of ['rw', 'math']) {
+      const official = allOfficialIds(section);
+      for (const moduleKey of MODULE_KEYS) {
+        for (const id of forms[num][section][moduleKey]) {
+          assert.equal(typeof id, 'string');
+          assert.equal(official.has(id), false, `test ${num} ${section} ${moduleKey} reuses official id ${id}`);
+          assert.equal(seen.has(id), false, `test ${num} reuses ${id} from another Strix test`);
+          seen.add(id);
+        }
       }
     }
   }
-
-  assert.equal(new Set(ids).size, ids.length);
 });
 
 test('Strix full SAT source is wired through the question API and session runtime', () => {
@@ -103,19 +120,26 @@ test('Strix full SAT source is wired through the question API and session runtim
   assert.match(sessionSource, /fetchStrixModule/);
 });
 
-test('Practice Setup exposes Strix Test 1 as a full SAT option', () => {
-  assert.match(practiceSetupSource, /Strix Test 1/);
-  assert.match(practiceSetupSource, /strixTest:\s*1/);
+test('Practice Setup exposes every Strix test as a full SAT option', () => {
+  assert.match(practiceSetupSource, /strix-forms\.json/);
+  assert.match(practiceSetupSource, /Start Strix Test \$\{strixTest\}/);
   assert.match(practiceSetupSource, /bluebookTest:\s*null/);
+  const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
+  for (const num of Object.keys(forms)) {
+    assert.match(practiceSetupSource, /STRIX_TEST_OPTIONS/);
+    assert.equal(EXPECTED_TESTS.includes(num), true, `unexpected Strix test ${num} not covered by picker test`);
+  }
 });
 
-test('Strix Test 1 never reuses a Bluebook 11 question id', () => {
+test('Strix tests never reuse a Bluebook 11 question id', () => {
   const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
-  for (const section of ['rw', 'math']) {
-    const bb11 = bluebook11Ids(section);
-    for (const moduleKey of MODULE_KEYS) {
-      for (const id of forms['1'][section][moduleKey]) {
-        assert.equal(bb11.has(id), false, `${section} ${moduleKey} reuses Bluebook 11 id ${id}`);
+  for (const num of EXPECTED_TESTS) {
+    for (const section of ['rw', 'math']) {
+      const bb11 = bluebook11Ids(section);
+      for (const moduleKey of MODULE_KEYS) {
+        for (const id of forms[num][section][moduleKey]) {
+          assert.equal(bb11.has(id), false, `test ${num} ${section} ${moduleKey} reuses Bluebook 11 id ${id}`);
+        }
       }
     }
   }
@@ -141,5 +165,14 @@ test('Strix Test 1 audit doc exists and enumerates the documented exceptions', (
   assert.match(audit, /grid-in → MCQ/);
   assert.match(audit, /9db5b5c1/);
   // the three stimulus-form (figure) exceptions are enumerated
+  assert.match(audit, /diagram → none/);
+});
+
+test('Strix Test 2 audit doc exists and records leftover type/form exceptions', () => {
+  assert.equal(fs.existsSync(auditTwoUrl), true);
+  const audit = fs.readFileSync(auditTwoUrl, 'utf8');
+  assert.match(audit, /## Exceptions/);
+  assert.match(audit, /4fb8adf7/);
+  assert.match(audit, /answer type: spr → mcq/);
   assert.match(audit, /diagram → none/);
 });

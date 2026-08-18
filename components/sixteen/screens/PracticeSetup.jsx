@@ -5,6 +5,9 @@ import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useStats } from '@/lib/data/hooks';
 import { RW_DOMAINS, MATH_DOMAINS, DOMAIN_TO_CATEGORY } from '@/lib/cb/domains';
+import strixForms from '@/lib/cb/strix-forms.json';
+
+const STRIX_TEST_OPTIONS = Object.keys(strixForms).map(Number).sort((a, b) => a - b);
 
 // PracticeSetup — pick section, mock module vs targeted drill, category, difficulty.
 
@@ -24,10 +27,10 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
   const [count, setCount] = React.useState(10);
   const [timed, setTimed] = React.useState('untimed'); // 'untimed' | 'per-q' | 'total'
   // Full-SAT test source: undefined = not yet defaulted, null = question bank
-  // (synthetic), a number = that Bluebook practice test. Strix Test is tracked
-  // separately because it is not a Bluebook-numbered official form.
+  // (synthetic), a number = that Bluebook practice test. Strix tests are
+  // tracked separately because they are not Bluebook-numbered official forms.
   const [bluebook, setBluebook] = React.useState(undefined);
-  const [useStrixTest, setUseStrixTest] = React.useState(false);
+  const [strixTest, setStrixTest] = React.useState(null);
   const [forms, setForms] = React.useState({ available: [], completed: [] });
 
   // Load available Bluebook forms (+ which this student already took) when the
@@ -57,7 +60,7 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
   const startLabel =
     mode === 'drill'      ? `Start drill · ${count} questions` :
     mode === 'mock-m1'    ? 'Start Module 1' :
-    mode === 'mock-exam'  ? (useStrixTest ? 'Start Strix Test 1' : bluebook ? `Start Bluebook ${bluebook}` : 'Start full SAT') :
+    mode === 'mock-exam'  ? (strixTest ? `Start Strix Test ${strixTest}` : bluebook ? `Start Bluebook ${bluebook}` : 'Start full SAT') :
                             'Start Module 1 → Module 2';
 
   return (
@@ -130,26 +133,29 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
               Test source
             </label>
             <p style={{margin:'0 0 12px', font:'var(--role-caption)', color:'var(--text-tertiary)'}}>
-              Take a Strix alternative test, a real Bluebook practice test, or let us assemble a fresh test from the College Board question bank. Bluebook tests run highest-first.
+              Take a Strix alternative test (Bluebook 11 shape, unused question-bank items), a real Bluebook practice test, or let us assemble a fresh test from the College Board question bank. Bluebook tests run highest-first.
             </p>
             <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(150px, 1fr))', gap: 8}}>
               <SourceTile
-                selected={!useStrixTest && bluebook === null}
-                onClick={() => { setUseStrixTest(false); setBluebook(null); }}
+                selected={!strixTest && bluebook === null}
+                onClick={() => { setStrixTest(null); setBluebook(null); }}
                 title="Question Bank"
                 sub="Fresh adaptive test"
               />
-              <SourceTile
-                selected={useStrixTest}
-                onClick={() => { setUseStrixTest(true); setBluebook(null); }}
-                title="Strix Test 1"
-                sub="Alternative full SAT"
-              />
+              {STRIX_TEST_OPTIONS.map((t) => (
+                <SourceTile
+                  key={`strix-${t}`}
+                  selected={strixTest === t}
+                  onClick={() => { setStrixTest(t); setBluebook(null); }}
+                  title={`Strix Test ${t}`}
+                  sub="Alternative full SAT"
+                />
+              ))}
               {forms.available.map((t) => (
                 <SourceTile
                   key={t}
-                  selected={!useStrixTest && bluebook === t}
-                  onClick={() => { setUseStrixTest(false); setBluebook(t); }}
+                  selected={!strixTest && bluebook === t}
+                  onClick={() => { setStrixTest(null); setBluebook(t); }}
                   title={`Bluebook ${t}`}
                   sub={forms.completed.includes(t) ? 'Already taken' : 'Official form'}
                   muted={forms.completed.includes(t)}
@@ -257,8 +263,8 @@ function PracticeSetup({ go, initial = {}, readOnly = false }) {
           <Button variant="primary" size="lg" disabled={readOnly} onClick={() => {
             if (readOnly) return;
             if (mode === 'mock-exam') {
-              const examConfig = useStrixTest
-                ? { mode: 'mock-exam', bluebookTest: null, strixTest: 1 }
+              const examConfig = strixTest
+                ? { mode: 'mock-exam', bluebookTest: null, strixTest }
                 : { mode: 'mock-exam', bluebookTest: bluebook ?? null };
               session.start(examConfig);
               go('rw-question', { kind: 'module' }); // a full SAT always opens with R&W
