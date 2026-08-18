@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 /**
- * Assemble Strix Test 2 as a Bluebook 11 mirror from unused qbank items.
- * Writes lib/cb/strix-forms.json (adds "2") and docs/strix-test-2-audit.md.
+ * Assemble a Strix test as a Bluebook 11 mirror from unused qbank items.
+ * Usage: node scripts/build-strix-test-2.mjs [testNumber]
+ * Writes lib/cb/strix-forms.json (adds that key) and docs/strix-test-N-audit.md.
  */
 import fs from "node:fs";
 import path from "node:path";
 
+const TEST_NUM = String(Number(process.argv[2] || 2));
+if (!/^[1-9]\d*$/.test(TEST_NUM)) throw new Error(`bad test number: ${process.argv[2]}`);
+
 const ROOT = path.resolve(import.meta.dirname, "..");
-const TMP = "/tmp/strix-test-2";
+const TMP = "/tmp/strix-tests";
 const DETAIL_DIR = path.join(TMP, "details");
 const LIST_URL =
   "https://qbank-api.collegeboard.org/msreportingquestionbank-prod/questionbank/digital/get-questions";
@@ -399,27 +403,33 @@ function skillCounts(audit, section, mk) {
 }
 
 function writeAudit(audit) {
+  const others = Object.keys(strix)
+    .filter((n) => n !== TEST_NUM)
+    .sort((a, b) => Number(a) - Number(b));
+  const otherLabel = others.length
+    ? `official Bluebook forms 5–11 and Strix Test ${others.join(", ")}`
+    : "official Bluebook forms 5–11";
   const exceptions = audit.filter((r) => r.diffs.length);
   const rwBandExact = audit.filter((r) => r.section === "rw" && r.band === r.chosenBand).length;
   const typeOk = audit.filter((r) => r.type.split("→")[0] === r.type.split("→")[1]).length;
   const lines = [];
-  lines.push("# Strix Test 2 — Semantic Matching Audit");
+  lines.push(`# Strix Test ${TEST_NUM} — Semantic Matching Audit`);
   lines.push("");
-  lines.push("_Generated as a second Bluebook 11-shaped full SAT. Questions are unused by official Bluebook forms 5–11 and Strix Test 1._");
+  lines.push(`_Generated as a Bluebook 11-shaped full SAT. Questions are unused by ${otherLabel}._`);
   lines.push("");
   lines.push("## Goal");
   lines.push("");
-  lines.push("Strix Test 2 mirrors Bluebook Practice Test 11 slot-for-slot: same section/module order, same CB domain and skill, same E/M/H tag, and the same finer `score_band_range_cd` (1–7) whenever the unused pool allows. Within a band, the picker prefers the same answer type (MCQ vs SPR), the same stimulus form (diagram / paired texts / research notes), and the closest content length so difficulty is not judged from the E/M/H letter alone.");
+  lines.push(`Strix Test ${TEST_NUM} mirrors Bluebook Practice Test 11 slot-for-slot: same section/module order, same CB domain and skill, same E/M/H tag, and the same finer \`score_band_range_cd\` (1–7) whenever the unused pool allows. Within a band, the picker prefers the same answer type (MCQ vs SPR), the same stimulus form (diagram / paired texts / research notes), and the closest content length so difficulty is not judged from the E/M/H letter alone.`);
   lines.push("");
   lines.push("## Sources & method");
   lines.push("");
   lines.push("- Live College Board qbank (`get-questions` + `get-question`).");
-  lines.push("- Pool = fetchable `external_id` items **not** in official forms 5–11 and **not** in Strix Test 1.");
+  lines.push(`- Pool = fetchable \`external_id\` items **not** in ${otherLabel}.`);
   lines.push("- Priority: unused → same skill + difficulty → same answer type (MCQ vs SPR) → nearest score band → same stimulus form → nearest content length → avoid near-duplicate topics inside this test.");
   lines.push("");
   lines.push("## Result summary");
   lines.push("");
-  lines.push(`- **147 questions, all unique**, none in Bluebook 5–11 or Strix Test 1.`);
+  lines.push(`- **147 questions, all unique**, none in Bluebook 5–11${others.length ? ` or Strix Test ${others.join("/")}` : ""}.`);
   lines.push("- Counts exact: R&W 27 / 27 / 27 (M1 / easy / hard), Math 22 / 22 / 22.");
   lines.push(`- Domain, skill and difficulty match the Bluebook 11 slot exactly for all 147 questions.`);
   lines.push(`- Score band matches on **${audit.filter((r) => r.band === r.chosenBand).length} / 147** slots (R&W ${rwBandExact}/81).`);
@@ -456,7 +466,7 @@ function writeAudit(audit) {
   lines.push("");
   lines.push("## Full slot-by-slot mapping");
   lines.push("");
-  lines.push("IDs are CB `questionId`s. \"→\" is Bluebook 11 original → Strix Test 2 replacement.");
+  lines.push(`IDs are CB \`questionId\`s. "→" is Bluebook 11 original → Strix Test ${TEST_NUM} replacement.`);
   lines.push("");
 
   const titles = {
@@ -491,7 +501,7 @@ function writeAudit(audit) {
       lines.push("");
     }
   }
-  const out = path.join(ROOT, "docs/strix-test-2-audit.md");
+  const out = path.join(ROOT, `docs/strix-test-${TEST_NUM}-audit.md`);
   fs.writeFileSync(out, lines.join("\n"));
   return out;
 }
@@ -499,7 +509,7 @@ function writeAudit(audit) {
 const lists = await loadLists();
 const official = JSON.parse(fs.readFileSync(path.join(ROOT, "lib/cb/official-forms.json"), "utf8"));
 const strix = JSON.parse(fs.readFileSync(path.join(ROOT, "lib/cb/strix-forms.json"), "utf8"));
-const excluded = new Set([...collectOfficialIds(official), ...collectStrixIds(strix, "2")]);
+const excluded = new Set([...collectOfficialIds(official), ...collectStrixIds(strix, TEST_NUM)]);
 
 const byId = {
   rw: indexItems(lists.rw),
@@ -515,7 +525,7 @@ for (const section of ["rw", "math"]) {
       const src = byId[section].byQuestionId.get(id) || byId[section].byExternalId.get(id);
       if (!src) throw new Error(`BB11 not in list ${section} ${id}`);
       bb11Items.push(src);
-      neededKeys.add(`${section}:${src.skill_cd}:${src.difficulty}:${src.score_band_range_cd}`);
+      neededKeys.add(`${section}:${src.skill_cd}:${src.difficulty}`);
     }
   }
 }
@@ -525,7 +535,7 @@ for (const section of ["rw", "math"]) {
   for (const it of lists[section]) {
     if (!it.external_id) continue;
     if (excluded.has(it.questionId) || excluded.has(it.external_id)) continue;
-    const key = `${section}:${it.skill_cd}:${it.difficulty}:${it.score_band_range_cd}`;
+    const key = `${section}:${it.skill_cd}:${it.difficulty}`;
     if (neededKeys.has(key)) candidateItems.push(it);
   }
 }
@@ -534,11 +544,11 @@ await fetchAll(bb11Items, "bb11");
 await fetchAll(candidateItems, "candidates");
 
 const { form, audit } = pickSlots({ official, lists, excluded });
-strix["2"] = form;
+strix[TEST_NUM] = form;
 fs.writeFileSync(path.join(ROOT, "lib/cb/strix-forms.json"), JSON.stringify(strix));
 const auditPath = writeAudit(audit);
 const exceptions = audit.filter((r) => r.diffs.length);
-console.log("wrote form 2 +", auditPath);
+console.log(`wrote form ${TEST_NUM} +`, auditPath);
 console.log("exceptions", exceptions.length);
 for (const r of exceptions) {
   console.log(`  ${r.section}.${r.mk}.Q${r.i} ${r.skill} ${r.diff}`, r.diffs.join("; "), r.bb11, "→", r.chosen);

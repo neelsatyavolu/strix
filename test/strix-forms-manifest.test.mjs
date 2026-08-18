@@ -18,10 +18,11 @@ const officialForms = JSON.parse(
 );
 const auditUrl = new URL('../docs/strix-test-1-audit.md', import.meta.url);
 const auditTwoUrl = new URL('../docs/strix-test-2-audit.md', import.meta.url);
+const auditThreeUrl = new URL('../docs/strix-test-3-audit.md', import.meta.url);
 
 const MODULE_KEYS = ['m1', 'easy', 'hard'];
 const EXPECTED_COUNTS = { rw: 27, math: 22 };
-const EXPECTED_TESTS = ['1', '2'];
+const EXPECTED_TESTS = ['1', '2', '3'];
 
 // The single intentional answer-type deviation from Bluebook 11: Math hard
 // module slot 2 (skill H.D., difficulty E) is a grid-in (SPR) in Bluebook 11,
@@ -73,7 +74,7 @@ function collectFormIds(form) {
   return ids;
 }
 
-test('Strix tests 1 and 2 exist as complete full SATs', () => {
+test('Strix tests 1, 2, and 3 exist as complete full SATs', () => {
   assert.equal(fs.existsSync(strixFormsUrl), true);
   const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
 
@@ -175,4 +176,12 @@ test('Strix Test 2 audit doc exists and records leftover type/form exceptions', 
   assert.match(audit, /4fb8adf7/);
   assert.match(audit, /answer type: spr → mcq/);
   assert.match(audit, /diagram → none/);
+});
+
+test('Strix Test 3 audit doc exists', () => {
+  assert.equal(fs.existsSync(auditThreeUrl), true);
+  const audit = fs.readFileSync(auditThreeUrl, 'utf8');
+  assert.match(audit, /## Exceptions/);
+  assert.match(audit, /147 questions/);
+  assert.match(audit, /Strix Tests 1 and 2/);
 });
