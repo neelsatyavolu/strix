@@ -182,7 +182,7 @@ function Vocabulary() {
           <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>Vocabulary</h1>
         </div>
         <p style={{ margin: '4px 0 18px', font: 'var(--role-body-lg)', color: 'var(--text-secondary)', flexShrink: 0 }}>
-          Flashcards from a 500-word Digital SAT list — know it or flip for the definition, then pick which passage uses the word correctly.
+          Currently on words 401–450 of the 500-word SAT list — know it or flip for the definition, then pick which passage uses the word correctly.
         </p>
 
         {error && (

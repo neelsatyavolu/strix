@@ -417,7 +417,21 @@ export const VOCAB_BANK: VocabEntry[] = [
 
 export const VOCAB_BY_ID: Record<string, VocabEntry> = Object.fromEntries(VOCAB_BANK.map((w) => [w.id, w]));
 
+/** Live practice/hub window. Students can jump here without finishing earlier words. */
+export const ACTIVE_WORD_START = 401;
+export const ACTIVE_WORD_END = 450;
+
+export function wordNumber(id: string): number {
+  const n = Number.parseInt(id.replace(/^w/i, ''), 10);
+  return Number.isFinite(n) ? n : 0;
+}
+
+export const ACTIVE_BANK: VocabEntry[] = VOCAB_BANK.filter((w) => {
+  const n = wordNumber(w.id);
+  return n >= ACTIVE_WORD_START && n <= ACTIVE_WORD_END;
+});
+
 export function listCategories(): { id: string; label: string; count: number }[] {
-  return [{ id: 'core', label: 'SAT 500', count: VOCAB_BANK.length }];
+  return [{ id: 'core', label: 'SAT 500', count: ACTIVE_BANK.length }];
 }
 

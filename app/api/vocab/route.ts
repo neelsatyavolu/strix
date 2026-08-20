@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { VOCAB_BANK, VOCAB_BY_ID, listCategories } from "@/lib/vocab/bank";
+import { ACTIVE_BANK, VOCAB_BY_ID, listCategories } from "@/lib/vocab/bank";
 import { summarize } from "@/lib/vocab/session";
 import { dueAt, isMastered, knownBox, nextBox } from "@/lib/vocab/schedule";
 import { isCorrectUsage } from "@/lib/vocab/usageOptions";
@@ -24,7 +24,7 @@ export async function GET() {
   const rows = (data ?? []) as VocabProgressRow[];
   const summary = summarize(rows);
 
-  const words = VOCAB_BANK.map((w) => {
+  const words = ACTIVE_BANK.map((w) => {
     const p = rows.find((r) => r.word_id === w.id);
     const box = p?.box ?? 0;
     const known = p ? isMastered(box) : false;
@@ -48,7 +48,7 @@ export async function GET() {
       summary,
       categories: listCategories(),
       words,
-      bankSize: VOCAB_BANK.length,
+      bankSize: ACTIVE_BANK.length,
     },
   });
 }

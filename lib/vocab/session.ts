@@ -1,4 +1,4 @@
-import { VOCAB_BANK, VOCAB_BY_ID, listCategories } from "./bank";
+import { ACTIVE_BANK, VOCAB_BY_ID, listCategories } from "./bank";
 import { CATEGORY_LABELS, type PracticeItem, type VocabCategory, type VocabProgressRow } from "./types";
 import { isMastered, MAX_BOX } from "./schedule";
 import { buildUsageOptions } from "./usageOptions";
@@ -12,12 +12,14 @@ export function progressMap(rows: VocabProgressRow[]): ProgressMap {
 }
 
 export function summarize(rows: VocabProgressRow[], now = new Date()) {
-  const seen = new Set(rows.map((r) => r.word_id));
+  const activeIds = new Set(ACTIVE_BANK.map((w) => w.id));
+  const activeRows = rows.filter((r) => activeIds.has(r.word_id));
+  const seen = new Set(activeRows.map((r) => r.word_id));
   const nowIso = now.getTime();
   let due = 0;
   let learning = 0;
   let mastered = 0;
-  for (const r of rows) {
+  for (const r of activeRows) {
     if (isMastered(r.box)) {
       mastered += 1;
       continue;
@@ -25,7 +27,7 @@ export function summarize(rows: VocabProgressRow[], now = new Date()) {
     if (r.box >= 1) learning += 1;
     if (new Date(r.due_at).getTime() <= nowIso && !isMastered(r.box)) due += 1;
   }
-  const total = VOCAB_BANK.length;
+  const total = ACTIVE_BANK.length;
   const newCount = total - seen.size;
   return {
     total,
@@ -86,8 +88,8 @@ export function buildSession(opts: {
   const nowMs = (opts.now ?? new Date()).getTime();
   const map = progressMap(opts.progress);
   const pool = opts.category
-    ? VOCAB_BANK.filter((w) => w.category === opts.category)
-    : VOCAB_BANK;
+    ? ACTIVE_BANK.filter((w) => w.category === opts.category)
+    : ACTIVE_BANK;
 
   const retries: string[] = []; // last attempt wrong — show next session
   const due: string[] = [];
