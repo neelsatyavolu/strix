@@ -5,9 +5,29 @@
 > Each entry has a short summary and a transcript path you can Read for detail.
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Revision**: 14
-- **Updated**: 2026-08-18T19:16:04.525Z
-- **Sessions**: 13
+- **Revision**: 18
+- **Updated**: 2026-09-04T23:55:24.000Z
+- **Sessions**: 15
+
+## Add GPT-6 Astra model option
+
+- **id**: `210885e8-9c4c-4e4f-958d-e99ddc1ded17`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-09-04T23:55:24.000Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/01a06ed7-2c20-7600-b2f2-f8f0f92fd293/chat_history.jsonl`
+
+Added GPT-6 Astra (API id gpt-6-astra) as the first ChatGPT option in the tutor model picker. Initial ChatGPT selection is now gpt-6-astra. Backend fallbacks (insights.js, electron DEFAULT_CODEX_MODEL, providers.ts CODEX_MODEL) still default to gpt-5.6-sol when no model is sent. Design-kit TutorPanel kept in sync. Sol/Terra/Luna/5.5 remain in the list.
+
+## Vocab live window 401-450
+
+- **id**: `aab4cd66-381e-4898-8f8d-b6aea0e357a7`
+- **provider**: Grok
+- **status**: idle
+- **updated**: 2026-08-20T01:18:13.000Z
+- **transcript**: `/Users/neel/.grok/sessions/%2FUsers%2Fneel%2FDocuments%2FGitHub%2Fstrix/01a01cb6-0811-76a2-89a4-8c433c117133/chat_history.jsonl`
+
+Vocab now serves words 401–450 immediately, even if a student has not finished 1–400. Added ACTIVE_WORD_START/END (401–450) and ACTIVE_BANK in lib/vocab/bank.ts; hub list, stats, and buildSession use that slice. Full SAT 500 bank (incl. 451–500) stays in VOCAB_BY_ID. Committed and pushed 496b5a8 feat(vocab): serve words 401–450 now.
 
 ## Strix Test 6 via SAT skill
 

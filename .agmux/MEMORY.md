@@ -6,11 +6,37 @@
 > Do not store secrets (API keys, tokens, passwords).
 
 - **Project**: `7d6ae6aa-83f5-4748-93de-d5cf01205774`
-- **Revision**: 9
-- **Updated**: 2026-08-18T19:16:04.524Z
-- **Active entries**: 21
+- **Revision**: 11
+- **Updated**: 2026-09-04T23:55:17.953Z
+- **Active entries**: 23
+- **Important**: 1
+- **Important (non-binding)**: 1
+
+## Important
+
+### "Vocab live window is 401-450"
+
+- **id**: `e609a285-e789-4f5d-b646-aa8298ead080`
+- **kind**: decision
+- **important**: true
+- **binding**: false (attention only)
+- **source**: agent
+- **authority**: agent
+- **created**: 2026-08-20T01:17:45.915Z
+- **updated**: 2026-08-20T01:17:45.915Z
+- **content**: "Vocabulary practice/hub currently serve AODEFEN words 401–450 only (ACTIVE_WORD_START/END in lib/vocab/bank.ts). Students do not need to finish 1–400 first. 451–500 remain in EXTRA_BANK/VOCAB_BANK but are not in ACTIVE_BANK. Bump ACTIVE_WORD_END (then START) to open the next slice."
 
 ## Decisions
+
+### "ChatGPT picker includes GPT-6 Astra"
+
+- **id**: `1a4b0fc3-f8a0-4480-bf2e-e1cc6e9755c9`
+- **kind**: decision
+- **source**: agent
+- **authority**: agent
+- **created**: 2026-09-04T23:55:17.953Z
+- **updated**: 2026-09-04T23:55:17.953Z
+- **content**: "Tutor ChatGPT model picker includes gpt-6-astra (label GPT-6 Astra) as the first option and initial selection. Official OpenAI API id is gpt-6-astra. Fallback when no model is sent remains gpt-5.6-sol (insights.js, electron DEFAULT_CODEX_MODEL, providers.ts)."
 
 ### "SAT question creator: writer/verifier + mechanical blinds"
 
