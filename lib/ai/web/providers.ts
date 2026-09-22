@@ -42,7 +42,7 @@ export const PROVIDERS: Record<Provider, ProviderConfig> = {
     authorizeUrl: "https://auth.x.ai/oauth2/authorize",
     tokenUrl: "https://auth.x.ai/oauth2/token",
     scope: "openid profile email offline_access grok-cli:access api:access",
-    defaultModel: process.env.GROK_MODEL ?? "grok-4.6",
+    defaultModel: process.env.GROK_MODEL ?? "grok-4.7",
     expiryBufferSec: 120,
   },
 };

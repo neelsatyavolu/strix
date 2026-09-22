@@ -113,7 +113,7 @@ async function askGrok(
     messages: system ? [{ role: "system", content: String(system) }, ...messages] : messages,
     temperature: 0.4,
   };
-  if (chosen === "grok-4.6" || chosen === "grok-4.5" || chosen === "grok-4.3") body.reasoning = { effort: "high" };
+  if (chosen === "grok-4.7" || chosen === "grok-4.6" || chosen === "grok-4.5" || chosen === "grok-4.3") body.reasoning = { effort: "high" };
 
   const res = await fetch(GROK_CHAT_URL, {
     method: "POST",
