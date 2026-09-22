@@ -1,5 +1,6 @@
 import "server-only";
 import { PROVIDERS, type Provider, type Tokens } from "./providers";
+import { aiModels } from "./models";
 import { getActiveSession } from "./session";
 
 // One-shot (non-streaming) completion through the user's connected subscription.
@@ -62,8 +63,12 @@ async function askCodex(
   messages: Message[],
   model: string,
 ): Promise<string> {
+  const choices = (await aiModels()).chatgpt;
+  const selected = choices.find((choice) => choice.value === model)?.value
+    ?? choices.find((choice) => choice.value === PROVIDERS.codex.defaultModel)?.value
+    ?? choices[0]?.value ?? PROVIDERS.codex.defaultModel;
   const body = {
-    model: model || PROVIDERS.codex.defaultModel,
+    model: selected,
     instructions: String(system || ""),
     input: messages.map((m) => ({
       role: m.role,
@@ -107,13 +112,16 @@ async function askGrok(
   messages: Message[],
   model: string,
 ): Promise<string> {
-  const chosen = model || PROVIDERS.grok.defaultModel;
+  const choices = (await aiModels()).grok;
+  const chosen = choices.find((choice) => choice.value === model)?.value
+    ?? choices.find((choice) => choice.value === PROVIDERS.grok.defaultModel)?.value
+    ?? choices[0]?.value ?? PROVIDERS.grok.defaultModel;
   const body: Record<string, unknown> = {
     model: chosen,
     messages: system ? [{ role: "system", content: String(system) }, ...messages] : messages,
     temperature: 0.4,
   };
-  if (chosen === "grok-4.7" || chosen === "grok-4.6" || chosen === "grok-4.5" || chosen === "grok-4.3") body.reasoning = { effort: "high" };
+  if (chosen === "grok-4.7" || chosen === "grok-4.6") body.reasoning = { effort: "high" };
 
   const res = await fetch(GROK_CHAT_URL, {
     method: "POST",

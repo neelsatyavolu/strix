@@ -15,7 +15,7 @@ const CODEX_BACKEND_RESPONSES_URL = "https://chatgpt.com/backend-api/codex/respo
 const GROK_REDIRECT_URI = sharedAuth.providers.grok.redirectUri;
 const GROK_CHAT_COMPLETIONS_URL = "https://api.x.ai/v1/chat/completions";
 
-const DEFAULT_CODEX_MODEL = "gpt-5.6-sol";
+const DEFAULT_CODEX_MODEL = "gpt-6-astra";
 const DEFAULT_GROK_MODEL = "grok-4.7";
 const HIDDEN_MODELS = { codex: [], grok: [] };
 let modelCatalog = sharedAuth.bundledModels;
@@ -281,8 +281,12 @@ function parseCodexResponsesStream(text) {
 }
 
 async function askCodex(tokens, system, messages, model) {
+  const choices = (await visibleModels()).chatgpt;
+  const selected = choices.find((choice) => choice.value === model)?.value
+    || choices.find((choice) => choice.value === DEFAULT_CODEX_MODEL)?.value
+    || choices[0]?.value || DEFAULT_CODEX_MODEL;
   const body = {
-    model: model || DEFAULT_CODEX_MODEL,
+    model: selected,
     instructions: String(system || ""),
     input: normalizeMessages(messages).map((m) => ({
       role: m.role,
@@ -314,14 +318,17 @@ async function askCodex(tokens, system, messages, model) {
 }
 
 async function askGrok(tokens, system, messages, model) {
-  const chosen = model || DEFAULT_GROK_MODEL;
+  const choices = (await visibleModels()).grok;
+  const chosen = choices.find((choice) => choice.value === model)?.value
+    || choices.find((choice) => choice.value === DEFAULT_GROK_MODEL)?.value
+    || choices[0]?.value || DEFAULT_GROK_MODEL;
   const chat = normalizeMessages(messages);
   const body = {
     model: chosen,
     messages: system ? [{ role: "system", content: String(system) }, ...chat] : chat,
     temperature: 0.4,
   };
-  if (chosen === "grok-4.7" || chosen === "grok-4.6" || chosen === "grok-4.5" || chosen === "grok-4.3") body.reasoning = { effort: "high" };
+  if (chosen === "grok-4.7" || chosen === "grok-4.6") body.reasoning = { effort: "high" };
   const res = await fetch(GROK_CHAT_COMPLETIONS_URL, {
     method: "POST",
     headers: {

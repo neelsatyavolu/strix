@@ -7,7 +7,7 @@ import type { Provider, Tokens } from "@neelsatyavolu/shared-ai-auth";
 
 export type { Provider, Tokens };
 export const PROVIDERS = {
-  codex: { ...providers.codex, defaultModel: process.env.CODEX_MODEL ?? "gpt-5.6-sol" },
+  codex: { ...providers.codex, defaultModel: process.env.CODEX_MODEL ?? "gpt-6-astra" },
   grok: { ...providers.grok, defaultModel: process.env.GROK_MODEL ?? "grok-4.7" },
 };
 
