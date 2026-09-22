@@ -39,7 +39,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ provide
       { status: 400 },
     );
   }
-  if (state && pkce.state !== state) {
+  if ((provider === "codex" && pkce.state !== state) || (state && pkce.state !== state)) {
     return NextResponse.json({ ok: false, error: "Sign-in state mismatch. Try again." }, { status: 400 });
   }
 

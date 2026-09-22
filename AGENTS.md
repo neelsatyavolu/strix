@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## Shared Codex/Grok integration
+
+Use [shared-ai-auth](https://github.com/neelsatyavolu/shared-ai-auth) for OAuth protocol helpers and live model choices. Strix web uses a pasted Codex callback URL or Grok code; Electron uses localhost callbacks and Keychain. The optional project blacklists are in `lib/ai/web/models.ts` and `electron/ai.cjs`; new models show by default. Keep token and callback values out of logs.
+
 This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
 ## What this is

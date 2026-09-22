@@ -6,31 +6,35 @@
 // clients and MUST be kept exactly as-is.
 
 const http = require("node:http");
-const { createHash, randomBytes } = require("node:crypto");
 const { execFile } = require("node:child_process");
+const sharedAuth = require("@neelsatyavolu/shared-ai-auth");
 
 // --- OAuth + endpoint constants (verbatim from the Codex/Grok CLI clients) ---
-const CODEX_CLIENT_ID = "app_EMoamEEZ73f0CkXaXp7hrann";
-const CODEX_REDIRECT_URI = "http://localhost:1455/auth/callback";
-const CODEX_AUTHORIZE_URL = "https://auth.openai.com/oauth/authorize";
-const CODEX_TOKEN_URL = "https://auth.openai.com/oauth/token";
+const CODEX_REDIRECT_URI = sharedAuth.providers.codex.redirectUri;
 const CODEX_BACKEND_RESPONSES_URL = "https://chatgpt.com/backend-api/codex/responses";
-const CODEX_SCOPE = "openid profile email offline_access";
-const GROK_CLIENT_ID = "b1a00492-073a-47ea-816f-4c329264a828";
-const GROK_REDIRECT_URI = "http://127.0.0.1:56121/callback";
-const GROK_AUTHORIZE_URL = "https://auth.x.ai/oauth2/authorize";
-const GROK_TOKEN_URL = "https://auth.x.ai/oauth2/token";
+const GROK_REDIRECT_URI = sharedAuth.providers.grok.redirectUri;
 const GROK_CHAT_COMPLETIONS_URL = "https://api.x.ai/v1/chat/completions";
-const GROK_SCOPE = "openid profile email offline_access grok-cli:access api:access";
 
 const DEFAULT_CODEX_MODEL = "gpt-5.6-sol";
 const DEFAULT_GROK_MODEL = "grok-4.7";
+const HIDDEN_MODELS = { codex: [], grok: [] };
+let modelCatalog = sharedAuth.bundledModels;
+let modelRefreshAt = 0;
+
+async function visibleModels() {
+  if (Date.now() >= modelRefreshAt) {
+    modelCatalog = await sharedAuth.loadModels({ fallback: modelCatalog });
+    modelRefreshAt = Date.now() + 5 * 60_000;
+  }
+  const rows = (provider) => sharedAuth.selectModels(modelCatalog, provider, HIDDEN_MODELS[provider])
+    .map((model) => ({ value: model.id, label: model.label }));
+  return { chatgpt: rows("codex"), grok: rows("grok") };
+}
 
 const KEYCHAIN_SERVICE = "Strix";
 const KEY_PROVIDERS = new Set(["codex", "grok"]);
 const USER_AGENT = "Strix/1.0";
 const AI_PROVIDER_TIMEOUT_MS = 90000;
-const TOKEN_TIMEOUT_MS = 20000;
 
 // In-flight OAuth attempts, keyed by provider. Holds the PKCE verifier so a
 // manually pasted authorization code can be exchanged, plus a `cancel` that
@@ -98,111 +102,14 @@ async function writeSession(provider, tokens) {
   return tokens;
 }
 
-// --- PKCE + authorize URLs ---
-function base64url(buffer) {
-  return buffer.toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
-
-function generatePkce() {
-  const verifier = base64url(randomBytes(64));
-  return {
-    verifier,
-    challenge: base64url(createHash("sha256").update(verifier).digest()),
-    state: base64url(randomBytes(32)),
-  };
-}
-
-function buildCodexAuthorizeUrl(challenge, state) {
-  const params = new URLSearchParams({
-    response_type: "code", client_id: CODEX_CLIENT_ID, redirect_uri: CODEX_REDIRECT_URI,
-    scope: CODEX_SCOPE, code_challenge: challenge, code_challenge_method: "S256", state,
-    id_token_add_organizations: "true", codex_cli_simplified_flow: "true", originator: "codex_cli_rs",
-  });
-  return `${CODEX_AUTHORIZE_URL}?${params.toString()}`;
-}
-
-function buildGrokAuthorizeUrl(challenge, state) {
-  const params = new URLSearchParams({
-    response_type: "code", client_id: GROK_CLIENT_ID, redirect_uri: GROK_REDIRECT_URI,
-    scope: GROK_SCOPE, code_challenge: challenge, code_challenge_method: "S256", state,
-  });
-  return `${GROK_AUTHORIZE_URL}?${params.toString()}`;
-}
-
-// Pull the ChatGPT account id out of the OpenAI id_token JWT.
-function decodeCodexAccountId(idToken) {
-  if (!idToken) return "";
-  const parts = String(idToken).split(".");
-  if (parts.length < 2) return "";
-  try {
-    const payload = Buffer.from(parts[1].replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8");
-    const claims = JSON.parse(payload);
-    const orgs = claims?.["https://api.openai.com/auth"]?.organizations;
-    if (Array.isArray(orgs) && orgs.length) {
-      const account = orgs.find((org) => org?.is_default) || orgs[0];
-      return String(account?.id || "");
-    }
-    return String(claims?.sub || "");
-  } catch {
-    return "";
-  }
-}
-
-function tokenExpiry(expiresIn, skewSeconds = 90) {
-  return Date.now() + Math.max(30, Number(expiresIn || 3600) - skewSeconds) * 1000;
-}
-
-// --- Token exchange + refresh (global fetch) ---
-async function postForm(url, params) {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { Accept: "application/json", "Content-Type": "application/x-www-form-urlencoded", "User-Agent": USER_AGENT },
-    body: params.toString(),
-    signal: AbortSignal.timeout(TOKEN_TIMEOUT_MS),
-  });
-  const text = await res.text();
-  let json = {};
-  try { json = text ? JSON.parse(text) : {}; }
-  catch { throw new Error(`Invalid JSON from ${new URL(url).hostname}`); }
-  if (!res.ok) throw new Error(json?.error_description || json?.error || `HTTP ${res.status}`);
-  return json;
-}
-
-async function exchangeCodexCode(code, verifier) {
-  const json = await postForm(CODEX_TOKEN_URL, new URLSearchParams({
-    grant_type: "authorization_code", code, redirect_uri: CODEX_REDIRECT_URI,
-    client_id: CODEX_CLIENT_ID, code_verifier: verifier,
-  }));
-  return {
-    accessToken: json.access_token, refreshToken: json.refresh_token, idToken: json.id_token,
-    accountId: decodeCodexAccountId(json.id_token), expiresAt: tokenExpiry(json.expires_in, 60),
-  };
-}
-
-async function refreshCodexTokens(refreshToken, accountId = "") {
-  const json = await postForm(CODEX_TOKEN_URL, new URLSearchParams({
-    grant_type: "refresh_token", refresh_token: refreshToken, client_id: CODEX_CLIENT_ID, scope: CODEX_SCOPE,
-  }));
-  return {
-    accessToken: json.access_token, refreshToken: json.refresh_token || refreshToken, idToken: json.id_token,
-    accountId: decodeCodexAccountId(json.id_token) || accountId, expiresAt: tokenExpiry(json.expires_in, 60),
-  };
-}
-
-async function exchangeGrokCode(code, verifier) {
-  const json = await postForm(GROK_TOKEN_URL, new URLSearchParams({
-    grant_type: "authorization_code", code, redirect_uri: GROK_REDIRECT_URI,
-    client_id: GROK_CLIENT_ID, code_verifier: verifier,
-  }));
-  return { accessToken: json.access_token, refreshToken: json.refresh_token, expiresAt: tokenExpiry(json.expires_in, 120) };
-}
-
-async function refreshGrokTokens(refreshToken) {
-  const json = await postForm(GROK_TOKEN_URL, new URLSearchParams({
-    grant_type: "refresh_token", refresh_token: refreshToken, client_id: GROK_CLIENT_ID, scope: GROK_SCOPE,
-  }));
-  return { accessToken: json.access_token, refreshToken: json.refresh_token || refreshToken, expiresAt: tokenExpiry(json.expires_in, 120) };
-}
+// OAuth protocol details are shared; this app owns its loopback listener and Keychain entries.
+const generatePkce = sharedAuth.generatePkce;
+const buildCodexAuthorizeUrl = (challenge, state) => sharedAuth.authorizeUrl("codex", { challenge, state });
+const buildGrokAuthorizeUrl = (challenge, state) => sharedAuth.authorizeUrl("grok", { challenge, state });
+const exchangeCodexCode = (code, verifier) => sharedAuth.exchangeCode("codex", code, verifier);
+const refreshCodexTokens = (refreshToken, accountId = "") => sharedAuth.refreshTokens("codex", refreshToken, { previous: { refreshToken, accountId } });
+const exchangeGrokCode = (code, verifier) => sharedAuth.exchangeCode("grok", code, verifier);
+const refreshGrokTokens = (refreshToken) => sharedAuth.refreshTokens("grok", refreshToken);
 
 // --- Loopback callback server + full OAuth flow ---
 function waitForOAuthCallback(redirectUri, expectedState, registerCancel) {
@@ -446,7 +353,7 @@ function registerAiIpc(ipcMain, shell) {
   // Whether a stored token exists for each provider (presence only, no refresh).
   ipcMain.handle("ai:status", async () => {
     const [codex, grok] = await Promise.all([readSession("codex"), readSession("grok")]);
-    return { codex: Boolean(codex), grok: Boolean(grok) };
+    return { codex: Boolean(codex), grok: Boolean(grok), models: await visibleModels() };
   });
 
   // Run the OAuth loopback flow and persist the token.

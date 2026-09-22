@@ -3,7 +3,7 @@ import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
-import { aiAsk, aiConnect, aiSubmitCode, aiCancelConnect, aiStatus, isDesktop, TUTOR_SYSTEM, questionContext, statsContext, historyContext, historyResultText, parseHistoryCall, stripHistoryMarker } from '@/lib/ai/bridge';
+import { aiAsk, aiConnect, aiSubmitCode, aiCancelConnect, aiStatus, aiModels, isDesktop, TUTOR_SYSTEM, questionContext, statsContext, historyContext, historyResultText, parseHistoryCall, stripHistoryMarker } from '@/lib/ai/bridge';
 import { useStats, useHistory, fetchHistory } from '@/lib/data/hooks';
 import { useTypingEmitter } from '@/lib/tutor/useTyping';
 
@@ -76,24 +76,12 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
     if (liveMode) { v.trim() ? typing.bump() : typing.stop(); }
   };
 
-  const MODELS = {
-    chatgpt: [
-      { value: 'gpt-6-astra', label: 'GPT-6 Astra' },
-      { value: 'gpt-6-sol', label: 'GPT-6 Sol' },
-      { value: 'gpt-6-luna', label: 'GPT-6 Luna' },
-      { value: 'gpt-5.6-sol', label: 'GPT-5.6 Sol' },
-      { value: 'gpt-5.6-terra', label: 'GPT-5.6 Terra' },
-      { value: 'gpt-5.6-luna', label: 'GPT-5.6 Luna' },
-      { value: 'gpt-5.5', label: 'GPT-5.5' },
-    ],
-    grok: [
-      { value: 'grok-4.7', label: 'Grok 4.7' },
-      { value: 'grok-4.6', label: 'Grok 4.6' },
-      { value: 'grok-4.5', label: 'Grok 4.5 (deprecated)' },
-      { value: 'grok-4.3', label: 'Grok 4.3 (deprecated)' },
-    ],
-  };
-  React.useEffect(() => { setAiModel(MODELS[aiProvider][0].value); /* eslint-disable-next-line */ }, [aiProvider]);
+  const [MODELS, setModels] = React.useState({ chatgpt: [], grok: [] });
+  React.useEffect(() => { aiModels().then(setModels).catch(() => {}); }, []);
+  React.useEffect(() => {
+    const choices = MODELS[aiProvider];
+    if (choices.length) setAiModel((current) => choices.some((m) => m.value === current) ? current : choices[0].value);
+  }, [aiProvider, MODELS]);
   React.useEffect(() => { if (mode === 'ai') aiStatus().then(setConnected); }, [mode, aiProvider]);
   // Reset any in-flight connect UI when the target provider or mode changes.
   React.useEffect(() => { setPasteOpen(false); setAiConnecting(false); setConnectError(''); }, [aiProvider, mode]);
@@ -262,7 +250,7 @@ function TutorPanel({ onClose, allowAI = true, role = 'student', selfId, message
               background: 'var(--sunken)', border: 0, borderRadius: 'var(--radius-md)',
               font: 'var(--role-caption)', fontWeight: 500, color: 'var(--text-primary)', cursor: 'pointer', whiteSpace: 'nowrap',
             }}>
-              {MODELS[aiProvider].find((m) => m.value === aiModel)?.label}
+              {MODELS[aiProvider].find((m) => m.value === aiModel)?.label || aiModel}
               <span style={{ fontSize: 9, color: 'var(--text-tertiary)' }}>▾</span>
             </button>
             {showModelPicker && (

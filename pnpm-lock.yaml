@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@neelsatyavolu/shared-ai-auth':
+        specifier: github:neelsatyavolu/shared-ai-auth#c1e7c0a
+        version: https://codeload.github.com/neelsatyavolu/shared-ai-auth/tar.gz/c1e7c0ac87717d27bc33f591795e37175ce02ee6
       '@supabase/ssr':
         specifier: ^0.12.0
         version: 0.12.0(@supabase/supabase-js@2.108.2)
@@ -591,6 +594,11 @@ packages:
     peerDependencies:
       '@emnapi/core': ^1.7.1
       '@emnapi/runtime': ^1.7.1
+
+  '@neelsatyavolu/shared-ai-auth@https://codeload.github.com/neelsatyavolu/shared-ai-auth/tar.gz/c1e7c0ac87717d27bc33f591795e37175ce02ee6':
+    resolution: {gitHosted: true, integrity: sha512-5hSgI6NLPZ0U7fWnKOuAceVUFN68K1Fp8cz7qbK205wZRz47tRFkZaskeRD4Aubamb3GMghuM1c3K/Blv1jCSg==, tarball: https://codeload.github.com/neelsatyavolu/shared-ai-auth/tar.gz/c1e7c0ac87717d27bc33f591795e37175ce02ee6}
+    version: 0.1.1
+    engines: {node: '>=18'}
 
   '@next/env@16.2.9':
     resolution: {integrity: sha512-ki5VxxXfzD/9TDe13wyeTKIjQTAwBVpnr8KhRDUr8ltMUq1/NBpWNT5tiPoxiGl+PHM4X2ahSOiPk6iAimIzPg==}
@@ -3498,6 +3506,8 @@ snapshots:
       '@emnapi/runtime': 1.10.0
       '@tybys/wasm-util': 0.10.3
     optional: true
+
+  '@neelsatyavolu/shared-ai-auth@https://codeload.github.com/neelsatyavolu/shared-ai-auth/tar.gz/c1e7c0ac87717d27bc33f591795e37175ce02ee6': {}
 
   '@next/env@16.2.9': {}
 
