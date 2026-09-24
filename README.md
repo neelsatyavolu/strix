@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Strix
 
-## Getting Started
+Free digital SAT practice for Mac and the web — real College Board question-bank
+questions, a test screen that works like Bluebook, adaptive modules scored on the
+400–1600 scale, and tutoring (bring your own ChatGPT/Grok, or invite a human tutor
+who can watch live).
 
-First, run the development server:
+**Use it:** [strixprep.com](https://strixprep.com)
+
+## Stack
+
+- **Next.js 16** (App Router) — marketing page at `/`, the app at `/app` (a client SPA in `components/sixteen/`), API routes in `app/api/`
+- **Supabase** (Postgres + Auth + Realtime) — accounts, saved progress, live tutoring
+- **Electron** — the macOS desktop wrapper (`electron/`)
+- Questions are fetched live from the College Board question bank (`lib/cb/`) and cached
+
+## Getting started
+
+Requires Node 22+ and [pnpm](https://pnpm.io).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev                     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a free [Supabase](https://supabase.com) project and add a `.env.local`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Needed for |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Accounts, progress, tutoring |
+| `SUPABASE_SERVICE_ROLE_KEY` | Sign-up and the question cache (server-only — never expose) |
+| `POSTGRES_URL_NON_POOLING` | Applying migrations with `psql` |
+| `NEXT_PUBLIC_DESMOS_API_KEY` | Optional — Desmos calculator |
+| `NEXT_PUBLIC_DOWNLOAD_URL`, `DOWNLOADS_BLOB_BASE` | Optional — Mac app download links |
+| `NEXT_PUBLIC_DEV_SEED_EMAILS` | Optional — accounts allowed to use the Developer tab |
+| `CODEX_MODEL`, `GROK_MODEL` | Optional — AI tutor model overrides |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Then apply the schema:
 
-## Learn More
+```bash
+for f in supabase/migrations/*.sql; do psql "$POSTGRES_URL_NON_POOLING" -f "$f"; done
+```
 
-To learn more about Next.js, take a look at the following resources:
+Email + password sign-in works out of the box; Google sign-in needs OAuth setup
+(see [SETUP.md](SETUP.md)).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Other scripts:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command | What it does |
+|---|---|
+| `pnpm app` | Next dev server + the Electron desktop app |
+| `pnpm dist` | Unsigned macOS `.app` / `.dmg` in `dist-app/` |
+| `pnpm lint` | ESLint |
+| `pnpm exec tsc --noEmit` | Type check |
+| `pnpm test` | Unit tests (`test/*.test.mjs`) |
+| `pnpm build` | Production build |
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Issues and pull requests are welcome. Before opening a PR, make sure
+`pnpm lint`, `pnpm exec tsc --noEmit`, and `pnpm build` pass. Project conventions
+(file layout, styling with design tokens + CSS Modules, JSX vs TS by layer) are in
+[AGENTS.md](AGENTS.md); the design system is described in
+[docs/superpowers/specs/2026-09-23-redesign-design.md](docs/superpowers/specs/2026-09-23-redesign-design.md).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+[MIT](LICENSE) © Neel Satyavolu
+
+Strix is an independent study tool and is not affiliated with or endorsed by
+College Board. SAT is a trademark registered by College Board. Questions are
+fetched from the College Board question bank for personal practice; score
+conversions use a representative curve and are an estimate, not an official score.
