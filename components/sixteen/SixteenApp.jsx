@@ -4,28 +4,21 @@ import * as SixteenNS from '@/components/sixteen';
 import { Icon } from '@/components/sixteen';
 import Onboarding from './screens/Onboarding';
 import Dashboard from './screens/Dashboard';
-import PracticeSetup from './screens/PracticeSetup';
 import QuestionRW from './screens/QuestionRW';
 import QuestionMath from './screens/QuestionMath';
 import ScoreReport from './screens/ScoreReport';
-import StudyPlan from './screens/StudyPlan';
 import Review from './screens/Review';
-import TutorAssignments from './screens/TutorAssignments';
-import StudentAssignments from './screens/StudentAssignments';
 import ExamBreak from './screens/ExamBreak';
 import ExamReport from './screens/ExamReport';
-import Stats from './screens/Stats';
-import Sessions from './screens/Sessions';
-import PracticeTests from './screens/PracticeTests';
-import PracticeModules from './screens/PracticeModules';
-import PracticeSections from './screens/PracticeSections';
-import QuestionBank from './screens/QuestionBank';
 import CategoryDetail from './screens/CategoryDetail';
 import SessionDetail from './screens/SessionDetail';
 import TestReview from './screens/TestReview';
-import TutorInvite from './screens/TutorInvite';
-import TutorChat from './screens/TutorChat';
 import Settings from './screens/Settings';
+import PracticeHub from './screens/practice/PracticeHub';
+import ProgressHub from './screens/progress/ProgressHub';
+import PlanHub from './screens/plan/PlanHub';
+import TutorHub from './screens/tutor-hub/TutorHub';
+import { useNavigation, NavProvider } from './session/Navigation';
 import DevTab from './screens/DevTab';
 import Vocabulary from './screens/Vocabulary';
 import TutorPanel from './panels/TutorPanel';
@@ -43,16 +36,56 @@ import { TeachProvider } from '@/components/tutor/TeachContext';
 import TeachLayer from '@/components/tutor/TeachLayer';
 import TeachToolbar from '@/components/tutor/TeachToolbar';
 
-// App — top-level Sixteen UI kit shell. Sidebar + screen router + tutor pane.
+// App — top-level shell. Sidebar + screen router + tutor pane.
+
+// Screen ids from before the IA consolidation → [new screen, params]. Every old
+// go('<id>') call keeps working and lands on the consolidated screen.
+const ALIASES = {
+  'practice-setup': ['practice', { tab: 'drill' }],
+  'question-bank': ['practice', { tab: 'bank' }],
+  'stats': ['progress', { tab: 'overview' }],
+  'sessions': ['progress', { tab: 'history' }],
+  'practice-modules': ['progress', { tab: 'full', kind: 'modules' }],
+  'practice-sections': ['progress', { tab: 'full', kind: 'sections' }],
+  'practice-tests': ['progress', { tab: 'full', kind: 'tests' }],
+  'student-assignments': ['plan', {}],
+  'tutor-assignments': ['plan', {}],
+  'tutor-invite': ['tutor', {}],
+  'tutor-chat': ['tutor', { tab: 'chat' }],
+};
+
+function resolveAlias(view, params) {
+  const a = ALIASES[view];
+  return a ? [a[0], { ...a[1], ...params }] : [view, params];
+}
+
+// Drill-in screens → the sidebar section they live under (also the Back target
+// when there's no history, e.g. after a reload).
+const PARENT = {
+  'session-detail': 'progress',
+  'category-detail': 'progress',
+  'test-review': 'progress',
+  'score-report': 'practice',
+  'exam-report': 'practice',
+  'exam-break': 'practice',
+};
 
 function App() {
   const NS = SixteenNS;
-  const { AppShell, Titlebar, Sidebar, IconButton, Avatar } = NS;
+  const { AppShell, Titlebar, Sidebar, IconButton, AccountMenu, StudentSwitcher } = NS;
   const { profile, displayName, email, user, avatarUrl } = useProfile();
   const sessionLive = usePracticeSession();
 
-  const [view, setView] = React.useState(profile ? 'dashboard' : 'onboarding');
-  const [viewProps, setViewProps] = React.useState({});
+  const nav = useNavigation(profile ? 'dashboard' : 'onboarding');
+  const [view, viewProps] = resolveAlias(nav.view, nav.params);
+  // Latest view for async callbacks (fetches, timers) that must not act on a stale one.
+  const viewRef = React.useRef(view);
+  React.useEffect(() => { viewRef.current = view; }, [view]);
+  const { go: navGo, replace: navReplace, reset: navReset } = nav;
+  const go = React.useCallback((v, props = {}) => {
+    const [target, params] = resolveAlias(v, props);
+    navGo(target, params);
+  }, [navGo]);
   const [theme, setThemeState] = React.useState(() => {
     try {
       const saved = typeof window !== 'undefined' ? window.localStorage.getItem('strix-theme') : null;
@@ -128,8 +161,8 @@ function App() {
           setRole('tutor');
           setTutorOn(true);
           setWatchedStudentId(watch);
-          setView((v) => (v === 'onboarding' ? 'dashboard' : v));
-          if (typeof window !== 'undefined') window.history.replaceState({}, '', '/app');
+          if (typeof window !== 'undefined') window.history.replaceState(window.history.state, '', '/app');
+          navReset('dashboard');
         } else if (savedRole.current === 'tutor' && list.length > 0) {
           // Restore the persisted tutor mode (the URL redirect takes precedence).
           setRole('tutor');
@@ -138,12 +171,12 @@ function App() {
           setWatchedStudentId(
             sw && list.some((s) => s.id === sw) ? sw : (list.length === 1 ? list[0].id : null),
           );
-          setView((v) => (v === 'onboarding' ? 'dashboard' : v));
+          if (viewRef.current === 'onboarding') navReset('dashboard');
         }
       })
       .catch(() => {})
       .finally(() => { hydrated.current = true; });
-  }, []);
+  }, [navReset]);
 
   // If tutor access goes away, fall back to the student view.
   React.useEffect(() => {
@@ -243,15 +276,15 @@ function App() {
     if (watchedIsLive) {
       wasLive.current = true;
       // Async so we don't sync-setState inside the effect body (React 19 lint).
-      const t = setTimeout(() => setView('live-session'), 0);
+      const t = setTimeout(() => navGo('live-session'), 0);
       return () => clearTimeout(t);
     }
     const t = setTimeout(() => {
       wasLive.current = false;
-      setView((v) => (v === 'live-session' ? 'dashboard' : v));
+      if (viewRef.current === 'live-session') navReplace('dashboard');
     }, 600);
     return () => clearTimeout(t);
-  }, [watchedIsLive]);
+  }, [watchedIsLive, navGo, navReplace]);
 
   // Follow the student into a completed session they open, so teaching mode has
   // the same questions on both screens. Only moves the tutor when the student
@@ -262,24 +295,22 @@ function App() {
     if (!tutorWatching || !watchedReviewSessionId) { lastReviewRef.current = null; return undefined; }
     if (lastReviewRef.current === watchedReviewSessionId) return undefined;
     lastReviewRef.current = watchedReviewSessionId;
-    const t = setTimeout(() => {
-      setView('session-detail');
-      setViewProps({ id: watchedReviewSessionId });
-    }, 0);
+    const t = setTimeout(() => navGo('session-detail', { id: watchedReviewSessionId }), 0);
     return () => clearTimeout(t);
-  }, [tutorWatching, watchedReviewSessionId]);
+  }, [tutorWatching, watchedReviewSessionId, navGo]);
 
   // Entering tutor view auto-opens the chat with the student; with one student
-  // we auto-select them, otherwise the header picker decides.
+  // we auto-select them, otherwise the sidebar switcher decides. Switching
+  // perspective starts from Home, since every screen's data changes.
   const switchRole = (r) => {
     setRole(r);
     setTutorOn(r === 'tutor');
     if (r === 'tutor') {
-      if (view === 'onboarding') setView('dashboard');
       setWatchedStudentId((cur) => cur || (students.length === 1 ? students[0].id : null));
     } else {
       setWatchedStudentId(null);
     }
+    navReset('dashboard');
   };
 
   // Join a live student from the banner — switches into tutor view watching them.
@@ -287,7 +318,7 @@ function App() {
     setWatchedStudentId(id);
     setRole('tutor');
     setTutorOn(true);
-    if (view === 'onboarding') setView('dashboard');
+    if (view === 'onboarding') navReset('dashboard');
   };
 
   const setTheme = React.useCallback((next) => {
@@ -309,38 +340,6 @@ function App() {
   React.useEffect(() => {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
   }, [dark]);
-
-  const go = (v, props = {}) => { setView(v); setViewProps(props); };
-
-  // map view → sidebar id
-  const sidebarId = {
-    'dashboard': 'home',
-    'practice-setup': 'practice',
-    'vocabulary': 'vocabulary',
-    'plan': 'plan',
-    'review': 'review',
-    'tutor-assignments': 'assignments',
-    'student-assignments': 'assignments',
-    'rw-question': 'practice',
-    'math-question': 'practice',
-    'score-report': 'home',
-    'exam-break': 'home',
-    'exam-report': 'home',
-    'stats': 'stats',
-    'sessions': 'sessions',
-    'practice-tests': 'practice-tests',
-    'practice-modules': 'practice-modules',
-    'practice-sections': 'practice-sections',
-    'question-bank': 'question-bank',
-    'category-detail': 'stats',
-    'session-detail': 'stats',
-    'test-review': 'practice-tests',
-    'live-session': 'live-session',
-    'tutor-chat': 'tutor',
-    'tutor-invite': 'tutor',
-    'settings': 'settings',
-    'dev': 'dev',
-  }[view] || 'home';
 
   const isTutor = role === 'tutor';
   const watching = isTutor && !!watchedStudentId;
@@ -373,9 +372,7 @@ function App() {
   const inModule = !isTutor && (view === 'rw-question' || view === 'math-question');
   const inDrill = inModule && (viewProps.kind || 'drill') === 'drill';
 
-  const I = (n) => React.createElement(Icon, { name: n, size: 16 });
-
-  React.useEffect(() => { void 0; }, [view, tutorOn, dark, role]);
+  const I = (n) => React.createElement(Icon, { name: n, size: 17 });
 
   const onboarding = view === 'onboarding';
 
@@ -386,135 +383,93 @@ function App() {
   const devEnabled = !!email && devEmails.includes(email.toLowerCase());
 
   const reviewDue = reviewQueue?.count ? reviewQueue.count : 0;
-  const sidebarItems = [
-    // Dashboard — overview + records
-    { id:'home',     label:'Home',        icon: I('home'),         group:'Dashboard' },
-    { id:'stats',    label:'Stats',       icon: I('bar-chart-3'),  group:'Dashboard' },
-    { id:'sessions', label:'Sessions',    icon: I('list'),         group:'Dashboard' },
-    { id:'assignments', label:'Assignments', icon: I('clipboard-list'), group:'Dashboard' },
-    // Studying — targeted drills + the study loop (Study Plan + Review render the
-    // watched student's data read-only when tutoring)
-    { id:'practice', label:'Practice',          icon: I('book-open'),       group:'Studying' },
-    { id:'vocabulary', label:'Vocabulary',      icon: I('library'),         group:'Studying' },
-    { id:'question-bank', label:'Question Bank', icon: I('database'),        group:'Studying' },
-    { id:'plan',     label:'Study Plan',        icon: I('target'),          group:'Studying' },
-    { id:'review',   label:'Review',            icon: I('rotate-ccw'),      group:'Studying', badge: reviewDue || undefined },
-    // Full Practice — timed, exam-shaped surfaces
-    { id:'practice-modules',  label:'Practice Modules',  icon: I('package'),        group:'Full Practice' },
-    { id:'practice-sections', label:'Practice Sections', icon: I('layers'),         group:'Full Practice' },
-    { id:'practice-tests',    label:'Practice Exams',     icon: I('graduation-cap'), group:'Full Practice' },
-    // You — people + config
-    { id:'tutor',    label:'Tutor',    icon: I('message-circle'), group:'You', dot: tutorUnread },
-    { id:'settings', label:'Settings', icon: I('settings'),       group:'You' },
-  ];
-  if (devEnabled) sidebarItems.push({ id:'dev', label:'Dev', icon: I('wrench'), group:'You' });
-  // While watching a live student, pin a "Live Session" tab to the very top.
-  if (isTutor && watchedIsLive) {
-    sidebarItems.unshift({ id:'live-session', label:'Live Session', icon: I('radio'), group:'Live', live: true });
-  }
+  const sidebarItems = isTutor
+    ? [
+        ...(watchedIsLive ? [{ id: 'live-session', label: 'Live now', icon: I('radio'), live: true }] : []),
+        { id: 'dashboard', label: 'Home', icon: I('house') },
+        { id: 'progress', label: 'Progress', icon: I('chart-line') },
+        { id: 'review', label: 'Review', icon: I('rotate-ccw'), badge: reviewDue || undefined },
+        { id: 'plan', label: 'Plan & assign', icon: I('calendar-check') },
+      ]
+    : [
+        { id: 'dashboard', label: 'Home', icon: I('house') },
+        { id: 'practice', label: 'Practice', icon: I('circle-play') },
+        { id: 'review', label: 'Review', icon: I('rotate-ccw'), badge: reviewDue || undefined },
+        { id: 'plan', label: 'Plan', icon: I('calendar-check') },
+        { id: 'progress', label: 'Progress', icon: I('chart-line') },
+        { id: 'vocabulary', label: 'Vocabulary', icon: I('book-a'), group: 'Study tools' },
+        { id: 'tutor', label: 'Tutor', icon: I('message-circle'), dot: tutorUnread, group: 'Study tools' },
+      ];
+  const allSidebarItems = devEnabled
+    ? [...sidebarItems, { id: 'dev', label: 'Developer', icon: I('wrench'), group: 'Developer' }]
+    : sidebarItems;
+  const sidebarId = PARENT[view] || view;
 
-  const sidebar = (
-    <Sidebar
-      items={sidebarItems}
-      activeId={sidebarId}
-      onSelect={(id) => {
-        if (id === 'live-session') go('live-session');
-        else if (id === 'home')     go('dashboard');
-        else if (id === 'plan') go('plan');
-        else if (id === 'review') go('review');
-        else if (id === 'assignments') go(isTutor ? 'tutor-assignments' : 'student-assignments');
-        else if (id === 'practice') go('practice-setup');
-        else if (id === 'vocabulary') go('vocabulary');
-        else if (id === 'question-bank') go('question-bank');
-        else if (id === 'stats') go('stats');
-        else if (id === 'practice-tests') go('practice-tests');
-        else if (id === 'practice-modules') go('practice-modules');
-        else if (id === 'practice-sections') go('practice-sections');
-        else if (id === 'sessions') go('sessions');
-        else if (id === 'tutor') go('tutor-invite');
-        else if (id === 'settings') go('settings');
-        else if (id === 'dev') go('dev');
-      }}
-      header={<>
-        <img src="/assets/app-icon.svg" width="24" height="24" style={{borderRadius: 6}} />
-        <div style={{display:'flex', flexDirection:'column'}}>
-          <span style={{font:'var(--role-title-sm)', color:'var(--text-primary)'}}>Strix</span>
-          <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>Practice for the SAT</span>
-        </div>
-      </>}
-      footer={<button onClick={() => go('settings')} style={{display:'flex', gap:8, alignItems:'center', width:'100%', padding:'6px 8px', borderRadius:'var(--radius-md)', background:'transparent', border:0, cursor:'pointer', textAlign:'left'}}>
-        <Avatar name={displayName} src={avatarUrl} size="sm" />
-        <div style={{display:'flex', flexDirection:'column', flex:1, minWidth:0}}>
-          <span style={{font:'var(--role-label)', color:'var(--text-primary)'}}>{displayName}</span>
-          <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)', overflow:'hidden', textOverflow:'ellipsis'}}>{email}</span>
-        </div>
-        <Icon name="settings-2" style={{width:14, height:14, color:'var(--text-tertiary)'}}/>
-      </button>}
+  const accountMenu = (
+    <AccountMenu
+      name={displayName}
+      email={email}
+      avatarUrl={avatarUrl}
+      role={role}
+      canTutor={canTutor}
+      onSwitchRole={switchRole}
+      theme={theme}
+      onTheme={setTheme}
+      onSettings={() => go('settings')}
     />
   );
 
-  const { SegmentedControl } = NS;
+  const sidebar = (
+    <Sidebar
+      items={allSidebarItems}
+      activeId={sidebarId}
+      onSelect={(id) => navReset(id)}
+      header={isTutor ? (
+        <StudentSwitcher
+          students={students}
+          value={watchedStudentId}
+          onChange={(id) => { setWatchedStudentId(id); navReset('dashboard'); }}
+          live={tutorWatch.liveStudents}
+        />
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '2px 6px' }}>
+          <img src="/assets/app-icon.svg" width="22" height="22" alt="" style={{ borderRadius: 6 }} />
+          <span style={{ font: 'var(--role-title-sm)', letterSpacing: '-0.01em', color: 'var(--text-primary)' }}>Strix</span>
+        </div>
+      )}
+      footer={accountMenu}
+    />
+  );
+
+  // Toolbar: back (when there's somewhere to go back to), the page title, and
+  // the tutor/chat toggle.
+  const isDrillIn = !!PARENT[view] && !inModule;
+  const showBack = !onboarding && !inModule && (nav.canGoBack || isDrillIn);
   const titlebar = (
     <Titlebar
-      title={titleFor(view, isTutor)}
-      trailing={<>
-        {!onboarding && isTutor && students.length > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginRight: 8 }}>
-            <Icon name="eye" style={{ width: 13, height: 13, color: 'var(--text-tertiary)' }} />
-            <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>Viewing</span>
-            <select
-              value={watchedStudentId || ''}
-              onChange={(e) => setWatchedStudentId(e.target.value || null)}
-              style={{
-                font: 'var(--role-label)', color: 'var(--text-primary)', background: 'var(--sunken)',
-                border: '1px solid var(--border-2)', borderRadius: 'var(--radius-md)', padding: '3px 6px', cursor: 'pointer',
-              }}
-            >
-              {students.length !== 1 && <option value="">Select student…</option>}
-              {students.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}{tutorWatch.liveStudents[s.id]?.active ? ' • live' : ''}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-        {!onboarding && canTutor && (
-          <div style={{marginRight: 6}}>
-            <SegmentedControl
-              size="sm"
-              value={role}
-              onChange={switchRole}
-              options={[
-                { value:'student', label:'Student' },
-                { value:'tutor',   label:'Tutor view' },
-              ]}
-            />
-          </div>
-        )}
-        {!onboarding && (
-          <span style={{ position: 'relative', display: 'inline-flex' }}>
-            <IconButton
-              size="sm"
-              variant={tutorOn ? 'solid' : 'ghost'}
-              label={tutorOn ? (isTutor ? 'Collapse chat' : 'Hide tutor') : (isTutor ? 'Show chat' : 'Show tutor')}
-              onClick={() => setTutorOn(!tutorOn)}
-            >
-              {I('message-circle')}
-            </IconButton>
-            {tutorUnread && !tutorOn && (
-              <span style={{
-                position: 'absolute', top: 1, right: 1, width: 8, height: 8, borderRadius: '50%',
-                background: 'var(--brand-blue)', boxShadow: '0 0 0 2px var(--surface-titlebar)',
-                pointerEvents: 'none',
-              }} />
-            )}
-          </span>
-        )}
-        <IconButton size="sm" variant="ghost" label="Dark mode" onClick={() => setTheme(dark ? 'light' : 'dark')}>
-          {dark ? I('sun') : I('moon')}
-        </IconButton>
-      </>}
+      inset={onboarding || inModule}
+      title={titleFor(view, viewProps)}
+      crumb={isTutor && watchedStudentId ? watchedName : (isDrillIn ? titleFor(PARENT[view], {}) : null)}
+      onBack={showBack ? () => nav.back(PARENT[view] || 'dashboard') : null}
+      trailing={!onboarding && (
+        <span style={{ position: 'relative', display: 'inline-flex' }}>
+          <IconButton
+            size="sm"
+            active={tutorOn}
+            label={tutorOn ? (isTutor ? 'Hide chat' : 'Hide tutor') : (isTutor ? 'Show chat' : 'Show tutor')}
+            onClick={() => setTutorOn(!tutorOn)}
+          >
+            <Icon name="panel-right" size={16} />
+          </IconButton>
+          {tutorUnread && !tutorOn && (
+            <span style={{
+              position: 'absolute', top: 2, right: 2, width: 8, height: 8, borderRadius: '50%',
+              background: 'var(--brand-blue)', boxShadow: '0 0 0 2px var(--surface-titlebar)',
+              pointerEvents: 'none',
+            }} />
+          )}
+        </span>
+      )}
     />
   );
 
@@ -536,47 +491,43 @@ function App() {
   switch (view) {
     case 'onboarding':      screen = <Onboarding go={go} />; break;
     case 'dashboard':       screen = <Dashboard go={go} {...watchProps} />; break;
-    case 'practice-setup':  screen = <PracticeSetup go={go} initial={viewProps} {...watchProps} />; break;
+    case 'practice':        screen = <PracticeHub key={viewProps.tab} go={go} params={viewProps} {...watchProps} />; break;
+    case 'progress':        screen = <ProgressHub go={go} params={viewProps} {...watchProps} />; break;
+    case 'plan':            screen = <PlanHub go={go} role={role} {...watchProps} />; break;
+    case 'tutor':           screen = <TutorHub go={go} params={viewProps} />; break;
     case 'vocabulary':      screen = <Vocabulary />; break;
     case 'rw-question':     screen = <QuestionRW key={sessionLive.activeModule?.key || 'rw'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'math-question':   screen = <QuestionMath key={sessionLive.activeModule?.key || 'math'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'score-report':    screen = <ScoreReport go={go} />; break;
-    case 'plan':            screen = <StudyPlan go={go} {...watchProps} />; break;
     case 'review':          screen = <Review go={go} {...watchProps} />; break;
-    case 'tutor-assignments': screen = <TutorAssignments go={go} {...watchProps} />; break;
-    case 'student-assignments': screen = <StudentAssignments go={go} />; break;
     case 'exam-break':      screen = <ExamBreak go={go} />; break;
     case 'exam-report':     screen = <ExamReport go={go} />; break;
-    case 'stats':           screen = <Stats go={go} {...watchProps} />; break;
-    case 'sessions':        screen = <Sessions go={go} {...watchProps} />; break;
-    case 'practice-tests':  screen = <PracticeTests go={go} {...watchProps} />; break;
-    case 'practice-modules': screen = <PracticeModules go={go} {...watchProps} />; break;
-    case 'practice-sections': screen = <PracticeSections go={go} {...watchProps} />; break;
-    case 'question-bank':    screen = <QuestionBank go={go} />; break;
     case 'category-detail': screen = <CategoryDetail go={go} section={viewProps.section} domain={viewProps.domain} label={viewProps.label} {...watchProps} />; break;
     case 'session-detail':  screen = <SessionDetail go={go} id={viewProps.id} {...watchProps} />; break;
     case 'test-review':     screen = <TestReview go={go} rwId={viewProps.rwId} mathId={viewProps.mathId} {...watchProps} />; break;
     case 'live-session':    screen = <LiveTestView live={tutorWatch.watchedLive} studentName={watchedName} />; break;
-    case 'tutor-invite':    screen = <TutorInvite go={go} />; break;
-    case 'tutor-chat':      screen = <TutorChat go={go} />; break;
     case 'settings':        screen = <Settings go={go} theme={theme} setTheme={setTheme} />; break;
     case 'dev':             screen = devEnabled ? <DevTab go={go} /> : <Dashboard go={go} />; break;
     default:                screen = <Dashboard go={go} />;
   }
 
+  const navValue = { ...nav, view, params: viewProps, go };
+
   if (onboarding) {
     return (
-      <AppShell titlebar={titlebar} sidebar={null} variant="app">
-        {screen}
-      </AppShell>
+      <NavProvider value={navValue}>
+        <AppShell titlebar={titlebar} sidebar={null} variant="app">
+          {screen}
+        </AppShell>
+      </NavProvider>
     );
   }
 
   // While tutoring: prompt to pick a student if none is selected; otherwise the
-  // live mirror is a normal routed screen ('live-session'), so Stats/Dashboard
+  // live mirror is a normal routed screen ('live-session'), so Progress/Home
   // stay freely browsable while the student practices.
   let mainContent = screen;
-  if (isTutor && !watchedStudentId && view !== 'tutor-invite' && view !== 'settings') {
+  if (isTutor && !watchedStudentId && view !== 'settings') {
     mainContent = <PickStudentPrompt students={students} onPick={setWatchedStudentId} />;
   }
 
@@ -587,7 +538,7 @@ function App() {
     : { messages: studentLive.messages, onSend: studentLive.sendChat, peerName: null, peerTyping: studentLive.peerTyping, onTyping: studentLive.notifyTyping, peerOnline: studentLive.peerOnline };
 
   return (
-    <>
+    <NavProvider value={navValue}>
       {canTutor && (
         <LiveStudentsBanner
           students={students}
@@ -623,7 +574,7 @@ function App() {
           {isTutor ? <TeachToolbar /> : <TeachingChip active={!!teach?.on} />}
         </TeachProvider>
       </AppShell>
-    </>
+    </NavProvider>
   );
 }
 
@@ -634,11 +585,11 @@ function TeachingChip({ active }) {
     <div style={{
       position: 'fixed', left: '50%', bottom: 18, transform: 'translateX(-50%)', zIndex: 70,
       display: 'inline-flex', alignItems: 'center', gap: 7, padding: '7px 14px',
-      background: 'var(--paper)', border: '1px solid var(--border-1)', borderRadius: 999,
+      background: 'var(--surface-popover)', border: '1px solid var(--border-1)', borderRadius: 999,
       boxShadow: 'var(--shadow-md)', font: 'var(--role-label)', color: 'var(--text-secondary)',
       pointerEvents: 'none',
     }}>
-      <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff3b30' }} />
+      <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--error)' }} />
       Your tutor is pointing at your screen
     </div>
   );
@@ -646,52 +597,54 @@ function TeachingChip({ active }) {
 
 // Shown to a tutor with several students before they pick one to watch.
 function PickStudentPrompt({ students, onPick }) {
-  const { Card, Button } = SixteenNS;
+  const { EmptyState, List, ListRow, Avatar } = SixteenNS;
   return (
     <div style={{ display: 'grid', placeItems: 'center', height: '100%', padding: 24 }}>
-      <Card padding="lg" style={{ maxWidth: 360, width: '100%', textAlign: 'center' }}>
-        <div style={{ font: 'var(--role-title-sm)', color: 'var(--text-primary)', marginBottom: 4 }}>Pick a student to watch</div>
-        <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginBottom: 14 }}>
-          You&rsquo;ll see their progress here, and their live question when they start practicing.
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div style={{ width: '100%', maxWidth: 380 }}>
+        <EmptyState
+          icon="users"
+          title="Choose a student"
+          body="You'll see their progress here, and their live question when they start practicing."
+        />
+        <List>
           {students.map((s) => (
-            <Button key={s.id} variant="secondary" fullWidth onClick={() => onPick(s.id)}>{s.name}</Button>
+            <ListRow
+              key={s.id}
+              leading={<Avatar name={s.name} size="sm" />}
+              title={s.name}
+              onClick={() => onPick(s.id)}
+            />
           ))}
-        </div>
-      </Card>
+        </List>
+      </div>
     </div>
   );
 }
 
-function titleFor(view, isTutor) {
-  if (isTutor) return 'Strix — Tutor view';
-  return ({
-    'onboarding': 'Strix',
-    'dashboard': 'Strix',
-    'plan': 'Strix — Study Plan',
-    'review': 'Strix — Review',
-    'tutor-assignments': 'Strix — Assignments',
-    'student-assignments': 'Strix — Assignments',
-    'practice-setup': 'Strix — New session',
-    'vocabulary': 'Strix — Vocabulary',
-    'rw-question': 'Strix — Reading & Writing',
-    'math-question': 'Strix — Math',
-    'score-report': 'Strix — Score report',
-    'exam-break': 'Strix — Break',
-    'exam-report': 'Strix — Full SAT',
-    'stats': 'Strix — Stats',
-    'sessions': 'Strix — Sessions',
-    'practice-tests': 'Strix — Practice Exams',
-    'practice-modules': 'Strix — Practice Modules',
-    'practice-sections': 'Strix — Practice Sections',
-    'question-bank': 'Strix — Question Bank',
-    'category-detail': 'Strix — Stats',
-    'tutor-chat': 'Strix — Tutor',
-    'tutor-invite': 'Strix — Tutor',
-    'settings': 'Strix — Settings',
-    'dev': 'Strix — Dev',
-  })[view] || 'Strix';
+const TITLES = {
+  'onboarding': '',
+  'dashboard': 'Home',
+  'practice': 'Practice',
+  'progress': 'Progress',
+  'plan': 'Plan',
+  'review': 'Review',
+  'tutor': 'Tutor',
+  'vocabulary': 'Vocabulary',
+  'rw-question': 'Reading & Writing',
+  'math-question': 'Math',
+  'score-report': 'Results',
+  'exam-break': 'Break',
+  'exam-report': 'Full SAT results',
+  'session-detail': 'Session',
+  'test-review': 'Full SAT review',
+  'live-session': 'Live now',
+  'settings': 'Settings',
+  'dev': 'Developer',
+};
+
+function titleFor(view, params) {
+  if (view === 'category-detail') return params.label || 'Skill';
+  return TITLES[view] ?? 'Strix';
 }
 
 export default App;

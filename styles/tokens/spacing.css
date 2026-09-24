@@ -37,10 +37,22 @@
   --gap-xl:  var(--space-6);
 
   /* App chrome dimensions */
-  --titlebar-height: 38px;
-  --sidebar-width: 240px;
+  --titlebar-height: 44px;
+  --sidebar-width: 232px;
   --sidebar-width-compact: 64px;
   --test-header-height: 70px;
   --test-footer-height: 72px;
   --tutor-sidebar-width: 320px;
+  --page-max: 1040px;
+  --page-max-narrow: 760px;
+  --page-max-wide: 1240px;
+  --page-pad-x: 40px;
+  --page-pad-top: 28px;
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --page-pad-x: 28px;
+    --page-pad-top: 22px;
+  }
 }

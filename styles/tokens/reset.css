@@ -39,3 +39,16 @@ a:hover { text-decoration: underline; }
   background: rgba(77, 120, 255, 0.40);
   color: #FFFFFF;
 }
+
+/* Keyboard focus — visible for keyboard users only. Components with their own
+   focus treatment override this. */
+:focus-visible {
+  outline: 2px solid var(--focus-ring-strong);
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* Tabular figures for numbers that update or line up in columns. */
+.tnum { font-variant-numeric: tabular-nums; }
+
+h1, h2, h3, h4, p { margin: 0; }

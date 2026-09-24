@@ -1,16 +1,16 @@
 /* ─────────────────────────────────────────────────────────────
- * Sixteen — Color tokens
- * Apple-y, Mac-native palette. Light is the default; dark mode
- * applies when [data-theme="dark"] is set on <html> or <body>
- * (or via the .dark class for prefers-color-scheme overrides).
+ * Strix — Color tokens
+ * Refined Mac-native palette: white page, quiet tinted sidebar,
+ * hairline-bordered cards, one accent (Strix blue). Light is the
+ * default; dark applies with [data-theme="dark"] on <html>.
  * ───────────────────────────────────────────────────────────── */
 
 :root {
   /* ── Brand ──────────────────────────────────────────────── */
-  --brand-blue: #2E5BFF;          /* "Sixteen blue" — primary action */
-  --brand-blue-hover: #1E45D6;
-  --brand-blue-press: #1638B8;
-  --brand-blue-soft: #EAF0FF;     /* tint backgrounds, focus rings */
+  --brand-blue: #2E5BFF;          /* primary action */
+  --brand-blue-hover: #1F4AE8;
+  --brand-blue-press: #1A3FCC;
+  --brand-blue-soft: #EDF2FF;     /* tint backgrounds */
   --brand-ink: #0A1330;           /* deep brand navy, for wordmark */
 
   /* ── Test-screen palette (Bluebook-faithful, original hues) ── */
@@ -35,64 +35,74 @@
   --test-fill: #1D1D1F;           /* selected / answered chip fill */
   --test-fill-fg: #FFFFFF;        /* text on those chip fills */
 
-  /* ── Neutrals (Apple-style warm gray scale) ─────────────── */
-  --paper: #FFFFFF;               /* primary surface */
-  --canvas: #F5F5F7;              /* app background */
-  --sidebar: #F0EFF1;             /* vibrancy-y sidebar */
-  --raised: #FFFFFF;              /* cards above canvas */
-  --sunken: #ECECEE;              /* sunken wells (search, inputs) */
+  /* ── Neutrals ───────────────────────────────────────────── */
+  --paper: #FFFFFF;               /* page + card surface */
+  --canvas: #F6F6F8;              /* subtle alternate surface */
+  --sidebar: #F4F4F6;             /* sidebar tint */
+  --raised: #FFFFFF;              /* cards */
+  --sunken: #F1F1F3;              /* wells (search, inputs, segmented) */
   --overlay: rgba(20, 20, 23, 0.32);
 
   --ink-1: #1D1D1F;               /* primary text */
-  --ink-2: #424245;               /* body */
-  --ink-3: #6E6E73;               /* secondary / labels */
-  --ink-4: #8E8E93;               /* tertiary / placeholders */
-  --ink-5: #C7C7CC;               /* disabled, dividers-on-ink */
+  --ink-2: #3A3A3F;               /* body */
+  --ink-3: #6E6E75;               /* secondary / labels */
+  --ink-4: #8E8E95;               /* tertiary / placeholders */
+  --ink-5: #C7C7CC;               /* disabled */
 
-  --border-1: #E5E5E7;            /* hairline */
-  --border-2: #D2D2D7;            /* card edge */
-  --border-3: #C7C7CC;            /* input edge */
+  --border-1: #EBEBEE;            /* hairline (cards, dividers) */
+  --border-2: #DCDCE0;            /* stronger edge (outline buttons) */
+  --border-3: #CFCFD5;            /* input edge */
   --border-strong: #8E8E93;
 
+  /* ── Interaction fills ──────────────────────────────────── */
+  --hover: rgba(15, 15, 30, 0.045);
+  --pressed: rgba(15, 15, 30, 0.08);
+  --nav-active: rgba(46, 91, 255, 0.10);
+  --nav-active-fg: #1A3FCC;
+
   /* ── Semantic ───────────────────────────────────────────── */
-  --success: #1FA56A;
-  --success-soft: #E3F6EC;
-  --warning: #D8721A;
-  --warning-soft: #FCEFD9;
-  --error: #D92D20;
-  --error-soft: #FBE7E5;
+  --success: #16955E;
+  --success-soft: #E4F5EC;
+  --warning: #C8660F;
+  --warning-soft: #FCF0DF;
+  --error: #D1291C;
+  --error-soft: #FCE9E7;
+  --danger: var(--error);
   --info: #2E5BFF;
-  --info-soft: #EAF0FF;
+  --info-soft: #EDF2FF;
 
   /* ── Question correctness (used on stats & review) ──────── */
-  --correct: #1FA56A;
-  --correct-soft: #E3F6EC;
-  --incorrect: #D92D20;
-  --incorrect-soft: #FBE7E5;
-  --unanswered: #8E8E93;
+  --correct: #16955E;
+  --correct-soft: #E4F5EC;
+  --incorrect: #D1291C;
+  --incorrect-soft: #FCE9E7;
+  --unanswered: #8E8E95;
 
   /* ── Domain colors (Reading & Math, used in stats) ──────── */
   --rw-color: #6B47C7;            /* Reading & Writing — violet */
-  --rw-soft: #EFEAFC;
+  --rw-soft: #F1ECFC;
   --math-color: #0E8A6F;          /* Math — green */
-  --math-soft: #DFF3ED;
+  --math-soft: #E2F4EE;
 
   /* ── Tutor / chat ───────────────────────────────────────── */
   --bubble-mine: #2E5BFF;
   --bubble-mine-fg: #FFFFFF;
-  --bubble-theirs: #ECECEE;
+  --bubble-theirs: #F1F1F3;
   --bubble-theirs-fg: #1D1D1F;
 
   /* ── Focus ──────────────────────────────────────────────── */
-  --focus-ring: rgba(46, 91, 255, 0.40);
+  --focus-ring: rgba(46, 91, 255, 0.35);
   --focus-ring-strong: rgba(46, 91, 255, 0.70);
 
   /* ── Semantic surface aliases (use these in components) ── */
-  --surface-app: var(--canvas);
-  --surface-card: var(--paper);
+  --surface-app: var(--paper);
+  --surface-card: var(--raised);
+  --surface: var(--surface-card);
   --surface-sunken: var(--sunken);
+  --surface-subtle: var(--canvas);
   --surface-sidebar: var(--sidebar);
-  --surface-titlebar: rgba(245, 245, 247, 0.85);
+  --surface-titlebar: rgba(255, 255, 255, 0.82);
+  --surface-popover: #FFFFFF;
 
   --text-primary: var(--ink-1);
   --text-body: var(--ink-2);
@@ -103,30 +113,35 @@
   --text-link: var(--brand-blue);
 
   --border-hairline: var(--border-1);
-  --border-card: var(--border-2);
+  --border-card: var(--border-1);
   --border-input: var(--border-3);
 }
 
 /* ─── Dark mode ──────────────────────────────────────────── */
 [data-theme="dark"],
 .dark {
-  --paper: #1C1C1E;
-  --canvas: #000000;
-  --sidebar: #1C1C1E;
-  --raised: #2C2C2E;
-  --sunken: #2C2C2E;
+  --paper: #1A1A1C;
+  --canvas: #202023;
+  --sidebar: #151517;
+  --raised: #232326;
+  --sunken: #2A2A2E;
   --overlay: rgba(0, 0, 0, 0.55);
 
   --ink-1: #F5F5F7;
-  --ink-2: #E5E5EA;
-  --ink-3: #AEAEB2;
-  --ink-4: #8E8E93;
-  --ink-5: #48484A;
+  --ink-2: #E2E2E7;
+  --ink-3: #A9A9B0;
+  --ink-4: #86868D;
+  --ink-5: #4A4A4F;
 
-  --border-1: #2C2C2E;
-  --border-2: #38383A;
-  --border-3: #48484A;
-  --border-strong: #636366;
+  --border-1: #2C2C30;
+  --border-2: #38383D;
+  --border-3: #46464C;
+  --border-strong: #636369;
+
+  --hover: rgba(255, 255, 255, 0.055);
+  --pressed: rgba(255, 255, 255, 0.09);
+  --nav-active: rgba(92, 128, 255, 0.20);
+  --nav-active-fg: #A9BCFF;
 
   --brand-blue: #4D78FF;
   --brand-blue-hover: #6A8DFF;
@@ -147,17 +162,26 @@
   --test-fill: #F5F5F7;
   --test-fill-fg: #1C1C1E;
 
-  --success-soft: rgba(31, 165, 106, 0.20);
-  --warning-soft: rgba(216, 114, 26, 0.22);
-  --error-soft: rgba(217, 45, 32, 0.22);
-  --info-soft: rgba(77, 120, 255, 0.22);
-  --correct-soft: rgba(31, 165, 106, 0.20);
-  --incorrect-soft: rgba(217, 45, 32, 0.22);
-  --rw-soft: rgba(140, 110, 230, 0.20);
-  --math-soft: rgba(14, 138, 111, 0.22);
+  --success: #2FB57A;
+  --warning: #E08A3A;
+  --error: #F0564A;
+  --correct: #2FB57A;
+  --incorrect: #F0564A;
+  --rw-color: #9B7FEA;
+  --math-color: #2DB392;
 
-  --bubble-theirs: #2C2C2E;
+  --success-soft: rgba(47, 181, 122, 0.18);
+  --warning-soft: rgba(224, 138, 58, 0.20);
+  --error-soft: rgba(240, 86, 74, 0.20);
+  --info-soft: rgba(77, 120, 255, 0.20);
+  --correct-soft: rgba(47, 181, 122, 0.18);
+  --incorrect-soft: rgba(240, 86, 74, 0.20);
+  --rw-soft: rgba(155, 127, 234, 0.18);
+  --math-soft: rgba(45, 179, 146, 0.18);
+
+  --bubble-theirs: #2C2C30;
   --bubble-theirs-fg: #F5F5F7;
 
-  --surface-titlebar: rgba(28, 28, 30, 0.78);
+  --surface-titlebar: rgba(26, 26, 28, 0.82);
+  --surface-popover: #2A2A2E;
 }

@@ -3,10 +3,10 @@
 :root {
   --radius-none:  0;
   --radius-xs:    3px;
-  --radius-sm:    5px;     /* tags, small chips */
-  --radius-md:    7px;     /* default control radius */
-  --radius-lg:    10px;    /* cards */
-  --radius-xl:    14px;    /* dialogs */
+  --radius-sm:    6px;     /* tags, small chips */
+  --radius-md:    8px;     /* default control radius */
+  --radius-lg:    12px;    /* cards */
+  --radius-xl:    16px;    /* dialogs */
   --radius-2xl:   20px;    /* large surfaces */
   --radius-3xl:   28px;
   --radius-pill:  9999px;  /* badges, segmented control */

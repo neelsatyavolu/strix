@@ -1,51 +1,46 @@
 'use client';
-import React from 'react';
 
-/** ScoreBadge — the iconic Sixteen score numeral. */
+/** ScoreBadge — a score numeral with its scale (e.g. 1410 / 1600) and optional trend. */
 export function ScoreBadge({
-  value,           // number, e.g. 1480
+  value,
   max = 1600,
-  label,           // e.g. "Total score" or "R&W"
+  label,
   domain = null,   // 'rw' | 'math' | null
   size = 'lg',     // 'sm' | 'md' | 'lg' | 'xl'
   trend = null,    // e.g. '+40'
   style: styleProp,
 }) {
-  const FZ = { sm: 28, md: 40, lg: 56, xl: 72 };
+  const FZ = { sm: 24, md: 32, lg: 44, xl: 60 };
   const COLOR =
-    domain === 'rw'   ? 'var(--rw-color)'   :
+    domain === 'rw' ? 'var(--rw-color)' :
     domain === 'math' ? 'var(--math-color)' :
-    'var(--ink-1)';
+    'var(--text-primary)';
+  const down = String(trend).startsWith('-');
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, ...styleProp }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, ...styleProp }}>
       {label && (
-        <span style={{
-          font: 'var(--role-eyebrow)', textTransform: 'uppercase',
-          letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)',
-        }}>{label}</span>
+        <span style={{ font: 'var(--role-label)', color: 'var(--text-secondary)' }}>{label}</span>
       )}
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
         <span style={{
-          fontFamily: 'var(--font-mono)',
+          fontFamily: 'var(--font-display)',
           fontVariantNumeric: 'tabular-nums',
           fontWeight: 600,
           fontSize: FZ[size],
-          letterSpacing: '-0.04em',
+          letterSpacing: '-0.025em',
           color: COLOR,
           lineHeight: 1,
         }}>{value}</span>
-        <span style={{
-          font: 'var(--role-body)', color: 'var(--text-tertiary)',
-          fontFamily: 'var(--font-mono)',
-        }}>/ {max}</span>
+        <span style={{ font: 'var(--role-body)', color: 'var(--text-tertiary)', fontVariantNumeric: 'tabular-nums' }}>/ {max}</span>
         {trend != null && (
           <span style={{
-            fontFamily: 'var(--font-mono)',
-            fontWeight: 600, fontSize: 12,
-            color: String(trend).startsWith('-') ? 'var(--error)' : 'var(--success)',
-            background: String(trend).startsWith('-') ? 'var(--error-soft)' : 'var(--success-soft)',
-            padding: '2px 6px', borderRadius: 'var(--radius-sm)', marginLeft: 4,
+            font: 'var(--role-label)',
+            fontWeight: 600,
+            fontVariantNumeric: 'tabular-nums',
+            color: down ? 'var(--error)' : 'var(--success)',
+            background: down ? 'var(--error-soft)' : 'var(--success-soft)',
+            padding: '1px 6px', borderRadius: 'var(--radius-pill)', marginLeft: 4,
           }}>{trend}</span>
         )}
       </div>

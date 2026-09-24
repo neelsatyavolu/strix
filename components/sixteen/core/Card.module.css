@@ -1,0 +1,25 @@
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.pad-none { padding: 0; }
+.pad-sm { padding: 12px; }
+.pad-md { padding: 16px; }
+.pad-lg { padding: 20px; }
+.pad-xl { padding: 24px; }
+
+.elev-sm { box-shadow: var(--shadow-sm); }
+.elev-md { box-shadow: var(--shadow-md); }
+.elev-lg { box-shadow: var(--shadow-lg); }
+
+.interactive { cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.interactive:hover { border-color: var(--border-2); box-shadow: var(--shadow-xs); }
+.interactive:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }
+
+.selected {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 1px var(--brand-blue);
+}

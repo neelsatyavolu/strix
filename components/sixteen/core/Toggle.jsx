@@ -1,7 +1,8 @@
 'use client';
-import React from 'react';
+import s from './Toggle.module.css';
+import { cx } from './cx';
 
-/** Toggle — Mac-native switch (iOS-style). */
+/** Toggle — Mac-native switch, optionally with a label + description row. */
 export function Toggle({
   checked,
   onChange,
@@ -9,57 +10,31 @@ export function Toggle({
   disabled = false,
   label,
   description,
-  style: styleProp,
+  className,
+  style,
 }) {
-  const W = { sm: 28, md: 34 };
-  const H = { sm: 16, md: 20 };
-  const knob = H[size] - 4;
-  const onColor = 'var(--success)';
-
   const switchEl = (
     <button
       type="button"
       role="switch"
-      aria-checked={checked}
+      aria-checked={!!checked}
+      aria-label={typeof label === 'string' ? label : undefined}
       disabled={disabled}
       onClick={() => onChange?.(!checked)}
-      style={{
-        width: W[size],
-        height: H[size],
-        borderRadius: 'var(--radius-pill)',
-        background: checked ? onColor : 'var(--ink-5)',
-        border: 0,
-        padding: 0,
-        position: 'relative',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.4 : 1,
-        transition: 'var(--xn-color)',
-        flexShrink: 0,
-      }}
+      className={cx(s.switch, s[size], checked && s.on, !(label || description) && className)}
+      style={label || description ? undefined : style}
     >
-      <span
-        style={{
-          position: 'absolute',
-          top: 2,
-          left: checked ? W[size] - knob - 2 : 2,
-          width: knob,
-          height: knob,
-          borderRadius: '50%',
-          background: '#fff',
-          boxShadow: '0 1px 2px rgba(0,0,0,0.20), 0 0 0 0.5px rgba(0,0,0,0.04)',
-          transition: 'left var(--dur-fast) var(--ease-out)',
-        }}
-      />
+      <span className={s.knob} />
     </button>
   );
 
   if (label || description) {
     return (
-      <label style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: disabled ? 'not-allowed' : 'pointer', ...styleProp }}>
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-          {label && <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)' }}>{label}</span>}
-          {description && <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginTop: 2 }}>{description}</span>}
-        </div>
+      <label className={cx(s.row, disabled && s.rowDisabled, className)} style={style}>
+        <span className={s.text}>
+          {label && <span className={s.label}>{label}</span>}
+          {description && <span className={s.desc}>{description}</span>}
+        </span>
         {switchEl}
       </label>
     );

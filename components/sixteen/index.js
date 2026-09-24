@@ -1,4 +1,4 @@
-// Auto-generated barrel for the Sixteen design components.
+// Barrel for the Sixteen design components.
 export * from './Icon';
 export { default as Icon } from './Icon';
 
@@ -13,10 +13,13 @@ export * from './core/ScoreBadge';
 export * from './core/SegmentedControl';
 export * from './core/Tabs';
 export * from './core/Toggle';
+export * from './core/Layout';
 
 export * from './layout/AppShell';
 export * from './layout/Sidebar';
 export * from './layout/Titlebar';
+export * from './layout/AccountMenu';
+export * from './layout/StudentSwitcher';
 
 export * from './test/FlagButton';
 export * from './test/OptionRow';

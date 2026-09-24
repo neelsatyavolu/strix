@@ -1,0 +1,201 @@
+/* ── Page ─────────────────────────────────────────────────── */
+.page {
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--page-pad-x));
+  margin: 0 auto;
+  padding: var(--page-pad-top) var(--page-pad-x) 64px;
+}
+.narrow { max-width: calc(var(--page-max-narrow) + 2 * var(--page-pad-x)); }
+.wide { max-width: calc(var(--page-max-wide) + 2 * var(--page-pad-x)); }
+.full { max-width: none; }
+
+/* ── PageHeader ───────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.headerText { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 320px; }
+.title {
+  font: var(--role-page-title);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+}
+.subtitle {
+  font: var(--role-body-lg);
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 62ch;
+}
+.actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 4px -6px;
+  padding: 3px 6px;
+  font: var(--role-label);
+  color: var(--text-secondary);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.back:hover { color: var(--text-primary); background: var(--hover); }
+
+/* ── Section ──────────────────────────────────────────────── */
+.section { margin-top: 36px; }
+.section:first-child { margin-top: 0; }
+.sectionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.sectionTitle {
+  font: var(--role-title-md);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 0;
+}
+.sectionDesc {
+  font: var(--role-body);
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+}
+
+/* ── List ─────────────────────────────────────────────────── */
+.list {
+  background: var(--surface-card);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.plain { background: transparent; border: 0; border-radius: 0; }
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.row + .row { border-top: 1px solid var(--border-1); }
+.rowButton { cursor: pointer; transition: var(--xn-color); }
+.rowButton:hover { background: var(--hover); }
+.rowButton:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--focus-ring-strong); }
+.rowLead { display: flex; align-items: center; flex-shrink: 0; }
+.rowMain { display: flex; flex-direction: column; min-width: 0; flex: 1; gap: 1px; }
+.rowTitle {
+  font: var(--role-body);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rowSub {
+  font: var(--role-caption);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rowMeta {
+  font: var(--role-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.rowTrail { display: flex; align-items: center; gap: 8px; flex-shrink: 0; color: var(--text-tertiary); }
+
+/* ── Metric ───────────────────────────────────────────────── */
+.metric { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.metricLabel { font: var(--role-label); color: var(--text-secondary); }
+.metricValueRow { display: flex; align-items: baseline; gap: 6px; }
+.metricValue {
+  font: var(--role-metric);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.metricSm .metricValue { font-size: 22px; }
+.metricLg .metricValue { font: var(--role-metric-lg); letter-spacing: -0.03em; }
+.metricUnit { font: var(--role-body); color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+.metricHint { font: var(--role-caption); color: var(--text-tertiary); }
+.delta {
+  font: var(--role-label);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+}
+.up { color: var(--success); background: var(--success-soft); }
+.down { color: var(--error); background: var(--error-soft); }
+
+/* ── EmptyState ───────────────────────────────────────────── */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 40px 24px;
+}
+.emptyCompact { padding: 24px 16px; }
+.emptyIcon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--sunken);
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.emptyTitle { font: var(--role-title-sm); color: var(--text-primary); margin: 0; }
+.emptyBody { font: var(--role-body); color: var(--text-secondary); margin: 0; max-width: 44ch; }
+.emptyAction { margin-top: 10px; }
+
+/* ── Skeleton ─────────────────────────────────────────────── */
+.skeleton {
+  display: block;
+  background: var(--sunken);
+  border-radius: 6px;
+  animation: pulse 1.3s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+/* ── Select ───────────────────────────────────────────────── */
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 32px;
+  padding: 0 30px 0 10px;
+  font: var(--role-body);
+  color: var(--text-primary);
+  background-color: var(--surface-card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%238E8E95' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5l3 3 3-3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  border: 0;
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px var(--border-3);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+.select:focus-visible { outline: none; box-shadow: inset 0 0 0 1px var(--brand-blue), 0 0 0 3px var(--focus-ring); }
+.selectSm { height: 26px; font: var(--role-label); padding-left: 8px; }
+.selectFull { width: 100%; }

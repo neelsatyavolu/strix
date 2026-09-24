@@ -1,0 +1,34 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--text-secondary);
+  background: transparent;
+  -webkit-app-region: no-drag;
+  transition: var(--xn-color), var(--xn-press);
+}
+.btn:active:not(:disabled) { transform: scale(0.94); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }
+
+.sm { width: 26px; height: 26px; font-size: 14px; }
+.md { width: 30px; height: 30px; font-size: 16px; }
+.lg { width: 36px; height: 36px; font-size: 18px; }
+
+.ghost:hover:not(:disabled) { background: var(--hover); color: var(--text-primary); }
+.ghost.active { background: var(--pressed); color: var(--text-primary); }
+
+.solid { background: var(--sunken); color: var(--text-primary); }
+.solid:hover:not(:disabled) { background: var(--border-1); }
+.solid.active { background: var(--nav-active); color: var(--nav-active-fg); }
+
+.primary { background: var(--brand-blue); color: #fff; }
+.primary:hover:not(:disabled) { background: var(--brand-blue-hover); }
+
+/* On the dark navy test header. */
+.test { color: #fff; }
+.test:hover:not(:disabled) { background: rgba(255, 255, 255, 0.14); }
+.test.active { background: rgba(255, 255, 255, 0.18); }

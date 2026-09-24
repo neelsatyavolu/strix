@@ -70,7 +70,7 @@ function createWindow() {
     minWidth: MIN_WIDTH,
     minHeight: MIN_HEIGHT,
     titleBarStyle: "hiddenInset",
-    trafficLightPosition: { x: 13, y: 13 },
+    trafficLightPosition: { x: 16, y: 16 },
     backgroundColor: "#0e0e10",
     show: false,
     webPreferences: {
