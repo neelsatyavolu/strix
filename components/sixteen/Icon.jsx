@@ -17,6 +17,10 @@ const ALIASES = {
   'home': 'house',
   'bar-chart-3': 'chart-column',
   'function-square': 'square-function',
+  'more-vertical': 'ellipsis-vertical',
+  'filter': 'funnel',
+  'alert-circle': 'circle-alert',
+  'check-circle-2': 'circle-check',
 };
 
 export function Icon({ name, size = 16, strokeWidth = 2, color, style, className, ...rest }) {
