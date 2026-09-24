@@ -1,0 +1,123 @@
+/* Tutoring section — two tinted tiles, each with a product pane that bleeds
+ * off the bottom edge. Panes use the app's surfaces and chat bubbles. */
+
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 72px; }
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 44px 44px 0;
+  border-radius: var(--radius-3xl);
+  background: var(--canvas);
+  overflow: hidden;
+}
+.label { margin: 0; font: var(--weight-semibold) 15px/1.3 var(--font-display); color: var(--brand-blue); }
+.title { margin: 10px 0 0; font: var(--weight-bold) clamp(24px, 2.4vw, 30px)/1.15 var(--font-display); letter-spacing: -0.025em; text-wrap: balance; }
+.body { margin: 14px 0 36px; font-size: 16px; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
+
+/* ── Pane ───────────────────────────────────────────────── */
+.pane {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 18px 22px;
+  border: 1px solid var(--border-1);
+  border-bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--surface-app);
+  color: var(--text-primary);
+  font: var(--role-body);
+  user-select: none;
+}
+.paneHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-1);
+}
+.paneTitle { font: var(--role-title-sm); }
+.providers { display: flex; gap: 2px; padding: 2px; border-radius: var(--radius-pill); background: var(--sunken); }
+.provider {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font: var(--role-label);
+  color: var(--text-secondary);
+}
+.providerOn { background: var(--surface-card); color: var(--text-primary); box-shadow: var(--shadow-xs); }
+.logo { width: 14px; height: 14px; background: currentColor; -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
+.logoChatgpt { --logo: url("/assets/chatgpt.svg"); }
+.logoGrok { --logo: url("/assets/grok.svg"); }
+
+.chat { display: flex; flex-direction: column; gap: 8px; }
+.bubble { max-width: 84%; padding: 8px 12px; border-radius: 16px; font-size: 13px; line-height: 1.4; }
+.mine { align-self: flex-end; background: var(--bubble-mine); color: var(--bubble-mine-fg); border-bottom-right-radius: 5px; }
+.theirs { align-self: flex-start; background: var(--bubble-theirs); color: var(--bubble-theirs-fg); border-bottom-left-radius: 5px; }
+.composer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 36px;
+  padding: 0 4px 0 14px;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-pill);
+  color: var(--text-tertiary);
+}
+.send { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--brand-blue); color: var(--text-on-brand); }
+.send svg { width: 15px; height: 15px; }
+
+/* ── Live tutor ─────────────────────────────────────────── */
+.presence { display: inline-flex; align-items: center; gap: 8px; font: var(--role-label); font-weight: var(--weight-semibold); }
+.muted { color: var(--text-tertiary); font-weight: var(--weight-regular); }
+.liveDot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 0 3px var(--success-soft); }
+.teachBar { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--border-2); border-radius: var(--radius-pill); }
+.teachTool { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; color: var(--text-secondary); }
+.teachTool svg { width: 14px; height: 14px; }
+.teachOn { background: var(--error); color: var(--text-on-brand); }
+.passage { padding-top: 4px; font-family: var(--font-passage); font-size: 16px; line-height: 1.7; text-wrap: pretty; }
+.circled { position: relative; display: inline-block; white-space: nowrap; }
+.circled svg { position: absolute; inset: -9px -12px; width: calc(100% + 24px); height: calc(100% + 18px); overflow: visible; pointer-events: none; }
+.circled path { fill: none; stroke: var(--error); stroke-width: 2.5; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.question { position: relative; padding: 12px 14px 12px 36px; border-radius: var(--radius-md); background: var(--sunken); font-weight: var(--weight-medium); }
+.laserAnchor { position: absolute; left: 14px; top: 50%; }
+.laser {
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--error);
+  box-shadow: 0 0 0 4px var(--error-soft), 0 0 14px 2px var(--error);
+}
+
+.choices { display: flex; flex-direction: column; gap: 8px; }
+.choice { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid var(--border-2); border-radius: var(--radius-md); font-size: 13px; }
+.choice i {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--test-line);
+  border-radius: 50%;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: var(--weight-bold);
+}
+.choiceOn { box-shadow: inset 0 0 0 1px var(--test-selected); border-color: var(--test-selected); }
+.choiceOn i { background: var(--test-fill); color: var(--test-fill-fg); border-color: var(--test-fill); }
+
+@media (max-width: 960px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .grid { margin-top: 48px; gap: 16px; }
+  .card { padding: 28px 16px 0; border-radius: var(--radius-2xl); }
+  .body { margin-bottom: 28px; }
+  .pane { padding: 14px 14px 18px; }
+  .providers .provider:not(.providerOn) { display: none; }
+}

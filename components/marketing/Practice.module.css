@@ -1,0 +1,84 @@
+/* Practice section visual — Progress / Review / Plan cards on a quiet tinted
+ * stage. Cards match the app: white, hairline border, no shadow. */
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px;
+  border-radius: var(--radius-3xl);
+  background: var(--canvas);
+  color: var(--text-primary);
+  font: var(--role-body);
+  text-align: left;
+  user-select: none;
+}
+.card {
+  padding: 18px 20px;
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+}
+.cardHead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 6px; }
+.title { font: var(--role-title-sm); }
+.caption { font: var(--role-caption); color: var(--text-tertiary); }
+
+.row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-1); }
+.cardHead + .row { border-top: 0; }
+.dotRw, .dotMath { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dotRw { background: var(--rw-color); }
+.dotMath { background: var(--math-color); }
+.rowText { display: flex; flex-direction: column; flex: 1; min-width: 0; font-weight: var(--weight-medium); }
+.rowText small { font: var(--role-caption); color: var(--text-tertiary); }
+.meter { width: 84px; height: 6px; flex-shrink: 0; border-radius: var(--radius-pill); background: var(--sunken); overflow: hidden; }
+.meter i { display: block; height: 100%; border-radius: inherit; background: var(--brand-blue); }
+.value { min-width: 34px; text-align: right; font: var(--role-numeric); font-variant-numeric: tabular-nums; }
+.drill, .drillPrimary {
+  flex-shrink: 0;
+  height: 26px;
+  padding: 0 12px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  font: var(--role-label);
+  font-weight: var(--weight-semibold);
+}
+.drill { border: 1px solid var(--border-2); color: var(--text-primary); }
+.drillPrimary { background: var(--brand-blue); color: var(--text-on-brand); }
+
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px; }
+.iconWell {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-md);
+  background: var(--brand-blue-soft);
+  color: var(--brand-blue);
+}
+.iconWell svg { width: 16px; height: 16px; }
+.bigNum { margin-top: 14px; font: var(--role-metric); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.pair .caption { margin-top: 6px; }
+.week { display: flex; gap: 6px; margin-top: 14px; }
+.day {
+  flex: 1;
+  max-width: 34px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sunken);
+  color: var(--text-secondary);
+  font: var(--role-caption);
+  font-weight: var(--weight-semibold);
+}
+.day svg { width: 14px; height: 14px; }
+.dayDone { background: var(--success-soft); color: var(--success); }
+.dayToday { background: transparent; box-shadow: inset 0 0 0 1.5px var(--brand-blue); color: var(--brand-blue); }
+
+@media (max-width: 640px) {
+  .stage { padding: 16px; gap: 12px; border-radius: var(--radius-2xl); }
+  .card { padding: 14px 16px; }
+  .meter { display: none; }
+  .pair { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}

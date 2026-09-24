@@ -1,0 +1,147 @@
+/* Hero product shot — the Strix app window, mirroring the app shell
+ * (components/sixteen/layout/Shell.module.css): tinted sidebar, 44px toolbar,
+ * white page, hairline cards. Decorative: the whole window is role="img". */
+
+.window {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface-app);
+  box-shadow: var(--shadow-window);
+  text-align: left;
+  color: var(--text-primary);
+  font: var(--role-body);
+  user-select: none;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 10px 10px;
+  background: var(--surface-sidebar);
+  border-right: 1px solid var(--border-1);
+}
+.traffic { display: flex; align-items: center; gap: 8px; height: 44px; padding-left: 8px; flex-shrink: 0; }
+.traffic i { width: 12px; height: 12px; border-radius: 50%; }
+/* macOS window-control colors (fixed by the OS, not themeable). */
+.red { background: #FF5F57; }
+.yellow { background: #FEBC2E; }
+.green { background: #28C840; }
+.brandRow { display: flex; align-items: center; gap: 9px; margin-top: -8px; padding: 2px 8px; font: var(--role-title-sm); letter-spacing: -0.01em; }
+.brandRow img { width: 22px; height: 22px; }
+.group { display: flex; flex-direction: column; gap: 1px; }
+.groupLabel { padding: 0 10px 6px; font: var(--role-caption); font-weight: var(--weight-semibold); color: var(--text-tertiary); }
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-medium);
+  color: var(--text-body);
+}
+.item svg { width: 17px; height: 17px; color: var(--text-secondary); }
+.itemActive { background: var(--nav-active); color: var(--nav-active-fg); font-weight: var(--weight-semibold); }
+.itemActive svg { color: var(--nav-active-fg); }
+.badge {
+  margin-left: auto;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 6px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--brand-blue);
+  color: var(--text-on-brand);
+  font: var(--role-caption);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+.account { margin-top: auto; display: flex; align-items: center; gap: 9px; padding: 6px 8px; }
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--rw-color);
+  color: var(--text-on-brand);
+  font: var(--role-label);
+  font-weight: var(--weight-semibold);
+}
+.who { display: flex; flex-direction: column; font: var(--role-label); font-weight: var(--weight-semibold); }
+.who small { font: var(--role-caption); color: var(--text-tertiary); }
+
+/* ── Main ────────────────────────────────────────────────── */
+.main { display: flex; flex-direction: column; min-width: 0; }
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 44px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border-1);
+  font: var(--role-label);
+  font-weight: var(--weight-semibold);
+}
+.toolbar .traffic { display: none; padding-left: 0; }
+.content { display: flex; flex-direction: column; gap: 22px; padding: 28px 36px 36px; }
+.pageTitle { font: var(--role-page-title); letter-spacing: -0.015em; }
+.pageSub { margin-top: 4px; font: var(--role-body-lg); color: var(--text-secondary); }
+.grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; }
+.card { padding: 18px 20px; border: 1px solid var(--border-1); border-radius: var(--radius-lg); background: var(--surface-card); }
+.caption { font: var(--role-caption); font-weight: var(--weight-semibold); color: var(--text-tertiary); }
+.cardTitle { margin-top: 8px; font: var(--role-title-lg); letter-spacing: -0.01em; }
+.cardSub { margin-top: 2px; color: var(--text-secondary); }
+.bar, .meter { display: block; height: 6px; border-radius: var(--radius-pill); background: var(--sunken); overflow: hidden; }
+.bar { margin-top: 16px; }
+.bar i, .meter i { display: block; height: 100%; border-radius: inherit; background: var(--brand-blue); }
+.actions { display: flex; gap: 8px; margin-top: 18px; }
+.btnPrimary, .btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  font: var(--role-label);
+  font-weight: var(--weight-semibold);
+}
+.btnPrimary { background: var(--brand-blue); color: var(--text-on-brand); }
+.btnPrimary svg { width: 13px; height: 13px; }
+.btnSecondary { border: 1px solid var(--border-2); color: var(--text-primary); }
+
+.metricRow { display: flex; align-items: baseline; gap: 10px; margin-top: 8px; }
+.metric { font: var(--role-metric-lg); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.delta { font: var(--role-label); color: var(--success); }
+.split { display: flex; flex-direction: column; gap: 6px; margin-top: 16px; color: var(--text-secondary); }
+.split span { display: flex; align-items: center; gap: 8px; }
+.split b { margin-left: auto; color: var(--text-primary); font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; }
+.dotRw, .dotMath { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dotRw { background: var(--rw-color); }
+.dotMath { background: var(--math-color); }
+
+.listCard { padding: 14px 20px 8px; }
+.cardHead { padding-bottom: 6px; font: var(--role-title-sm); }
+.row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-top: 1px solid var(--border-1); }
+.cardHead + .row { border-top: 0; }
+.rowText { display: flex; flex-direction: column; flex: 1; min-width: 0; font-weight: var(--weight-medium); }
+.rowText small { font: var(--role-caption); color: var(--text-tertiary); }
+.meter { width: 72px; flex-shrink: 0; }
+.rowValue { min-width: 36px; text-align: right; font: var(--role-numeric); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 900px) {
+  .window { grid-template-columns: minmax(0, 1fr); }
+  .sidebar { display: none; }
+  .toolbar .traffic { display: flex; }
+}
+@media (max-width: 640px) {
+  .content { padding: 20px 18px 22px; gap: 16px; }
+  .grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .recent { display: none; }
+  .meter { width: 48px; }
+}

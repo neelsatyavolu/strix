@@ -2,8 +2,8 @@
 
 import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
-
-export const THEME_KEY = "strix-landing-theme";
+import { THEME_KEY } from "./theme";
+import s from "./Landing.module.css";
 
 // Read the current theme straight from the DOM (the pre-paint script in the
 // landing applies the saved value). useSyncExternalStore keeps server and
@@ -37,9 +37,10 @@ export default function ThemeToggle() {
 
   return (
     <button
-      className="theme-toggle"
+      type="button"
+      className={s.themeToggle}
       onClick={toggle}
-      aria-label="Toggle appearance"
+      aria-label={theme === "dark" ? "Switch to light appearance" : "Switch to dark appearance"}
       title="Toggle appearance"
     >
       {theme === "dark" ? <Sun /> : <Moon />}
