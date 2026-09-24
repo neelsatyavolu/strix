@@ -55,6 +55,20 @@ Other scripts:
 | `pnpm test` | Unit tests (`test/*.test.mjs`) |
 | `pnpm build` | Production build |
 
+## Privacy
+
+Strix counts anonymous usage with the developer's own cookieless analytics at
+`analytics.n3el.dev` (details at [strixprep.com/privacy](https://strixprep.com/privacy)):
+
+- **Website / web app** — `app/layout.tsx` loads `https://analytics.n3el.dev/p.js`, which sends
+  the page path (no query string), the referrer and download-link clicks. No cookies, no
+  stored IP addresses, no personal data.
+- **Mac app** — `electron/heartbeat.cjs` sends at most one ping per UTC day with a random
+  install ID, app version, macOS version, CPU arch and channel. Nothing about your account or
+  practice is sent.
+- **Opt out** — Settings → Privacy → "Share anonymous usage stats" in the Mac app stops the
+  heartbeat and the page-view beacon inside the app window.
+
 ## Contributing
 
 Issues and pull requests are welcome. Before opening a PR, make sure

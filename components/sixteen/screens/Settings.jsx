@@ -6,10 +6,11 @@ import AccountSection from './settings/AccountSection';
 import StudyGoalSection from './settings/StudyGoalSection';
 import AiSection from './settings/AiSection';
 import SoftwareUpdateRow from './settings/SoftwareUpdateRow';
+import PrivacySection from './settings/PrivacySection';
 import s from './settings/Settings.module.css';
 
 // Settings — Mac System Settings style: grouped rows for account, study goal,
-// appearance, AI connections, tutors, updates, and data.
+// appearance, AI connections, tutors, updates, privacy, and data.
 
 const THEME_OPTIONS = [
   { value: 'light', label: 'Light' },
@@ -72,6 +73,8 @@ function Settings({ go, theme, setTheme }) {
           <SoftwareUpdateRow />
         </List>
       </Section>
+
+      <PrivacySection />
 
       <Section title="Data">
         <List>

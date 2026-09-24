@@ -1,0 +1,36 @@
+/* Privacy page — a single readable column that reuses the landing frame,
+ * nav and footer (Landing.module.css). Tokens only. */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.body { padding: 96px 0 120px; }
+.title {
+  margin: 0;
+  font: var(--weight-bold) clamp(36px, 5vw, 52px)/1.05 var(--font-display);
+  letter-spacing: -0.03em;
+}
+.intro { margin: 16px 0 0; font-size: 19px; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
+.body h2 {
+  margin: 56px 0 12px;
+  font: var(--weight-semibold) 22px/1.25 var(--font-display);
+  letter-spacing: -0.015em;
+}
+.body p,
+.body li { font-size: 17px; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+.body p { margin: 0 0 12px; }
+.body ul { margin: 0 0 12px; padding-left: 20px; }
+.body li + li { margin-top: 6px; }
+.body strong { color: var(--text-primary); font-weight: var(--weight-semibold); }
+.body p a,
+.body li a { color: var(--brand-blue); }
+.body p a:hover,
+.body li a:hover { text-decoration: underline; }
+.body p.updated { margin-top: 56px; font-size: 14px; color: var(--text-tertiary); }
+
+@media (max-width: 640px) {
+  .body { padding: 56px 0 80px; }
+}

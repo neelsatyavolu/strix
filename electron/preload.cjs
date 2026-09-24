@@ -17,6 +17,11 @@ contextBridge.exposeInMainWorld("strix", {
     // Opens Google in the system browser, resolves with the loopback redirect URL.
     google: (authUrl) => ipcRenderer.invoke("auth:google", authUrl),
   },
+  // Anonymous usage stats opt-out (daily heartbeat + page views in this window).
+  analytics: {
+    enabled: () => ipcRenderer.invoke("analytics:get"),
+    setEnabled: (on) => ipcRenderer.invoke("analytics:set", on),
+  },
   // Auto-update bridge (electron-updater in the main process).
   updates: {
     state: () => ipcRenderer.invoke("updates:state"),

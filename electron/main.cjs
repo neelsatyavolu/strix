@@ -1,9 +1,10 @@
-const { app, BrowserWindow, ipcMain, shell } = require("electron");
+const { app, BrowserWindow, ipcMain, session, shell } = require("electron");
 const path = require("node:path");
 const fs = require("node:fs");
 const http = require("node:http");
 const { registerAiIpc } = require("./ai.cjs");
 const { registerUpdates } = require("./updates.cjs");
+const { createHeartbeat } = require("./heartbeat.cjs");
 
 // The window loads the deployed site directly. Dev: the local `next dev` server;
 // packaged: production on Vercel. STRIX_URL overrides either (e.g. a preview URL).
@@ -96,12 +97,36 @@ function createWindow() {
   }
 }
 
+// Anonymous usage stats (Settings > Privacy): a daily heartbeat from here, plus
+// the website's page-view beacon inside the window. Opting out stops both.
+function registerHeartbeat() {
+  const heartbeat = createHeartbeat({
+    stateFile: path.join(app.getPath("userData"), "analytics.json"),
+    info: {
+      version: app.getVersion(),
+      platform: "macos",
+      os_version: process.getSystemVersion(),
+      arch: process.arch === "x64" ? "x86_64" : process.arch,
+      channel: app.isPackaged ? "release" : "dev",
+    },
+  });
+  ipcMain.handle("analytics:get", () => heartbeat.isEnabled());
+  ipcMain.handle("analytics:set", (_e, on) => heartbeat.setEnabled(on));
+  session.defaultSession.webRequest.onBeforeRequest(
+    { urls: ["https://analytics.n3el.dev/*"] },
+    (_details, callback) => callback({ cancel: !heartbeat.isEnabled() }),
+  );
+  heartbeat.tick();
+  setInterval(() => heartbeat.tick(), 60 * 60 * 1000);
+}
+
 app.whenReady().then(() => {
   registerAiIpc(ipcMain, shell);
   ipcMain.handle("auth:google", (_e, authUrl) => googleLoopback(authUrl));
   // Auto-update: checks the generic feed (app-update.yml -> strixprep.com/downloads)
   // and streams lifecycle events to the renderer. No-op in dev (not packaged).
   registerUpdates({ ipcMain, shell, getWindow: () => win });
+  registerHeartbeat();
   createWindow();
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

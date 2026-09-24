@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "@/styles/styles.css";
 import "katex/dist/katex.min.css";
 import "./globals.css";
@@ -16,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        {children}
+        {/* Cookieless, anonymous page-view counts (see /privacy). */}
+        <Script src="https://analytics.n3el.dev/p.js" strategy="afterInteractive" />
+      </body>
     </html>
   );
 }

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Brand } from "./LandingNav";
 import { PrimaryCtas } from "./Hero";
-import { DOWNLOAD_URL, ENTER, GITHUB_URL } from "./links";
+import { DOWNLOAD_URL, ENTER, GITHUB_URL, PRIVACY } from "./links";
 import s from "./Landing.module.css";
 
 export function ScoringNote() {
@@ -58,6 +58,7 @@ export function LandingFooter({ authed }: { authed: boolean }) {
             <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
               Source on GitHub
             </a>
+            <a href={PRIVACY}>Privacy</a>
           </nav>
         </div>
         <p className={s.legal}>
