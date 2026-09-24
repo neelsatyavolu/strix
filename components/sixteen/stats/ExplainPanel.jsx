@@ -1,15 +1,11 @@
 'use client';
 import React from 'react';
 import { Icon } from '@/components/sixteen';
+import s from './ExplainPanel.module.css';
 
 // AI "explain my mistake" for a missed question. Calls /api/ai/explain, which
 // uses the user's connected ChatGPT/Grok subscription, and keeps the result in
 // local state so reopening the same review doesn't re-ask.
-
-const linkBtn = {
-  display: 'inline-flex', alignItems: 'center', gap: 4, background: 'transparent',
-  border: 0, cursor: 'pointer', font: 'var(--role-label)', color: 'var(--brand-blue)', padding: '4px 0',
-};
 
 export function ExplainPanel({ question, choice }) {
   const [state, setState] = React.useState({ status: 'idle', text: '', error: '' });
@@ -42,27 +38,27 @@ export function ExplainPanel({ question, choice }) {
   };
 
   return (
-    <div style={{ marginTop: 8 }}>
+    <div className={s.wrap}>
       {state.status === 'idle' && (
-        <button onClick={ask} style={linkBtn}>
+        <button type="button" onClick={ask} className={s.link}>
           <Icon name="sparkles" size={14} /> Explain my mistake
         </button>
       )}
       {state.status === 'loading' && (
-        <div style={{ font: 'var(--role-label)', color: 'var(--text-tertiary)', padding: '4px 0' }}>Thinking through this one…</div>
+        <div className={s.pending}>Thinking through this one…</div>
       )}
       {state.status === 'error' && (
-        <div style={{ font: 'var(--role-caption)', color: 'var(--text-secondary)', padding: '4px 0' }}>
+        <div className={s.error}>
           {state.error}{' '}
-          <button onClick={ask} style={linkBtn}>Try again</button>
+          <button type="button" onClick={ask} className={s.link}>Try again</button>
         </div>
       )}
       {state.status === 'done' && (
-        <div style={{ marginTop: 6, paddingTop: 10, borderTop: '1px solid var(--border-1)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: 'var(--role-label)', color: 'var(--brand-blue)', marginBottom: 6 }}>
+        <div className={s.answer}>
+          <div className={s.answerHead}>
             <Icon name="sparkles" size={13} /> AI explanation
           </div>
-          <div style={{ font: 'var(--role-body)', color: 'var(--text-body)', whiteSpace: 'pre-wrap', lineHeight: 1.55 }}>{state.text}</div>
+          <div className={s.answerText}>{state.text}</div>
         </div>
       )}
     </div>

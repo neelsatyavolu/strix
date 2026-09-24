@@ -1,0 +1,51 @@
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.titleRow { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.mark {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-md);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--sunken);
+}
+.title { margin: 0; font: var(--role-title-sm); color: var(--text-primary); }
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: var(--role-caption);
+  color: var(--text-tertiary);
+}
+
+.body { display: flex; flex-direction: column; gap: 16px; }
+.summary { margin: 0; font: var(--role-body-lg); color: var(--text-primary); max-width: 70ch; }
+.muted { margin: 0; font: var(--role-body); color: var(--text-tertiary); }
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-1);
+}
+.pillar { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.pillarLabel { display: inline-flex; align-items: center; gap: 6px; font: var(--role-label); }
+.pillarText { font: var(--role-body); color: var(--text-body); }
+
+.actionsLabel { font: var(--role-label); color: var(--text-secondary); margin-bottom: 6px; }
+.actions { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.action { display: flex; gap: 8px; align-items: flex-start; font: var(--role-body); color: var(--text-body); }
+.actionIcon { margin-top: 3px; flex-shrink: 0; }
+
+.footnote {
+  margin: 0;
+  font: var(--role-caption);
+  color: var(--text-tertiary);
+}

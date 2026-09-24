@@ -1,0 +1,45 @@
+.wrap { position: relative; width: 100%; }
+.svg { display: block; overflow: visible; }
+
+.grid { stroke: var(--border-1); stroke-width: 1; shape-rendering: crispEdges; }
+
+.yLabel,
+.xLabel {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  fill: var(--text-tertiary);
+}
+.yLabel { text-anchor: end; dominant-baseline: middle; }
+
+.line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.cursor { stroke: var(--border-2); stroke-width: 1; shape-rendering: crispEdges; }
+
+.dot { fill: var(--surface-card); stroke-width: 1.75; }
+.dotActive { stroke-width: 2; }
+
+.tip {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 8px;
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--surface-popover);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+.tipValue {
+  font: var(--role-numeric);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.tipDate { font: var(--role-caption); color: var(--text-tertiary); }

@@ -1,5 +1,6 @@
 'use client';
-import { Card, Badge, Icon } from '@/components/sixteen';
+import { Card, Badge, Icon, IconButton, Skeleton } from '@/components/sixteen';
+import s from './Insight.module.css';
 
 // Presentational insight card. Renders an AI- or baseline-derived study read
 // ({ summary, strength, focus, actions }) with a consistent layout, plus the
@@ -7,63 +8,58 @@ import { Card, Badge, Icon } from '@/components/sixteen';
 
 function ago(iso) {
   if (!iso) return '';
-  const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
-  if (s < 90) return 'just now';
-  const m = s / 60;
+  const sec = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
+  if (sec < 90) return 'just now';
+  const m = sec / 60;
   if (m < 60) return `${Math.floor(m)}m ago`;
   const h = m / 60;
   if (h < 24) return `${Math.floor(h)}h ago`;
   return `${Math.floor(h / 24)}d ago`;
 }
 
-export function InsightCard({ title = 'Insights', accent = 'var(--brand-blue)', status, insight, source, generatedAt, error, canAi, refresh }) {
+export function InsightCard({
+  title = 'Insights', accent = 'var(--brand-blue)',
+  status, insight, source, generatedAt, error, canAi, refresh,
+  className, style,
+}) {
   const loading = status === 'loading';
 
   return (
-    <Card padding="lg" style={{ marginBottom: 16 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, gap: 10 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{
-            width: 28, height: 28, borderRadius: 8, display: 'grid', placeItems: 'center',
-            background: 'var(--brand-blue-soft)', color: accent, flexShrink: 0,
-          }}>
-            <Icon name="sparkles" style={{ width: 15, height: 15 }} />
+    <Card padding="lg" className={className} style={style}>
+      <div className={s.head}>
+        <div className={s.titleRow}>
+          <span className={s.mark} style={{ color: accent }}>
+            <Icon name="sparkles" size={14} />
           </span>
-          <h2 style={{ margin: 0, font: 'var(--role-title-sm)' }}>{title}</h2>
+          <h3 className={s.title}>{title}</h3>
           {source === 'ai' && <Badge variant="brand" size="sm">AI</Badge>}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
+        <div className={s.meta}>
           {loading && <span>Analyzing…</span>}
           {!loading && source === 'ai' && generatedAt && <span>Updated {ago(generatedAt)}</span>}
           {canAi && refresh && (
-            <button
-              onClick={refresh}
-              disabled={loading}
-              title="Refresh insight"
-              style={{
-                display: 'grid', placeItems: 'center', width: 26, height: 26, borderRadius: 6,
-                background: 'transparent', border: '1px solid var(--border-1)',
-                cursor: loading ? 'default' : 'pointer', color: 'var(--text-secondary)', opacity: loading ? 0.5 : 1,
-              }}
-            >
-              <Icon name="refresh-cw" style={{ width: 13, height: 13 }} />
-            </button>
+            <IconButton size="sm" label="Refresh insight" onClick={refresh} disabled={loading}>
+              <Icon name="refresh-cw" size={13} />
+            </IconButton>
           )}
         </div>
       </div>
 
       {!insight ? (
-        <div style={{ font: 'var(--role-body)', color: 'var(--text-tertiary)', padding: '4px 0' }}>
-          {loading ? 'Reading your results…' : 'Answer a few more questions to unlock insights.'}
-        </div>
+        loading ? (
+          <div className={s.body} aria-busy="true">
+            <Skeleton width="90%" />
+            <Skeleton width="65%" />
+          </div>
+        ) : (
+          <p className={s.muted}>Answer a few more questions to unlock insights.</p>
+        )
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {insight.summary && (
-            <p style={{ margin: 0, font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.55 }}>{insight.summary}</p>
-          )}
+        <div className={s.body}>
+          {insight.summary && <p className={s.summary}>{insight.summary}</p>}
 
           {(insight.strength || insight.focus) && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div className={s.pillars}>
               {insight.strength && (
                 <Pillar label="Strongest" color="var(--success)" icon="trending-up" text={insight.strength} />
               )}
@@ -75,13 +71,11 @@ export function InsightCard({ title = 'Insights', accent = 'var(--brand-blue)', 
 
           {insight.actions?.length > 0 && (
             <div>
-              <div style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginBottom: 8 }}>
-                What to do
-              </div>
-              <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 7 }}>
+              <div className={s.actionsLabel}>What to do</div>
+              <ul className={s.actions}>
                 {insight.actions.map((a, i) => (
-                  <li key={i} style={{ display: 'flex', gap: 9, alignItems: 'flex-start', font: 'var(--role-body)', color: 'var(--text-secondary)' }}>
-                    <Icon name="arrow-right" style={{ width: 14, height: 14, color: accent, marginTop: 3, flexShrink: 0 }} />
+                  <li key={i} className={s.action}>
+                    <Icon name="arrow-right" size={14} className={s.actionIcon} style={{ color: accent }} />
                     <span>{a}</span>
                   </li>
                 ))}
@@ -90,13 +84,11 @@ export function InsightCard({ title = 'Insights', accent = 'var(--brand-blue)', 
           )}
 
           {!canAi && (
-            <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', borderTop: '1px solid var(--border-1)', paddingTop: 10 }}>
-              Connect ChatGPT or Grok in the tutor panel for AI-powered insights that refresh daily.
-            </div>
+            <p className={s.footnote}>
+              Connect ChatGPT or Grok in the tutor panel for AI insights that refresh daily.
+            </p>
           )}
-          {error && (
-            <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>{error}</div>
-          )}
+          {error && <p className={s.footnote}>{error}</p>}
         </div>
       )}
     </Card>
@@ -105,12 +97,12 @@ export function InsightCard({ title = 'Insights', accent = 'var(--brand-blue)', 
 
 function Pillar({ label, color, icon, text }) {
   return (
-    <div style={{ background: 'var(--sunken)', borderRadius: 'var(--radius-md)', padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, color }}>
-        <Icon name={icon} style={{ width: 14, height: 14 }} />
-        <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)' }}>{label}</span>
-      </div>
-      <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.5 }}>{text}</span>
+    <div className={s.pillar}>
+      <span className={s.pillarLabel} style={{ color }}>
+        <Icon name={icon} size={14} />
+        {label}
+      </span>
+      <span className={s.pillarText}>{text}</span>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { CATEGORY_TO_DOMAIN, domainLabel } from '@/lib/cb/domains';
 
 export const SECTION_LABEL = { rw: 'Reading & Writing', math: 'Math' };
 export const SECTION_SHORT = { rw: 'R&W', math: 'Math' };
-export const MODE_LABEL = { drill: 'drill', 'mock-m1': 'Module 1', 'mock-full': 'Full section' };
+export const MODE_LABEL = { drill: 'Drill', 'mock-m1': 'Module 1', 'mock-full': 'Full section' };
 export const MODE_VARIANT = { drill: 'neutral', 'mock-m1': 'brand', 'mock-full': 'success' };
 
 const HOUR = 3600 * 1000;
@@ -103,23 +103,27 @@ export function shortAgo(iso) {
   return `${Math.floor(d / 30)}mo`;
 }
 
-export function StatCardLite({ label, value, sublabel }) {
-  return (
-    <div style={{display:'flex', flexDirection:'column', gap: 4}}>
-      <span style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)'}}>{label}</span>
-      <span style={{font:'var(--role-title-md)', color:'var(--text-primary)', fontFamily:'var(--font-mono)', fontVariantNumeric:'tabular-nums', lineHeight: 1}}>{value}</span>
-      {sublabel && <span style={{font:'var(--role-caption)', color:'var(--text-tertiary)'}}>{sublabel}</span>}
-    </div>
-  );
+// Headline accuracy follows the rest of the app: recency-weighted, falling back
+// to all-time only when there's no recent signal.
+export function recentAcc(t) {
+  if (!t) return 0;
+  return t.recentAccuracy != null ? t.recentAccuracy : t.accuracy ?? 0;
 }
 
-export function EmptyState({ title, hint, action }) {
-  const { Card } = SixteenNS;
-  return (
-    <Card padding="xl" style={{textAlign:'center'}}>
-      <div style={{font:'var(--role-title-sm)', color:'var(--text-primary)', marginBottom: 6}}>{title}</div>
-      <div style={{font:'var(--role-body)', color:'var(--text-tertiary)'}}>{hint}</div>
-      {action && <div style={{marginTop: 16, display:'flex', justifyContent:'center'}}>{action}</div>}
-    </Card>
-  );
+// Status tone for an accuracy percentage.
+export function accuracyTone(pct) {
+  if (pct == null) return 'var(--text-secondary)';
+  return pct >= 75 ? 'var(--success)' : pct >= 60 ? 'var(--warning)' : 'var(--error)';
+}
+
+/** StatCardLite — compact labelled figure (kept for older callers; wraps Metric). */
+export function StatCardLite({ label, value, sublabel }) {
+  const { Metric } = SixteenNS;
+  return <Metric size="sm" label={label} value={value} hint={sublabel} />;
+}
+
+/** EmptyState — kept for older callers; wraps the core EmptyState (hint → body). */
+export function EmptyState({ title, hint, action, icon }) {
+  const { EmptyState: CoreEmpty } = SixteenNS;
+  return <CoreEmpty icon={icon} title={title} body={hint} action={action} />;
 }

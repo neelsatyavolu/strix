@@ -1,43 +1,26 @@
 'use client';
 import React from 'react';
-import * as SixteenNS from '@/components/sixteen';
-import { Icon } from '@/components/sixteen';
+import {
+  Badge, Button, Card, EmptyState, List, ListRow, Metric, Page, PageHeader, Section,
+} from '@/components/sixteen';
+import { AccuracyRing } from '@/components/sixteen/stats/AccuracyRing';
 import { InsightCard } from '@/components/sixteen/stats/InsightCard';
+import { SECTION_LABEL } from '@/components/sixteen/stats/shared';
 import { useInsight } from '@/lib/ai/insights';
+import { AccuracyMeta, sectionColor } from './progress/DomainList';
+import { AttemptRow, DIFF_LABEL } from './progress/QuestionHistory';
+import { MetricsSkeleton, ListSkeleton } from './progress/Skeletons';
+import p from './progress/Progress.module.css';
 
-// CategoryDetail — drill-down for one CB content domain. Shows skill-level
+// CategoryDetail — drill-in for one CB content domain. Shows skill-level
 // accuracy, an AI/baseline study insight, and the full attempt history
 // (which exact questions were right/wrong), paginated newest-first.
 
-const SECTION_LABEL = { rw: 'Reading & Writing', math: 'Math' };
-const DIFF_LABEL = { E: 'Easy', M: 'Medium', H: 'Hard' };
-const DIFF_VARIANT = { E: 'success', M: 'warning', H: 'error' };
-
-function ago(iso) {
-  if (!iso) return '';
-  const s = Math.max(0, (Date.now() - new Date(iso).getTime()) / 1000);
-  if (s < 60) return 'just now';
-  const m = s / 60;
-  if (m < 60) return `${Math.floor(m)}m ago`;
-  const h = m / 60;
-  if (h < 24) return `${Math.floor(h)}h ago`;
-  const d = h / 24;
-  if (d < 7) return `${Math.floor(d)}d ago`;
-  return `${Math.floor(d / 7)}w ago`;
-}
-
-function fmtTime(ms) {
-  if (!ms || ms < 0) return null;
-  const s = Math.round(ms / 1000);
-  if (s < 60) return `${s}s`;
-  return `${Math.floor(s / 60)}m ${s % 60}s`;
-}
-
 // Deterministic skill read — the offline fallback. Matches parsed-insight shape.
 function categoryBaseline(label, skills, totals) {
-  const pool = (skills ?? []).filter((s) => s.done > 0);
+  const pool = (skills ?? []).filter((sk) => sk.done > 0);
   if (!pool.length) return null;
-  const eligible = pool.filter((s) => s.done >= 3);
+  const eligible = pool.filter((sk) => sk.done >= 3);
   const ranked = [...(eligible.length ? eligible : pool)].sort((a, b) => b.accuracy - a.accuracy);
   const best = ranked[0];
   const worst = ranked[ranked.length - 1];
@@ -52,16 +35,17 @@ function categoryBaseline(label, skills, totals) {
   };
 }
 
-function CategoryDetail({ go, section = 'rw', domain, label, studentId = null }) {
-  const { Card, Badge, AccuracyRing, Button } = SixteenNS;
-  const accent = section === 'rw' ? 'var(--rw-color)' : 'var(--math-color)';
+function CategoryDetail({ go, section = 'rw', domain, label, studentId = null, readOnly = false, studentName = null }) {
+  const accent = sectionColor(section);
 
   const [data, setData] = React.useState(null);
   const [attempts, setAttempts] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [loadingMore, setLoadingMore] = React.useState(false);
   const [error, setError] = React.useState(null);
+  const [moreError, setMoreError] = React.useState(null);
   const [hasMore, setHasMore] = React.useState(false);
+  const [reload, setReload] = React.useState(0);
 
   const fetchPage = React.useCallback(async (offset) => {
     const sq = studentId ? `&studentId=${encodeURIComponent(studentId)}` : '';
@@ -86,268 +70,126 @@ function CategoryDetail({ go, section = 'rw', domain, label, studentId = null })
       .catch((e) => on && setError(e.message))
       .finally(() => on && setLoading(false));
     return () => { on = false; };
-  }, [fetchPage]);
+  }, [fetchPage, reload]);
 
   const loadMore = async () => {
     setLoadingMore(true);
+    setMoreError(null);
     try {
       const d = await fetchPage(attempts.length);
       setAttempts((prev) => [...prev, ...(d.attempts || [])]);
       setHasMore(!!d.hasMore);
     } catch (e) {
-      setError(e.message);
+      setMoreError(e.message);
     } finally {
       setLoadingMore(false);
     }
   };
 
-  const totals = data?.totals ?? { done: 0, correct: 0, accuracy: 0 };
-  const skills = data?.skills ?? [];
+  const totals = React.useMemo(() => data?.totals ?? { done: 0, correct: 0, accuracy: 0 }, [data]);
+  const skills = React.useMemo(() => data?.skills ?? [], [data]);
   const baseline = React.useMemo(() => categoryBaseline(label, skills, totals), [label, skills, totals]);
   const payload = React.useMemo(() => ({
     category: label,
     section: SECTION_LABEL[section],
     accuracy: totals.accuracy,
     answered: totals.done,
-    skills: skills.filter((s) => s.done > 0).map((s) => ({ skill: s.label, answered: s.done, accuracy: s.accuracy })),
+    skills: skills.filter((sk) => sk.done > 0).map((sk) => ({ skill: sk.label, answered: sk.done, accuracy: sk.accuracy })),
     recentMistakes: attempts.filter((a) => !a.isCorrect).slice(0, 8).map((a) => ({
       skill: a.skillLabel, difficulty: DIFF_LABEL[a.difficulty] || a.difficulty, question: a.stem.slice(0, 180),
     })),
   }), [label, section, totals, skills, attempts]);
   const ins = useInsight({ scope: `cat:${section}:${domain}${studentId ? `:${studentId}` : ''}`, payload, baseline, ready: !loading && totals.done > 0 });
 
-  return (
-    <div style={{ padding: '28px 36px' }}>
-      <button
-        onClick={() => go('stats')}
-        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'transparent', border: 0, cursor: 'pointer', color: 'var(--text-secondary)', font: 'var(--role-label)', padding: 0, marginBottom: 14 }}
-      >
-        <Icon name="arrow-left" style={{ width: 15, height: 15 }} /> Back to Stats
-      </button>
+  const sectionName = SECTION_LABEL[section] ?? section;
+  const subtitle = studentName
+    ? `${sectionName} · ${studentName}'s accuracy by skill and every question answered.`
+    : `${sectionName} · Accuracy by skill and every question you've answered.`;
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18, flexWrap: 'wrap' }}>
-        <h1 style={{ margin: 0, font: 'var(--role-title-lg)' }}>{label}</h1>
-        <Badge variant={section} dot>{SECTION_LABEL[section]}</Badge>
+  let body;
+  if (loading) {
+    body = (
+      <div className={p.tabBody} aria-busy="true">
+        <MetricsSkeleton />
+        <ListSkeleton rows={3} />
+        <ListSkeleton rows={5} />
       </div>
-
-      {loading ? (
-        <div style={{ padding: '48px 0', textAlign: 'center', font: 'var(--role-body)', color: 'var(--text-tertiary)' }}>Loading…</div>
-      ) : error ? (
-        <Card padding="xl" style={{ textAlign: 'center' }}>
-          <div style={{ font: 'var(--role-title-sm)', marginBottom: 6 }}>Couldn&apos;t load this category</div>
-          <div style={{ font: 'var(--role-body)', color: 'var(--text-tertiary)' }}>{error}</div>
-        </Card>
-      ) : totals.done === 0 ? (
-        <Card padding="xl" style={{ textAlign: 'center' }}>
-          <div style={{ font: 'var(--role-title-sm)', marginBottom: 6 }}>No questions yet</div>
-          <div style={{ font: 'var(--role-body)', color: 'var(--text-tertiary)' }}>Practice {label} questions to see your history and insights here.</div>
-        </Card>
-      ) : (
-        <>
-          <Card padding="lg" style={{ marginBottom: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 28, flexWrap: 'wrap' }}>
-              <AccuracyRing value={totals.accuracy} color={accent} label="Accuracy" />
-              <div style={{ display: 'flex', gap: 28 }}>
-                <Stat label="Answered" value={totals.done} />
-                <Stat label="Correct" value={totals.correct} />
-                <Stat label="Incorrect" value={totals.done - totals.correct} />
-              </div>
+    );
+  } else if (error) {
+    body = (
+      <div className={p.error} role="alert">
+        <span>Couldn&rsquo;t load this category. {error}</span>
+        <Button variant="secondary" size="sm" onClick={() => setReload((n) => n + 1)}>Retry</Button>
+      </div>
+    );
+  } else if (totals.done === 0) {
+    body = (
+      <EmptyState
+        icon="list-checks"
+        title="No questions yet"
+        body={readOnly
+          ? `${studentName || 'This student'} hasn't answered any ${label} questions yet.`
+          : `Practice ${label} questions to see your history and insights here.`}
+        action={readOnly ? null : <Button onClick={() => go('practice', { tab: 'drill' })}>Start a drill</Button>}
+      />
+    );
+  } else {
+    body = (
+      <div className={p.tabBody}>
+        <Card padding="lg">
+          <div className={p.metricsWithLead}>
+            <AccuracyRing value={totals.accuracy} color={accent} size={76} stroke={7} label="Accuracy" />
+            <div className={p.metrics}>
+              <Metric label="Answered" value={totals.done} />
+              <Metric label="Correct" value={totals.correct} />
+              <Metric label="Incorrect" value={totals.done - totals.correct} />
             </div>
-          </Card>
+          </div>
+        </Card>
 
-          <InsightCard title="Deeper insight" accent={accent} {...ins} />
+        <InsightCard title="Insight" accent={accent} {...ins} />
 
-          {skills.length > 0 && (
-            <Card padding="lg" style={{ marginBottom: 16 }}>
-              <h2 style={{ margin: '0 0 14px', font: 'var(--role-title-sm)' }}>By skill</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {skills.map((s, i) => (
-                  <SkillRow key={s.skill + i} skill={s} accent={accent} best={i === 0 && skills.length > 1} worst={i === skills.length - 1 && skills.length > 1} />
-                ))}
-              </div>
-            </Card>
-          )}
-
-          <Card padding="lg">
-            <h2 style={{ margin: '0 0 4px', font: 'var(--role-title-sm)' }}>Question history</h2>
-            <div style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginBottom: 14 }}>
-              Showing {attempts.length} of {totals.done}, newest first
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {attempts.map((a, i) => (
-                <AttemptRow key={i} a={a} first={i === 0} />
+        {skills.length > 0 && (
+          <Section title="By skill">
+            <List>
+              {skills.map((sk, i) => (
+                <ListRow
+                  key={sk.skill + i}
+                  title={
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                      {sk.label}
+                      {i === 0 && skills.length > 1 && <Badge variant="success" size="sm">Strongest</Badge>}
+                      {i === skills.length - 1 && skills.length > 1 && <Badge variant="warning" size="sm">Focus</Badge>}
+                    </span>
+                  }
+                  subtitle={`${sk.correct} of ${sk.done} correct`}
+                  meta={<AccuracyMeta pct={sk.done > 0 ? sk.accuracy : null} color={accent} />}
+                />
               ))}
+            </List>
+          </Section>
+        )}
+
+        <Section title="Question history" description={`Showing ${attempts.length} of ${totals.done}, newest first. Select a question to review it.`}>
+          <List>
+            {attempts.map((a, i) => <AttemptRow key={`${a.at}-${i}`} a={a} />)}
+          </List>
+          {moreError && <p className={p.caption} style={{ marginTop: 12 }}>Couldn&rsquo;t load more: {moreError}</p>}
+          {hasMore && (
+            <div className={p.loadMore}>
+              <Button variant="secondary" size="sm" loading={loadingMore} onClick={loadMore}>Load more</Button>
             </div>
-            {hasMore && (
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>
-                <Button variant="secondary" size="sm" loading={loadingMore} onClick={loadMore}>Load more</Button>
-              </div>
-            )}
-          </Card>
-        </>
-      )}
-    </div>
-  );
-}
-
-function Stat({ label, value }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>{label}</span>
-      <span style={{ font: 'var(--role-title-md)', color: 'var(--text-primary)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>{value}</span>
-    </div>
-  );
-}
-
-function SkillRow({ skill, accent, best, worst }) {
-  const { Badge } = SixteenNS;
-  const tone = skill.accuracy >= 75 ? 'var(--success)' : skill.accuracy >= 55 ? 'var(--warning)' : 'var(--error)';
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 8, font: 'var(--role-body)', color: 'var(--text-primary)' }}>
-          {skill.label}
-          {best && <Badge variant="success" size="sm">Strongest</Badge>}
-          {worst && <Badge variant="warning" size="sm">Focus</Badge>}
-        </span>
-        <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-          {skill.correct}/{skill.done} · <span style={{ color: tone }}>{skill.accuracy}%</span>
-        </span>
-      </div>
-      <div style={{ height: 6, borderRadius: 3, background: 'var(--sunken)', overflow: 'hidden' }}>
-        <div style={{ width: `${skill.accuracy}%`, height: '100%', background: accent, opacity: 0.85 }} />
-      </div>
-    </div>
-  );
-}
-
-function AttemptRow({ a, first }) {
-  const { Badge } = SixteenNS;
-  const [open, setOpen] = React.useState(false);
-  const t = fmtTime(a.timeMs);
-  const q = a.question;
-  const stemHtml = q?.stemHtml;
-  const canExpand = !!q;
-
-  return (
-    <div style={{ borderTop: first ? 0 : '1px solid var(--border-1)' }}>
-      <div
-        role={canExpand ? 'button' : undefined}
-        tabIndex={canExpand ? 0 : undefined}
-        aria-expanded={canExpand ? open : undefined}
-        onClick={canExpand ? () => setOpen((o) => !o) : undefined}
-        onKeyDown={canExpand ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((o) => !o); } } : undefined}
-        style={{
-          display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 12, alignItems: 'flex-start',
-          padding: '13px 0', cursor: canExpand ? 'pointer' : 'default',
-        }}
-      >
-        <span style={{
-          width: 22, height: 22, borderRadius: '50%', display: 'grid', placeItems: 'center', marginTop: 1,
-          background: a.isCorrect ? 'color-mix(in srgb, var(--success) 16%, transparent)' : 'color-mix(in srgb, var(--error) 16%, transparent)',
-          color: a.isCorrect ? 'var(--success)' : 'var(--error)', flexShrink: 0,
-        }}>
-          <Icon name={a.isCorrect ? 'check' : 'x'} style={{ width: 13, height: 13 }} />
-        </span>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 0 }}>
-          {open && stemHtml ? (
-            <div
-              className="cb-stem"
-              style={{ font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45 }}
-              dangerouslySetInnerHTML={{ __html: stemHtml }}
-            />
-          ) : (
-            <span style={{
-              font: 'var(--role-body)', color: 'var(--text-primary)', lineHeight: 1.45,
-              display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-            }}>
-              {a.stem || `${a.skillLabel} question`}
-            </span>
           )}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-            {a.difficulty && <Badge variant={DIFF_VARIANT[a.difficulty] || 'neutral'} size="sm">{DIFF_LABEL[a.difficulty] || a.difficulty}</Badge>}
-            <span>{a.skillLabel}</span>
-            <span>
-              You: <b style={{ color: a.isCorrect ? 'var(--success)' : 'var(--error)' }}>{a.yourAnswer || '—'}</b>
-              {!a.isCorrect && a.correct ? <> · Correct: <b style={{ color: 'var(--text-secondary)' }}>{a.correct}</b></> : null}
-            </span>
-          </div>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, flexShrink: 0, font: 'var(--role-caption)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-          <span>{ago(a.at)}</span>
-          {t && <span>{t}</span>}
-          {canExpand && <Icon name={open ? 'chevron-up' : 'chevron-down'} style={{ width: 15, height: 15, color: 'var(--text-tertiary)' }} />}
-        </div>
+        </Section>
       </div>
-      {open && q && <ExpandedReview q={q} yourAnswer={a.yourAnswer} isCorrect={a.isCorrect} />}
-    </div>
-  );
-}
-
-function ExpandedReview({ q, yourAnswer, isCorrect }) {
-  const [showExp, setShowExp] = React.useState(false);
-  const isMcq = q.type === 'mcq';
-  const correct = Array.isArray(q.correct) ? q.correct : [];
+    );
+  }
 
   return (
-    <div style={{
-      padding: '14px 0 18px 34px', display: 'flex', flexDirection: 'column', gap: 14,
-    }}>
-      {q.stimulusHtml && (
-        <div className="cb-stem" style={{ fontSize: 14, color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.stimulusHtml }} />
-      )}
-
-      {isMcq && q.choices.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {q.choices.map((o) => {
-            const isCorrectChoice = correct.includes(o.letter);
-            const isYours = yourAnswer === o.letter;
-            const tone = isCorrectChoice ? 'var(--success)' : isYours ? 'var(--error)' : null;
-            return (
-              <div key={o.letter} style={{
-                display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 10, alignItems: 'center',
-                padding: '9px 12px', borderRadius: 8,
-                border: `1px solid ${tone || 'var(--border-1)'}`,
-                background: tone ? `color-mix(in srgb, ${tone} 8%, transparent)` : 'transparent',
-              }}>
-                <span style={{
-                  width: 22, height: 22, borderRadius: '50%', display: 'grid', placeItems: 'center', flexShrink: 0,
-                  font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
-                  border: `1.5px solid ${tone || 'var(--border-2)'}`, color: tone || 'var(--text-secondary)',
-                }}>{o.letter}</span>
-                <span className="cb-choice" style={{ font: 'var(--role-body)' }} dangerouslySetInnerHTML={{ __html: o.html }} />
-                {isCorrectChoice ? <span style={{ font: 'var(--role-caption)', color: 'var(--success)', fontWeight: 600 }}>Correct</span>
-                  : isYours ? <span style={{ font: 'var(--role-caption)', color: 'var(--error)', fontWeight: 600 }}>Your answer</span> : null}
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {!isMcq && (
-        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', font: 'var(--role-body)' }}>
-          <div>
-            <span style={{ color: 'var(--text-tertiary)' }}>Your answer: </span>
-            <b style={{ fontFamily: 'var(--font-mono)', color: isCorrect ? 'var(--success)' : 'var(--error)' }}>{yourAnswer || '—'}</b>
-          </div>
-          <div>
-            <span style={{ color: 'var(--text-tertiary)' }}>Correct: </span>
-            <b style={{ fontFamily: 'var(--font-mono)', color: 'var(--success)' }}>{correct.join(' or ') || '—'}</b>
-          </div>
-        </div>
-      )}
-
-      {q.rationaleHtml && (
-        <div>
-          <button onClick={() => setShowExp((s) => !s)} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: 'transparent', border: 0, cursor: 'pointer', font: 'var(--role-label)', color: 'var(--brand-blue)', padding: '2px 0' }}>
-            <Icon name={showExp ? 'chevron-down' : 'chevron-right'} style={{ width: 14, height: 14 }} /> {showExp ? 'Hide explanation' : 'Show explanation'}
-          </button>
-          {showExp && (
-            <div className="cb-stem" style={{ fontSize: 14, marginTop: 6, paddingTop: 10, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: q.rationaleHtml }} />
-          )}
-        </div>
-      )}
-    </div>
+    <Page>
+      <PageHeader title={label || 'Skill'} subtitle={subtitle} />
+      {body}
+    </Page>
   );
 }
 

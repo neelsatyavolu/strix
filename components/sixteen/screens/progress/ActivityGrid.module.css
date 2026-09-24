@@ -1,0 +1,61 @@
+.wrap {
+  --cell: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+  flex-wrap: wrap;
+}
+.gridWrap { display: flex; flex-direction: column; gap: 10px; min-width: 0; max-width: 100%; overflow-x: auto; }
+.grid {
+  display: grid;
+  gap: 3px;
+  align-items: center;
+}
+.month {
+  font: var(--role-caption);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: visible;
+  width: var(--cell);
+  height: 14px;
+}
+.weekday {
+  font: var(--role-caption);
+  color: var(--text-tertiary);
+  padding-right: 6px;
+  line-height: var(--cell);
+}
+
+.cell {
+  display: inline-block;
+  width: var(--cell);
+  height: var(--cell);
+  border-radius: 3px;
+}
+.future { width: var(--cell); height: var(--cell); }
+.l0 { background: var(--sunken); }
+.l1 { background: color-mix(in srgb, var(--brand-blue) 30%, var(--sunken)); }
+.l2 { background: color-mix(in srgb, var(--brand-blue) 62%, var(--sunken)); }
+.l3 { background: var(--brand-blue); }
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  font: var(--role-caption);
+  color: var(--text-tertiary);
+}
+.legend > .cell:first-of-type { margin-left: 4px; }
+.legend > .cell:last-of-type { margin-right: 4px; }
+
+.figures {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 140px;
+}
+@media (max-width: 900px) {
+  .figures { flex-direction: row; flex-wrap: wrap; gap: 16px 32px; }
+}
