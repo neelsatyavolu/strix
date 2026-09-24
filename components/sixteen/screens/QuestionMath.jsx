@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
-import { Icon } from '@/components/sixteen';
 import renderMathInElement from 'katex/contrib/auto-render';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
 import Highlightable from '@/components/sixteen/test/Highlightable';
@@ -9,6 +8,8 @@ import { ExitTest } from '@/components/sixteen/test/ExitTest';
 import ModuleCountdown from '@/components/sixteen/test/ModuleCountdown';
 import ModuleReview from '@/components/sixteen/test/ModuleReview';
 import DesmosPanel from '@/components/sixteen/test/DesmosPanel';
+import { DoneAlreadyButton, DrillFeedback, EliminatorToggle } from '@/components/sixteen/test/QuestionAids';
+import { FormulaSheet, GridIn } from '@/components/sixteen/test/MathAids';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useLiveBroadcast } from '@/components/sixteen/session/LiveBroadcastContext';
 import { throttle } from '@/lib/tutor/throttle';
@@ -24,7 +25,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
   const NS = SixteenNS;
   const {
     TestHeader, DirectionsBar, Timer, TestFooter,
-    OptionRow, QuestionPalette, FlagButton, QuestionNumberBadge,
+    OptionRow, QuestionPalette, FlagButton, QuestionNumberBadge, ToolButton,
   } = NS;
   const session = usePracticeSession();
   const report = useLiveBroadcast();
@@ -95,7 +96,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
 
   if (session.status === 'loading') return <TestLoading label="Loading Math questions…" />;
   if (session.status === 'error') return <TestMessage title="Couldn't load questions" body={session.error} onHome={() => go('practice-setup', { domain: 'math' })} />;
-  if (!q) return <TestMessage title="No active session" body="Start a practice session to begin." onHome={() => go('practice-setup', { domain: 'math' })} />;
+  if (!q) return <TestMessage icon="circle-play" title="No active session" body="Start a practice session to begin." onHome={() => go('practice-setup', { domain: 'math' })} />;
 
   const total = session.questions.length;
   const resp = session.responses[q.id] || {};
@@ -169,11 +170,11 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         )}
         tools={<>
           <ExitTest mode={session.mode} onConfirm={() => session.exitSession(go)} />
-          <MathToolBtn label="Calculator" icon="square-function" active={calcOpen} onClick={() => setCalcOpen(!calcOpen)} />
-          <MathToolBtn label="Reference" icon="book-marked" active={formulaOpen} onClick={() => setFormulaOpen(!formulaOpen)} />
-          <MathToolBtn label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
-          <MathToolBtn label="Tutor" icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
-          <MathToolBtn label="More" icon="more-vertical" />
+          <ToolButton label="Calculator" icon="square-function" active={calcOpen} onClick={() => setCalcOpen(!calcOpen)} />
+          <ToolButton label="Reference" icon="book-marked" active={formulaOpen} onClick={() => setFormulaOpen(!formulaOpen)} />
+          <ToolButton label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
+          <ToolButton label="Tutor" icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
+          <ToolButton label="More" icon="more-vertical" />
         </>}
       />
 
@@ -194,15 +195,7 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
             <QuestionNumberBadge
               n={session.index + 1}
               flag={<>
-                {q.type === 'mcq' && !isDrill && (
-                  <button onClick={() => setEliminator((e) => !e)} title="Cross out answers" style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
-                    background: eliminator ? 'var(--test-fill)' : 'transparent', color: eliminator ? 'var(--test-fill-fg)' : 'var(--test-ink)',
-                    border: '1px solid var(--test-line)', borderRadius: 3, cursor: 'pointer',
-                    font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
-                    textDecoration: 'line-through', textDecorationThickness: '1.5px', marginRight: 8,
-                  }}>ABC</button>
-                )}
+                {q.type === 'mcq' && !isDrill && <EliminatorToggle on={eliminator} onClick={() => setEliminator((e) => !e)} />}
                 <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
               </>}
             />
@@ -313,129 +306,6 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
         nextDisabled={reviewOpen ? submitDisabled : isLast ? submitDisabled : blocked}
         nextLabel={reviewOpen || isLast ? 'Submit' : 'Next'}
       />
-    </div>
-  );
-}
-
-// General-practice inline feedback under the answer choices.
-function DrillFeedback({ solved, triedAny, rationaleHtml }) {
-  if (!solved && !triedAny) return null;
-  const color = solved ? 'var(--success)' : 'var(--error)';
-  return (
-    <div style={{ margin: '14px 0 0' }}>
-      <p role="status" style={{ margin: 0, font: 'var(--role-label)', fontWeight: 600, color }}>
-        {solved ? 'Correct.' : 'Not quite — try again.'}
-      </p>
-      {solved && rationaleHtml && (
-        <div className="cb-stem" style={{ fontSize: 14, marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: rationaleHtml }} />
-      )}
-    </div>
-  );
-}
-
-function DoneAlreadyButton({ busy, onClick }) {
-  return (
-    <div style={{ marginTop: 18 }}>
-      <button
-        type="button"
-        onClick={onClick}
-        disabled={busy}
-        title="Hide this question permanently and get a similar one"
-        style={{
-          background: 'transparent',
-          border: 0,
-          padding: 0,
-          cursor: busy ? 'wait' : 'pointer',
-          font: 'var(--role-caption)',
-          color: 'var(--text-tertiary)',
-          textDecoration: 'underline',
-          textUnderlineOffset: 3,
-          opacity: busy ? 0.6 : 1,
-        }}
-      >
-        {busy ? 'Finding another question…' : "I've done this already"}
-      </button>
-    </div>
-  );
-}
-
-function GridIn({ value, onChange }) {
-  return (
-    <div style={{ marginTop: 24, maxWidth: 320 }}>
-      <label style={{ display: 'block', font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginBottom: 8 }}>
-        Enter your answer
-      </label>
-      <input
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        inputMode="text"
-        placeholder="e.g. 3/4 or 0.75"
-        style={{
-          width: '100%', padding: '12px 14px',
-          font: 'var(--role-title-sm)', fontFamily: 'var(--font-mono)',
-          color: 'var(--test-ink)', background: 'var(--test-canvas)',
-          border: '2px solid var(--border-2)', borderRadius: 'var(--radius-md)',
-          outline: 'none',
-        }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--brand-blue)')}
-        onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--border-2)')}
-      />
-      <p style={{ margin: '8px 0 0', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-        Student-produced response. Fractions and decimals are both accepted.
-      </p>
-    </div>
-  );
-}
-
-function MathToolBtn({ label, icon, active = false, onClick }) {
-  const [hover, setHover] = React.useState(false);
-  return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      title={label}
-      style={{
-        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
-        padding: '4px 8px',
-        background: active ? 'rgba(255,255,255,0.18)' : (hover ? 'rgba(255,255,255,0.10)' : 'transparent'),
-        color: '#fff', border: 0, cursor: 'pointer', borderRadius: 4,
-        font: 'var(--role-caption)', fontWeight: 500, fontSize: 11,
-        transition: 'background var(--dur-fast) var(--ease-out)',
-      }}
-    >
-      <Icon name={icon} style={{ width: 18, height: 18, color: '#fff' }} />
-      <span>{label}</span>
-    </button>
-  );
-}
-
-function FormulaSheet({ onClose }) {
-  return (
-    <div style={{
-      position: 'absolute', right: 18, top: 78, width: 380, maxHeight: 420,
-      background: 'var(--paper)', borderRadius: 8, boxShadow: 'var(--shadow-lg)',
-      border: '1px solid var(--border-2)', overflow: 'auto', zIndex: 25,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderBottom: '1px solid var(--border-1)' }}>
-        <span style={{ font: 'var(--role-title-sm)' }}>Reference Sheet</span>
-        <button onClick={onClose} style={{ border: 0, background: 'transparent', cursor: 'pointer', color: 'var(--text-secondary)' }}>×</button>
-      </div>
-      <div style={{ padding: 14, display: 'flex', flexDirection: 'column', gap: 14, font: 'var(--role-body)' }}>
-        {[
-          ['Area of a circle', 'A = πr²'],
-          ['Circumference', 'C = 2πr'],
-          ['Pythagorean theorem', 'a² + b² = c²'],
-          ['Slope-intercept form', 'y = mx + b'],
-          ['Quadratic formula', 'x = (−b ± √(b² − 4ac)) / 2a'],
-          ['Distance', 'd = √((x₂−x₁)² + (y₂−y₁)²)'],
-        ].map(([k, v]) => (
-          <div key={k} style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
-            <span style={{ color: 'var(--text-secondary)' }}>{k}</span>
-            <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--test-ink)' }}>{v}</span>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

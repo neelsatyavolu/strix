@@ -1,5 +1,8 @@
 'use client';
 import React from 'react';
+import { Icon } from '../Icon';
+import { cx } from '../core/cx';
+import s from './chrome.module.css';
 
 /**
  * TestHeader — the navy bar at the top of every practice / module screen.
@@ -14,33 +17,16 @@ export function TestHeader({
   style: styleProp,
 }) {
   return (
-    <header style={{
-      height: 'var(--test-header-height)',
-      background: 'var(--test-header)',
-      color: 'var(--test-header-fg)',
-      display: 'grid',
-      gridTemplateColumns: '1fr auto 1fr',
-      alignItems: 'center',
-      padding: '0 18px',
-      gap: 16,
-      ...styleProp,
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <span style={{
-          font: 'var(--role-body)', fontWeight: 600,
-          color: '#fff', fontSize: 15,
-        }}>
-          {sectionLabel}
-        </span>
+    <header className={s.header} style={styleProp}>
+      <div className={s.headerLeft}>
+        <span className={s.sectionLabel} title={sectionLabel}>{sectionLabel}</span>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {timer}
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 18 }}>
+      <div className={s.headerCenter}>{timer}</div>
+      <div className={s.headerRight}>
         {tools}
         {user && (
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 4, font: 'var(--role-caption)', color: 'rgba(255,255,255,0.85)' }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--success)' }}/>
+          <span className={s.headerUser}>
+            <span className={s.dot} />
             {user.name}
           </span>
         )}
@@ -50,28 +36,39 @@ export function TestHeader({
 }
 
 /**
- * DirectionsBar — the thin gray bar Bluebook puts directly under the header.
+ * ToolButton — icon-over-label control in the navy header (Annotate,
+ * Calculator, Exit…). `inert` renders a non-interactive replica, used by the
+ * tutor's read-only mirror so its header matches the student's.
+ */
+export function ToolButton({ label, icon, active = false, inert = false, onClick, title }) {
+  return (
+    <button
+      type="button"
+      onClick={inert ? undefined : onClick}
+      title={title || label}
+      aria-pressed={active || undefined}
+      tabIndex={inert ? -1 : undefined}
+      aria-hidden={inert || undefined}
+      className={cx(s.tool, active && s.toolActive, inert && s.toolStatic)}
+    >
+      <Icon name={icon} className={s.toolIcon} size={18} />
+      <span>{label}</span>
+    </button>
+  );
+}
+
+/**
+ * DirectionsBar — the thin bar Bluebook puts directly under the header.
  * Has a "Directions" button on the left and a horizontal divider.
  */
 export function DirectionsBar({ onDirections, right = null, style: styleProp }) {
   return (
-    <div style={{
-      borderBottom: '1px solid var(--test-rule)',
-      background: 'var(--test-canvas)',
-      padding: '4px 18px',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      ...styleProp,
-    }}>
-      <button onClick={onDirections} style={{
-        display: 'inline-flex', alignItems: 'center', gap: 6,
-        font: 'var(--role-label)', fontWeight: 500,
-        color: 'var(--ink-1)', background: 'transparent', border: 0, padding: '4px 0',
-        cursor: 'pointer',
-      }}>
+    <div className={s.directions} style={styleProp}>
+      <button type="button" onClick={onDirections} className={s.directionsBtn}>
         Directions
-        <span style={{display:'inline-flex', fontSize: 11}}>▾</span>
+        <Icon name="chevron-down" size={14} />
       </button>
-      <div style={{display:'flex', alignItems:'center', gap: 10}}>{right}</div>
+      <div className={s.directionsRight}>{right}</div>
     </div>
   );
 }

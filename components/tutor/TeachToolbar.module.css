@@ -1,0 +1,68 @@
+/* TeachToolbar — floating tutor teaching controls, bottom-right. */
+
+.dock {
+  position: fixed;
+  right: 18px;
+  bottom: calc(var(--test-footer-height, 0px) + 18px);
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background: var(--surface-popover);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+.group { display: flex; align-items: center; gap: 2px; }
+.swatches { display: flex; align-items: center; gap: 6px; padding: 0 4px; }
+.divider { width: 1px; align-self: stretch; margin: 4px 0; background: var(--border-hairline); }
+
+/* Selected tool: brand fill, matching the "Teaching" pill. Doubled class to
+ * outrank IconButton's own .ghost.active / :hover rules. */
+.toolOn.toolOn,
+.toolOn.toolOn:hover:not(:disabled) { background: var(--brand-blue); color: var(--text-on-brand); }
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: box-shadow var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.swatch:hover { transform: scale(1.1); }
+.swatchOn { box-shadow: 0 0 0 2px var(--surface-popover), 0 0 0 4px var(--text-primary); }
+.swatch:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--surface-popover), 0 0 0 4px var(--brand-blue); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-pill);
+  background: var(--surface-popover);
+  color: var(--text-primary);
+  font: var(--role-label);
+  font-weight: 600;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: var(--xn-color), var(--xn-press);
+}
+.pill:hover { background: color-mix(in srgb, var(--surface-popover) 94%, var(--text-primary)); }
+.pill:active { transform: scale(0.97); }
+.pill:focus-visible { outline: none; box-shadow: var(--shadow-md), 0 0 0 3px var(--focus-ring); }
+.pillOn,
+.pillOn:hover { background: var(--brand-blue); border-color: var(--brand-blue); color: var(--text-on-brand); }

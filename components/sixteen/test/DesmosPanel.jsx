@@ -1,5 +1,7 @@
 'use client';
 import React from 'react';
+import { Icon } from '../Icon';
+import s from './dialogs.module.css';
 
 // Desmos API key. The public demo key works for development; set
 // NEXT_PUBLIC_DESMOS_API_KEY to your own (free for education) for production.
@@ -9,12 +11,12 @@ function loadDesmos() {
   if (window.Desmos) return Promise.resolve(window.Desmos);
   if (window.__desmosPromise) return window.__desmosPromise;
   window.__desmosPromise = new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = `https://www.desmos.com/api/v1.11/calculator.js?apiKey=${DESMOS_KEY}`;
-    s.async = true;
-    s.onload = () => resolve(window.Desmos);
-    s.onerror = () => reject(new Error('Desmos failed to load'));
-    document.head.appendChild(s);
+    const script = document.createElement('script');
+    script.src = `https://www.desmos.com/api/v1.11/calculator.js?apiKey=${DESMOS_KEY}`;
+    script.async = true;
+    script.onload = () => resolve(window.Desmos);
+    script.onerror = () => reject(new Error('Desmos failed to load'));
+    document.head.appendChild(script);
   });
   return window.__desmosPromise;
 }
@@ -110,7 +112,9 @@ export default function DesmosPanel({ onClose, readOnly = false, state = null, o
       <div onMouseDown={onHeaderDown} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 10px', background: '#2E7D32', color: '#fff', cursor: 'move', userSelect: 'none' }}>
         <span style={{ font: 'var(--role-label)', fontWeight: 600 }}>Desmos Graphing Calculator{readOnly ? ' (view only)' : ''}</span>
         {!readOnly && (
-          <button onClick={onClose} style={{ width: 18, height: 18, borderRadius: '50%', border: 0, background: 'rgba(255,255,255,0.18)', color: '#fff', cursor: 'pointer', display: 'grid', placeItems: 'center', fontSize: 12 }}>×</button>
+          <button type="button" onClick={onClose} aria-label="Close calculator" title="Close calculator" className={s.desmosClose}>
+            <Icon name="x" size={12} strokeWidth={2.5} />
+          </button>
         )}
       </div>
       {failed ? (

@@ -1,44 +1,54 @@
 'use client';
 import React from 'react';
-import { Button } from '@/components/sixteen';
+import { Button, EmptyState, Skeleton } from '@/components/sixteen';
 
-const wrap = {
-  height: '100%',
-  display: 'grid',
-  placeItems: 'center',
-  background: '#FFFFFF',
-  textAlign: 'center',
-};
+// Loading / message states for the full-bleed question screens. The loading
+// skeleton mirrors the test layout (navy header, question column, footer) so
+// the screen doesn't jump when the first question arrives.
+
+const fill = { height: '100%', display: 'flex', flexDirection: 'column', background: 'var(--test-canvas)' };
 
 export function TestLoading({ label = 'Loading questions…' }) {
   return (
-    <div style={wrap}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
-        <svg width="28" height="28" viewBox="0 0 16 16" style={{ animation: 'sixteen-spin 700ms linear infinite', color: 'var(--brand-blue)' }}>
-          <circle cx="8" cy="8" r="6" stroke="currentColor" strokeOpacity="0.2" strokeWidth="2" fill="none" />
-          <path d="M14 8a6 6 0 0 0-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none" />
-          <style>{`@keyframes sixteen-spin { to { transform: rotate(360deg); } }`}</style>
-        </svg>
-        <span style={{ font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>{label}</span>
+    <div style={fill} role="status" aria-live="polite" aria-busy="true">
+      <span style={srOnly}>{label}</span>
+      <div style={{ height: 'var(--test-header-height)', background: 'var(--test-header)', flexShrink: 0 }} />
+      <div style={{ height: 33, borderBottom: '1px solid var(--test-rule)', flexShrink: 0 }} />
+      <div style={{ flex: 1, overflow: 'hidden', padding: '32px 24px' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            <Skeleton width={30} height={28} radius={4} />
+            <Skeleton height={1} style={{ flex: 1 }} />
+          </div>
+          <Skeleton width="92%" height={16} />
+          <Skeleton width="86%" height={16} />
+          <Skeleton width="58%" height={16} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
+            {[0, 1, 2, 3].map((i) => <Skeleton key={i} height={58} radius={8} />)}
+          </div>
+        </div>
       </div>
+      <div style={{ height: 'var(--test-footer-height)', borderTop: '1px solid var(--test-rule)', flexShrink: 0 }} />
     </div>
   );
 }
 
-export function TestMessage({ title, body, onHome, homeLabel = 'Back to setup' }) {
+export function TestMessage({ title, body, onHome, homeLabel = 'Back to setup', icon = 'circle-alert' }) {
   return (
-    <div style={wrap}>
-      <div style={{ maxWidth: 420, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, padding: 24 }}>
-        <h2 style={{ margin: 0, font: 'var(--role-title-md)', color: 'var(--text-primary)' }}>{title}</h2>
-        {body && <p style={{ margin: 0, font: 'var(--role-body)', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{body}</p>}
-        {onHome && (
-          <div style={{ marginTop: 8 }}>
-            <Button variant="primary" onClick={onHome}>{homeLabel}</Button>
-          </div>
-        )}
-      </div>
+    <div style={{ ...fill, justifyContent: 'center' }}>
+      <EmptyState
+        icon={icon}
+        title={title}
+        body={body}
+        action={onHome ? <Button variant="primary" onClick={onHome}>{homeLabel}</Button> : null}
+      />
     </div>
   );
 }
+
+const srOnly = {
+  position: 'absolute', width: 1, height: 1, padding: 0, margin: -1,
+  overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0,
+};
 
 export default TestMessage;

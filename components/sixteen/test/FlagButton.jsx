@@ -1,9 +1,10 @@
 'use client';
 import React from 'react';
+import s from './chrome.module.css';
 
 /**
- * FlagButton — Bluebook "Mark for Review" pill. Outline + outline-flag when
- * idle; solid orange flag when marked, with the wording flipping to
+ * FlagButton — Bluebook "Mark for Review" control. Outline flag when idle;
+ * solid orange flag when marked, with the wording flipping to
  * "Marked for Review".
  */
 export function FlagButton({ marked = false, onClick, style: styleProp }) {
@@ -12,22 +13,8 @@ export function FlagButton({ marked = false, onClick, style: styleProp }) {
       type="button"
       onClick={onClick}
       aria-pressed={marked}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 6,
-        padding: '4px 12px',
-        font: 'var(--role-label)',
-        fontWeight: 500,
-        fontSize: 13,
-        background: 'transparent',
-        color: 'var(--test-ink)',
-        border: 'none',
-        borderRadius: 0,
-        cursor: 'pointer',
-        transition: 'var(--xn-color)',
-        ...styleProp,
-      }}
+      className={s.flag}
+      style={styleProp}
     >
       <FlagIcon size={14} filled={marked} color={marked ? 'var(--test-flag)' : 'var(--test-ink)'} />
       {marked ? 'Marked for Review' : 'Mark for Review'}

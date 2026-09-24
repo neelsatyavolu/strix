@@ -1,0 +1,104 @@
+/* QuestionPalette — Bluebook numbered-question popover above the footer. */
+
+.palette {
+  width: 420px;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  background: var(--surface-popover);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.head {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border-hairline);
+  font: var(--role-title-sm);
+  color: var(--text-primary);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-hairline);
+  font: var(--role-caption);
+  color: var(--text-secondary);
+}
+.legendItem { display: inline-flex; align-items: center; gap: 6px; }
+
+.swatch {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+}
+.swatchCurrent { background: var(--test-fill); }
+.swatchUnanswered { border: 1.5px dashed var(--text-secondary); }
+.swatchMarked { background: var(--test-flag-soft); }
+:global([data-theme="dark"]) .swatchMarked,
+:global(.dark) .swatchMarked { background: color-mix(in srgb, var(--test-flag) 22%, transparent); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 8px 6px;
+  padding: 16px;
+}
+
+.cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: var(--xn-color), opacity var(--dur-fast) var(--ease-out);
+}
+.cell:focus-visible { outline: 2px solid var(--test-button); outline-offset: 2px; }
+
+.current {
+  background: var(--test-fill);
+  color: var(--test-fill-fg);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.10);
+}
+.answered { background: var(--test-header); color: var(--test-header-fg); }
+.current:hover, .answered:hover { opacity: 0.85; }
+.unanswered {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1.5px dashed var(--text-secondary);
+}
+.unanswered:hover { background: var(--hover); border-style: solid; }
+
+.cellFlag { position: absolute; top: -6px; right: -6px; display: inline-flex; }
+
+.foot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-hairline);
+}
+.reviewBtn {
+  padding: 7px 16px;
+  border: 1.5px solid var(--test-ink);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--test-ink);
+  font: var(--role-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.reviewBtn:hover { background: var(--hover); }
+.reviewBtn:focus-visible { outline: 2px solid var(--test-button); outline-offset: 2px; }

@@ -1,5 +1,7 @@
 'use client';
 import React from 'react';
+import { cx } from '../core/cx';
+import s from './QuestionPalette.module.css';
 
 /**
  * QuestionPalette — Bluebook-style numbered grid of questions.
@@ -14,126 +16,53 @@ export function QuestionPalette({
   style: styleProp,
 }) {
   return (
-    <div style={{
-      background: 'var(--paper)',
-      borderRadius: 'var(--radius-lg)',
-      boxShadow: 'var(--shadow-lg)',
-      padding: 0,
-      width: 420,
-      overflow: 'hidden',
-      ...styleProp,
-    }}>
-      <div style={{
-        padding: '14px 16px 10px',
-        borderBottom: '1px solid var(--border-1)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
-        <span style={{ font: 'var(--role-title-sm)', color: 'var(--ink-1)' }}>
-          {title}
-        </span>
+    <div className={s.palette} style={styleProp} role="dialog" aria-label={title}>
+      <div className={s.head}>{title}</div>
+      <div className={s.legend}>
+        <Legend swatch={<span className={cx(s.swatch, s.swatchCurrent)} />} label="Current" />
+        <Legend swatch={<span className={cx(s.swatch, s.swatchUnanswered)} />} label="Unanswered" />
+        <Legend
+          swatch={<span className={cx(s.swatch, s.swatchMarked)}><Flag size={11} /></span>}
+          label="For Review"
+        />
       </div>
-      <div style={{
-        padding: '12px 16px',
-        display: 'flex',
-        gap: 14,
-        alignItems: 'center',
-        font: 'var(--role-caption)',
-        color: 'var(--text-secondary)',
-        borderBottom: '1px solid var(--border-1)',
-      }}>
-        <Legend swatch={<LocSwatch kind="current" />} label="Current" />
-        <Legend swatch={<LocSwatch kind="unanswered" />} label="Unanswered" />
-        <Legend swatch={<LocSwatch kind="marked" />} label="For Review" />
+      <div className={s.grid}>
+        {items.map((it) => <PaletteCell key={it.n} {...it} onClick={() => onSelect?.(it.n)} />)}
       </div>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(9, 1fr)',
-        gap: 6,
-        padding: 16,
-      }}>
-        {items.map(it => <PaletteCell key={it.n} {...it} onClick={() => onSelect?.(it.n)} />)}
-      </div>
-      <div style={{
-        padding: '12px 16px',
-        borderTop: '1px solid var(--border-1)',
-        display: 'flex',
-        justifyContent: 'flex-end',
-      }}>
-        <button
-          type="button"
-          onClick={onReviewAll}
-          style={{
-            padding: '7px 14px',
-            background: 'transparent',
-            color: 'var(--ink-1)',
-            border: '1.5px solid var(--ink-1)',
-            borderRadius: 'var(--radius-pill)',
-            font: 'var(--role-body)',
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
-        >Go to Review Page</button>
+      <div className={s.foot}>
+        <button type="button" onClick={onReviewAll} className={s.reviewBtn}>
+          Go to Review Page
+        </button>
       </div>
     </div>
   );
 }
 
 function Legend({ swatch, label }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-      {swatch}{label}
-    </span>
-  );
-}
-function LocSwatch({ kind }) {
-  const base = { width: 18, height: 18, borderRadius: 4, display:'grid', placeItems:'center', position:'relative' };
-  if (kind === 'current')    return <span style={{ ...base, background: 'var(--ink-1)' }} />;
-  if (kind === 'unanswered') return <span style={{ ...base, background: 'transparent', border: '1.5px dashed var(--ink-3)' }} />;
-  if (kind === 'marked')     return <span style={{ ...base, background: '#FFEFD9' }}><Flag size={11} color="var(--test-flag)" /></span>;
-  return <span style={base} />;
+  return <span className={s.legendItem}>{swatch}{label}</span>;
 }
 
 function PaletteCell({ n, status, marked, onClick }) {
   // status: 'current' | 'answered' | 'unanswered'
-  const isAnswered = status === 'answered';
-  const isCurrent  = status === 'current';
-  const base = {
-    position: 'relative',
-    width: '100%',
-    aspectRatio: '1 / 1',
-    minHeight: 32,
-    borderRadius: 4,
-    display: 'grid', placeItems: 'center',
-    cursor: 'pointer',
-    border: 0,
-    transition: 'var(--xn-color)',
-    fontFamily: 'var(--font-sans)',
-    fontWeight: 600,
-    fontSize: 13,
-  };
-  let style;
-  if (isCurrent) {
-    style = { ...base, background: 'var(--test-fill)', color: 'var(--test-fill-fg)', boxShadow: '0 0 0 0.5px rgba(0,0,0,0.10)' };
-  } else if (isAnswered) {
-    style = { ...base, background: '#1B2A4B', color: '#fff' };
-  } else {
-    style = { ...base, background: 'transparent', color: 'var(--ink-1)', border: '1.5px dashed var(--ink-3)' };
-  }
+  const cls = status === 'current' ? s.current : status === 'answered' ? s.answered : s.unanswered;
+  const label = `Question ${n}, ${status || 'unanswered'}${marked ? ', marked for review' : ''}`;
   return (
-    <button type="button" style={style} onClick={onClick}>
+    <button
+      type="button"
+      className={cx(s.cell, cls)}
+      onClick={onClick}
+      aria-label={label}
+      aria-current={status === 'current' ? 'step' : undefined}
+    >
       {n}
       {marked && (
-        <span style={{ position:'absolute', top:-6, right:-6 }}>
-          <Flag size={12} color="var(--test-flag)" />
-        </span>
+        <span className={s.cellFlag}><Flag size={12} /></span>
       )}
     </button>
   );
 }
 
-function Flag({ size = 12, color = 'currentColor' }) {
+function Flag({ size = 12, color = 'var(--test-flag)' }) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden>
       <path d="M3 1.5v13" stroke={color} strokeWidth="1.5" strokeLinecap="round" fill="none"/>

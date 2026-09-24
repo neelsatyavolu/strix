@@ -1,61 +1,44 @@
 'use client';
 import React from 'react';
-import * as SixteenNS from '@/components/sixteen';
-import { Icon } from '@/components/sixteen';
+import { AccuracyRing, DomainBar, Icon, IconButton, StatCard } from '@/components/sixteen';
+import s from './SessionStats.module.css';
 
-// Live "session stats" sidebar — appears next to the question column,
-// shows accuracy, time, and category breakdown for the current session.
+// Live "session stats" card — floats bottom-left over the question column in
+// drill mode and shows accuracy, pace and the correct/incorrect/skipped split.
+// Collapses to a round button; `onToggle` flips between the two.
 
 function SessionStats({ answered = 0, total = 0, accuracy = 0, median = 0, correct = 0, incorrect = 0, skipped = 0, hidden = false, onToggle }) {
-  const { StatCard, DomainBar, AccuracyRing, IconButton } = SixteenNS;
   if (hidden) {
     return (
-      <div style={{
-        position: 'absolute', left: 18, bottom: 'calc(var(--test-footer-height) + 12px)', zIndex: 5,
-      }}>
-        <button onClick={onToggle} title="Show session stats" style={{
-          width: 36, height: 36, borderRadius: '50%', background: 'var(--paper)',
-          boxShadow: 'var(--shadow-sm)', border: 0, cursor: 'pointer',
-          display: 'grid', placeItems: 'center', color: 'var(--brand-blue)',
-        }}>
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="6" y1="20" x2="6" y2="13"></line>
-            <line x1="12" y1="20" x2="12" y2="4"></line>
-            <line x1="18" y1="20" x2="18" y2="9"></line>
-          </svg>
+      <div className={s.dock}>
+        <button type="button" onClick={onToggle} title="Show session stats" aria-label="Show session stats" className={s.fab}>
+          <Icon name="chart-no-axes-column" size={17} strokeWidth={2.2} />
         </button>
       </div>
     );
   }
   return (
-    <aside style={{
-      position: 'absolute', left: 18, bottom: 'calc(var(--test-footer-height) + 12px)', width: 250, zIndex: 5,
-      background: 'var(--paper)',
-      borderRadius: 'var(--radius-lg)',
-      boxShadow: 'var(--shadow-sm)',
-      padding: 14,
-      display: 'flex', flexDirection: 'column', gap: 14,
-    }}>
-      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-        <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>Session stats</span>
-        <button onClick={onToggle} title="Hide" style={{ width:20, height:20, borderRadius: 4, border:0, background:'transparent', cursor:'pointer', color:'var(--text-tertiary)' }}>
-          <Icon name="x" style={{width:14, height:14}}/>
-        </button>
+    <aside className={`${s.dock} ${s.card}`} aria-label="Session stats">
+      <div className={s.head}>
+        <span className={s.title}>Session stats</span>
+        <IconButton size="sm" label="Hide session stats" onClick={onToggle}>
+          <Icon name="x" size={14} />
+        </IconButton>
       </div>
-      <div style={{display:'flex', alignItems:'center', gap: 14}}>
+      <div className={s.summary}>
         <AccuracyRing value={accuracy} size={64} stroke={7} />
-        <div style={{display:'flex', flexDirection:'column', gap: 6}}>
+        <div className={s.figures}>
           <StatCard label="Answered" value={`${answered}/${total}`} size="sm" />
           <StatCard label="Median time" value={median} unit="s" size="sm" />
         </div>
       </div>
-      <div>
-        <span style={{font:'var(--role-eyebrow)', textTransform:'uppercase', letterSpacing:'var(--tracking-caps)', color:'var(--text-tertiary)', display:'block', marginBottom: 6}}>Breakdown</span>
+      <div className={s.section}>
+        <span className={s.label}>Breakdown</span>
         <DomainBar segments={[
-          { value: correct,   label:'Correct',   color:'var(--correct)'  },
-          { value: incorrect, label:'Incorrect', color:'var(--incorrect)'},
-          { value: skipped,   label:'Skipped',   color:'var(--unanswered)'},
-        ]}/>
+          { value: correct, label: 'Correct', color: 'var(--correct)' },
+          { value: incorrect, label: 'Incorrect', color: 'var(--incorrect)' },
+          { value: skipped, label: 'Skipped', color: 'var(--unanswered)' },
+        ]} />
       </div>
     </aside>
   );

@@ -1,0 +1,64 @@
+/* LiveTestView — tutor-side chrome around the read-only mirror. The mirror
+ * itself reuses the student's test components untouched. */
+
+.root { display: flex; flex-direction: column; height: 100%; background: var(--test-canvas); }
+
+.strip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 36px;
+  padding: 0 16px;
+  background: var(--surface-app);
+  border-bottom: 1px solid var(--border-hairline);
+  font: var(--role-label);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.stripMain { display: flex; align-items: center; gap: 8px; min-width: 0; white-space: nowrap; overflow: hidden; }
+.who { color: var(--text-primary); font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.sep { color: var(--text-tertiary); }
+
+.live {
+  position: relative;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  color: var(--success);
+  background: currentColor;
+}
+.live::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  opacity: 0;
+  animation: ping 1.8s var(--ease-out) infinite;
+}
+.liveTeaching { color: var(--error); }
+@keyframes ping { 0% { transform: scale(0.6); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .live::after { animation: none; } }
+
+.mode {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: var(--sunken);
+  color: var(--text-secondary);
+  font: var(--role-caption);
+  font-weight: 600;
+}
+.modeTeaching { background: var(--error-soft); color: var(--error); }
+
+/* Positioned so the mirrored Desmos panel lands where the student's does. */
+.mirror { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+.empty { height: 100%; display: grid; place-items: center; background: var(--test-canvas); }

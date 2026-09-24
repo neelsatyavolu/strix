@@ -1,0 +1,179 @@
+/* Test-surface overlays: exit confirmation, section directions, module
+ * review page, math reference sheet and grid-in answer box. */
+
+/* ── Modal scaffold ───────────────────────────────────────── */
+.scrim {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.45);
+}
+.dialog {
+  width: 440px;
+  max-width: 100%;
+  max-height: 80%;
+  overflow: auto;
+  background: var(--surface-popover);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+}
+.dialogWide { width: 540px; }
+.dialogHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-hairline);
+}
+.dialogTitle { margin: 0; font: var(--role-title-sm); color: var(--text-primary); }
+.dialogBody { padding: 20px 20px 4px; }
+.dialogBody .dialogTitle { margin-bottom: 8px; }
+.dialogText { margin: 0; font: var(--role-body-lg); line-height: 1.55; color: var(--text-secondary); }
+.dialogText + .dialogText { margin-top: 12px; }
+.dialogTextStrong { color: var(--text-body); }
+.danger { color: var(--error); font-weight: 600; }
+.dialogActions { display: flex; justify-content: flex-end; gap: 8px; padding: 20px; }
+
+.close {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--xn-color);
+}
+.close:hover { background: var(--hover); color: var(--text-primary); }
+.close:focus-visible { outline: 2px solid var(--test-button); outline-offset: 1px; }
+
+/* ── Module review ("Check your work") ────────────────────── */
+.review { flex: 1; overflow: auto; background: var(--test-canvas); }
+.reviewInner { max-width: 760px; margin: 0 auto; padding: 40px 24px 48px; }
+.reviewKicker { margin: 0; font: var(--role-label); color: var(--text-secondary); }
+.reviewTitle { margin: 4px 0 6px; font: var(--role-title-lg); color: var(--test-ink); }
+.reviewSummary {
+  margin: 0 0 24px;
+  font: var(--role-body-lg);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.reviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 8px;
+}
+.reviewItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--test-rule);
+  border-radius: var(--radius-md);
+  background: var(--test-canvas);
+  text-align: left;
+  cursor: pointer;
+  transition: var(--xn-color);
+}
+.reviewItem:hover { background: var(--test-option-hover); border-color: var(--test-line); }
+.reviewItem:focus-visible { outline: 2px solid var(--test-button); outline-offset: 2px; }
+.reviewNum {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  font: var(--role-label);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.reviewNumDone { background: var(--test-fill); color: var(--test-fill-fg); }
+.reviewNumOpen { border: 1.5px dashed var(--text-secondary); color: var(--test-ink); }
+.reviewMeta { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.reviewStatus { font: var(--role-body); color: var(--text-primary); }
+.reviewMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: var(--role-caption);
+  color: var(--text-tertiary);
+}
+.reviewMarked { color: var(--test-flag); }
+.reviewActions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 28px; }
+
+/* ── Reference sheet (Math) ───────────────────────────────── */
+.sheet {
+  position: absolute;
+  right: 18px;
+  top: 78px;
+  z-index: 25;
+  width: 380px;
+  max-width: calc(100% - 36px);
+  max-height: 420px;
+  overflow: auto;
+  background: var(--surface-popover);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+.sheet .dialogHead { padding: 10px 10px 10px 14px; }
+.sheetBody { display: flex; flex-direction: column; padding: 6px 14px 10px; }
+.sheetRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  font: var(--role-body);
+}
+.sheetRow + .sheetRow { border-top: 1px solid var(--border-hairline); }
+.sheetName { color: var(--text-secondary); }
+.sheetFormula { font-family: var(--font-mono); color: var(--test-ink); white-space: nowrap; }
+
+/* ── Grid-in (student-produced response) ──────────────────── */
+.gridIn { margin-top: 24px; max-width: 320px; }
+.fieldLabel { display: block; margin-bottom: 8px; font: var(--role-label); color: var(--text-secondary); }
+.answerBox {
+  width: 100%;
+  min-height: 22px;
+  padding: 12px 14px;
+  font: var(--role-title-sm);
+  font-family: var(--font-mono);
+  color: var(--test-ink);
+  background: var(--test-canvas);
+  border: 2px solid var(--border-2);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.answerBox:focus { border-color: var(--brand-blue); box-shadow: 0 0 0 3px var(--focus-ring); }
+.answerBoxKey {
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 8%, transparent);
+  border-color: var(--success);
+}
+.fieldHint { margin: 8px 0 0; font: var(--role-caption); color: var(--text-tertiary); }
+.muted { color: var(--text-tertiary); }
+
+/* ── Desmos panel close (on the green calculator header) ──── */
+.desmosClose {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.desmosClose:hover { background: rgba(255, 255, 255, 0.30); }
+.desmosClose:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }

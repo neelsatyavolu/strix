@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
 import * as SixteenNS from '@/components/sixteen';
-import { Icon } from '@/components/sixteen';
 import SessionStats from '@/components/sixteen/panels/SessionStats';
 import Highlightable from '@/components/sixteen/test/Highlightable';
 import { ExitTest } from '@/components/sixteen/test/ExitTest';
 import ModuleCountdown from '@/components/sixteen/test/ModuleCountdown';
 import ModuleReview from '@/components/sixteen/test/ModuleReview';
+import { DirectionsModal, DoneAlreadyButton, DrillFeedback, EliminatorToggle } from '@/components/sixteen/test/QuestionAids';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useLiveBroadcast } from '@/components/sixteen/session/LiveBroadcastContext';
 import TeachRegion from '@/components/tutor/TeachRegion';
@@ -21,7 +21,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
   const NS = SixteenNS;
   const {
     TestHeader, DirectionsBar, Timer, TestFooter,
-    OptionRow, QuestionPalette, FlagButton, QuestionNumberBadge,
+    OptionRow, QuestionPalette, FlagButton, QuestionNumberBadge, ToolButton,
   } = NS;
   const session = usePracticeSession();
   const report = useLiveBroadcast();
@@ -65,7 +65,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
 
   if (session.status === 'loading') return <TestLoading label="Loading Reading & Writing questions…" />;
   if (session.status === 'error') return <TestMessage title="Couldn't load questions" body={session.error} onHome={() => go('practice-setup', { domain: 'rw' })} />;
-  if (!q) return <TestMessage title="No active session" body="Start a practice session to begin." onHome={() => go('practice-setup', { domain: 'rw' })} />;
+  if (!q) return <TestMessage icon="circle-play" title="No active session" body="Start a practice session to begin." onHome={() => go('practice-setup', { domain: 'rw' })} />;
 
   const total = session.questions.length;
   const resp = session.responses[q.id] || {};
@@ -137,9 +137,9 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
         )}
         tools={<>
           <ExitTest mode={session.mode} onConfirm={() => session.exitSession(go)} />
-          <ToolBtn label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
-          <ToolBtn label="Tutor" icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
-          <ToolBtn label="More" icon="more-vertical" />
+          <ToolButton label="Annotate" icon="pencil-line" active={annotate} onClick={() => setAnnotate((a) => !a)} />
+          <ToolButton label="Tutor" icon="message-circle" active={tutorOn} onClick={() => setTutorOn(!tutorOn)} />
+          <ToolButton label="More" icon="more-vertical" />
         </>}
       />
 
@@ -177,15 +177,7 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
             <QuestionNumberBadge
               n={session.index + 1}
               flag={<>
-                {!isDrill && (
-                  <button onClick={() => setEliminator((e) => !e)} title="Cross out answers" style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px',
-                    background: eliminator ? 'var(--test-fill)' : 'transparent', color: eliminator ? 'var(--test-fill-fg)' : 'var(--test-ink)',
-                    border: '1px solid var(--test-line)', borderRadius: 3, cursor: 'pointer',
-                    font: 'var(--role-label)', fontSize: 12, fontWeight: 700,
-                    textDecoration: 'line-through', textDecorationThickness: '1.5px', marginRight: 8,
-                  }}>ABC</button>
-                )}
+                {!isDrill && <EliminatorToggle on={eliminator} onClick={() => setEliminator((e) => !e)} />}
                 <FlagButton marked={marked} onClick={() => session.toggleFlag()} />
               </>}
             />
@@ -255,7 +247,13 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
       )}
       {paletteOpen && <div onClick={() => setPaletteOpen(false)} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.10)', zIndex: 10 }} />}
 
-      {directionsOpen && <DirectionsModal onClose={() => setDirectionsOpen(false)} />}
+      {directionsOpen && (
+        <DirectionsModal onClose={() => setDirectionsOpen(false)}>
+          {RW_DIRECTIONS.map((p, i) => (
+            <p key={p} style={{ margin: i ? '12px 0 0' : 0, font: 'var(--role-body-lg)', lineHeight: 1.55, color: 'var(--text-primary)' }}>{p}</p>
+          ))}
+        </DirectionsModal>
+      )}
 
       <TestFooter
         studentName="You"
@@ -272,86 +270,9 @@ function QuestionRW({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dril
   );
 }
 
-// General-practice inline feedback under the answer choices.
-function DrillFeedback({ solved, triedAny, rationaleHtml }) {
-  if (!solved && !triedAny) return null;
-  const color = solved ? 'var(--success)' : 'var(--error)';
-  return (
-    <div style={{ margin: '14px 0 0' }}>
-      <p role="status" style={{ margin: 0, font: 'var(--role-label)', fontWeight: 600, color }}>
-        {solved ? 'Correct.' : 'Not quite — try again.'}
-      </p>
-      {solved && rationaleHtml && (
-        <div className="cb-stem" style={{ fontSize: 14, marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border-1)', color: 'var(--text-body)' }} dangerouslySetInnerHTML={{ __html: rationaleHtml }} />
-      )}
-    </div>
-  );
-}
-
-function DoneAlreadyButton({ busy, onClick }) {
-  return (
-    <div style={{ marginTop: 18 }}>
-      <button
-        type="button"
-        onClick={onClick}
-        disabled={busy}
-        title="Hide this question permanently and get a similar one"
-        style={{
-          background: 'transparent',
-          border: 0,
-          padding: 0,
-          cursor: busy ? 'wait' : 'pointer',
-          font: 'var(--role-caption)',
-          color: 'var(--text-tertiary)',
-          textDecoration: 'underline',
-          textUnderlineOffset: 3,
-          opacity: busy ? 0.6 : 1,
-        }}
-      >
-        {busy ? 'Finding another question…' : "I've done this already"}
-      </button>
-    </div>
-  );
-}
-
-function ToolBtn({ label, icon, active = false, onClick }) {
-  const [hover, setHover] = React.useState(false);
-  return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      title={label}
-      style={{
-        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
-        padding: '4px 8px', height: 'auto',
-        background: active ? 'rgba(255,255,255,0.18)' : (hover ? 'rgba(255,255,255,0.10)' : 'transparent'),
-        color: '#fff', border: 0, cursor: 'pointer', borderRadius: 4,
-        font: 'var(--role-caption)', fontWeight: 500, fontSize: 11,
-        transition: 'background var(--dur-fast) var(--ease-out)',
-      }}
-    >
-      <Icon name={icon} style={{ width: 18, height: 18, color: '#fff' }} />
-      <span>{label}</span>
-    </button>
-  );
-}
-
-function DirectionsModal({ onClose }) {
-  return (
-    <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 50, display: 'grid', placeItems: 'center' }}>
-      <div style={{ width: 520, maxWidth: '90%', maxHeight: '80%', background: 'var(--paper)', borderRadius: 8, boxShadow: 'var(--shadow-xl)', overflow: 'auto' }}>
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-1)', display: 'flex', justifyContent: 'space-between' }}>
-          <h2 style={{ margin: 0, font: 'var(--role-title-sm)' }}>Section Directions</h2>
-          <button onClick={onClose} style={{ border: 0, background: 'transparent', cursor: 'pointer', fontSize: 18, color: 'var(--text-secondary)' }}>×</button>
-        </div>
-        <div style={{ padding: 20, font: 'var(--role-body-lg)', color: 'var(--ink-1)', lineHeight: 1.55 }}>
-          <p>The questions in this section address a number of important reading and writing skills. Each question includes one or more passages, which may include a table or graph. Read each passage and question carefully, and then choose the best answer to the question based on the passage(s).</p>
-          <p>All questions in this section are multiple-choice with four answer choices. Each question has a single best answer.</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+const RW_DIRECTIONS = [
+  'The questions in this section address a number of important reading and writing skills. Each question includes one or more passages, which may include a table or graph. Read each passage and question carefully, and then choose the best answer to the question based on the passage(s).',
+  'All questions in this section are multiple-choice with four answer choices. Each question has a single best answer.',
+];
 
 export default QuestionRW;
