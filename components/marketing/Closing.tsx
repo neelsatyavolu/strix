@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Brand } from "./LandingNav";
 import { PrimaryCtas } from "./Hero";
-import { DOWNLOAD_URL, ENTER } from "./links";
+import { DOWNLOAD_URL, ENTER, GITHUB_URL } from "./links";
 import s from "./Landing.module.css";
 
 export function ScoringNote() {
@@ -55,6 +55,9 @@ export function LandingFooter({ authed }: { authed: boolean }) {
             <a href={DOWNLOAD_URL}>Download for Mac</a>
             <a href={ENTER}>{authed ? "Go to Dashboard" : "Open the web app"}</a>
             {!authed && <a href={ENTER}>Sign in</a>}
+            <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+              Source on GitHub
+            </a>
           </nav>
         </div>
         <p className={s.legal}>
@@ -63,7 +66,7 @@ export function LandingFooter({ authed }: { authed: boolean }) {
           with or endorsed by the College Board. Score conversions use a representative curve and
           are an estimate.
         </p>
-        <p className={s.copy}>© 2026 Strix Prep</p>
+        <p className={s.copy}>© 2026 Strix Prep · Open source under the MIT License</p>
       </div>
     </footer>
   );

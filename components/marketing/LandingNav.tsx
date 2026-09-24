@@ -1,6 +1,7 @@
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
-import { DOWNLOAD_URL, ENTER } from "./links";
+import GitHubMark from "./GitHubMark";
+import { DOWNLOAD_URL, ENTER, GITHUB_URL } from "./links";
 import s from "./Landing.module.css";
 
 const ANCHORS = [
@@ -35,6 +36,16 @@ export default function LandingNav({ authed }: { authed: boolean }) {
         </nav>
         <div className={s.navActions}>
           <ThemeToggle />
+          <a
+            className={`${s.btn} ${s.ghost} ${s.navGithub}`}
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Strix Prep on GitHub (opens in a new tab)"
+          >
+            <GitHubMark />
+            <span className={s.navGithubLabel}>GitHub</span>
+          </a>
           <a className={`${s.btn} ${s.ghost}`} href={ENTER}>
             {authed ? "Dashboard" : "Sign in"}
           </a>

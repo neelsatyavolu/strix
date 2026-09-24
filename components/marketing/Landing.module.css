@@ -106,6 +106,7 @@
 .navLink:hover { color: var(--text-primary); background: var(--hover); }
 .navActions { justify-self: end; display: flex; align-items: center; gap: 6px; }
 .navActions .btn { height: 32px; padding: 0 14px; font-size: 13px; }
+.navGithub { gap: 7px; }
 .themeToggle {
   display: inline-grid;
   place-items: center;
@@ -252,4 +253,6 @@
   .final { padding: 112px 0; }
   .ctaRow .btn { width: 100%; max-width: 340px; }
   .navDownload { display: none; }
+  .navGithub { padding: 0 9px; }
+  .navGithubLabel { display: none; }
 }
