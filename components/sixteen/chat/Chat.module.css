@@ -1,0 +1,156 @@
+/* Chat primitives — thread, bubbles, composer, presence. */
+
+/* ── Thread (scrolling message list) ───────────────────────── */
+.thread {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px 14px;
+  background: var(--surface-app);
+  overscroll-behavior: contain;
+}
+.threadEmpty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  padding: 24px 16px;
+}
+.threadEmptyTitle { font: var(--role-label); font-weight: var(--weight-semibold); color: var(--text-primary); margin: 0; }
+.threadEmptyBody { font: var(--role-caption); color: var(--text-secondary); margin: 0; max-width: 32ch; }
+
+/* ── Bubbles ───────────────────────────────────────────────── */
+.msg { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+.mine { align-items: flex-end; }
+.attachment { margin-bottom: 4px; max-width: min(440px, 86%); }
+.bubble {
+  max-width: min(440px, 86%);
+  padding: 7px 12px;
+  border-radius: 18px;
+  background: var(--bubble-theirs);
+  color: var(--bubble-theirs-fg);
+  font: var(--role-body);
+  line-height: 1.38;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.mine .bubble { background: var(--bubble-mine); color: var(--bubble-mine-fg); }
+.tailTheirs { border-bottom-left-radius: 5px; }
+.tailMine { border-bottom-right-radius: 5px; }
+.time { font: var(--role-caption); color: var(--text-tertiary); padding: 0 6px; }
+
+.dotsBubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 13px;
+  border-radius: 18px;
+  border-bottom-left-radius: 5px;
+  background: var(--bubble-theirs);
+  color: var(--bubble-theirs-fg);
+  font: var(--role-body);
+  line-height: 1.35;
+}
+.thinkingLabel { opacity: 0.7; }
+.dots { display: inline-flex; align-items: center; gap: 4px; }
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.35;
+  animation: bounce 1.4s infinite ease-in-out;
+}
+.dotSm { width: 5px; height: 5px; }
+.dot:nth-child(2) { animation-delay: 0.16s; }
+.dot:nth-child(3) { animation-delay: 0.32s; }
+@keyframes bounce {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* ── Composer ──────────────────────────────────────────────── */
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border-1);
+  background: var(--surface-app);
+}
+.field {
+  flex: 1;
+  min-width: 0;
+  min-height: 32px;
+  max-height: 120px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--surface-sunken);
+  box-shadow: inset 0 0 0 1px transparent;
+  font: var(--role-body);
+  line-height: 20px;
+  color: var(--text-primary);
+  resize: none;
+  overflow-y: auto;
+  outline: none;
+  box-sizing: border-box;
+  transition: var(--xn-color), box-shadow var(--dur-fast) var(--ease-out);
+}
+.field::placeholder { color: var(--text-tertiary); }
+.field:focus-visible { background: var(--surface-card); box-shadow: inset 0 0 0 1px var(--brand-blue), 0 0 0 3px var(--focus-ring); }
+.field:disabled { opacity: 0.5; }
+.send {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand-blue);
+  color: var(--text-on-brand);
+  cursor: pointer;
+  transition: var(--xn-color), var(--xn-press);
+}
+.send:hover:not(:disabled) { background: var(--brand-blue-hover); }
+.send:active:not(:disabled) { transform: scale(0.94); }
+.send:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }
+.send:disabled { background: var(--ink-5); cursor: not-allowed; }
+
+/* ── Presence ──────────────────────────────────────────────── */
+.presence { display: inline-flex; align-items: center; gap: 7px; min-width: 0; }
+.presenceDot { position: relative; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--ink-4); }
+.online { background: var(--success); color: var(--success); }
+.idle { background: var(--warning); color: var(--warning); }
+.ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  opacity: 0.4;
+  animation: ring 1.6s ease-out infinite;
+}
+@keyframes ring {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.presenceName {
+  font: var(--role-label);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.presenceStatus { font: var(--role-caption); color: var(--text-tertiary); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dot, .ring { animation: none; }
+}

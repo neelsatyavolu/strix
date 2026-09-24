@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
 import renderMathInElement from 'katex/contrib/auto-render';
+import s from './Chat.module.css';
+import { cx } from '../core/cx';
 
 /**
  * MessageBubble — iMessage-style speech bubble for tutor mode.
@@ -34,38 +36,25 @@ export function MessageBubble({
       });
     } catch { /* leave the plain text in place if KaTeX fails */ }
   }, [text]);
+
   return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: mine ? 'flex-end' : 'flex-start',
-      gap: 2,
-      ...styleProp,
-    }}>
-      {attachment && (
-        <div style={{
-          marginBottom: 4, maxWidth: 280,
-        }}>{attachment}</div>
-      )}
-      <div style={{
-        position: 'relative',
-        maxWidth: 280,
-        padding: '7px 12px',
-        background: mine ? 'var(--bubble-mine)' : 'var(--bubble-theirs)',
-        color: mine ? 'var(--bubble-mine-fg)' : 'var(--bubble-theirs-fg)',
-        borderRadius: 18,
-        borderBottomRightRadius: mine && showTail ? 4 : 18,
-        borderBottomLeftRadius: !mine && showTail ? 4 : 18,
-        font: 'var(--role-body)',
-        lineHeight: 1.35,
-        wordWrap: 'break-word',
-      }}>
+    <div className={cx(s.msg, mine && s.mine)} style={styleProp}>
+      {attachment && <div className={s.attachment}>{attachment}</div>}
+      <div className={cx(s.bubble, showTail && (mine ? s.tailMine : s.tailTheirs))}>
         <span ref={textRef} />
       </div>
-      {time && (
-        <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', marginTop: 2 }}>{time}</span>
-      )}
+      {time && <span className={s.time}>{time}</span>}
     </div>
+  );
+}
+
+function Dots({ small = false }) {
+  return (
+    <span className={s.dots} aria-hidden="true">
+      <span className={cx(s.dot, small && s.dotSm)} />
+      <span className={cx(s.dot, small && s.dotSm)} />
+      <span className={cx(s.dot, small && s.dotSm)} />
+    </span>
   );
 }
 
@@ -75,25 +64,8 @@ export function MessageBubble({
  */
 export function TypingBubble() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
-      <style>{`
-        @keyframes mb-type-bounce { 0%, 80%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
-      `}</style>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 4,
-        padding: '9px 13px',
-        background: 'var(--bubble-theirs)',
-        color: 'var(--bubble-theirs-fg)',
-        borderRadius: 18, borderBottomLeftRadius: 4,
-      }}>
-        {[0, 1, 2].map((i) => (
-          <span key={i} style={{
-            width: 6, height: 6, borderRadius: '50%',
-            background: 'currentColor',
-            animation: `mb-type-bounce 1.4s infinite ease-in-out ${i * 0.16}s`,
-          }} />
-        ))}
-      </div>
+    <div className={s.msg} role="status" aria-label="Typing">
+      <div className={s.dotsBubble}><Dots /></div>
     </div>
   );
 }
@@ -104,28 +76,10 @@ export function TypingBubble() {
  */
 export function ThinkingBubble({ label = 'Thinking' }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
-      <style>{`
-        @keyframes mb-think-bounce { 0%, 80%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
-      `}</style>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 6,
-        maxWidth: 280, padding: '8px 12px',
-        background: 'var(--bubble-theirs)',
-        color: 'var(--bubble-theirs-fg)',
-        borderRadius: 18, borderBottomLeftRadius: 4,
-        font: 'var(--role-body)', lineHeight: 1.35,
-      }}>
-        <span style={{ opacity: 0.7 }}>{label}</span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-          {[0, 1, 2].map((i) => (
-            <span key={i} style={{
-              width: 5, height: 5, borderRadius: '50%',
-              background: 'currentColor',
-              animation: `mb-think-bounce 1.4s infinite ease-in-out ${i * 0.16}s`,
-            }} />
-          ))}
-        </span>
+    <div className={s.msg} role="status">
+      <div className={s.dotsBubble}>
+        <span className={s.thinkingLabel}>{label}</span>
+        <Dots small />
       </div>
     </div>
   );

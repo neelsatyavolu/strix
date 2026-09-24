@@ -1,0 +1,56 @@
+/* Settings — Mac System Settings style grouped rows. */
+
+.avatarBtn {
+  position: relative;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  line-height: 0;
+  cursor: pointer;
+}
+.avatarBtn:disabled { cursor: default; opacity: 0.6; }
+.avatarBtn:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }
+.avatarEdit {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--overlay);
+  color: var(--text-on-brand);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.avatarBtn:hover:not(:disabled) .avatarEdit,
+.avatarBtn:focus-visible .avatarEdit { opacity: 1; }
+
+.error { color: var(--error); }
+.hidden { display: none; }
+
+.inlineForm { display: flex; align-items: center; gap: 6px; }
+.scoreInput { width: 96px; }
+.dateInput { width: 150px; }
+
+/* Content that belongs to the row above it (e.g. the paste-code field). */
+.extra {
+  padding: 12px 16px 14px 60px;
+  border-top: 1px solid var(--border-1);
+  background: var(--surface-subtle);
+}
+
+.iconWell {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+.appIcon { width: 32px; height: 32px; border-radius: 8px; display: block; }
+.titleWithBadge { display: inline-flex; align-items: center; gap: 8px; }
+
+@media (max-width: 720px) {
+  .extra { padding-left: 16px; }
+}

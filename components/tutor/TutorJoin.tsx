@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSessionProfile, signIn } from "@/lib/auth/actions";
+import s from "./TutorJoin.module.css";
 
 type Phase = "loading" | "signin" | "joining" | "error";
 
@@ -37,7 +39,10 @@ export default function TutorJoin({ token }: { token: string }) {
     });
   }, [join]);
 
-  const doSignIn = async () => {
+  const doSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (busy) return;
+    if (!email.trim() || !password) { setError("Enter your email and password."); return; }
     setError(""); setBusy(true);
     const res = await signIn(email, password);
     setBusy(false);
@@ -47,34 +52,75 @@ export default function TutorJoin({ token }: { token: string }) {
     else setError("Signed in, but couldn't load your account.");
   };
 
-  const card: React.CSSProperties = { background: "var(--paper)", borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow-sm)", padding: 20 };
-
   if (phase === "loading" || phase === "joining") {
-    return <Centered>{phase === "loading" ? "Loading…" : "Joining session…"}</Centered>;
-  }
-  if (phase === "error") {
-    return <Centered><div style={{ textAlign: "center" }}><h2 style={{ font: "var(--role-title-md)" }}>Can&rsquo;t join</h2><p style={{ color: "var(--text-secondary)" }}>{error}</p></div></Centered>;
-  }
-  // signin
-  return (
-    <Centered>
-      <div style={{ ...card, width: "min(380px, 92%)", display: "flex", flexDirection: "column", gap: 14 }}>
-        <div>
-          <h1 style={{ margin: 0, font: "var(--role-title-md)" }}>Join as tutor</h1>
-          <p style={{ margin: "4px 0 0", font: "var(--role-body)", color: "var(--text-secondary)" }}>Sign in to connect with your student.</p>
+    return (
+      <Shell>
+        <div className={s.status} role="status" aria-live="polite">
+          <span className={s.spinner} aria-hidden="true" />
+          <p className={s.statusText}>{phase === "loading" ? "Checking your invite…" : "Connecting you to your student…"}</p>
         </div>
-        {error && <div style={{ padding: "8px 10px", background: "#FDECEC", color: "var(--error)", borderRadius: 8, font: "var(--role-caption)" }}>{error}</div>}
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" style={inp} />
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" onKeyDown={(e) => { if (e.key === "Enter") doSignIn(); }} style={inp} />
-        <button onClick={doSignIn} disabled={busy} style={primaryBtn}>{busy ? "Signing in…" : "Sign in & join"}</button>
+      </Shell>
+    );
+  }
+
+  if (phase === "error") {
+    return (
+      <Shell>
+        <div className={s.head}>
+          <h1 className={s.title}>Can&rsquo;t join</h1>
+          <p className={s.sub}>{error}</p>
+        </div>
+        <Link href="/app" className={s.secondaryBtn}>Open Strix</Link>
+      </Shell>
+    );
+  }
+
+  return (
+    <Shell>
+      <div className={s.head}>
+        <h1 className={s.title}>Join as a tutor</h1>
+        <p className={s.sub}>Sign in to connect with your student. You&rsquo;ll follow their practice and can chat with them.</p>
       </div>
-    </Centered>
+      <form className={s.form} onSubmit={doSignIn} noValidate>
+        {error && <div className={s.alert} role="alert">{error}</div>}
+        <label className={s.field}>
+          <span className={s.label}>Email</span>
+          <input
+            className={s.input}
+            type="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+          />
+        </label>
+        <label className={s.field}>
+          <span className={s.label}>Password</span>
+          <input
+            className={s.input}
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <button type="submit" disabled={busy} className={s.primaryBtn}>
+          {busy ? "Signing in…" : "Sign in & join"}
+        </button>
+      </form>
+    </Shell>
   );
 }
 
-function Centered({ children }: { children: React.ReactNode }) {
-  return <div style={{ height: "100%", display: "grid", placeItems: "center", background: "var(--surface-app)", padding: 24 }}>{children}</div>;
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={s.page}>
+      <main className={s.card}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/assets/app-icon.svg" width={48} height={48} alt="Strix" className={s.icon} />
+        {children}
+      </main>
+    </div>
+  );
 }
-
-const inp: React.CSSProperties = { padding: "10px 12px", borderRadius: "var(--radius-md)", border: "1px solid var(--border-2)", font: "var(--role-body)", background: "var(--paper)", color: "var(--text-primary)", outline: "none" };
-const primaryBtn: React.CSSProperties = { padding: "10px 14px", borderRadius: "var(--radius-md)", border: 0, background: "var(--brand-blue)", color: "#fff", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" };

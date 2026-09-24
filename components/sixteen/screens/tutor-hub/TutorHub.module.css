@@ -1,0 +1,67 @@
+.tabs { margin-bottom: 24px; }
+
+/* ── Messages ─────────────────────────────────────────────── */
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: clamp(360px, calc(100vh - 300px), 720px);
+  background: var(--surface-card);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.chatHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-1);
+}
+.chatHeadText { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.chatName {
+  font: var(--role-title-sm);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chatSub { font: var(--role-caption); color: var(--text-secondary); }
+.chatThread { padding: 20px 20px 12px; background: var(--surface-card); }
+.chatNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-1);
+  font: var(--role-body);
+  color: var(--text-secondary);
+}
+.skelThread { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 20px; }
+
+/* ── Tutors ───────────────────────────────────────────────── */
+.linkRow { display: flex; align-items: center; gap: 8px; }
+.linkRow > :first-child { flex: 1; min-width: 0; }
+.copyBtn { flex-shrink: 0; min-width: 104px; }
+.linkEmpty { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.inlineError { margin: 0; font: var(--role-body); color: var(--error); }
+.capIcon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  color: var(--text-secondary);
+}
+.errorRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+  font: var(--role-body);
+  color: var(--text-secondary);
+}

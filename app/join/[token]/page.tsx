@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import TutorJoin from "@/components/tutor/TutorJoin";
+
+export const metadata: Metadata = {
+  title: "Join as a tutor — Strix",
+};
 
 export default async function JoinPage({
   params,

@@ -1,0 +1,12 @@
+.entry { display: flex; flex-direction: column; gap: 8px; }
+.help { margin: 0; font: var(--role-caption); color: var(--text-secondary); line-height: 1.45; }
+.entryRow { display: flex; align-items: center; gap: 6px; }
+.entryRow > :first-child { flex: 1; min-width: 0; }
+.mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+}
+.mark img { object-fit: contain; }

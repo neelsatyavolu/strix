@@ -1,8 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Download, RotateCw, X } from 'lucide-react';
+import { Icon } from '@/components/sixteen/Icon';
+import { Button } from '@/components/sixteen/core/Button';
+import { IconButton } from '@/components/sixteen/core/IconButton';
 import { useUpdates } from '@/lib/updates/useUpdates';
+import s from './UpdatePopup.module.css';
 
 // Bottom-right toast for the desktop auto-updater. Shows when an update has
 // downloaded (offer Restart) or — on a build that can't self-install — when one
@@ -26,116 +29,43 @@ export default function UpdatePopup() {
 
   const dismiss = () => setDismissedKey(key);
 
+  const title = {
+    ready: 'Update ready to install',
+    progress: 'Downloading update',
+    manual: 'A new version is available',
+  }[mode];
+  const sub = {
+    ready: `Strix ${version || ''} will apply when you restart.`,
+    progress: `${progress}%`,
+    manual: 'Download the latest Strix for Mac to update.',
+  }[mode];
+
   return (
-    <div style={wrap} role="status" aria-live="polite">
-      <div style={card}>
-        <div style={iconBox}>
-          {mode === 'ready' ? <RotateCw size={18} /> : <Download size={18} />}
-        </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={title}>
-            {mode === 'ready' && 'Update ready to install'}
-            {mode === 'progress' && 'Downloading update…'}
-            {mode === 'manual' && 'A new version is available'}
-          </div>
-          <div style={sub}>
-            {mode === 'ready' && `Strix ${version || ''} will apply on restart.`}
-            {mode === 'progress' && `${progress}%`}
-            {mode === 'manual' && 'Download the latest Strix for Mac to update.'}
-          </div>
-          {mode === 'progress' && (
-            <div style={barTrack}>
-              <div style={{ ...barFill, width: `${progress}%` }} />
+    <div className={s.wrap} role="status" aria-live="polite">
+      <div className={s.card}>
+        <span className={s.icon}>
+          <Icon name={mode === 'ready' ? 'rotate-cw' : 'download'} size={16} />
+        </span>
+        <div className={s.body}>
+          <div className={s.title}>{title}</div>
+          <div className={s.sub}>{sub}</div>
+          {mode === 'progress' ? (
+            <div className={s.track} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
+              <div className={s.fill} style={{ width: `${progress}%` }} />
             </div>
-          )}
-          {mode !== 'progress' && (
-            <div style={actions}>
-              {mode === 'ready' ? (
-                <button style={primaryBtn} onClick={install}>Restart now</button>
-              ) : (
-                <button style={primaryBtn} onClick={openDownload}>Download</button>
-              )}
-              <button style={ghostBtn} onClick={dismiss}>Later</button>
+          ) : (
+            <div className={s.actions}>
+              {mode === 'ready'
+                ? <Button variant="primary" size="sm" onClick={install}>Restart now</Button>
+                : <Button variant="primary" size="sm" onClick={openDownload}>Download</Button>}
+              <Button variant="ghost" size="sm" onClick={dismiss}>Later</Button>
             </div>
           )}
         </div>
-        <button style={closeBtn} aria-label="Dismiss" onClick={dismiss}>
-          <X size={15} />
-        </button>
+        <IconButton size="sm" label="Dismiss" onClick={dismiss} className={s.close}>
+          <Icon name="x" size={14} />
+        </IconButton>
       </div>
     </div>
   );
 }
-
-const wrap = {
-  position: 'fixed',
-  right: 18,
-  bottom: 18,
-  zIndex: 9999,
-  maxWidth: 360,
-};
-const card = {
-  display: 'flex',
-  alignItems: 'flex-start',
-  gap: 12,
-  padding: 14,
-  background: 'var(--surface-card, #fff)',
-  border: '1px solid var(--border-2)',
-  borderRadius: 'var(--radius-lg)',
-  boxShadow: 'var(--shadow-lg)',
-};
-const iconBox = {
-  flexShrink: 0,
-  width: 34,
-  height: 34,
-  borderRadius: 'var(--radius-md)',
-  display: 'grid',
-  placeItems: 'center',
-  background: 'var(--brand-blue-soft)',
-  color: 'var(--brand-blue)',
-};
-const title = { font: 'var(--role-label)', color: 'var(--ink-1)', fontWeight: 600 };
-const sub = { font: 'var(--role-caption)', color: 'var(--text-secondary)', marginTop: 2 };
-const actions = { display: 'flex', gap: 8, marginTop: 12 };
-const primaryBtn = {
-  border: 0,
-  cursor: 'pointer',
-  height: 32,
-  padding: '0 14px',
-  borderRadius: 'var(--radius-md)',
-  background: 'var(--brand-blue)',
-  color: '#fff',
-  font: 'var(--role-label)',
-  fontWeight: 590,
-};
-const ghostBtn = {
-  border: '1px solid var(--border-2)',
-  cursor: 'pointer',
-  height: 32,
-  padding: '0 14px',
-  borderRadius: 'var(--radius-md)',
-  background: 'transparent',
-  color: 'var(--ink-2)',
-  font: 'var(--role-label)',
-};
-const closeBtn = {
-  flexShrink: 0,
-  border: 0,
-  background: 'transparent',
-  cursor: 'pointer',
-  color: 'var(--text-tertiary)',
-  padding: 2,
-  marginLeft: 2,
-};
-const barTrack = {
-  marginTop: 10,
-  height: 4,
-  borderRadius: 'var(--radius-pill)',
-  background: 'var(--sunken)',
-  overflow: 'hidden',
-};
-const barFill = {
-  height: '100%',
-  background: 'var(--brand-blue)',
-  transition: 'width var(--dur-fast, 0.15s) var(--ease-out, ease)',
-};

@@ -24,7 +24,6 @@ import Vocabulary from './screens/Vocabulary';
 import TutorPanel from './panels/TutorPanel';
 import LiveStudentsBanner from './panels/LiveStudentsBanner';
 import LiveTestView from '@/components/tutor/LiveTestView';
-import SessionStats from './panels/SessionStats';
 import { useProfile } from './session/ProfileContext';
 import { usePracticeSession } from './session/SessionContext';
 import { useReviewQueue } from '@/lib/data/hooks';
@@ -251,7 +250,8 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionLive.status, sessionLive.current, sessionLive.index, sessionLive.questions.length, sessionLive.responses, sessionLive.activeModule, liveUi, role, view, viewProps.id]);
 
-  const studentLive = useStudentLive(user?.id, live, role === 'student' && tutorOn);
+  // The chat counts as open (clears the unread dot) in the side pane or on the Tutor page.
+  const studentLive = useStudentLive(user?.id, live, role === 'student' && (tutorOn || view === 'tutor'));
   const tutorWatch = useTutorWatch(students, watchedStudentId, user?.id);
 
   // Unread tutor message indicator (student only): dot on the Tutor tab + the
@@ -487,6 +487,12 @@ function App() {
       }
     : {};
 
+  // Chat for the tutor pane and Tutor page: tutor↔watched-student when tutoring, else our own
+  // tutor chat as the student.
+  const chat = isTutor
+    ? { messages: tutorWatch.messages, onSend: tutorWatch.sendChat, peerName: watchedName, peerTyping: tutorWatch.peerTyping, onTyping: tutorWatch.notifyTyping, peerOnline: !!tutorWatch.onlineStudents[watchedStudentId] || !!tutorWatch.liveStudents[watchedStudentId]?.active }
+    : { messages: studentLive.messages, onSend: studentLive.sendChat, peerName: null, peerTyping: studentLive.peerTyping, onTyping: studentLive.notifyTyping, peerOnline: studentLive.peerOnline };
+
   let screen;
   switch (view) {
     case 'onboarding':      screen = <Onboarding go={go} />; break;
@@ -494,7 +500,7 @@ function App() {
     case 'practice':        screen = <PracticeHub key={viewProps.tab} go={go} params={viewProps} {...watchProps} />; break;
     case 'progress':        screen = <ProgressHub go={go} params={viewProps} {...watchProps} />; break;
     case 'plan':            screen = <PlanHub go={go} role={role} {...watchProps} />; break;
-    case 'tutor':           screen = <TutorHub go={go} params={viewProps} />; break;
+    case 'tutor':           screen = <TutorHub go={go} params={viewProps} chat={chat} />; break;
     case 'vocabulary':      screen = <Vocabulary />; break;
     case 'rw-question':     screen = <QuestionRW key={sessionLive.activeModule?.key || 'rw'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
     case 'math-question':   screen = <QuestionMath key={sessionLive.activeModule?.key || 'math'} go={go} tutorOn={tutorOn} setTutorOn={setTutorOn} statsOn={statsOn} setStatsOn={setStatsOn} kind={viewProps.kind || 'drill'} role={role} />; break;
@@ -530,12 +536,6 @@ function App() {
   if (isTutor && !watchedStudentId && view !== 'settings') {
     mainContent = <PickStudentPrompt students={students} onPick={setWatchedStudentId} />;
   }
-
-  // Chat for the tutor pane: tutor↔watched-student when tutoring, else our own
-  // tutor chat as the student.
-  const chat = isTutor
-    ? { messages: tutorWatch.messages, onSend: tutorWatch.sendChat, peerName: watchedName, peerTyping: tutorWatch.peerTyping, onTyping: tutorWatch.notifyTyping, peerOnline: !!tutorWatch.onlineStudents[watchedStudentId] || !!tutorWatch.liveStudents[watchedStudentId]?.active }
-    : { messages: studentLive.messages, onSend: studentLive.sendChat, peerName: null, peerTyping: studentLive.peerTyping, onTyping: studentLive.notifyTyping, peerOnline: studentLive.peerOnline };
 
   return (
     <NavProvider value={navValue}>

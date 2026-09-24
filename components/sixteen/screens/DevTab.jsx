@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
-import { Card, Button, Input, SegmentedControl, Icon } from '@/components/sixteen';
+import { Card, Button, Input, SegmentedControl, Icon, Badge, Page, PageHeader, Section, List, ListRow } from '@/components/sixteen';
 
 // DevTab — seed fabricated practice activity for a target account so the read
-// surfaces (Stats, Sessions, Session detail, Practice analysis) can be tested
-// with realistic history. Gated to allowlisted accounts in SixteenApp + the API.
+// surfaces (Progress, History, Session detail, Full-length analysis) can be
+// tested with realistic history. Gated to allowlisted accounts in SixteenApp + the API.
 
 const KINDS = [
   { value: 'section', label: 'Practice section' },
@@ -15,16 +15,25 @@ const SECTIONS = [
   { value: 'rw', label: 'Reading & Writing' },
   { value: 'math', label: 'Math' },
 ];
-const SECTION_LABEL = { rw: 'R&W', math: 'Math' };
+const SECTION_LABEL = { rw: 'Reading & Writing', math: 'Math' };
 
-const labelStyle = { font: 'var(--role-label)', color: 'var(--text-secondary)', marginBottom: 6, display: 'block' };
-const fieldStyle = { display: 'flex', flexDirection: 'column', minWidth: 0 };
+const fieldStyle = { display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 };
+const labelStyle = { font: 'var(--role-label)', color: 'var(--text-secondary)' };
 
 function fmtDate(iso) {
   const d = new Date(iso);
   const days = Math.round((Date.now() - d.getTime()) / 86_400_000);
   const when = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-  return `${when} (${days === 0 ? 'today' : `${days}d ago`})`;
+  return `${when} · ${days === 0 ? 'today' : `${days}d ago`}`;
+}
+
+function Field({ id, label, children }) {
+  return (
+    <div style={fieldStyle}>
+      <label htmlFor={id} style={labelStyle}>{label}</label>
+      {children}
+    </div>
+  );
 }
 
 export default function DevTab() {
@@ -60,11 +69,7 @@ export default function DevTab() {
       const json = await res.json();
       if (!json?.success) throw new Error(json?.error || 'Seed failed');
       const stamp = Date.now();
-      const entries = json.data.sessions.map((s, i) => ({
-        key: `${stamp}-${i}`,
-        kind,
-        ...s,
-      }));
+      const entries = json.data.sessions.map((sess, i) => ({ key: `${stamp}-${i}`, kind, ...sess }));
       setLog((prev) => [...entries, ...prev]);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Seed failed');
@@ -76,87 +81,72 @@ export default function DevTab() {
   const kindLabel = (k) => KINDS.find((x) => x.value === k)?.label ?? k;
 
   return (
-    <div style={{ padding: '28px 36px', display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div>
-        <div style={{ font: 'var(--role-title)', color: 'var(--text-primary)' }}>Dev — seed activity</div>
-        <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginTop: 4 }}>
-          Fabricate completed practice for a target account to test Stats, Sessions, and review surfaces.
-          Real College Board questions are drawn, so a full test takes a few seconds. Everything is reversible
-          via Settings → Clear data.
-        </div>
-      </div>
+    <Page width="narrow">
+      <PageHeader
+        title="Developer"
+        subtitle="Seed completed practice into an account to test Progress, History, and review screens. Undo it any time from Settings → Clear data."
+      />
 
-      <Card padding="lg" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div style={fieldStyle}>
-          <label style={labelStyle}>Target account email</label>
-          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="user@example.com" />
-        </div>
+      <Section title="Seed activity" description="Real College Board questions are drawn, so a full test takes a few seconds.">
+        <Card padding="lg">
+          <form
+            onSubmit={(e) => { e.preventDefault(); add(); }}
+            style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
+          >
+            <Field id="dev-email" label="Target account email">
+              <Input id="dev-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="user@example.com" />
+            </Field>
 
-        <div style={fieldStyle}>
-          <label style={labelStyle}>Activity</label>
-          <SegmentedControl options={KINDS} value={kind} onChange={setKind} fullWidth />
-        </div>
+            <div style={fieldStyle}>
+              <span style={labelStyle}>Activity</span>
+              <SegmentedControl options={KINDS} value={kind} onChange={setKind} fullWidth label="Activity" />
+            </div>
 
-        {kind !== 'test' && (
-          <div style={fieldStyle}>
-            <label style={labelStyle}>Section</label>
-            <SegmentedControl options={SECTIONS} value={section} onChange={setSection} fullWidth />
-          </div>
-        )}
+            {kind !== 'test' && (
+              <div style={fieldStyle}>
+                <span style={labelStyle}>Section</span>
+                <SegmentedControl options={SECTIONS} value={section} onChange={setSection} fullWidth label="Section" />
+              </div>
+            )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <div style={fieldStyle}>
-            <label style={labelStyle}>Score (%)</label>
-            <Input type="number" min={0} max={100} value={scorePct} onChange={(e) => setScorePct(e.target.value)} />
-          </div>
-          <div style={fieldStyle}>
-            <label style={labelStyle}>Days ago (blank = random)</label>
-            <Input type="number" min={0} max={365} value={daysAgo} onChange={(e) => setDaysAgo(e.target.value)} placeholder="random 0–60" />
-          </div>
-        </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <Field id="dev-score" label="Score (%)">
+                <Input id="dev-score" type="number" min={0} max={100} value={scorePct} onChange={(e) => setScorePct(e.target.value)} />
+              </Field>
+              <Field id="dev-days" label="Days ago">
+                <Input id="dev-days" type="number" min={0} max={365} value={daysAgo} onChange={(e) => setDaysAgo(e.target.value)} placeholder="Random (0–60)" />
+              </Field>
+            </div>
 
-        {error && (
-          <div style={{ font: 'var(--role-label)', color: 'var(--error)', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Icon name="alert-circle" size={14} /> {error}
-          </div>
-        )}
+            {error && (
+              <p role="alert" style={{ margin: 0, font: 'var(--role-body)', color: 'var(--error)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Icon name="circle-alert" size={14} /> {error}
+              </p>
+            )}
 
-        <div>
-          <Button onClick={add} loading={busy} icon={<Icon name="plus" size={14} />}>
-            {kind === 'test' ? 'Add full test (R&W + Math)' : `Add ${kindLabel(kind).toLowerCase()}`}
-          </Button>
-        </div>
-      </Card>
+            <div>
+              <Button type="submit" loading={busy} icon={<Icon name="plus" size={14} />}>
+                {kind === 'test' ? 'Add full test (R&W + Math)' : `Add ${kindLabel(kind).toLowerCase()}`}
+              </Button>
+            </div>
+          </form>
+        </Card>
+      </Section>
 
       {log.length > 0 && (
-        <Card padding="lg" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div style={{ font: 'var(--role-title-sm)', color: 'var(--text-primary)' }}>
-            Seeded this session ({log.length})
-          </div>
-          {log.map((s) => (
-            <div
-              key={s.key}
-              style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
-                padding: '8px 0', borderBottom: '1px solid var(--border-2)',
-              }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                <span style={{ font: 'var(--role-label)', color: 'var(--text-primary)' }}>
-                  {kindLabel(s.kind)} · {SECTION_LABEL[s.section]}
-                </span>
-                <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-                  {fmtDate(s.createdAt)} · {s.questionCount} questions
-                </span>
-              </div>
-              <div style={{ display: 'flex', gap: 14, font: 'var(--role-label)', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
-                <span>{s.accuracy}% acc</span>
-                <span style={{ color: 'var(--text-primary)' }}>{s.scaledScore}</span>
-              </div>
-            </div>
-          ))}
-        </Card>
+        <Section title="Seeded this session" action={<Badge>{log.length}</Badge>}>
+          <List>
+            {log.map((row) => (
+              <ListRow
+                key={row.key}
+                title={`${kindLabel(row.kind)} · ${SECTION_LABEL[row.section] || row.section}`}
+                subtitle={`${fmtDate(row.createdAt)} · ${row.questionCount} questions`}
+                meta={`${row.accuracy}% · ${row.scaledScore}`}
+              />
+            ))}
+          </List>
+        </Section>
       )}
-    </div>
+    </Page>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import * as SixteenNS from '@/components/sixteen';
+import { Button, Toggle, SegmentedControl } from '@/components/sixteen';
+import s from './ClearDataDialog.module.css';
 
 // Modal for clearing practice data. The user picks which sections (R&W / Math)
 // and how far back (all time, or older than 30/90 days); we show a live count of
@@ -20,9 +21,9 @@ function buildParams(rw, math, range) {
   return { sections, params };
 }
 
-function ClearDataDialog({ onClose, onCleared }) {
-  const { Button, Toggle, SegmentedControl } = SixteenNS;
+const plural = (n) => `${n} ${n === 1 ? 'session' : 'sessions'}`;
 
+function ClearDataDialog({ onClose, onCleared }) {
   const [rw, setRw] = React.useState(true);
   const [math, setMath] = React.useState(true);
   const [range, setRange] = React.useState('all');
@@ -53,6 +54,13 @@ function ClearDataDialog({ onClose, onCleared }) {
   }, [qs, nothingSelected]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
+  // Escape closes (unless a delete is in flight).
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape' && !deleting) onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [deleting, onClose]);
+
   const confirm = async () => {
     if (nothingSelected || !count) return;
     setDeleting(true);
@@ -70,57 +78,46 @@ function ClearDataDialog({ onClose, onCleared }) {
   };
 
   const countLabel = nothingSelected
-    ? 'Select at least one section.'
+    ? 'Choose at least one section.'
     : count === null
       ? 'Counting sessions…'
       : count === 0
-        ? 'No sessions match these filters.'
-        : `This will permanently delete ${count} ${count === 1 ? 'session' : 'sessions'} and all questions and answers in them.`;
-
-  const deleteLabel = !nothingSelected && count > 0 ? `Delete ${count} ${count === 1 ? 'session' : 'sessions'}` : 'Delete';
+        ? 'No sessions match.'
+        : `${plural(count)} and every question and answer in them will be deleted.`;
 
   return (
-    <div
-      onClick={deleting ? undefined : onClose}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 200, display: 'grid', placeItems: 'center', padding: 20 }}
-    >
+    <div className={s.scrim} onClick={deleting ? undefined : onClose}>
       <div
+        className={s.dialog}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label="Clear practice data"
-        style={{ width: 460, maxWidth: '100%', background: 'var(--surface, #FFFFFF)', borderRadius: 12, boxShadow: 'var(--shadow-xl)', overflow: 'hidden' }}
+        aria-labelledby="clear-data-title"
       >
-        <div style={{ padding: '20px 22px 4px' }}>
-          <h2 style={{ margin: 0, font: 'var(--role-title-sm)', color: 'var(--text-primary)' }}>Clear practice data</h2>
-          <p style={{ margin: '6px 0 0', font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>
-            Choose what to remove. This can&apos;t be undone.
-          </p>
+        <div className={s.head}>
+          <h2 id="clear-data-title" className={s.title}>Clear practice data</h2>
+          <p className={s.desc}>Choose what to remove. This can&apos;t be undone.</p>
         </div>
 
-        <div style={{ padding: '16px 22px', display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div>
-            <div style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginBottom: 8 }}>Sections</div>
-            <Toggle checked={rw} onChange={setRw} label="Reading & Writing" />
-            <div style={{ height: 10 }} />
-            <Toggle checked={math} onChange={setMath} label="Math" />
+        <div className={s.body}>
+          <div className={s.group}>
+            <span className={s.label}>Sections</span>
+            <div className={s.toggles}>
+              <Toggle checked={rw} onChange={setRw} label="Reading & Writing" />
+              <Toggle checked={math} onChange={setMath} label="Math" />
+            </div>
           </div>
 
-          <div>
-            <div style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)', marginBottom: 8 }}>Time range</div>
-            <SegmentedControl value={range} onChange={setRange} options={RANGE_OPTIONS} />
+          <div className={s.group}>
+            <span className={s.label}>Time range</span>
+            <SegmentedControl value={range} onChange={setRange} options={RANGE_OPTIONS} fullWidth label="Time range" />
           </div>
 
-          <div style={{ font: 'var(--role-caption)', color: nothingSelected ? 'var(--danger, #d4564a)' : 'var(--text-secondary)' }}>
-            {countLabel}
-          </div>
-
-          {error && (
-            <div style={{ font: 'var(--role-caption)', color: 'var(--danger, #d4564a)' }}>{error}</div>
-          )}
+          <p className={s.count} data-warn={nothingSelected || undefined} aria-live="polite">{countLabel}</p>
+          {error && <p className={s.error} role="alert">{error}</p>}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '14px 22px', borderTop: '1px solid var(--border-1)' }}>
+        <div className={s.foot}>
           <Button variant="secondary" disabled={deleting} onClick={onClose}>Cancel</Button>
           <Button
             variant="destructive"
@@ -128,7 +125,7 @@ function ClearDataDialog({ onClose, onCleared }) {
             disabled={deleting || nothingSelected || !count}
             onClick={confirm}
           >
-            {deleteLabel}
+            {!nothingSelected && count > 0 ? `Delete ${plural(count)}` : 'Delete'}
           </Button>
         </div>
       </div>
