@@ -1,0 +1,78 @@
+/* Shared styles for the Plan surface (student plan + tutor plan & assign). */
+
+/* ── Assignment rows (a ListRow plus an optional body below it) ── */
+.item + .item { border-top: 1px solid var(--border-1); }
+.itemBody { padding: 0 16px 12px; }
+
+.overdue { color: var(--error); }
+
+.score {
+  font: var(--role-body);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.scoreGood { color: var(--success); }
+.scoreLow { color: var(--warning); }
+
+.feedback {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--brand-blue-soft);
+  border-radius: var(--radius-md);
+}
+.feedbackIcon { color: var(--brand-blue); flex-shrink: 0; margin-top: 2px; }
+.feedbackLabel { font: var(--role-caption); font-weight: var(--weight-semibold); color: var(--brand-blue); margin: 0 0 2px; }
+.feedbackText { font: var(--role-body); color: var(--text-body); white-space: pre-wrap; margin: 0; }
+
+.groupLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font: var(--role-label);
+  color: var(--text-secondary);
+  margin: 0 0 8px;
+}
+.group + .group { margin-top: 20px; }
+.groupLabelError { color: var(--error); }
+.count { color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+
+.moreRow { display: flex; justify-content: center; padding-top: 8px; }
+
+/* ── This week ── */
+.taskIcon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sunken);
+  color: var(--brand-blue);
+}
+.titleWithBadge { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+
+.progress { margin-bottom: 12px; }
+.progressHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font: var(--role-caption);
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.progressHead .count { color: var(--text-secondary); }
+.track { height: 6px; background: var(--sunken); border-radius: var(--radius-pill); overflow: hidden; }
+.fill { height: 100%; background: var(--brand-blue); border-radius: inherit; transition: width var(--dur-base) var(--ease-out); }
+
+/* ── Goal ── */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+}
+
+/* ── Skeleton rows ── */
+.skelRow { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+.skelRow + .skelRow { border-top: 1px solid var(--border-1); }
+.skelText { flex: 1; display: flex; flex-direction: column; gap: 6px; }

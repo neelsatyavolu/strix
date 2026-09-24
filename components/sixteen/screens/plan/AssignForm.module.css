@@ -1,0 +1,52 @@
+.form { display: flex; flex-direction: column; gap: 18px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+.grid:empty { display: none; }
+
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.wide { grid-column: 1 / -1; }
+.label { font: var(--role-label); color: var(--text-primary); }
+.hint { font: var(--role-caption); color: var(--text-tertiary); }
+.error { font: var(--role-caption); color: var(--error); }
+
+.divider { height: 1px; background: var(--border-1); }
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.status { flex: 1 1 200px; min-width: 0; font: var(--role-caption); }
+.notice { display: inline-flex; align-items: center; gap: 4px; color: var(--success); }
+
+/* ── Bluebook form chips ── */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  height: 28px;
+  padding: 0 10px;
+  font: var(--role-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  background: var(--surface-card);
+  border: 0;
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 0 1px var(--border-3);
+  cursor: pointer;
+  transition: var(--xn-color);
+}
+.chip:hover:not(:disabled) { background: var(--hover); }
+.chip:focus-visible { outline: none; box-shadow: inset 0 0 0 1px var(--brand-blue), 0 0 0 3px var(--focus-ring); }
+.chip:disabled { opacity: 0.45; cursor: not-allowed; }
+.chipMuted { color: var(--text-tertiary); }
+.chipActive,
+.chipActive:hover:not(:disabled) {
+  color: var(--brand-blue);
+  background: var(--brand-blue-soft);
+  box-shadow: inset 0 0 0 1px var(--brand-blue);
+}

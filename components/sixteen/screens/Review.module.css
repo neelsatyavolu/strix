@@ -1,0 +1,29 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.card { display: flex; flex-direction: column; gap: 14px; }
+.cardHead { display: flex; align-items: center; gap: 8px; }
+.cardTitle { margin: 0; font: var(--role-title-sm); color: var(--text-primary); }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.rw { background: var(--rw-color); }
+.math { background: var(--math-color); }
+
+.domains { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.domain { display: flex; justify-content: space-between; gap: 12px; font: var(--role-body); }
+.domainLabel { color: var(--text-secondary); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.domainCount { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+.none { margin: auto 0 0; font: var(--role-caption); color: var(--text-tertiary); }
+.start { align-self: flex-start; margin-top: auto; }
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font: var(--role-body);
+  color: var(--text-secondary);
+}
