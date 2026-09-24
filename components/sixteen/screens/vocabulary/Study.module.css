@@ -1,0 +1,70 @@
+/* ── Study session ───────────────────────────────────────── */
+.session {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.bar { display: flex; align-items: center; gap: 14px; }
+.bar > button { margin-left: -8px; }
+.progress {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--sunken);
+  overflow: hidden;
+}
+.progressFill {
+  display: block;
+  height: 100%;
+  background: var(--brand-blue);
+  border-radius: inherit;
+  transition: width var(--dur-base) var(--ease-out);
+}
+.counter {
+  font: var(--role-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.stack { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  font: var(--role-caption);
+  color: var(--text-tertiary);
+}
+.sep { width: 10px; }
+.note { margin: 0; font: var(--role-caption); color: var(--text-tertiary); text-align: center; }
+
+/* ── Finish summary ──────────────────────────────────────── */
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding-top: 8px;
+}
+.summaryHead { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.summaryIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  color: var(--success);
+  background: var(--success-soft);
+}
+.summaryTitle { margin: 0; font: var(--role-page-title); letter-spacing: -0.02em; color: var(--text-primary); }
+.summaryBody { margin: 0; font: var(--role-body-lg); color: var(--text-secondary); max-width: 44ch; }
+.metrics { display: flex; justify-content: center; gap: 48px; }
+.summaryActions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.error { margin: 0; font: var(--role-body); color: var(--error); text-align: center; }
