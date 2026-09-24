@@ -1,0 +1,88 @@
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--border-1);
+  background: var(--surface-card);
+}
+
+.head { display: flex; align-items: center; gap: 12px; min-height: 26px; }
+.caption { font: var(--role-caption); color: var(--text-tertiary); }
+
+.passage {
+  font-size: 15px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-1);
+  color: var(--text-body);
+}
+.stem { font-size: 15px; color: var(--text-primary); }
+
+/* ── Choices ──────────────────────────────────────────────── */
+.choices { display: flex; flex-direction: column; gap: 8px; }
+.choice {
+  --tone: var(--border-2);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-md);
+}
+.key {
+  --tone: var(--success);
+  border-color: var(--success);
+  background: color-mix(in srgb, var(--success) 8%, transparent);
+}
+.yours {
+  --tone: var(--error);
+  border-color: var(--error);
+  background: color-mix(in srgb, var(--error) 8%, transparent);
+}
+.letter {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--tone);
+  font: var(--role-label);
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+}
+.key .letter, .yours .letter { color: var(--tone); }
+.choiceText { font: var(--role-body); color: var(--text-primary); min-width: 0; }
+.tag { font: var(--role-caption); font-weight: var(--weight-semibold); color: var(--tone); white-space: nowrap; }
+
+/* ── Student-produced response ────────────────────────────── */
+.spr { display: flex; gap: 24px; flex-wrap: wrap; font: var(--role-body); }
+.sprLabel { color: var(--text-tertiary); }
+.sprValue { font-weight: var(--weight-semibold); font-variant-numeric: tabular-nums; }
+.good { color: var(--success); }
+.bad { color: var(--error); }
+
+/* ── Explanation ──────────────────────────────────────────── */
+.toggle {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: -4px;
+  padding: 3px 4px;
+  font: var(--role-label);
+  color: var(--brand-blue);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.toggle:hover { background: var(--hover); }
+.toggle:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--focus-ring-strong); }
+.rationale {
+  font-size: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-1);
+  color: var(--text-body);
+}

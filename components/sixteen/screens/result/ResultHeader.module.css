@@ -1,0 +1,63 @@
+.header { margin-bottom: 36px; }
+
+.top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.text { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 320px; }
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font: var(--role-label);
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.title {
+  font: var(--role-page-title);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+}
+.subtitle {
+  font: var(--role-body-lg);
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 62ch;
+}
+.actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* Score + counts band, set off by hairlines rather than a box. */
+.band {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 24px 48px;
+  margin-top: 24px;
+  padding: 22px 0;
+  border-top: 1px solid var(--border-1);
+  border-bottom: 1px solid var(--border-1);
+}
+.score { display: flex; flex-direction: column; gap: 6px; }
+.hint {
+  font: var(--role-caption);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary);
+}
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 36px;
+  padding-bottom: 2px;
+}
+
+@media (max-width: 760px) {
+  .band { gap: 20px 32px; }
+  .stats { gap: 16px 28px; }
+}

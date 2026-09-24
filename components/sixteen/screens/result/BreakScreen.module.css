@@ -1,0 +1,65 @@
+/* ExamBreak — a calm, centered break screen. */
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: calc(100vh - var(--titlebar-height) - 160px);
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-lg);
+  background: var(--sunken);
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+.meta { font: var(--role-label); color: var(--text-secondary); margin: 0 0 6px; }
+.title {
+  font: var(--role-page-title);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0;
+}
+.subtitle { font: var(--role-body-lg); color: var(--text-secondary); margin: 8px 0 0; max-width: 44ch; }
+.subtitle strong { color: var(--text-primary); font-weight: var(--weight-semibold); }
+
+.clock {
+  margin-top: 40px;
+  font-family: var(--font-display);
+  font-size: 96px;
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.track {
+  width: 220px;
+  height: 4px;
+  margin-top: 20px;
+  border-radius: var(--radius-pill);
+  background: var(--sunken);
+  overflow: hidden;
+}
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--brand-blue);
+  border-radius: inherit;
+  transition: width 1s linear;
+}
+.clockLabel { font: var(--role-caption); color: var(--text-tertiary); margin: 10px 0 0; }
+
+.cta { margin-top: 36px; min-width: 180px; }
+.note { font: var(--role-caption); color: var(--text-tertiary); margin: 12px 0 0; max-width: 40ch; }
+
+@media (max-height: 720px) {
+  .clock { font-size: 72px; margin-top: 28px; }
+  .cta { margin-top: 28px; }
+}

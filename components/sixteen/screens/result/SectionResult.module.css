@@ -1,0 +1,12 @@
+.section + .section { margin-top: 56px; }
+
+.score { display: inline-flex; align-items: baseline; gap: 5px; flex-shrink: 0; }
+.value {
+  font: var(--role-metric);
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.max { font: var(--role-body); color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
+
+.questions { margin-top: 24px; }
