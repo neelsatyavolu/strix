@@ -1,135 +1,56 @@
 'use client';
-import * as SixteenNS from '@/components/sixteen';
-import { Icon } from '@/components/sixteen';
+import { Button, Icon, Page, PageHeader, Skeleton } from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useStats, useSessions, useReviewQueue, useAssignments } from '@/lib/data/hooks';
-import { CATEGORY_TO_DOMAIN, domainLabel } from '@/lib/cb/domains';
+import { buildSteps } from './home/nextSteps';
+import { greeting, openAssignments, plural } from './home/helpers';
+import { UpNext } from './home/UpNext';
+import { PendingList } from './home/PendingList';
+import { ScoreSummary } from './home/ScoreSummary';
+import { FocusSkills } from './home/FocusSkills';
+import { RecentActivity } from './home/RecentActivity';
+import { HowItWorks } from './home/HowItWorks';
+import { HomeSkeleton } from './home/HomeSkeleton';
+import s from './home/Home.module.css';
 
-// Dashboard — landing screen, backed by the user's real practice data.
+// Home — what to do next (one recommended step) and where the student stands
+// (score estimate, weakest skills, recent sessions). A tutor watching a student
+// (readOnly) sees the same picture in third person, with no start actions.
 
-const SECTION_LABEL = { rw: 'Reading & Writing', math: 'Math' };
-
-function greeting() {
-  const h = new Date().getHours();
-  return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
-}
-
-function relTime(iso) {
-  const t = new Date(iso).getTime();
-  const diff = Date.now() - t;
-  const day = 86400000;
-  if (diff < 3600000) return `${Math.max(1, Math.round(diff / 60000))}m ago`;
-  if (diff < day) return `${Math.round(diff / 3600000)}h ago`;
-  if (diff < 2 * day) return 'Yesterday';
-  return `${Math.round(diff / day)} days ago`;
-}
-
-function sessionLabel(s) {
-  const sec = SECTION_LABEL[s.section] || s.section;
-  if (s.mode === 'drill') {
-    const code = CATEGORY_TO_DOMAIN[s.config?.category];
-    const cat = code ? domainLabel(s.section, code) : null;
-    return cat ? `${sec} · ${cat}` : `${sec} · drill`;
+function statusLine(stats, { readOnly, firstName }) {
+  const done = stats?.sectionTotals?.overall?.done
+    ?? (stats?.sectionTotals?.rw?.done || 0) + (stats?.sectionTotals?.math?.done || 0);
+  if (!(stats?.sessionCount > 0)) {
+    return readOnly
+      ? `${firstName} hasn't practiced yet.`
+      : 'Welcome to Strix. Your first session takes about ten minutes.';
   }
-  if (s.mode === 'review') return `${sec} · Review`;
-  if (s.mode === 'mock-m1') return `${sec} · Module 1`;
-  return `${sec} · Full section`;
-}
-
-// Caption under "Last session" — describes what the last session was, so a full
-// module/section/SAT reads as such instead of being mislabelled with a topic.
-function lastSessionLabel(ls, section) {
-  if (!ls) return 'No sessions yet';
-  if (ls.mode === 'mock-m1') return 'Module 1';
-  if (ls.mode === 'mock-full') return ls.exam ? 'Full SAT' : 'Full section';
-  if (ls.category) {
-    const code = CATEGORY_TO_DOMAIN[ls.category];
-    const label = code ? domainLabel(section, code) : null;
-    if (label) return label;
-  }
-  return 'Drill';
-}
-
-// Label for the "pick up where you left off" banner — the section plus the topic
-// (drills) or "Review", mirroring how a session reads in the recent-sessions list.
-function resumableLabel(r) {
-  const sec = SECTION_LABEL[r.section] || r.section;
-  if (r.mode === 'review') return `${sec} · Review`;
-  const code = CATEGORY_TO_DOMAIN[r.category];
-  const cat = code ? domainLabel(r.section, code) : null;
-  return cat ? `${sec} · ${cat}` : `${sec} · Drill`;
-}
-
-// Format a section-estimate delta as a signed badge string ('+20' / '-10'),
-// suppressing it when there's no movement or no prior estimate to compare.
-function trendBadge(score, delta) {
-  if (score == null || !delta) return undefined;
-  return delta > 0 ? `+${delta}` : String(delta);
-}
-
-  // Placeholder shown on first load so the estimate/section cards never flash
-// zero-valued data before the real stats arrive.
-function DashboardSkeleton() {
-  const { Card } = SixteenNS;
-  const block = { background: 'var(--sunken)', borderRadius: 6, animation: 'dash-pulse 1.2s ease-in-out infinite' };
-  return (
-    <>
-      <style>{`@keyframes dash-pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }`}</style>
-      <Card padding="lg" style={{ marginBottom: 20 }}>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-          <div style={{ ...block, width: 120, height: 40 }} />
-          <div style={{ width: 1, height: 56, background: 'var(--border-1)' }} />
-          <div style={{ ...block, width: 90, height: 32 }} />
-          <div style={{ ...block, width: 90, height: 32 }} />
-        </div>
-      </Card>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 20 }}>
-        {[0, 1].map((i) => (
-          <Card key={i} padding="lg">
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 14 }}>
-              <div style={{ ...block, width: 64, height: 64, borderRadius: '50%' }} />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
-                <div style={{ ...block, width: '70%', height: 14 }} />
-                <div style={{ ...block, width: '50%', height: 14 }} />
-              </div>
-            </div>
-            <div style={{ ...block, width: '100%', height: 36 }} />
-          </Card>
-        ))}
-      </div>
-    </>
-  );
+  const overall = stats.sectionTotals?.overall;
+  const acc = overall?.recentAccuracy ?? overall?.accuracy;
+  const parts = [`${plural(done, 'question')} answered`];
+  if (acc != null) parts.push(`${acc}% recent accuracy`);
+  return parts.join(' · ');
 }
 
 function Dashboard({ go, studentId = null, readOnly = false, studentName = null }) {
-  const { Card, Button, Badge, ScoreBadge, AccuracyRing, StatCard } = SixteenNS;
   const { displayName } = useProfile();
-  // When a tutor is watching a student, greet the student by name, not the tutor.
-  const greetName = studentName || displayName;
-  const firstName = (greetName || '').split(' ')[0] || 'there';
+  // When a tutor is watching a student, address the student, not the tutor.
+  const firstName = ((studentName || displayName) || '').split(' ')[0] || 'there';
 
   const session = usePracticeSession();
-  const { stats, loading } = useStats(studentId);
-  const { sessions } = useSessions(6, studentId);
-  const { queue: reviewQueue } = useReviewQueue(studentId);
-  const { assignments } = useAssignments();
-  const reviewDue = reviewQueue?.count ?? 0;
-  const assignedOpen = readOnly ? 0 : (assignments || []).filter((a) => a.status === 'assigned').length;
-  const planSummary = (() => {
-    const parts = [];
-    if (assignedOpen) parts.push(`${assignedOpen} assigned by your tutor`);
-    if (reviewDue) parts.push(`${reviewDue} due for review`);
-    return parts.length ? parts.join(' · ') : 'A focused set of practice, built from your goal and weak areas.';
-  })();
+  const { stats, loading: statsLoading } = useStats(studentId);
+  const { sessions, loading: sessionsLoading } = useSessions(6, studentId);
+  const { queue: reviewQueue, loading: queueLoading } = useReviewQueue(studentId);
+  const { assignments, loading: assignmentsLoading } = useAssignments();
+  // Wait for everything that can change the recommended step, so the hero
+  // doesn't swap once a slower request lands. (Cached revisits are instant.)
+  const loading = statsLoading || queueLoading || (!readOnly && assignmentsLoading);
 
-  const scores = stats?.scores || { rw: null, math: null, total: null };
-  const totals = stats?.sectionTotals || { rw: { done: 0, correct: 0 }, math: { done: 0, correct: 0 } };
-  const lastSession = stats?.lastSession || { rw: null, math: null };
-  const trend = stats?.trend || { rw: null, math: null };
+  const reviewDue = reviewQueue?.count ?? 0;
   const focus = stats?.focus || [];
-  const acc = (sec) => (totals[sec].done ? Math.round((totals[sec].correct / totals[sec].done) * 100) : 0);
   const hasData = (stats?.sessionCount || 0) > 0;
+  const failed = !statsLoading && !stats;
 
   // One-click launch into a focused drill on a recommended weak skill.
   const launchFocus = (f) => {
@@ -138,191 +59,76 @@ function Dashboard({ go, studentId = null, readOnly = false, studentName = null 
     go(f.section === 'math' ? 'math-question' : 'rw-question', { kind: 'drill' });
   };
 
-  // A drill / review / assignment left unfinished can be picked back up. (Never in
-  // a tutor's read-only view — the snapshot belongs to the signed-in account.)
-  const resumable = readOnly ? null : session.resumable;
+  // A drill / review / assignment left unfinished can be picked back up (never in
+  // a tutor's read-only view — the snapshot belongs to the signed-in account).
   const resumeNow = () => {
     const snap = session.resume();
     if (snap) go(snap.section === 'math' ? 'math-question' : 'rw-question', { kind: 'drill' });
   };
 
+  const allSteps = readOnly ? [] : buildSteps(
+    {
+      resumable: session.resumable,
+      assignments: openAssignments(assignments),
+      reviewDue,
+      focus,
+      hasData,
+      scores: stats?.scores,
+      firstName,
+    },
+    { resume: resumeNow, discard: session.discardResumable, launchFocus, go },
+  );
+  // Without stats we can't tell a new student from a failed load: no welcome.
+  const steps = failed ? allSteps.filter((st) => st.key !== 'welcome') : allSteps;
+
+  const header = (
+    <PageHeader
+      title={readOnly ? (studentName || 'Student') : `${greeting()}, ${firstName}`}
+      subtitle={
+        loading ? <Skeleton width={260} height={14} style={{ marginTop: 4 }} />
+          : failed ? null
+            : statusLine(stats, { readOnly, firstName })
+      }
+      actions={readOnly || !hasData ? null : (
+        <Button variant="secondary" onClick={() => go('practice')} icon={<Icon name="play" size={13} />}>
+          Start practice
+        </Button>
+      )}
+    />
+  );
+
+  if (loading) {
+    return <Page>{header}<HomeSkeleton /></Page>;
+  }
+
   return (
-    <div style={{ padding: '28px 36px' }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 22 }}>
-        <div>
-          <h1 style={{ margin: 0, font: 'var(--role-title-lg)', color: 'var(--ink-1)' }}>{greeting()}, {firstName}.</h1>
-          <p style={{ margin: '4px 0 0', font: 'var(--role-body-lg)', color: 'var(--text-secondary)' }}>
-            {loading
-              ? 'Loading your progress…'
-              : hasData
-                ? `You've answered ${totals.rw.done + totals.math.done} questions. Keep the streak going.`
-                : 'Start your first practice session to see your progress here.'}
-          </p>
+    <Page>
+      {header}
+      {failed && (
+        <div className={s.error} role="alert">
+          <span>We couldn&apos;t load {readOnly ? `${firstName}'s` : 'your'} progress just now.</span>
+          <Button variant="outline" size="sm" onClick={() => window.location.reload()}>Try again</Button>
         </div>
-      </div>
-
-      {resumable && (
-        <Card padding="lg" style={{ marginBottom: 20, border: '1px solid var(--brand-blue)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-            <span style={{ width: 40, height: 40, borderRadius: '50%', display: 'grid', placeItems: 'center', background: 'var(--sunken)', flexShrink: 0 }}>
-              <Icon name="rotate-ccw" style={{ width: 18, height: 18, color: 'var(--brand-blue)' }} />
-            </span>
-            <div style={{ flex: 1, minWidth: 200 }}>
-              <div style={{ font: 'var(--role-title-sm)', color: 'var(--text-primary)' }}>Pick up where you left off</div>
-              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)' }}>
-                {resumableLabel(resumable)} · {resumable.answered}/{resumable.total} answered
-              </div>
-            </div>
-            <Button variant="ghost" onClick={() => session.discardResumable()}>Discard</Button>
-            <Button variant="primary" onClick={resumeNow} icon={<Icon name="play" style={{ width: 13, height: 13 }} />}>Resume</Button>
-          </div>
-        </Card>
       )}
 
-      {loading ? (
-        <DashboardSkeleton />
+      {readOnly ? (
+        <PendingList studentId={studentId} firstName={firstName} reviewDue={reviewDue} focus={focus} go={go} />
       ) : (
-      <>
-      <Card padding="lg" style={{ marginBottom: 20 }}>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
-          {scores.total != null ? (
-            <>
-              <ScoreBadge value={scores.total} label="Estimated total" />
-              <div style={{ width: 1, height: 56, background: 'var(--border-1)' }} />
-              {scores.rw != null && <ScoreBadge value={scores.rw} max={800} label="Reading & Writing" domain="rw" size="md" />}
-              {scores.math != null && <ScoreBadge value={scores.math} max={800} label="Math" domain="math" size="md" />}
-            </>
-          ) : (
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ font: 'var(--role-title-md)', color: 'var(--text-primary)' }}>No estimated score yet</div>
-              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)', marginTop: 2 }}>
-                Finish a full section to get a 1600-scale estimate.
-              </div>
-            </div>
-          )}
-          <div style={{ flex: 1, minWidth: 0 }} />
-          {!readOnly && (
-            <Button variant="primary" size="lg" onClick={() => go('practice-setup')} icon={<Icon name="play" style={{ width: 14, height: 14 }} />}>
-              New session
-            </Button>
-          )}
-        </div>
-      </Card>
-
-      {!readOnly && (
-        <Card padding="lg" style={{ marginBottom: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-            <span style={{ width: 40, height: 40, borderRadius: '50%', display: 'grid', placeItems: 'center', background: 'var(--sunken)', flexShrink: 0 }}>
-              <Icon name="target" style={{ width: 18, height: 18, color: 'var(--brand-blue)' }} />
-            </span>
-            <div style={{ flex: 1, minWidth: 200 }}>
-              <div style={{ font: 'var(--role-title-sm)', color: 'var(--text-primary)' }}>Your plan this week</div>
-              <div style={{ font: 'var(--role-body)', color: 'var(--text-secondary)' }}>{planSummary}</div>
-            </div>
-            {reviewDue > 0 && (
-              <Button variant="secondary" onClick={() => go('review')} icon={<Icon name="rotate-ccw" style={{ width: 13, height: 13 }} />}>
-                Review {reviewDue}
-              </Button>
-            )}
-            <Button variant="primary" onClick={() => go('plan')} iconRight={<Icon name="chevron-right" style={{ width: 14, height: 14 }} />}>
-              Open plan
-            </Button>
-          </div>
-        </Card>
+        <UpNext steps={steps} />
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 20 }}>
-        {['rw', 'math'].map((sec) => {
-          const ls = lastSession[sec];
-          const sc = scores[sec];
-          return (
-            <Card key={sec} padding="lg">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                <span style={{ font: 'var(--role-eyebrow)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-caps)', color: 'var(--text-tertiary)' }}>{SECTION_LABEL[sec]}</span>
-                <Badge variant={sec} dot>{sec === 'rw' ? 'R&W' : 'Math'}</Badge>
-              </div>
-              <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 14 }}>
-                <AccuracyRing value={acc(sec)} size={64} color={sec === 'rw' ? 'var(--rw-color)' : 'var(--math-color)'} />
-                <div style={{ display: 'flex', flexDirection: 'row', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start', flex: 1 }}>
-                  <StatCard label="Est. score" value={sc != null ? String(sc) : '—'} trend={trendBadge(sc, trend[sec])} domain={sec} size="sm" />
-                  <StatCard label="Questions done" value={totals[sec].done} size="sm" />
-                  <StatCard label="Last session" value={ls?.accuracy != null ? String(ls.accuracy) : '—'} unit={ls?.accuracy != null ? '%' : ''} size="sm" sublabel={lastSessionLabel(ls, sec)} />
-                </div>
-              </div>
-              <Button variant="outline" fullWidth disabled={readOnly} iconRight={<Icon name="chevron-right" style={{ width: 14, height: 14 }} />} onClick={() => !readOnly && go('practice-setup', { domain: sec })}>
-                Drill {SECTION_LABEL[sec]}
-              </Button>
-            </Card>
-          );
-        })}
-      </div>
-
-      {focus.length > 0 && (
-        <Card padding="lg" style={{ marginBottom: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 }}>
-            <h2 style={{ margin: 0, font: 'var(--role-title-md)' }}>Skills to focus on</h2>
-            <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>From your recent practice</span>
-          </div>
-          <p style={{ margin: '0 0 14px', font: 'var(--role-body)', color: 'var(--text-secondary)' }}>
-            These are where your recent accuracy is lowest. A quick drill is the fastest way to bring them up.
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {focus.map((f) => (
-              <div key={`${f.section}-${f.id}`} style={{
-                display: 'grid', gridTemplateColumns: 'auto auto 1fr auto', alignItems: 'center', gap: 12,
-                padding: '12px 14px', background: 'var(--sunken)', borderRadius: 'var(--radius-md)',
-              }}>
-                <AccuracyRing value={f.accuracy ?? 0} size={40} stroke={5} color={f.section === 'rw' ? 'var(--rw-color)' : 'var(--math-color)'} />
-                <Badge variant={f.section} dot>{f.section === 'rw' ? 'R&W' : 'Math'}</Badge>
-                <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                  <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{f.label}</span>
-                  <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)' }}>{f.accuracy ?? 0}% recent · {f.attempts} answered</span>
-                </div>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  disabled={readOnly}
-                  icon={<Icon name="play" style={{ width: 12, height: 12 }} />}
-                  onClick={() => launchFocus(f)}
-                >
-                  Practice
-                </Button>
-              </div>
-            ))}
-          </div>
-        </Card>
+      {failed ? (
+        <RecentActivity sessions={sessions} loading={sessionsLoading} readOnly={readOnly} firstName={firstName} go={go} />
+      ) : !readOnly && !hasData ? (
+        <HowItWorks />
+      ) : (
+        <>
+          <ScoreSummary stats={stats} readOnly={readOnly} firstName={firstName} go={go} />
+          <FocusSkills focus={focus} readOnly={readOnly} firstName={firstName} onPractice={launchFocus} />
+          <RecentActivity sessions={sessions} loading={sessionsLoading} readOnly={readOnly} firstName={firstName} go={go} />
+        </>
       )}
-      </>
-      )}
-
-      <div>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 10 }}>
-          <h2 style={{ margin: 0, font: 'var(--role-title-md)' }}>Recent sessions</h2>
-          <button onClick={() => go('stats')} style={{ font: 'var(--role-label)', color: 'var(--text-link)', background: 'transparent', border: 0, cursor: 'pointer' }}>View all stats →</button>
-        </div>
-        <Card padding="none" style={{ overflowX: 'auto' }}>
-          <div style={{ minWidth: 540 }}>
-            {sessions.length === 0 ? (
-              <div style={{ padding: '20px 16px', font: 'var(--role-body)', color: 'var(--text-tertiary)' }}>
-                {loading ? 'Loading…' : 'No sessions yet. Start a drill or a full section to see it here.'}
-              </div>
-            ) : sessions.map((s, i) => (
-              <button key={s.id} onClick={() => go('session-detail', { id: s.id })} style={{
-                display: 'grid', gridTemplateColumns: 'auto minmax(160px, 1fr) auto auto auto', alignItems: 'center',
-                gap: 14, padding: '12px 16px', borderTop: i === 0 ? 0 : '1px solid var(--border-1)',
-                background: 'transparent', border: 0, cursor: 'pointer', textAlign: 'left', width: '100%',
-              }}>
-                <Badge variant={s.section} dot>{s.section === 'rw' ? 'R&W' : 'Math'}</Badge>
-                <span style={{ font: 'var(--role-body)', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sessionLabel(s)}</span>
-                <span style={{ font: 'var(--role-caption)', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>{relTime(s.created_at)}</span>
-                <span style={{ font: 'var(--role-numeric)', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>{s.score_total} qs</span>
-                <span style={{ font: 'var(--role-numeric)', color: (s.accuracy ?? 0) >= 75 ? 'var(--success)' : 'var(--warning)', whiteSpace: 'nowrap' }}>{s.accuracy ?? 0}%</span>
-              </button>
-            ))}
-          </div>
-        </Card>
-      </div>
-    </div>
+    </Page>
   );
 }
 

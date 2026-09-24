@@ -1,0 +1,154 @@
+/* Home (dashboard) — hero, score summary, list marks, skeletons. */
+
+/* ── Up next hero ─────────────────────────────────────────── */
+.hero { container-type: inline-size; overflow: hidden; }
+.heroMain {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px 20px;
+  padding: 24px;
+}
+.heroIcon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  align-self: start;
+  border-radius: var(--radius-lg);
+  background: var(--brand-blue-soft);
+  color: var(--brand-blue);
+}
+.heroText { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.kicker { font: var(--role-label); color: var(--brand-blue); }
+.heroTitle {
+  font: var(--role-title-lg);
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.heroBody {
+  font: var(--role-body-lg);
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 60ch;
+}
+.heroActions { display: flex; align-items: center; gap: 8px; }
+
+.heroMore {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 24px;
+  border-top: 1px solid var(--border-1);
+  background: var(--surface-subtle);
+}
+.moreLabel { font: var(--role-label); color: var(--text-tertiary); margin-right: 4px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: 28px;
+  padding: 0 12px;
+  font: var(--role-label);
+  color: var(--text-primary);
+  background: var(--surface-card);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: var(--xn-color);
+}
+.chip svg { color: var(--text-secondary); flex-shrink: 0; }
+.chip:hover { background: var(--hover); border-color: var(--border-3); }
+.chip:active { background: var(--pressed); }
+.chip:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); border-color: var(--brand-blue); }
+.chipText { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+@container (max-width: 600px) {
+  .heroMain { grid-template-columns: auto minmax(0, 1fr); padding: 20px; }
+  .heroActions { grid-column: 1 / -1; justify-content: flex-end; }
+  .heroMore { padding: 12px 20px; }
+}
+
+/* ── Score summary ────────────────────────────────────────── */
+.scoreCard { container-type: inline-size; }
+.scores {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 24px 32px;
+  padding: 24px;
+}
+.scoreTotal { padding-right: 32px; border-right: 1px solid var(--border-1); }
+.scoreSection { min-width: 0; }
+
+@container (max-width: 640px) {
+  .scores { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .scoreTotal { grid-column: 1 / -1; padding: 0 0 20px; border-right: 0; border-bottom: 1px solid var(--border-1); }
+}
+
+/* ── Row marks ────────────────────────────────────────────── */
+.mark,
+.pendingMark {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+.markRw { background: var(--rw-soft); color: var(--rw-color); }
+.markMath { background: var(--math-soft); color: var(--math-color); }
+.pendingMark { background: var(--sunken); color: var(--text-secondary); }
+
+/* ── How it works (new students) ──────────────────────────── */
+.how {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.howItem { display: flex; flex-direction: column; gap: 4px; }
+.howIcon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+  border-radius: var(--radius-md);
+  background: var(--sunken);
+  color: var(--text-secondary);
+}
+.howTitle { font: var(--role-title-sm); color: var(--text-primary); }
+.howBody { font: var(--role-body); color: var(--text-secondary); }
+
+@media (max-width: 900px) {
+  .how { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+
+/* ── Status line / error ──────────────────────────────────── */
+.error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 0 24px;
+  font: var(--role-body);
+  color: var(--text-secondary);
+}
+
+/* ── Skeletons ────────────────────────────────────────────── */
+.skelRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 16px;
+}
+.skelRow + .skelRow { border-top: 1px solid var(--border-1); }
+.skelStack { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }
