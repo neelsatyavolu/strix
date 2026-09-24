@@ -1,8 +1,11 @@
 'use client';
 import { Page, PageHeader, Tabs } from '@/components/sixteen';
 import { useNav } from '@/components/sixteen/session/Navigation';
-import PracticeSetup from '../PracticeSetup';
-import QuestionBank from '../QuestionBank';
+import DrillTab from './DrillTab';
+import FullLengthTab from './FullLengthTab';
+import QuestionBank from './QuestionBank';
+import { MODE_TO_KIND } from './practiceConfig';
+import s from './Practice.module.css';
 
 // Practice — everything you can start: skill drills, full-length practice
 // (module / section / full SAT), and the question bank.
@@ -13,16 +16,34 @@ const TABS = [
   { value: 'bank', label: 'Question bank' },
 ];
 
-export default function PracticeHub({ go, params = {}, readOnly = false }) {
+const SUBTITLE = {
+  drill: 'Pick a skill and work through a short set of questions.',
+  full: 'Timed practice in the real SAT format — one module, a section, or the whole test.',
+  bank: 'Look up any real College Board question and check the answer.',
+};
+
+// Legacy PracticeSetup params: a full-length `mode` opens the Full-length tab
+// (the old 'practice-setup' alias always adds tab: 'drill').
+function resolveTab(params) {
+  if (MODE_TO_KIND[params.mode] && params.tab !== 'bank') return 'full';
+  return TABS.some((t) => t.value === params.tab) ? params.tab : 'drill';
+}
+
+export default function PracticeHub({ go, params = {}, readOnly = false, studentId = null, studentName }) {
   const nav = useNav();
-  const tab = TABS.some((t) => t.value === params.tab) ? params.tab : 'drill';
+  const tab = resolveTab(params);
   const setTab = (t) => nav.replace('practice', { tab: t });
+  const shared = { go, initial: params, readOnly, studentName };
 
   return (
     <Page>
-      <PageHeader title="Practice" subtitle="Drill a skill, run a timed module or section, or browse real questions." />
-      <Tabs tabs={TABS} value={tab} onChange={setTab} style={{ marginBottom: 24 }} />
-      {tab === 'bank' ? <QuestionBank /> : <PracticeSetup go={go} initial={params} readOnly={readOnly} />}
+      <PageHeader title="Practice" subtitle={SUBTITLE[tab]} />
+      <Tabs tabs={TABS} value={tab} onChange={setTab} style={{ marginBottom: 28 }} />
+      <div className={s.body}>
+        {tab === 'drill' && <DrillTab {...shared} studentId={studentId} />}
+        {tab === 'full' && <FullLengthTab {...shared} />}
+        {tab === 'bank' && <QuestionBank initialId={typeof params.id === 'string' ? params.id : ''} />}
+      </div>
     </Page>
   );
 }

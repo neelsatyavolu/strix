@@ -1,0 +1,177 @@
+/* ── Hub body (container for responsive layouts) ──────────── */
+.body { container-type: inline-size; }
+
+/* ── Drill ────────────────────────────────────────────────── */
+.sectionPicker { margin-bottom: 28px; }
+
+.drillGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.drillGrid .drillOptions { margin-top: 0; }
+@container (min-width: 760px) {
+  .drillGrid { grid-template-columns: minmax(0, 1fr) minmax(280px, 340px); gap: 40px; }
+}
+
+/* Skill options — one hairline card of radio rows */
+.options {
+  background: var(--surface-card);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: var(--xn-color);
+}
+.option + .option { border-top: 1px solid var(--border-1); }
+.option:hover { background: var(--hover); }
+.option:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--focus-ring-strong); }
+.option.optionSelected { background: var(--brand-blue-soft); }
+
+.radio {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-3);
+  background: var(--surface-card);
+  transition: border var(--dur-fast) var(--ease-out);
+}
+.radioOn { border: 5px solid var(--brand-blue); }
+
+.optionMain { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.optionTitle {
+  font: var(--role-body);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.optionSub { font: var(--role-caption); color: var(--text-secondary); }
+.optionMeta {
+  flex-shrink: 0;
+  font: var(--role-title-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.optionMetaUnit { font: var(--role-caption); color: var(--text-tertiary); }
+
+.fields { display: flex; flex-direction: column; gap: 20px; }
+.field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.fieldLabel { font: var(--role-label); color: var(--text-secondary); }
+.fieldHint { font: var(--role-caption); color: var(--text-tertiary); }
+
+/* ── Start bar (sticky footer) ────────────────────────────── */
+.startBar {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 32px calc(-1 * var(--page-pad-x)) 0;
+  padding: 14px var(--page-pad-x);
+  background: var(--surface-app);
+  border-top: 1px solid var(--border-1);
+}
+.startText { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.startTitle {
+  font: var(--role-title-sm);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.startDetail { font: var(--role-caption); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+
+/* ── Full-length kinds ────────────────────────────────────── */
+.kinds {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+@container (min-width: 600px) {
+  .kinds { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.kind {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+}
+.kindIcon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+  border-radius: var(--radius-md);
+  background: var(--sunken);
+  color: var(--text-secondary);
+  transition: var(--xn-color);
+}
+.kindIcon[data-on] { background: var(--brand-blue-soft); color: var(--brand-blue); }
+.kindTitle { font: var(--role-title-sm); color: var(--text-primary); }
+.kindFigures {
+  font: var(--role-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.kindSub { font: var(--role-caption); color: var(--text-secondary); line-height: 1.45; }
+
+/* ── Test source tiles ────────────────────────────────────── */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 54px;
+  padding: 10px 12px;
+  text-align: left;
+  font: inherit;
+  background: var(--surface-card);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--xn-color);
+}
+.tile:hover { background: var(--hover); }
+.tile:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }
+.tile.tileSelected {
+  background: var(--brand-blue-soft);
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 1px var(--brand-blue);
+}
+.tileMuted { opacity: 0.62; }
+.tileTitle { font: var(--role-body); font-weight: var(--weight-medium); color: var(--text-primary); }
+.tileSub { font: var(--role-caption); color: var(--text-secondary); }
+
+.inlineError {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: var(--role-label);
+  color: var(--error);
+}
