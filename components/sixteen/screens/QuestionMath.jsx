@@ -8,7 +8,7 @@ import { ExitTest } from '@/components/sixteen/test/ExitTest';
 import ModuleCountdown from '@/components/sixteen/test/ModuleCountdown';
 import ModuleReview from '@/components/sixteen/test/ModuleReview';
 import DesmosPanel from '@/components/sixteen/test/DesmosPanel';
-import { DoneAlreadyButton, DrillFeedback, EliminatorToggle } from '@/components/sixteen/test/QuestionAids';
+import { DirectionsModal, DoneAlreadyButton, DrillFeedback, EliminatorToggle } from '@/components/sixteen/test/QuestionAids';
 import { FormulaSheet, GridIn } from '@/components/sixteen/test/MathAids';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useLiveBroadcast } from '@/components/sixteen/session/LiveBroadcastContext';
@@ -283,6 +283,14 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
       )}
       {formulaOpen && <FormulaSheet onClose={() => setFormulaOpen(false)} />}
 
+      {directionsOpen && (
+        <DirectionsModal onClose={() => setDirectionsOpen(false)}>
+          {MATH_DIRECTIONS.map((p, i) => (
+            <p key={p} style={{ margin: i ? '12px 0 0' : 0, font: 'var(--role-body-lg)', lineHeight: 1.55, color: 'var(--text-primary)' }}>{p}</p>
+          ))}
+        </DirectionsModal>
+      )}
+
       {paletteOpen && (
         <div style={{ position: 'absolute', bottom: 'calc(var(--test-footer-height) + 12px)', left: '50%', transform: 'translateX(-50%)', zIndex: 20 }}>
           <QuestionPalette
@@ -309,5 +317,11 @@ function QuestionMath({ go, tutorOn, setTutorOn, statsOn, setStatsOn, kind = 'dr
     </div>
   );
 }
+
+const MATH_DIRECTIONS = [
+  'The questions in this section address a number of important math skills. Use of a calculator is permitted for all questions. A reference sheet is available from the toolbar.',
+  'Unless otherwise indicated, all variables and expressions represent real numbers, figures are drawn to scale, all figures lie in a plane, and the domain of a function f is the set of all real numbers x for which f(x) is a real number.',
+  'Multiple-choice questions have a single correct answer. For student-produced responses, enter only one answer. Fractions and decimals are both accepted. If your answer is a mixed number, enter it as an improper fraction or a decimal. Don’t include a percent sign, comma, or dollar sign.',
+];
 
 export default QuestionMath;

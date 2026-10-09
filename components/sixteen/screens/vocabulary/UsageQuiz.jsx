@@ -22,7 +22,7 @@ function outcomeNote(feedback) {
 }
 
 /** “Which sentence uses the word correctly?” — options, then feedback + Next. */
-export default function UsageQuiz({ item, picked, feedback, submitting, onPick, onNext, isLast }) {
+export default function UsageQuiz({ item, picked, feedback, submitting, saveError, onPick, onNext, isLast }) {
   const passages = item.passages || [];
   const correctPassage = passages[item.correctIndex];
   const note = feedback ? outcomeNote(feedback) : null;
@@ -57,6 +57,10 @@ export default function UsageQuiz({ item, picked, feedback, submitting, onPick, 
         <p className={s.keys}>
           Press <Kbd>1</Kbd>–<Kbd>{passages.length || 4}</Kbd> to answer
         </p>
+      )}
+
+      {saveError && !feedback && (
+        <p className={s.saveError} role="alert">Couldn’t save that answer ({saveError}). Try again.</p>
       )}
 
       {feedback && (

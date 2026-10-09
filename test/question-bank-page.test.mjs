@@ -6,6 +6,10 @@ const appSource = fs.readFileSync(
   new URL('../components/sixteen/SixteenApp.jsx', import.meta.url),
   'utf8',
 );
+const practiceHubSource = fs.readFileSync(
+  new URL('../components/sixteen/screens/practice/PracticeHub.jsx', import.meta.url),
+  'utf8',
+);
 const routeSource = fs.readFileSync(
   new URL('../app/api/questions/route.ts', import.meta.url),
   'utf8',
@@ -21,15 +25,16 @@ const lookupSource = fs.readFileSync(
 const officialForms = JSON.parse(
   fs.readFileSync(new URL('../lib/cb/official-forms.json', import.meta.url), 'utf8'),
 );
-const screenUrl = new URL('../components/sixteen/screens/QuestionBank.jsx', import.meta.url);
+const screenUrl = new URL('../components/sixteen/screens/practice/QuestionBank.jsx', import.meta.url);
+const resultUrl = new URL('../components/sixteen/screens/practice/QuestionResult.jsx', import.meta.url);
 const screenExists = fs.existsSync(screenUrl);
 const screenSource = screenExists ? fs.readFileSync(screenUrl, 'utf8') : '';
+const resultSource = fs.existsSync(resultUrl) ? fs.readFileSync(resultUrl, 'utf8') : '';
 
 test('Question Bank is wired into Strix navigation and routing', () => {
-  assert.match(appSource, /QuestionBank/);
-  assert.match(appSource, /id:\s*'question-bank'/);
-  assert.match(appSource, /case 'question-bank'/);
-  assert.match(appSource, /'question-bank': 'question-bank'/);
+  assert.match(appSource, /'question-bank': \['practice', \{ tab: 'bank' \}\]/);
+  assert.match(practiceHubSource, /QuestionBank/);
+  assert.match(practiceHubSource, /tab === 'bank'/);
 });
 
 test('questions API supports direct lookup by question ID', () => {
@@ -59,9 +64,9 @@ test('direct lookup includes official Bluebook result external IDs', () => {
 
 test('Question Bank screen searches by ID and keeps answers hidden until requested', () => {
   assert.equal(screenExists, true);
-  assert.match(screenSource, /Question Bank/);
   assert.match(screenSource, /\/api\/questions\?/);
   assert.match(screenSource, /showAnswer/);
-  assert.match(screenSource, /Show answer/);
-  assert.match(screenSource, /question\.correct/);
+  assert.match(resultSource, /Reveal/);
+  assert.match(resultSource, /question\.correct/);
+  assert.match(resultSource, /showAnswer && correctSet/);
 });

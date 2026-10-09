@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { sectionScoreRange, routeModule2 } from "@/lib/scoring/curve";
+import { moduleTotalsForScore } from "@/lib/scoring/moduleTotals.mjs";
 import { isValueCorrect, questionHasKey } from "@/lib/practice/grading.mjs";
 
 // DELETE /api/sessions/:id — permanently remove one of the caller's own
@@ -114,18 +115,25 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const accuracy = total ? Math.round((correct / total) * 100) : 0;
 
   // Recompute the section score with the current curve so historical full SATs
-  // reflect the latest scoring. Route (easy/hard) comes from Module-1 performance.
-  const m1 = byModule.get("m1");
-  const moduleScores = ["m1", "m2"].map((key) => {
-    const stats = byModule.get(key);
-    return { correct: stats?.correct ?? 0, total: stats?.total ?? 0 };
+  // reflect the latest scoring. The review list above is answered-only; the
+  // scaled score still counts skips (via saved module length, or the official
+  // module size for older fixed forms).
+  const section = sess.section === "math" ? "math" : "rw";
+  const moduleScores = moduleTotalsForScore({
+    section,
+    config: (sess.config ?? null) as { moduleScores?: unknown; bluebookTest?: unknown; strixTest?: unknown } | null,
+    answers: review.map((item) => ({
+      module: item.module ?? "",
+      isCorrect: item.isCorrect,
+    })),
   });
+  const m1 = moduleScores[0] ?? { correct: 0, total: 0 };
   const bluebookTest = (sess.config as { bluebookTest?: unknown })?.bluebookTest;
   const range =
     sess.scaled_score != null
       ? sectionScoreRange(correct, total, {
-          section: sess.section === "math" ? "math" : "rw",
-          routedEasy: m1 ? routeModule2(m1.correct, m1.total) === "easy" : false,
+          section,
+          routedEasy: routeModule2(m1.correct, m1.total) === "easy",
           test: typeof bluebookTest === "number" ? bluebookTest : null,
           modules: moduleScores,
         })

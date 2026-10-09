@@ -55,6 +55,13 @@
 .wrong .mark { color: var(--error); }
 .dim { opacity: 0.55; }
 
+.saveError {
+  margin: 0;
+  font: var(--role-body);
+  color: var(--error);
+  text-align: center;
+}
+
 .keys {
   display: inline-flex;
   align-items: center;
