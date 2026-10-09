@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 
 import {
   arrangeMathQuestions,
+  examBetweenSections,
+  examBreakCanBegin,
   modulePretestIds,
   moduleReviewAction,
   moduleRoutingStats,
@@ -94,6 +96,23 @@ test('questionViewForSection selects the right question screen for direct module
 test('moduleTimerSeconds returns the official per-module timing by section', () => {
   assert.equal(moduleTimerSeconds('rw'), 32 * 60);
   assert.equal(moduleTimerSeconds('math'), 35 * 60);
+});
+
+test('examBreakCanBegin only leaves the break from submitted or a failed resume', () => {
+  assert.equal(examBreakCanBegin({ seconds: 0, status: 'submitted', starting: false }), true);
+  assert.equal(examBreakCanBegin({ seconds: 1, status: 'submitted', starting: false }), false);
+  assert.equal(examBreakCanBegin({ seconds: 0, status: 'error', starting: false }), true);
+  assert.equal(examBreakCanBegin({ seconds: 0, status: 'error', starting: true }), false);
+  assert.equal(examBreakCanBegin({ seconds: 0, status: 'loading', starting: false }), false);
+  assert.equal(examBreakCanBegin({ seconds: 0, status: 'active', starting: false }), false);
+});
+
+test('examBetweenSections is only the gap after one section of a full SAT', () => {
+  const sections = ['rw', 'math'];
+  assert.equal(examBetweenSections(null), false);
+  assert.equal(examBetweenSections({ sections, results: [] }), false);
+  assert.equal(examBetweenSections({ sections, results: [{ section: 'rw' }] }), true);
+  assert.equal(examBetweenSections({ sections, results: [{ section: 'rw' }, { section: 'math' }] }), false);
 });
 
 test('moduleTimerIsRunning waits until an active module has loaded', () => {

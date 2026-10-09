@@ -98,14 +98,12 @@ export async function POST(req: NextRequest) {
   // Correct passage is sampled from a pool each session; accept any valid correct use.
   // Known/checkmarked ONLY when student clicked “I know it” (did not flip) AND got usage right.
   // If they flipped for the definition first, a correct answer still keeps the word in rotation.
-  let correct = false;
-  if (typeof body.passage === "string" && body.passage.trim()) {
-    correct = isCorrectUsage(entry, body.passage);
-  } else if (typeof body.correct === "boolean") {
-    correct = body.correct;
-  } else {
+  // The passage is graded here. A client-supplied `correct` flag is ignored so
+  // a word can't be marked learned without a real usage answer.
+  if (typeof body.passage !== "string" || !body.passage.trim()) {
     return NextResponse.json({ success: false, error: "Missing answer" }, { status: 400 });
   }
+  const correct = isCorrectUsage(entry, body.passage);
 
   const flipped = !!body.flipped;
   const prevBox = existing?.box ?? 0;

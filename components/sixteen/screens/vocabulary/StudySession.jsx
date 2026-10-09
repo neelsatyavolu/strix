@@ -30,6 +30,7 @@ export default function StudySession({ item, index, total, onDone, onExit }) {
   const [flipped, setFlipped] = React.useState(false);
   const [picked, setPicked] = React.useState(null);
   const [feedback, setFeedback] = React.useState(null);
+  const [saveError, setSaveError] = React.useState(null);
   const [submitting, setSubmitting] = React.useState(false);
 
   const goUsage = () => setStep('usage');
@@ -40,6 +41,7 @@ export default function StudySession({ item, index, total, onDone, onExit }) {
     if (feedback || submitting) return;
     setPicked(choiceIndex);
     setSubmitting(true);
+    setSaveError(null);
     const passage = (item.passages || [])[choiceIndex] || '';
     try {
       const r = await fetch('/api/vocab', {
@@ -56,13 +58,10 @@ export default function StudySession({ item, index, total, onDone, onExit }) {
       if (!j?.success) throw new Error(j?.error || 'Submit failed');
       setFeedback(j.data);
     } catch (e) {
-      setFeedback({
-        correct: false,
-        reason: e.message,
-        definition: item.definition,
-        word: item.word,
-        correctPassage: item.passages?.[item.correctIndex],
-      });
+      // A failed save is not a wrong answer. Leave the choice open so it can
+      // be submitted again, and don't reveal the key.
+      setPicked(null);
+      setSaveError(e instanceof Error ? e.message : 'Could not save this answer.');
     } finally {
       setSubmitting(false);
     }
@@ -117,6 +116,7 @@ export default function StudySession({ item, index, total, onDone, onExit }) {
           picked={picked}
           feedback={feedback}
           submitting={submitting}
+          saveError={saveError}
           onPick={submit}
           onNext={next}
           isLast={index + 1 >= total}
