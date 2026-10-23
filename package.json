@@ -22,12 +22,12 @@
     "@supabase/ssr": "^0.12.0",
     "@supabase/supabase-js": "^2.108.2",
     "electron-updater": "^6.8.9",
-    "katex": "^0.17.0",
+    "katex": "^0.18.2",
     "lucide-react": "^1.21.0",
     "next": "16.4.2",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "sanitize-html": "^2.17.5",
+    "sanitize-html": "^2.18.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -36,12 +36,31 @@
     "@types/react-dom": "^19",
     "@types/sanitize-html": "^2.16.1",
     "concurrently": "^10.0.3",
-    "electron": "^42.5.0",
+    "electron": "^42.11.9",
     "electron-builder": "^26.15.3",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "sharp": "^0.35.5",
     "typescript": "^5",
     "wait-on": "^9.0.10"
+  },
+  "pnpm": {
+    "overrides": {
+      "axios@>=1.0.0 <1.20.0": "^1.20.0",
+      "tar@<=7.5.20": "^7.5.21",
+      "shell-quote@<1.11.0": "^1.11.0",
+      "postcss@<8.5.23": "^8.5.23",
+      "brace-expansion@<1.1.21": "^1.1.21",
+      "brace-expansion@>=2.0.0 <2.1.7": "^2.1.7",
+      "brace-expansion@>=4.0.0 <5.0.12": "^5.0.12",
+      "js-yaml@>=4.0.0 <4.3.2": "^4.3.2",
+      "fast-uri@>=3.0.0 <3.1.8": "^3.1.8",
+      "nanoid@>=3.0.0 <3.3.18": "^3.3.18",
+      "browserslist@<=4.28.6": "^4.28.7",
+      "baseline-browser-mapping@>=2.0.0 <2.11.0": "^2.11.0",
+      "@xmldom/xmldom@>=0.7.0 <=0.8.14": "^0.8.15",
+      "joi@>=18.0.0 <18.2.9": "^18.2.9",
+      "source-map-js@>=1.0.0 <1.2.2": "^1.2.2"
+    }
   }
 }
