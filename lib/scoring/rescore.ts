@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { compositeScore, sectionScoreRange, routeModule2, type ModuleScore, type ScoreRange } from "./curve";
+import { compositeScore, sectionScoreRange, routeModule2, type ScoreRange } from "./curve";
+import { moduleTotalsForScore } from "./moduleTotals.mjs";
 
 // Recompute persisted full-section scores with the CURRENT scoring curve, so
 // historical full SATs always reflect the latest scoring (rather than the value
@@ -50,27 +51,30 @@ export async function rescoreSessions(
   ]);
 
   const correctByQ = new Map((ans ?? []).map((a) => [a.session_question_id, !!a.is_correct]));
-  const bySession = new Map<string, [ModuleScore, ModuleScore]>();
+  const answersBySession = new Map<string, { module: string; isCorrect: boolean }[]>();
   for (const sq of sqs ?? []) {
     // All answered items count (legacy pretest carve-out removed).
     if (!correctByQ.has(sq.id)) continue;
-    const modules = bySession.get(sq.session_id) ?? [
-      { correct: 0, total: 0 },
-      { correct: 0, total: 0 },
-    ];
-    const e = sq.module === "m1" ? modules[0] : modules[1];
-    e.total += 1;
-    if (correctByQ.get(sq.id)) e.correct += 1;
-    bySession.set(sq.session_id, modules);
+    const list = answersBySession.get(sq.session_id) ?? [];
+    list.push({ module: sq.module ?? "", isCorrect: !!correctByQ.get(sq.id) });
+    answersBySession.set(sq.session_id, list);
   }
 
   for (const r of targets) {
-    const modules = bySession.get(r.id);
+    const section = r.section === "math" ? "math" : "rw";
+    const persisted = answersBySession.get(r.id) ?? [];
+    const hasServedLength = Array.isArray(r.config?.moduleScores);
+    // No rows and no saved length: leave modules unset so scoring falls back to
+    // the stored correct/total instead of treating the section as 0/0.
+    // Otherwise fold skips back in so a 20-of-27 isn't rescored as 20-of-20.
+    const modules = persisted.length || hasServedLength
+      ? moduleTotalsForScore({ section, config: r.config, answers: persisted })
+      : undefined;
     const m1 = modules?.[0] ?? { correct: 0, total: 0 };
     out.set(
       r.id,
       sectionScoreRange(r.score_correct ?? 0, r.score_total ?? 0, {
-        section: r.section === "math" ? "math" : "rw",
+        section,
         routedEasy: routeModule2(m1.correct, m1.total) === "easy",
         test: bluebookTestOf(r.config),
         modules,

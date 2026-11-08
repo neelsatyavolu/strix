@@ -26,7 +26,7 @@ export default function QuestionResult({ question, showAnswer, onToggleAnswer })
           <div className={s.spr}>Student-produced response — no answer choices.</div>
         ) : (
           <div className={s.choices}>
-            {question.choices.map((choice) => (
+            {(question.choices || []).map((choice) => (
               <ChoiceRow key={choice.letter} choice={choice} correct={showAnswer && correctSet.has(choice.letter)} />
             ))}
           </div>

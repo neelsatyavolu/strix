@@ -44,10 +44,12 @@ function ExamBreak({ go }) {
   const canBegin = examBreakCanBegin({ seconds, status: session.status, starting });
   const loadingNext = starting || session.status === 'loading';
   const elapsedPct = ((BREAK_SECONDS - seconds) / BREAK_SECONDS) * 100;
-  const begin = () => {
+  const begin = async () => {
     if (!canBegin) return;
     setStarting(true);
-    session.startExamNextSection(go);
+    // 'ok' navigates away. Anything else stays on this screen and must be retryable.
+    const outcome = await session.startExamNextSection(go);
+    if (outcome !== 'ok') setStarting(false);
   };
 
   return (
@@ -71,6 +73,11 @@ function ExamBreak({ go }) {
         <Button size="lg" loading={loadingNext} disabled={!canBegin} onClick={begin} className={s.cta}>
           {loadingNext ? `Loading ${nextLabel}…` : 'Resume now'}
         </Button>
+        {session.status === 'error' && (
+          <p role="alert" className={s.error}>
+            {session.error || `Couldn’t load ${nextLabel}.`} You can try again.
+          </p>
+        )}
         <p className={s.note}>
           {seconds > 0 && 'You can resume when the break ends. '}
           Once you begin {nextLabel}, you can’t return to {SECTION_LABEL[previousSection] || 'the previous section'}.

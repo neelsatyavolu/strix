@@ -5,8 +5,20 @@ import { dueLabel, plural, resumableLabel } from './helpers';
 // keep going (or, for a brand-new student, a welcome step).
 // The first step becomes the hero; later steps with a `chip` are shown as
 // smaller secondary options. `act` supplies the handlers.
-export function buildSteps({ resumable, assignments, reviewDue, focus, hasData, scores, firstName }, act) {
+export function buildSteps({ resumable, examContinue, assignments, reviewDue, focus, hasData, scores, firstName }, act) {
   const steps = [];
+
+  if (examContinue) {
+    steps.push({
+      key: 'exam',
+      icon: 'coffee',
+      title: 'Your full SAT is still in progress',
+      body: examContinue,
+      cta: 'Return to the break',
+      run: () => act.go('exam-break'),
+      chip: 'Continue full SAT',
+    });
+  }
 
   if (resumable) {
     steps.push({

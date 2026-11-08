@@ -4,7 +4,8 @@ import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { usePracticeSession } from '@/components/sixteen/session/SessionContext';
 import { useStats, useSessions, useReviewQueue, useAssignments } from '@/lib/data/hooks';
 import { buildSteps } from './home/nextSteps';
-import { greeting, openAssignments, plural } from './home/helpers';
+import { greeting, openAssignments, plural, SECTION_LABEL } from './home/helpers';
+import { examBetweenSections } from '@/lib/practice/sessionLogic.mjs';
 import { UpNext } from './home/UpNext';
 import { PendingList } from './home/PendingList';
 import { ScoreSummary } from './home/ScoreSummary';
@@ -66,9 +67,16 @@ function Dashboard({ go, studentId = null, readOnly = false, studentName = null 
     if (snap) go(snap.section === 'math' ? 'math-question' : 'rw-question', { kind: 'drill' });
   };
 
+  const examOnBreak = !readOnly && examBetweenSections(session.exam);
+  const nextSection = examOnBreak ? session.exam.sections[session.exam.index] : null;
   const allSteps = readOnly ? [] : buildSteps(
     {
-      resumable: session.resumable,
+      // Hide the drill resume while a full SAT is between sections — that
+      // button would otherwise look like "continue" and drop the exam.
+      resumable: examOnBreak ? null : session.resumable,
+      examContinue: examOnBreak
+        ? `Up next: ${SECTION_LABEL[nextSection] || 'the next section'}. Your answers so far are saved.`
+        : null,
       assignments: openAssignments(assignments),
       reviewDue,
       focus,

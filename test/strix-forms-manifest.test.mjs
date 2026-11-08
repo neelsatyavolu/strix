@@ -10,7 +10,11 @@ const sessionSource = fs.readFileSync(
   'utf8',
 );
 const practiceSetupSource = fs.readFileSync(
-  new URL('../components/sixteen/screens/PracticeSetup.jsx', import.meta.url),
+  new URL('../components/sixteen/screens/practice/TestSourcePicker.jsx', import.meta.url),
+  'utf8',
+);
+const fullLengthSource = fs.readFileSync(
+  new URL('../components/sixteen/screens/practice/FullLengthTab.jsx', import.meta.url),
   'utf8',
 );
 const officialForms = JSON.parse(
@@ -126,12 +130,12 @@ test('Strix full SAT source is wired through the question API and session runtim
 test('Practice Setup exposes every Strix test as a full SAT option', () => {
   assert.match(practiceSetupSource, /strix-forms\.json/);
   assert.match(practiceSetupSource, /strix-mirrors\.json/);
-  assert.match(practiceSetupSource, /Start Strix Test \$\{strixTest\}/);
+  assert.match(practiceSetupSource, /STRIX_TEST_OPTIONS/);
   assert.match(practiceSetupSource, /Like Bluebook/);
-  assert.match(practiceSetupSource, /bluebookTest:\s*null/);
+  assert.match(fullLengthSource, /Strix Test \$\{strixTest\}/);
+  assert.match(fullLengthSource, /bluebookTest:\s*null/);
   const forms = JSON.parse(fs.readFileSync(strixFormsUrl, 'utf8'));
   for (const num of Object.keys(forms)) {
-    assert.match(practiceSetupSource, /STRIX_TEST_OPTIONS/);
     assert.equal(EXPECTED_TESTS.includes(num), true, `unexpected Strix test ${num} not covered by picker test`);
   }
 });

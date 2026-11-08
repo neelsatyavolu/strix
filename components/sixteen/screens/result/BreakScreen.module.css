@@ -57,6 +57,12 @@
 .clockLabel { font: var(--role-caption); color: var(--text-tertiary); margin: 10px 0 0; }
 
 .cta { margin-top: 36px; min-width: 180px; }
+.error {
+  margin: 16px 0 0;
+  max-width: 42ch;
+  font: var(--role-body);
+  color: var(--error);
+}
 .note { font: var(--role-caption); color: var(--text-tertiary); margin: 12px 0 0; max-width: 40ch; }
 
 @media (max-height: 720px) {

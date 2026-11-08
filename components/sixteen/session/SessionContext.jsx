@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { scaledSectionScore, sectionScoreRange, routeModule2, compositeScore } from '@/lib/scoring/curve';
-import { isSectionEstimateMode, modulePretestIds, moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
+import { examBetweenSections, isSectionEstimateMode, modulePretestIds, moduleRoutingStats, questionViewForSection } from '@/lib/practice/sessionLogic.mjs';
 import { isValueCorrect, questionHasKey } from '@/lib/practice/grading.mjs';
 import { enqueuePendingSession, flushPendingSessions } from '@/lib/practice/persistQueue.mjs';
 
@@ -279,7 +279,10 @@ async function persistSession(state, times = {}) {
     // saved — so its halves must NOT carry assignmentId (which would auto-complete
     // the assignment here, twice and without the composite). Single sessions keep
     // it. assignmentId: undefined is dropped by JSON.stringify.
-    const persistConfig = { ...(state.config || {}), ...(isExam ? { exam: true, assignmentId: undefined } : {}) };
+    // moduleScores is the served length, skips included (computed above). Later
+    // rescores read it so an unanswered item still costs points — the stored
+    // rows omit skips.
+    const persistConfig = { ...(state.config || {}), moduleScores, ...(isExam ? { exam: true, assignmentId: undefined } : {}) };
     const payload = {
       // 'mock-exam' isn't a DB mode; each section persists as a full section.
       mode: isExam ? 'mock-full' : state.mode,
@@ -385,6 +388,13 @@ export function PracticeSessionProvider({ children }) {
   const finalizeTimes = () => { flushTiming(Date.now()); return { ...timingRef.current.byId }; };
 
   const start = React.useCallback(async (config) => {
+    // A full SAT between sections lives only in memory. Starting something else
+    // drops it, so confirm before replacing that state.
+    if (examBetweenSections(stateRef.current.exam)) {
+      const leave = typeof window !== 'undefined'
+        && window.confirm('You have a full SAT in progress. Starting something else will discard it. Continue?');
+      if (!leave) return;
+    }
     const mode = config.mode ?? 'drill';
     const isExam = mode === 'mock-exam';
     const section = isExam ? EXAM_SECTIONS[0] : config.section;
@@ -658,6 +668,9 @@ export function PracticeSessionProvider({ children }) {
   // Restore a saved session into active state. Returns the snapshot (so the caller
   // can navigate to the right question screen) or null if none is resumable.
   const resume = React.useCallback(() => {
+    // Don't replace an in-progress full SAT (for example during the break) with
+    // an older drill snapshot.
+    if (examBetweenSections(stateRef.current.exam)) return null;
     const snap = loadSnapshot();
     if (!snap?.questions?.length) { clearSnapshot(); return null; }
     resetTiming();
@@ -746,7 +759,10 @@ export function PracticeSessionProvider({ children }) {
         }));
         go(questionViewForSection(s.section), { kind: 'module' });
       } catch (err) {
-        setState((prev) => ({ ...prev, status: 'error', error: err instanceof Error ? err.message : 'Failed to load Module 2' }));
+        // Stay on Module 1 so Submit can try Module 2 again. An error screen
+        // here has no retry and abandons the section.
+        setState((prev) => ({ ...prev, status: 'active', phase: s.phase }));
+        window.alert(err instanceof Error ? err.message : "Couldn't load Module 2. Check your connection and try again.");
       }
       return;
     }
@@ -788,7 +804,7 @@ export function PracticeSessionProvider({ children }) {
   // Full SAT: after the break, load Module 1 of the next section.
   const startExamNextSection = React.useCallback(async (go) => {
     const s = stateRef.current;
-    if (!s.exam) return;
+    if (!s.exam) return false;
     const section = s.exam.sections[s.exam.index];
     setState((prev) => ({ ...prev, status: 'loading', section }));
     try {
@@ -811,8 +827,10 @@ export function PracticeSessionProvider({ children }) {
         startedAt: Date.now(),
       }));
       go(section === 'math' ? 'math-question' : 'rw-question', { kind: 'module' });
+      return 'ok';
     } catch (err) {
       setState((prev) => ({ ...prev, status: 'error', error: err instanceof Error ? err.message : 'Failed to load the next section' }));
+      return 'error';
     }
   }, []);
 
