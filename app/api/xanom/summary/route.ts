@@ -56,6 +56,8 @@ export async function GET(req: NextRequest) {
         .order("submitted_at", { ascending: false })
         .limit(3),
     ]);
+    const failed = [sessions, answered, due, recent].find((r) => r.error);
+    if (failed?.error) throw new Error(failed.error.message);
     const nSessions = sessions.count ?? 0;
     const nAnswered = answered.count ?? 0;
     const nDue = due.count ?? 0;

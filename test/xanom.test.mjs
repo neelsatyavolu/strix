@@ -99,7 +99,7 @@ test('flow cookie expires after 10 minutes', async () => {
 
 test('return paths stay on this origin', () => {
   assert.equal(safeReturnPath('/app#/settings'), '/app#/settings');
-  for (const bad of ['//evil.com', 'https://evil.com', '/\\evil.com', '', null, 'app']) assert.equal(safeReturnPath(bad), '/app');
+  for (const bad of ['//evil.com', 'https://evil.com', '/\\evil.com', '/\t/evil.com', decodeURIComponent('/%09/evil.com'), '/\n/evil.com', '', null, 'app']) assert.equal(safeReturnPath(bad), '/app');
 });
 
 test('authorize URL carries state, nonce, S256 PKCE and convert', async () => {
