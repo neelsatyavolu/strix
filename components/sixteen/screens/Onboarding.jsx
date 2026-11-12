@@ -4,6 +4,7 @@ import { Button, Input, SegmentedControl, Icon } from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { signUp, signIn } from '@/lib/auth/actions';
 import { createClient } from '@/lib/supabase/client';
+import { startXanom, readXanomError, clearXanomParams } from '@/components/sixteen/session/xanom';
 import s from './Onboarding.module.css';
 
 // Loopback port the desktop app listens on to catch the Google OAuth redirect.
@@ -23,7 +24,16 @@ function Onboarding({ go }) {
   const [fieldErrors, setFieldErrors] = React.useState({});
   const [busy, setBusy] = React.useState(false);
   const [googleBusy, setGoogleBusy] = React.useState(false);
-  const [error, setError] = React.useState('');
+  // A failed Xanom round trip lands back here with ?xanom_error=…
+  const [error, setError] = React.useState(() => readXanomError() || '');
+  const [xanomBusy, setXanomBusy] = React.useState(false);
+  React.useEffect(() => { clearXanomParams(); }, []);
+
+  const handleXanom = () => {
+    setError('');
+    setXanomBusy(true);
+    startXanom('signin', '/app');
+  };
 
   const cur = STEPS[step];
   const next = () => setStep((n) => Math.min(STEPS.length - 1, n + 1));
@@ -101,11 +111,11 @@ function Onboarding({ go }) {
     }
   };
 
-  const shared = { form, set, fieldErrors, busy, googleBusy, onGoogle: handleGoogle };
+  const shared = { form, set, fieldErrors, busy, googleBusy, onGoogle: handleGoogle, xanomBusy, onXanom: handleXanom };
 
   let content;
   if (mode === 'signin') content = <SignInStep {...shared} onSubmit={onSignIn} onCreate={() => switchMode('onboard')} />;
-  else if (cur === 'welcome') content = <WelcomeStep onStart={next} onSignIn={() => switchMode('signin')} />;
+  else if (cur === 'welcome') content = <WelcomeStep onStart={next} onSignIn={() => switchMode('signin')} onXanom={handleXanom} xanomBusy={xanomBusy} />;
   else if (cur === 'account') content = <AccountStep {...shared} onSubmit={onAccountContinue} onBack={back} onSignIn={() => switchMode('signin')} />;
   else if (cur === 'goal') content = <GoalStep {...shared} onSubmit={onCreateAccount} onBack={back} />;
   else content = <ReadyStep form={form} go={go} />;
@@ -147,7 +157,7 @@ function Heading({ title, subtitle, icon = true }) {
   );
 }
 
-function WelcomeStep({ onStart, onSignIn }) {
+function WelcomeStep({ onStart, onSignIn, onXanom, xanomBusy }) {
   return (
     <div className={s.center}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -157,7 +167,8 @@ function WelcomeStep({ onStart, onSignIn }) {
         <p className={s.subtitle}>Official SAT questions, the real test interface, and a tutor who can actually watch you work.</p>
       </div>
       <div className={s.stack}>
-        <Button variant="primary" size="lg" fullWidth onClick={onStart} autoFocus>Get started</Button>
+        <Button variant="primary" size="lg" fullWidth onClick={onXanom} loading={xanomBusy} autoFocus>Continue with Xanom</Button>
+        <Button variant="secondary" size="lg" fullWidth onClick={onStart}>Create a Strix account</Button>
         <p className={s.switchLine}>
           Already have an account? <button type="button" className={s.link} onClick={onSignIn}>Sign in</button>
         </p>
@@ -194,6 +205,10 @@ function TextField({ id, label, hint, error, value, onChange, ...rest }) {
   );
 }
 
+function XanomButton({ onClick, busy }) {
+  return <Button variant="primary" size="lg" fullWidth onClick={onClick} loading={busy}>Continue with Xanom</Button>;
+}
+
 function GoogleButton({ onClick, busy }) {
   return (
     <>
@@ -205,10 +220,11 @@ function GoogleButton({ onClick, busy }) {
   );
 }
 
-function AccountStep({ form, set, fieldErrors, busy, googleBusy, onGoogle, onSubmit, onBack, onSignIn }) {
+function AccountStep({ form, set, fieldErrors, busy, googleBusy, onGoogle, xanomBusy, onXanom, onSubmit, onBack, onSignIn }) {
   return (
     <form className={s.stack} noValidate onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
       <Heading title="Create your account" subtitle="Takes about a minute." />
+      <XanomButton onClick={onXanom} busy={xanomBusy} />
       <GoogleButton onClick={onGoogle} busy={googleBusy} />
       <TextField id="ob-name" label="Full name" autoComplete="name" autoFocus value={form.name} onChange={set('name')} error={fieldErrors.name} />
       <TextField id="ob-email" label="Email" type="email" autoComplete="email" placeholder="you@example.com" value={form.email} onChange={set('email')} error={fieldErrors.email} />
@@ -227,10 +243,11 @@ function AccountStep({ form, set, fieldErrors, busy, googleBusy, onGoogle, onSub
   );
 }
 
-function SignInStep({ form, set, fieldErrors, busy, googleBusy, onGoogle, onSubmit, onCreate }) {
+function SignInStep({ form, set, fieldErrors, busy, googleBusy, onGoogle, xanomBusy, onXanom, onSubmit, onCreate }) {
   return (
     <form className={s.stack} noValidate onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
       <Heading title="Welcome back" subtitle="Sign in to your Strix account." />
+      <XanomButton onClick={onXanom} busy={xanomBusy} />
       <GoogleButton onClick={onGoogle} busy={googleBusy} />
       <TextField id="si-email" label="Email" type="email" autoComplete="email" autoFocus placeholder="you@example.com" value={form.email} onChange={set('email')} error={fieldErrors.email} />
       <TextField id="si-password" label="Password" type="password" autoComplete="current-password" value={form.password} onChange={set('password')} error={fieldErrors.password} />

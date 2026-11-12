@@ -26,6 +26,14 @@
 .avatarBtn:focus-visible .avatarEdit { opacity: 1; }
 
 .error { color: var(--error); }
+.textLink {
+  font: var(--role-body);
+  font-weight: var(--weight-medium);
+  color: var(--text-link);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.textLink:hover { text-decoration: underline; }
 .hidden { display: none; }
 
 .inlineForm { display: flex; align-items: center; gap: 6px; }

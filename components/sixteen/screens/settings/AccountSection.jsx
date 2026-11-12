@@ -3,9 +3,10 @@ import React from 'react';
 import { Avatar, Button, Icon, List, ListRow, Section } from '@/components/sixteen';
 import { useProfile } from '@/components/sixteen/session/ProfileContext';
 import { createClient } from '@/lib/supabase/client';
+import XanomRows from './XanomRows';
 import s from './Settings.module.css';
 
-// Account — name, email, profile picture, sign out.
+// Account — name, email, profile picture, Xanom sign-in, sign out.
 
 const AVATAR_MAX_BYTES = 1024 * 1024;
 
@@ -75,6 +76,7 @@ export default function AccountSection({ onSignedOut }) {
             </Button>
           )}
         />
+        <XanomRows userId={user?.id} />
         <ListRow
           leading={<span className={s.iconWell}><Icon name="log-out" size={15} /></span>}
           title="Sign out"
